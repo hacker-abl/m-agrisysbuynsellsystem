@@ -10,26 +10,19 @@
 	<p> 1. Install Laravel</p>
 	<p> 2. Run Composer</p>
 	<p> 3. Run laravel migrations -> php artisan migrate</p>
-	<p> 4. Run php artisan db:seed</p>
+	<p> 4. Run "php artisan db:seed --class=access_levels"</p>
+	<p> 4. Run "php artisan db:seed"</p>
 	<h2>Sample Accounts</h2>
 	<table>
 		<thead>
 			<tr>
-				<th>Email</th>
+				<th>Username</th>
 				<th>Password</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>admin@gmail.com</td>
-				<td>password</td>
-			</tr>
-			<tr>
-				<td>pm@gmail.com</td>
-				<td>password</td>
-			</tr>
-			<tr>
-				<td>dev@gmail.com</td>
+				<td>admin</td>
 				<td>password</td>
 			</tr>
 		</tbody>
