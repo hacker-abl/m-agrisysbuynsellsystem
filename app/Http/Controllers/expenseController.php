@@ -24,7 +24,7 @@ class expenseController extends Controller
      */
     public function index()
     {
-        return view('expense');
+        return view('main.expense');
     }
 }
 
