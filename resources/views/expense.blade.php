@@ -62,10 +62,6 @@
                     Expense Dashboard
                 </h2>
 				
-							 <ol class="breadcrumb breadcrumb-col-pink">
-                                <li><a href="javascript:void(0);"><i class="material-icons">home</i> Home</a></li>
-                                <li class="active"><i class="material-icons">library_books</i> Library</li>
-                            </ol>
             </div>
 
         </div>
