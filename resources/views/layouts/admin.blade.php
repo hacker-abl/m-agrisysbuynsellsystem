@@ -479,15 +479,57 @@
     <!-- Scripts -->
 	 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 			<script>
-			$(document).ready(function() {
-    $('#expensetable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
+		$(document).ready(function() {
 
-			
-        ]
-    });
-} );
+            $('#expense_modal').on('hidden.bs.modal', function (e) {
+              $(this)
+                .find("input,textarea,select")
+                   .val('')
+                   .end()
+                .find("input[type=checkbox], input[type=radio]")
+                   .prop("checked", "")
+                   .end();
+            })
+
+            var expensetable = $('#expensetable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('refresh_expense') }}",
+                columns: [
+                {data: 'id', name: 'id'},
+                {data: 'description', name: 'description'},
+                {data: 'type', name: 'type'},
+                {data: 'amount', name: 'amount'},
+                {data: 'created_at', name: 'created_at'},
+                ]
+            });
+
+            function refresh_expense_table()
+            {
+                expensetable.ajax.reload(); //reload datatable ajax 
+            }
+
+            $("#add_expense").click(function(event) {
+            event.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('add_expense') }}",
+                    dataType: "text",
+                    data: $('#expense_form').serialize(),
+                    success: function(data){
+                          $('#expense_modal').modal('hide');
+                          refresh_expense_table();
+                    },
+                    error: function(data){
+                         alert("Error")
+                    }
+                });
+
+            });
+
+        });
+
 			</script>
     <!-- Bootstrap Core Js -->
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>

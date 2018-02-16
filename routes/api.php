@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/serverSide', [
+    'as'   => 'serverSide',
+    'uses' => function () {
+        $expenses = Expense::all();
+        return Datatables::of($expenses)->make();
+    }
+]);
