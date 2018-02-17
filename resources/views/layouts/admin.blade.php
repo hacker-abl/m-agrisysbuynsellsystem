@@ -21,7 +21,7 @@
 
 	
     <!-- Sweet Alert Css -->
-    <link href="{{ asset('assets/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
 	
     <!-- Bootstrap Core Css -->
     <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
@@ -520,11 +520,12 @@
                     dataType: "text",
                     data: $('#expense_form').serialize(),
                     success: function(data){
+						swal("Success!", "Record has been added to database", "success")
                           $('#expense_modal').modal('hide');
                           refresh_expense_table();
                     },
                     error: function(data){
-                         alert("Error")
+						swal("Oh no!", "Something went wrong, try again.", "error")
                     }
                 });
 
