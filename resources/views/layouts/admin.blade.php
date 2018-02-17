@@ -532,6 +532,63 @@
         <!-- Scripts -->
         <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 
+        <script>
+            $(document).ready(function() {
+
+                $('#expense_modal').on('hidden.bs.modal', function (e) {
+                  $(this)
+                    .find("input,textarea,select")
+                       .val('')
+                       .end()
+                    .find("input[type=checkbox], input[type=radio]")
+                       .prop("checked", "")
+                       .end();
+                })
+
+                var expensetable = $('#expensetable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('refresh_expense') }}",
+                    columns: [
+                    {data: 'id', name: 'id'},
+                    {data: 'description', name: 'description'},
+                    {data: 'type', name: 'type'},
+                    {data: 'amount', name: 'amount'},
+                    {data: 'created_at', name: 'created_at'},
+                    ]
+                });
+
+                function refresh_expense_table()
+                {
+                    expensetable.ajax.reload(); //reload datatable ajax 
+                }
+
+                $("#add_expense").click(function(event) {
+                event.preventDefault();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('add_expense') }}",
+                        dataType: "text",
+                        data: $('#expense_form').serialize(),
+                        success: function(data){
+                            swal("Success!", "Record has been added to database", "success")
+                              $('#expense_modal').modal('hide');
+                              refresh_expense_table();
+                        },
+                        error: function(data){
+                            swal("Oh no!", "Something went wrong, try again.", "error")
+                        }
+                    });
+
+                });
+
+            });
+
+        </script>
+
         <!-- Bootstrap Core Js -->
         <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
 
@@ -597,8 +654,66 @@
     @else
         @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
         <!-- Scripts -->
-        <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script><!-- Bootstrap Core Js -->
-        
+        <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+
+        <script>
+            $(document).ready(function() {
+
+                $('#expense_modal').on('hidden.bs.modal', function (e) {
+                  $(this)
+                    .find("input,textarea,select")
+                       .val('')
+                       .end()
+                    .find("input[type=checkbox], input[type=radio]")
+                       .prop("checked", "")
+                       .end();
+                })
+
+                var expensetable = $('#expensetable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('refresh_expense') }}",
+                    columns: [
+                    {data: 'id', name: 'id'},
+                    {data: 'description', name: 'description'},
+                    {data: 'type', name: 'type'},
+                    {data: 'amount', name: 'amount'},
+                    {data: 'created_at', name: 'created_at'},
+                    ]
+                });
+
+                function refresh_expense_table()
+                {
+                    expensetable.ajax.reload(); //reload datatable ajax 
+                }
+
+                $("#add_expense").click(function(event) {
+                event.preventDefault();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('add_expense') }}",
+                        dataType: "text",
+                        data: $('#expense_form').serialize(),
+                        success: function(data){
+                            swal("Success!", "Record has been added to database", "success")
+                              $('#expense_modal').modal('hide');
+                              refresh_expense_table();
+                        },
+                        error: function(data){
+                            swal("Oh no!", "Something went wrong, try again.", "error")
+                        }
+                    });
+
+                });
+
+            });
+
+        </script>
+
+        <!-- Bootstrap Core Js -->
         <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
 
         <!-- Waves Effect Plugin Js -->
@@ -661,8 +776,66 @@
         <script src="{{ asset('assets/js/demo.js') }}"></script>
         @else
         <!-- Scripts -->
-        <script src="{{ secure_asset('assets/plugins/jquery/jquery.min.js') }}"></script><!-- Bootstrap Core Js -->
-        
+        <script src="{{ secure_asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+
+        <script>
+            $(document).ready(function() {
+
+                $('#expense_modal').on('hidden.bs.modal', function (e) {
+                  $(this)
+                    .find("input,textarea,select")
+                       .val('')
+                       .end()
+                    .find("input[type=checkbox], input[type=radio]")
+                       .prop("checked", "")
+                       .end();
+                })
+
+                var expensetable = $('#expensetable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('refresh_expense') }}",
+                    columns: [
+                    {data: 'id', name: 'id'},
+                    {data: 'description', name: 'description'},
+                    {data: 'type', name: 'type'},
+                    {data: 'amount', name: 'amount'},
+                    {data: 'created_at', name: 'created_at'},
+                    ]
+                });
+
+                function refresh_expense_table()
+                {
+                    expensetable.ajax.reload(); //reload datatable ajax 
+                }
+
+                $("#add_expense").click(function(event) {
+                event.preventDefault();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('add_expense') }}",
+                        dataType: "text",
+                        data: $('#expense_form').serialize(),
+                        success: function(data){
+                            swal("Success!", "Record has been added to database", "success")
+                              $('#expense_modal').modal('hide');
+                              refresh_expense_table();
+                        },
+                        error: function(data){
+                            swal("Oh no!", "Something went wrong, try again.", "error")
+                        }
+                    });
+
+                });
+
+            });
+
+        </script>
+
+        <!-- Bootstrap Core Js -->        
         <script src="{{ secure_asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
 
         <!-- Waves Effect Plugin Js -->
@@ -715,7 +888,6 @@
         <!-- Jquery Validation Plugin Css -->
         <script src="{{ secure_asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
 
-        
         <!-- Custom Js -->
         <script src="{{ secure_asset('assets/js/admin.js') }}"></script>
         <script src="{{ secure_asset('assets/js/pages/index.js') }}"></script>
@@ -727,65 +899,6 @@
         <script src="{{ secure_asset('assets/js/demo.js') }}"></script>
         @endif
     @endif
-
-	<script>
-		$(document).ready(function() {
-
-            $('#expense_modal').on('hidden.bs.modal', function (e) {
-              $(this)
-                .find("input,textarea,select")
-                   .val('')
-                   .end()
-                .find("input[type=checkbox], input[type=radio]")
-                   .prop("checked", "")
-                   .end();
-            })
-
-            var expensetable = $('#expensetable').DataTable({
-				  dom: 'Bfrtip',
-					buttons: [
-    
-				],
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('refresh_expense') }}",
-                columns: [
-                {data: 'id', name: 'id'},
-                {data: 'description', name: 'description'},
-                {data: 'type', name: 'type'},
-                {data: 'amount', name: 'amount'},
-                {data: 'created_at', name: 'created_at'},
-                ]
-            });
-
-            function refresh_expense_table()
-            {
-                expensetable.ajax.reload(); //reload datatable ajax 
-            }
-
-            $("#add_expense").click(function(event) {
-            event.preventDefault();
-
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('add_expense') }}",
-                    dataType: "text",
-                    data: $('#expense_form').serialize(),
-                    success: function(data){
-						swal("Success!", "Record has been added to database", "success")
-                          $('#expense_modal').modal('hide');
-                          refresh_expense_table();
-                    },
-                    error: function(data){
-						swal("Oh no!", "Something went wrong, try again.", "error")
-                    }
-                });
-
-            });
-
-        });
-
-	</script>
     
 </body>
 </html>
