@@ -19,20 +19,20 @@ Auth::routes();
 
 Route::group(['middleware'], function()
 {
-  Route::get('/Home', 'HomeController@index')->name('home');
-  Route::get('/Expense', 'expenseController@index')->name('expense');
-  Route::get('/Trips', 'tripController@index')->name('trips');
-  Route::get('/DTR', 'dtrController@index')->name('dtr');
-  Route::get('/Outbound', 'odController@index')->name('od');
-  Route::get('/CashAdvance', 'caController@index')->name('ca');
-  Route::get('/Purchases', 'purchasesController@index')->name('purchases');
-  Route::get('/Sales', 'salesController@index')->name('sales');
+  Route::get('/home', 'HomeController@index')->name('home');
+  Route::get('/expense', 'expenseController@index')->name('expense');
+  Route::get('/trips', 'tripController@index')->name('trips');
+  Route::get('/dTR', 'dtrController@index')->name('dtr');
+  Route::get('/outbound', 'odController@index')->name('od');
+  Route::get('/cashAdvance', 'caController@index')->name('ca');
+  Route::get('/purchases', 'purchasesController@index')->name('purchases');
+  Route::get('/sales', 'salesController@index')->name('sales');
 
   //settings
-  Route::get('/Company', 'companyController@index')->name('company');
-  Route::get('/Employee', 'employeeController@index')->name('employee');
-  Route::get('/Customer', 'customerController@index')->name('customer');
-  Route::get('/Trucks', 'trucksController@index')->name('trucks');
-  Route::get('/Commodity', 'commodityController@index')->name('commodity');
-  Route::get('/Users', 'usersController@index')->name('users');
+  Route::get('/company', 'companyController@index')->name('company');
+  Route::get('/employee', 'employeeController@index')->name('employee');
+  Route::get('/customer', 'customerController@index')->name('customer');
+  Route::get('/trucks', 'trucksController@index')->name('trucks');
+  Route::get('/commodity', 'commodityController@index')->name('commodity');
+  Route::get('/users', 'usersController@index')->name('users');
 });
