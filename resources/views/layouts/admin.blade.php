@@ -490,6 +490,10 @@
             })
 
             var expensetable = $('#expensetable').DataTable({
+				  dom: 'Bfrtip',
+					buttons: [
+    
+				],
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('refresh_expense') }}",
