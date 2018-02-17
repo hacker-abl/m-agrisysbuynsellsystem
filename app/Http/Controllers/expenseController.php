@@ -26,6 +26,7 @@ class expenseController extends Controller
      */
     public function index()
     {
+ 
 
         return view('expense');
 
@@ -45,6 +46,7 @@ class expenseController extends Controller
     {
         $expense = Expense::all();
         return \DataTables::of(Expense::query())->make(true);
+ 
     }
 }
 

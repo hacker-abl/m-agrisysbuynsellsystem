@@ -15,7 +15,7 @@
                             <span>Expenses</span>
                         </a>
                     </li> 
-					<li >
+					<li>
                         <a href="{{ route('trips') }}">
                             <i class="material-icons">directions_bus</i>
                             <span>Trips</span>

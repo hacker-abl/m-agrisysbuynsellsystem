@@ -381,7 +381,7 @@ class ComposerStaticInitaa3016c9b7def0951c1476a6a9909f56
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\ca' => __DIR__ . '/../..' . '/app/ca.php',
-        'App\\dtr' => __DIR__ . '/../..' . '/app/dtr.php',
+        'App\\dtr' => __DIR__ . '/../..' . '/app/dtr.php', 
         'App\\od' => __DIR__ . '/../..' . '/app/od.php',
         'App\\purchases' => __DIR__ . '/../..' . '/app/purchases.php',
         'App\\sales' => __DIR__ . '/../..' . '/app/sales.php',

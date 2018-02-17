@@ -24,6 +24,6 @@ class odController extends Controller
      */
     public function index()
     {
-        return view('od');
+        return view('main.od');
     }
 }

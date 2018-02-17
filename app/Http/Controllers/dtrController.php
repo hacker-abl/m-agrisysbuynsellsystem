@@ -24,6 +24,6 @@ class dtrController extends Controller
      */
     public function index()
     {
-        return view('dtr');
+        return view('main.dtr');
     }
 }

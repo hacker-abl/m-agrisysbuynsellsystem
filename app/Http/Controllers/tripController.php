@@ -24,6 +24,6 @@ class tripController extends Controller
      */
     public function index()
     {
-        return view('trip');
+        return view('main.trip');
     }
 }

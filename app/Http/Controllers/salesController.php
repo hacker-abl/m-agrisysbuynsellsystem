@@ -24,6 +24,6 @@ class salesController extends Controller
      */
     public function index()
     {
-        return view('sales');
+        return view('main.sales');
     }
 }

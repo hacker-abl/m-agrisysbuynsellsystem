@@ -24,6 +24,6 @@ class caController extends Controller
      */
     public function index()
     {
-        return view('ca');
+        return view('main.ca');
     }
 }
