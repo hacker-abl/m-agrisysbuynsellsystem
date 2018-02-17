@@ -320,7 +320,7 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2016 - 2017 <a href="javascript:void(0);">OrbWeaver Web and Mobile Apps Development</a>.
+                    &copy; 2018 <a href="javascript:void(0);">OrbWeaver Web and Mobile Apps Development</a>.
                 </div>
               
             </div>
