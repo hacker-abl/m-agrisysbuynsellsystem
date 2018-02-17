@@ -19,26 +19,78 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
-	
-    <!-- Sweet Alert Css -->
-    <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
-	
-    <!-- Bootstrap Core Css -->
-    <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
-    <!-- Waves Effect Css -->
-    <link href="{{ asset('assets/plugins/node-waves/waves.css') }}" rel="stylesheet" />
+    <!-- Styles -->
+    @if (App::isLocal())    
+        <!-- Sweet Alert Css -->
+        <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+        
+        <!-- Bootstrap Core Css -->
+        <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
-    <!-- Animation Css -->
-    <link href="{{ asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
-  
-  <!-- Morris Chart Css-->
-    <link href="{{ asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
-	 <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
-	   <!-- JQuery DataTable Css -->
-    <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
-    <!-- Custom Css -->
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+        <!-- Waves Effect Css -->
+        <link href="{{ asset('assets/plugins/node-waves/waves.css') }}" rel="stylesheet" />
+
+        <!-- Animation Css -->
+        <link href="{{ asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
+      
+        <!-- Morris Chart Css-->
+        <link href="{{ asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
+        
+        <!-- JQuery DataTable Css -->
+        <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+        
+        <!-- Custom Css -->
+        <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    @else
+        @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
+        <!-- Sweet Alert Css -->
+        <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+        
+        <!-- Bootstrap Core Css -->
+        <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Waves Effect Css -->
+        <link href="{{ asset('assets/plugins/node-waves/waves.css') }}" rel="stylesheet" />
+
+        <!-- Animation Css -->
+        <link href="{{ asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
+      
+        <!-- Morris Chart Css-->
+        <link href="{{ asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
+        
+        <!-- JQuery DataTable Css -->
+        <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+        
+        <!-- Custom Css -->
+        <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+        @else
+        <!-- Sweet Alert Css -->
+        <link href="{{ secure_asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+        
+        <!-- Bootstrap Core Css -->
+        <link href="{{ secure_asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Waves Effect Css -->
+        <link href="{{ secure_asset('assets/plugins/node-waves/waves.css') }}" rel="stylesheet" />
+
+        <!-- Animation Css -->
+        <link href="{{ secure_asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
+      
+        <!-- Morris Chart Css-->
+        <link href="{{ secure_asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
+        <link href="{{ secure_asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
+        
+        <!-- JQuery DataTable Css -->
+        <link href="{{ secure_asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+        
+        <!-- Custom Css -->
+        <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
+        @endif
+    @endif
+    
 </head>
 <body class="theme-grey">
     <!-- Page Loader -->
@@ -471,12 +523,212 @@
         </aside>
         <!-- #END# Right Sidebar -->
     </section>
-  <section class="content">
-            @yield('content')
-</section >
-    <!-- Scripts -->
-	 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
-			<script>
+    <section class="content">
+        @yield('content')
+    </section >
+
+    <!-- Javascript -->
+    @if (App::isLocal())
+        <!-- Scripts -->
+        <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+
+        <!-- Bootstrap Core Js -->
+        <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
+
+        <!-- Waves Effect Plugin Js -->
+        <script src="{{ asset('assets/plugins/node-waves/waves.js') }}"></script>
+        
+        <!-- Custom Js -->
+        <script src="{{ asset('assets/js/admin.js') }}"></script>
+
+          <!-- Sweet Alert Plugin Js -->
+        <script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+
+        <!-- Select Plugin Js -->
+        <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
+
+        <!-- Slimscroll Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
+
+        <!-- Jquery CountTo Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-countto/jquery.countTo.js') }}"></script>
+
+        <!-- Morris Plugin Js -->
+        <script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/morrisjs/morris.js') }}"></script>
+
+        <!-- ChartJs -->
+        <script src="{{ asset('assets/plugins/chartjs/Chart.bundle.js') }}"></script>
+
+        <!-- Flot Charts Plugin Js -->
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.resize.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.pie.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.categories.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.time.js') }}"></script>
+
+        <!-- Sparkline Chart Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.js') }}"></script>
+
+         <!-- Jquery DataTable Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+        <!-- Jquery Validation Plugin Css -->
+        <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
+
+        <!-- Custom Js -->
+        <script src="{{ asset('assets/js/admin.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/index.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/tables/jquery-datatable.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/ui/modals.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/forms/form-validation.js') }}"></script>
+
+        <!-- Demo Js -->
+        <script src="{{ asset('assets/js/demo.js') }}"></script>
+    @else
+        @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
+        <!-- Scripts -->
+        <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script><!-- Bootstrap Core Js -->
+        
+        <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
+
+        <!-- Waves Effect Plugin Js -->
+        <script src="{{ asset('assets/plugins/node-waves/waves.js') }}"></script>
+        
+        <!-- Custom Js -->
+        <script src="{{ asset('assets/js/admin.js') }}"></script>
+
+        <!-- Sweet Alert Plugin Js -->
+        <script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+        <!-- Select Plugin Js -->
+        <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
+
+        <!-- Slimscroll Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
+
+        <!-- Jquery CountTo Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-countto/jquery.countTo.js') }}"></script>
+
+        <!-- Morris Plugin Js -->
+        <script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/morrisjs/morris.js') }}"></script>
+
+        <!-- ChartJs -->
+        <script src="{{ asset('assets/plugins/chartjs/Chart.bundle.js') }}"></script>
+
+        <!-- Flot Charts Plugin Js -->
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.resize.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.pie.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.categories.js') }}"></script>
+        <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.time.js') }}"></script>
+
+        <!-- Sparkline Chart Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.js') }}"></script>
+
+         <!-- Jquery DataTable Plugin Js -->
+        <script src="{{ asset('assets/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+        <!-- Jquery Validation Plugin Css -->
+        <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
+
+        <!-- Custom Js -->
+        <script src="{{ asset('assets/js/admin.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/index.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/tables/jquery-datatable.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/ui/modals.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/forms/form-validation.js') }}"></script>
+
+        <!-- Demo Js -->
+        <script src="{{ asset('assets/js/demo.js') }}"></script>
+        @else
+        <!-- Scripts -->
+        <script src="{{ secure_asset('assets/plugins/jquery/jquery.min.js') }}"></script><!-- Bootstrap Core Js -->
+        
+        <script src="{{ secure_asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
+
+        <!-- Waves Effect Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/node-waves/waves.js') }}"></script>
+        
+        <!-- Custom Js -->
+        <script src="{{ secure_asset('assets/js/admin.js') }}"></script>
+
+          <!-- Sweet Alert Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+
+        <!-- Select Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
+
+        <!-- Slimscroll Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
+
+        <!-- Jquery CountTo Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/jquery-countto/jquery.countTo.js') }}"></script>
+
+        <!-- Morris Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/raphael/raphael.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/morrisjs/morris.js') }}"></script>
+
+        <!-- ChartJs -->
+        <script src="{{ secure_asset('assets/plugins/chartjs/Chart.bundle.js') }}"></script>
+
+        <!-- Flot Charts Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/flot-charts/jquery.flot.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/flot-charts/jquery.flot.resize.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/flot-charts/jquery.flot.pie.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/flot-charts/jquery.flot.categories.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/flot-charts/jquery.flot.time.js') }}"></script>
+
+        <!-- Sparkline Chart Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/jquery-sparkline/jquery.sparkline.js') }}"></script>
+
+         <!-- Jquery DataTable Plugin Js -->
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+        <!-- Jquery Validation Plugin Css -->
+        <script src="{{ secure_asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
+
+        
+        <!-- Custom Js -->
+        <script src="{{ secure_asset('assets/js/admin.js') }}"></script>
+        <script src="{{ secure_asset('assets/js/pages/index.js') }}"></script>
+        <script src="{{ secure_asset('assets/js/pages/tables/jquery-datatable.js') }}"></script>
+        <script src="{{ secure_asset('assets/js/pages/ui/modals.js') }}"></script>
+        <script src="{{ secure_asset('assets/js/pages/forms/form-validation.js') }}"></script>
+
+        <!-- Demo Js -->
+        <script src="{{ secure_asset('assets/js/demo.js') }}"></script>
+        @endif
+    @endif
+
+	<script>
 		$(document).ready(function() {
 
             $('#expense_modal').on('hidden.bs.modal', function (e) {
@@ -533,69 +785,7 @@
 
         });
 
-			</script>
-    <!-- Bootstrap Core Js -->
-    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
-
-    <!-- Waves Effect Plugin Js -->
-    <script src="{{ asset('assets/plugins/node-waves/waves.js') }}"></script>
-	
-    <!-- Custom Js -->
-    <script src="{{ asset('assets/js/admin.js') }}"></script>
-
-	  <!-- Sweet Alert Plugin Js -->
-    <script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
-
-
-    <!-- Select Plugin Js -->
-    <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
-
-    <!-- Slimscroll Plugin Js -->
-    <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
-
-    <!-- Jquery CountTo Plugin Js -->
-    <script src="{{ asset('assets/plugins/jquery-countto/jquery.countTo.js') }}"></script>
-
-    <!-- Morris Plugin Js -->
-    <script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/morrisjs/morris.js') }}"></script>
-
-    <!-- ChartJs -->
-    <script src="{{ asset('assets/plugins/chartjs/Chart.bundle.js') }}"></script>
-
-    <!-- Flot Charts Plugin Js -->
-    <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.js') }}"></script>
-    <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.resize.js') }}"></script>
-    <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.pie.js') }}"></script>
-    <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.categories.js') }}"></script>
-    <script src="{{ asset('assets/plugins/flot-charts/jquery.flot.time.js') }}"></script>
-
-    <!-- Sparkline Chart Plugin Js -->
-    <script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.js') }}"></script>
-
-	 <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ asset('assets/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
-
-	<!-- Jquery Validation Plugin Css -->
-    <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
-
-	
-    <!-- Custom Js -->
-	<script src="{{ asset('assets/js/admin.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/index.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/tables/jquery-datatable.js') }}"></script>
-	   <script src="{{ asset('assets/js/pages/ui/modals.js') }}"></script>
-	   <script src="{{ asset('assets/js/pages/forms/form-validation.js') }}"></script>
-
-    <!-- Demo Js -->
-    <script src="{{ asset('assets/js/demo.js') }}"></script>
+	</script>
+    
 </body>
 </html>
