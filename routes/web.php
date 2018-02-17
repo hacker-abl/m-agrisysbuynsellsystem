@@ -19,14 +19,14 @@ Auth::routes();
 
 Route::group(['middleware'], function()
 {
-  Route::get('/home', 'HomeController@index')->name('home');
-  Route::get('/expense', 'expenseController@index')->name('expense');
-  Route::get('/trips', 'tripController@index')->name('trips');
-  Route::get('/dTR', 'dtrController@index')->name('dtr');
-  Route::get('/outbound', 'odController@index')->name('od');
-  Route::get('/cashAdvance', 'caController@index')->name('ca');
-  Route::get('/purchases', 'purchasesController@index')->name('purchases');
-  Route::get('/sales', 'salesController@index')->name('sales');
+  Route::get('/Home', 'HomeController@index')->name('home');
+  Route::get('/Expense', 'expenseController@index')->name('expense');
+  Route::get('/Trips', 'tripController@index')->name('trips');
+  Route::get('/DTR', 'dtrController@index')->name('dtr');
+  Route::get('/Outbound', 'odController@index')->name('od');
+  Route::get('/CashAdvance', 'caController@index')->name('ca');
+  Route::get('/Purchases', 'purchasesController@index')->name('purchases');
+  Route::get('/Sales', 'salesController@index')->name('sales');
 
   //settings
   Route::get('/company', 'companyController@index')->name('company');
