@@ -44,7 +44,6 @@ class expenseController extends Controller
     public function refresh()
     {
         $expense = Expense::all();
-        
         return \DataTables::of(Expense::query())->make(true);
     }
 }
