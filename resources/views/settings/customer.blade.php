@@ -102,7 +102,7 @@
                         </div>
                         <div class="body">
                             <div class="table-responsive">
-                                <table id ="expensetable" class="table table-bordered table-striped table-hover  ">
+                                <table id ="Customer_table" class="table table-bordered table-striped table-hover  ">
                                     <thead>
                                         <tr>
                                             <th>No</th>

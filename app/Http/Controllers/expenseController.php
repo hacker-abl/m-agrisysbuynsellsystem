@@ -28,7 +28,7 @@ class expenseController extends Controller
     {
  
 
-        return view('expense');
+        return view('main.expense');
 
     }
 
