@@ -22,7 +22,7 @@ Auth::routes();
 Route::group(['middleware'], function()
 {
  
- Route::get('/home', 'HomeController@index')->name('home');
+ Route::get('/Home', 'HomeController@index')->name('home');
  Route::get('/Expense', 'expenseController@index')->name('expense');
  Route::post('/add_expense', 'expenseController@store')->name('add_expense');
  Route::get('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
