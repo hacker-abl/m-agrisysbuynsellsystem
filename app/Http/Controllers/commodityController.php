@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Commodity;
 
 class commodityController extends Controller
 {
@@ -45,7 +46,48 @@ class commodityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->get('button_action') == 'add'){
+            $commodity = new Commodity;
+            $commodity->name = $request->name;
+            $commodity->price = $request->price;
+            $commodity->suki_price = $request->suki_price;
+            $commodity->save();
+        }
+        if($request->get('button_action') == 'update'){
+            $commodity = Commodity::find($request->get('id'));
+            $commodity->name = $request->get('name');
+            $commodity->price = $request->get('price');
+            $commodity->suki_price = $request->get('suki_price');
+            $commodity->save();
+        }
+        
+    }
+
+    public function refresh()
+    {
+        $commodity = Commodity::all();
+        return \DataTables::of(Commodity::query())
+        ->addColumn('action', function($commodity){
+            return '<button class="btn btn-xs btn-warning update_commodity" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
+            <button class="btn btn-xs btn-danger delete_commodity" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
+        })
+        ->make(true);
+    }
+
+    function updatedata(Request $request){
+        $id = $request->input('id');
+        $commodity = Commodity::find($id);
+        $output = array(
+            'name' => $commodity->name,
+            'price' => $commodity->price,
+            'suki_price' => $commodity->suki_price
+        );
+        echo json_encode($output);
+    }
+
+    function deletedata(Request $request){
+        $commodity = Commodity::find($request->input('id'));
+        $commodity->delete();
     }
 
     /**
