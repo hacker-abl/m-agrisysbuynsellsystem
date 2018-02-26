@@ -18,7 +18,7 @@ class CreateCustomerTable extends Migration
             $table->string('fname', 100);
             $table->string('mname', 100);
             $table->string('lname', 100);
-            $table->integer('suki_type')->unsigned();
+            $table->string('suki_type', 5);
             $table->timestamps();
         });
     }

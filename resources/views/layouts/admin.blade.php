@@ -320,6 +320,13 @@ $("#bod").toggleClass('overlay-open');
 });
             $(document).ready(function() {
 
+			$.extend( $.fn.dataTable.defaults, {
+    "language": {
+        processing: 'Loading.. Please wait'
+    }
+ 
+});
+			
                 //EXPENSE Datatable starts here
             $('#expense_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -450,8 +457,18 @@ $("#bod").toggleClass('overlay-open');
   
               $(document).on('click', '.delete_company', function(){
                   var id = $(this).attr('id');
-                  if(confirm("Are you sure you want to delete this data?")){
-                      $.ajax({
+              
+				  swal({
+				  title: "Are you sure?",
+				  text: "Delete this record!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes, delete it!",
+				  closeOnConfirm: false
+				  },
+				function(){
+				$.ajax({
                           url:"{{ route('delete_company') }}",
                           method: "get",
                           data:{id:id},
@@ -459,10 +476,8 @@ $("#bod").toggleClass('overlay-open');
                               refresh_company_table();
                           }
                       })
-                  }
-                  else{
-                      return false;
-                  }
+				swal("Deleted!", "The record has been deleted.", "success");
+			});
               });
               //COMPANY Datatable ends here
   
@@ -568,8 +583,19 @@ $("#bod").toggleClass('overlay-open');
   
               $(document).on('click', '.delete_customer', function(){
                   var id = $(this).attr('id');
-                  if(confirm("Are you sure you want to delete this data?")){
-                      $.ajax({
+               
+				  
+				  	  swal({
+				  title: "Are you sure?",
+				  text: "Delete this record!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes, delete it!",
+				  closeOnConfirm: false
+				  },
+				function(){
+				$.ajax({
                           url:"{{ route('delete_customer') }}",
                           method: "get",
                           data:{id:id},
@@ -577,10 +603,8 @@ $("#bod").toggleClass('overlay-open');
                               refresh_customer_table();
                           }
                       })
-                  }
-                  else{
-                      return false;
-                  }
+				swal("Deleted!", "The record has been deleted.", "success");
+			});
               });
               //CUSTOMER Datatable ends here
   
@@ -665,8 +689,18 @@ $("#bod").toggleClass('overlay-open');
   
               $(document).on('click', '.delete_employee', function(){
                   var id = $(this).attr('id');
-                  if(confirm("Are you sure you want to delete this data?")){
-                      $.ajax({
+                   
+				  	  swal({
+				  title: "Are you sure?",
+				  text: "Delete this record!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes, delete it!",
+				  closeOnConfirm: false
+				  },
+				function(){
+				$.ajax({
                           url:"{{ route('delete_employee') }}",
                           method: "get",
                           data:{id:id},
@@ -674,10 +708,8 @@ $("#bod").toggleClass('overlay-open');
                               refresh_employee_table();
                           }
                       })
-                  }
-                  else{
-                      return false;
-                  }
+				swal("Deleted!", "The record has been deleted.", "success");
+			});
               });
               //EMPLOYEE Datatable ends here
   
@@ -759,8 +791,17 @@ $("#bod").toggleClass('overlay-open');
   
               $(document).on('click', '.delete_trucks', function(){
                   var id = $(this).attr('id');
-                  if(confirm("Are you sure you want to delete this data?")){
-                      $.ajax({
+                 	  swal({
+				  title: "Are you sure?",
+				  text: "Delete this record!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes, delete it!",
+				  closeOnConfirm: false
+				  },
+				function(){
+				$.ajax({
                           url:"{{ route('delete_trucks') }}",
                           method: "get",
                           data:{id:id},
@@ -768,10 +809,8 @@ $("#bod").toggleClass('overlay-open');
                               refresh_trucks_table();
                           }
                       })
-                  }
-                  else{
-                      return false;
-                  }
+				swal("Deleted!", "The record has been deleted.", "success");
+			});
               });
               //TRUCKS Datatable ends here
   
@@ -854,19 +893,26 @@ $("#bod").toggleClass('overlay-open');
   
               $(document).on('click', '.delete_commodity', function(){
                   var id = $(this).attr('id');
-                  if(confirm("Are you sure you want to delete this data?")){
-                      $.ajax({
+                   	  swal({
+				  title: "Are you sure?",
+				  text: "Delete this record!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes, delete it!",
+				  closeOnConfirm: false
+				  },
+				function(){
+				$.ajax({
                           url:"{{ route('delete_commodity') }}",
                           method: "get",
                           data:{id:id},
                           success:function(data){
-                              refresh_commodity_table();
+						  refresh_commodity_table();
                           }
                       })
-                  }
-                  else{
-                      return false;
-                  }
+				swal("Deleted!", "The record has been deleted.", "success");
+			});
               });
               //COMMODITY Datatable ends here
   
@@ -966,8 +1012,17 @@ $("#bod").toggleClass('overlay-open');
   
               $(document).on('click', '.delete_user', function(){
                   var id = $(this).attr('id');
-                  if(confirm("Are you sure you want to delete this data?")){
-                      $.ajax({
+                   	  swal({
+				  title: "Are you sure?",
+				  text: "Delete this record!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes, delete it!",
+				  closeOnConfirm: false
+				  },
+				function(){
+				$.ajax({
                           url:"{{ route('delete_user') }}",
                           method: "get",
                           data:{id:id},
@@ -975,10 +1030,8 @@ $("#bod").toggleClass('overlay-open');
                               refresh_user_table();
                           }
                       })
-                  }
-                  else{
-                      return false;
-                  }
+				swal("Deleted!", "The record has been deleted.", "success");
+			});
               });
               //USER Datatable ends here
 

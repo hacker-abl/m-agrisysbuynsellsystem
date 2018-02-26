@@ -51,43 +51,7 @@
                             <span>Purchases</span>
                         </a>
                     </li>
-                    <li class="header">Adminstrative Tools</li>
-  <li >
-                        <a href="{{ route('sales') }}">
-                            <i class="material-icons">business_center</i>
-                            <span>Company</span>
-                        </a>
-                    </li>
-					<li >
-                        <a href="{{ route('sales') }}">
-                            <i class="material-icons">work</i>
-                            <span>Employee</span>
-                        </a>
-                    </li>
-					<li >
-                        <a href="{{ route('sales') }}">
-                            <i class="material-icons">person_outline</i>
-                            <span>Customer</span>
-                        </a>
-                    </li>
-					<li >
-                        <a href="{{ route('sales') }}">
-                            <i class="material-icons">directions_bus</i>
-                            <span>Trucks</span>
-                        </a>
-                    </li>
-					<li >
-                        <a href="{{ route('sales') }}">
-                            <i class="material-icons">local_offer</i>
-                            <span>Commodities</span>
-                        </a>
-                    </li>
-					<li >
-                        <a href="{{ route('sales') }}">
-                            <i class="material-icons">group</i>
-                            <span>Users</span>
-                        </a>
-                    </li>
+                 
   
                 </ul>
 				</div>
