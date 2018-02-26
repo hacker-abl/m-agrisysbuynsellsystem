@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Company;
 
 class companyController extends Controller
 {
@@ -48,8 +49,42 @@ class companyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    {;
+        if($request->get('button_action') == 'add'){
+            $company = new Company;
+            $company->name = $request->name;
+            $company->save();
+        }
+        if($request->get('button_action') == 'update'){
+            $company = Company::find($request->get('id'));
+            $company->name = $request->get('name');
+            $company->save();
+        }
+    }
+
+    public function refresh()
     {
-        //
+        $company = Company::all();
+        return \DataTables::of(Company::query())
+        ->addColumn('action', function($company){
+            return '<button class="btn btn-xs btn-warning update_company" id="'.$company->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
+            <button class="btn btn-xs btn-danger delete_company" id="'.$company->id.'"><i class="material-icons">delete</i></button>';
+        })
+        ->make(true);
+    }
+
+    function updatedata(Request $request){
+        $id = $request->input('id');
+        $company = Company::find($id);
+        $output = array(
+            'name' => $company->name
+        );
+        echo json_encode($output);
+    }
+
+    function deletedata(Request $request){
+        $company = Company::find($request->input('id'));
+        $company->delete();
     }
 
     /**
@@ -94,6 +129,5 @@ class companyController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }

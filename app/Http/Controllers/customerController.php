@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Customer;
 
 class customerController extends Controller
 {
@@ -45,9 +46,52 @@ class customerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->get('button_action') == 'add'){
+            $customer = new Customer;
+            $customer->fname = $request->fname;
+            $customer->mname = $request->mname;
+            $customer->lname = $request->lname;
+            $customer->suki_type = "NO";
+            $customer->save();
+        }
+        
+        if($request->get('button_action') == 'update'){
+            $customer = Customer::find($request->get('id'));
+            $customer->fname = $request->get('fname');
+            $customer->mname = $request->get('mname');
+            $customer->lname = $request->get('lname');
+            $customer->suki_type = $request->get('suki_type');
+            $customer->save();
+        }
     }
 
+    public function refresh()
+    {
+        $customer = Customer::all();
+        return \DataTables::of(Customer::query())
+        ->addColumn('action', function($customer){
+            return '<button class="btn btn-xs btn-warning update_customer" id="'.$customer->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
+            <button class="btn btn-xs btn-danger delete_customer" id="'.$customer->id.'"><i class="material-icons">delete</i></button>';
+        })
+        ->make(true);
+    }
+
+    function updatedata(Request $request){
+        $id = $request->input('id');
+        $customer = Customer::find($id);
+        $output = array(
+            'fname' => $customer->fname,
+            'mname' => $customer->mname,
+            'lname' => $customer->lname,
+            'suki_type' => $customer->suki_type
+        );
+        echo json_encode($output);
+    }
+
+    function deletedata(Request $request){
+        $customer = Customer::find($request->input('id'));
+        $customer->delete();
+    }
     /**
      * Display the specified resource.
      *
@@ -56,7 +100,6 @@ class customerController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**

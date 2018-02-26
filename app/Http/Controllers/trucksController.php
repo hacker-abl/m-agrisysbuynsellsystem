@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Trucks;
 
 class trucksController extends Controller
 {
@@ -45,8 +46,46 @@ class trucksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->get('button_action') == 'add'){
+            $trucks = new Trucks;
+            $trucks->name = $request->name;
+            $trucks->plate_no = $request->plate_no;
+            $trucks->save();
+        }
+        if($request->get('button_action') == 'update'){
+            $trucks = Trucks::find($request->get('id'));
+            $trucks->name = $request->get('name');
+            $trucks->plate_no = $request->get('plate_no');
+            $trucks->save();
+        }
     }
+
+    public function refresh()
+    {
+        $trucks = Trucks::all();
+        return \DataTables::of(Trucks::query())
+        ->addColumn('action', function($trucks){
+            return '<button class="btn btn-xs btn-warning update_trucks" id="'.$trucks->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
+            <button class="btn btn-xs btn-danger delete_trucks" id="'.$trucks->id.'"><i class="material-icons">delete</i></button>';
+        })
+        ->make(true);
+    }
+
+    function updatedata(Request $request){
+        $id = $request->input('id');
+        $trucks = Trucks::find($id);
+        $output = array(
+            'name' => $trucks->name,
+            'plate_no' => $trucks->plate_no
+        );
+        echo json_encode($output);
+    }
+
+    function deletedata(Request $request){
+        $trucks = Trucks::find($request->input('id'));
+        $trucks->delete();
+    }
+    
 
     /**
      * Display the specified resource.
