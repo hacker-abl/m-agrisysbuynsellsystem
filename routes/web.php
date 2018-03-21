@@ -71,4 +71,8 @@ Route::group(['middleware'], function()
   Route::get('/refresh_user', 'usersController@refresh')->name('refresh_user');
   Route::get('/update_user', 'usersController@updatedata')->name('update_user');
   Route::get('/delete_user', 'usersController@deletedata')->name('delete_user');
+
+  //SEARCH AUTOCOMPLETE NAME SA EXPENSES
+  Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
+
 });

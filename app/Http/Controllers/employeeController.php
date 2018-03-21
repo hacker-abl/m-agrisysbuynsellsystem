@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Employee;
+use App\Roles;
 
 class employeeController extends Controller
 {
@@ -25,7 +26,9 @@ class employeeController extends Controller
      */
     public function index()
     {
-        return view('settings.employee');
+        $roles = Roles::pluck('role','id')->toArray();
+
+        return view('settings.employee')->with(compact('roles'));
     }
 
     /**
@@ -51,7 +54,7 @@ class employeeController extends Controller
             $employee->fname = $request->fname;
             $employee->mname = $request->mname;
             $employee->lname = $request->lname;
-            $employee->type = $request->type;
+            $employee->role_id = $request->role_id;
             $employee->save();
         }
         
@@ -60,7 +63,7 @@ class employeeController extends Controller
             $employee->fname = $request->get('fname');
             $employee->mname = $request->get('mname');
             $employee->lname = $request->get('lname');
-            $employee->type = $request->get('type');
+            $employee->role_id = $request->get('role_id');
             $employee->save();
         }
     }
@@ -83,7 +86,7 @@ class employeeController extends Controller
             'fname' => $employee->fname,
             'mname' => $employee->mname,
             'lname' => $employee->lname,
-            'type' => $employee->type
+            'role_id' => $employee->role_id
         );
         echo json_encode($output);
     }
@@ -92,6 +95,7 @@ class employeeController extends Controller
         $employee = Employee::find($request->input('id'));
         $employee->delete();
     }
+
 
     /**
      * Display the specified resource.

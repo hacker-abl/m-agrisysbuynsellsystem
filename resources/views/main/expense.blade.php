@@ -92,7 +92,7 @@
                                     <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" id="expense" name="expense"class="form-control" placeholder="Enter your expense description"  required>
+                                                <input type="text" id="expense" name="expense" class="form-control" placeholder="Enter your expense description"  required>
                                             </div>
                                         </div>
                                     </div>

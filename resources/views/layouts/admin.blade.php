@@ -22,6 +22,12 @@
     @if (App::isLocal())    
         <!-- Sweet Alert Css -->
         <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+
+        <!-- Select2 Css -->
+        <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
+        <!-- Jquery-ui Css -->
+        <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
         
         <!-- Bootstrap Core Css -->
         <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
@@ -45,6 +51,12 @@
         @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
         <!-- Sweet Alert Css -->
         <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+
+        <!-- Select2 Css -->
+        <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
+        <!-- Jquery-ui Css -->
+        <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
         
         <!-- Bootstrap Core Css -->
         <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
@@ -67,6 +79,12 @@
         @else
         <!-- Sweet Alert Css -->
         <link href="{{ secure_asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+
+        <!-- Select2 Css -->
+        <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
+        <!-- Jquery-ui Css -->
+        <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
         
         <!-- Bootstrap Core Css -->
         <link href="{{ secure_asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
@@ -630,7 +648,7 @@ $("#bod").toggleClass('overlay-open');
                   {render:function(data, type, full, meta){
                       return full.fname + " " + full.mname + " " + full.lname;
                   }},
-                  {data: 'type', name: 'type'},
+                  {data: 'role_id', name: 'role_id'},
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
@@ -679,7 +697,7 @@ $("#bod").toggleClass('overlay-open');
                           $('#fname').val(data.fname);
                           $('#mname').val(data.mname);
                           $('#lname').val(data.lname);
-                          $('#type').val(data.type);
+                          $('#role_id').val(data.role_id);
                           $('#employee_modal').modal('show');
                           $('.modal_title').text('Update Employee');
                           refresh_employee_table();
@@ -1035,6 +1053,27 @@ $("#bod").toggleClass('overlay-open');
               });
               //USER Datatable ends here
 
+            src = "{{ route('autocomplete_name') }}";
+                $("#expense").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: src,
+                        dataType: "json",
+                        data: {
+                            term : request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                           
+                        }
+                    });
+                },           
+            });
+
+            $('#role_id').select2({
+                dropdownParent: $('#employee_modal')
+            });
+
             });
 
         </script>
@@ -1051,6 +1090,8 @@ $("#bod").toggleClass('overlay-open');
           <!-- Sweet Alert Plugin Js -->
         <script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
 
+        <!-- Select2 Plugin Js -->
+        <script src="{{ asset('assets/plugins/select2/dist/js/select2.full.min.js') }}"></script>
 
         <!-- Select Plugin Js -->
         <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
@@ -1101,6 +1142,9 @@ $("#bod").toggleClass('overlay-open');
 
         <!-- Demo Js -->
         <script src="{{ asset('assets/js/demo.js') }}"></script>
+
+        <!-- Jquery-ui Js -->
+        <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     @else
         @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
         <!-- Scripts -->
@@ -1396,7 +1440,7 @@ $("#bod").toggleClass('overlay-open');
                   {render:function(data, type, full, meta){
                       return full.fname + " " + full.mname + " " + full.lname;
                   }},
-                  {data: 'type', name: 'type'},
+                  {data: 'role_id', name: 'role_id'},
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
@@ -1445,7 +1489,7 @@ $("#bod").toggleClass('overlay-open');
                           $('#fname').val(data.fname);
                           $('#mname').val(data.mname);
                           $('#lname').val(data.lname);
-                          $('#type').val(data.type);
+                          $('#role_id').val(data.role_id);
                           $('#employee_modal').modal('show');
                           $('.modal_title').text('Update Employee');
                           refresh_employee_table();
@@ -1772,6 +1816,29 @@ $("#bod").toggleClass('overlay-open');
               });
               //USER Datatable ends here
 
+            src = "{{ route('autocomplete_name') }}";
+                $("#expense").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: src,
+                        dataType: "json",
+                        data: {
+                            term : request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                           
+                        }
+                    });
+                },     
+            });
+
+            $('#role_id').select2({
+                dropdownParent: $('#employee_modal')
+            });
+
+                
+
             });
 
         </script>
@@ -1784,6 +1851,9 @@ $("#bod").toggleClass('overlay-open');
 
         <!-- Sweet Alert Plugin Js -->
         <script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+        <!-- Select2 Plugin Js -->
+        <script src="{{ asset('assets/plugins/select2/dist/js/select2.full.min.js') }}"></script>
 
         <!-- Select Plugin Js -->
         <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
@@ -1834,6 +1904,9 @@ $("#bod").toggleClass('overlay-open');
 
         <!-- Demo Js -->
         <script src="{{ asset('assets/js/demo.js') }}"></script>
+
+        <!-- Jquery-ui Js -->
+        <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         @else
         <!-- Scripts -->
         <script src="{{ secure_asset('assets/plugins/jquery/jquery.min.js') }}"></script>
@@ -2127,7 +2200,7 @@ $("#bod").toggleClass('overlay-open');
                   {render:function(data, type, full, meta){
                       return full.fname + " " + full.mname + " " + full.lname;
                   }},
-                  {data: 'type', name: 'type'},
+                  {data: 'role_id', name: 'role_id'},
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
@@ -2176,7 +2249,7 @@ $("#bod").toggleClass('overlay-open');
                           $('#fname').val(data.fname);
                           $('#mname').val(data.mname);
                           $('#lname').val(data.lname);
-                          $('#type').val(data.type);
+                          $('#role_id').val(data.role_id);
                           $('#employee_modal').modal('show');
                           $('.modal_title').text('Update Employee');
                           refresh_employee_table();
@@ -2503,6 +2576,28 @@ $("#bod").toggleClass('overlay-open');
               });
               //USER Datatable ends here
 
+            src = "{{ route('autocomplete_name') }}";
+                $("#expense").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: src,
+                        dataType: "json",
+                        data: {
+                            term : request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                           
+                        }
+                    });
+                },    
+            });
+
+            $('#role_id').select2({
+                dropdownParent: $('#employee_modal')
+            });
+                
+
             });
 
         </script>
@@ -2518,6 +2613,9 @@ $("#bod").toggleClass('overlay-open');
 
           <!-- Sweet Alert Plugin Js -->
         <script src="{{ secure_asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+        <!-- Select2 Plugin Js -->
+        <script src="{{ asset('assets/plugins/select2/dist/js/select2.full.min.js') }}"></script>
 
 
         <!-- Select Plugin Js -->
@@ -2569,6 +2667,9 @@ $("#bod").toggleClass('overlay-open');
 
         <!-- Demo Js -->
         <script src="{{ secure_asset('assets/js/demo.js') }}"></script>
+
+        <!-- Jquery-ui Js -->
+        <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         @endif
     @endif
     

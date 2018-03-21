@@ -12,7 +12,7 @@ class Employee extends Model
         'fname',
         'mname',
         'lname',
-        'type'
+        'role_id'
     );
 
     public $timestamps = true;
