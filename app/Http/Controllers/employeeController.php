@@ -71,11 +71,22 @@ class employeeController extends Controller
     public function refresh()
     {
         $employee = Employee::all();
+
         return \DataTables::of(Employee::query())
         ->addColumn('action', function($employee){
             return '<button class="btn btn-xs btn-warning update_employee" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
             <button class="btn btn-xs btn-danger delete_employee" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
         })
+        ->editColumn('role_id', function ($data) {
+
+                $role = Roles::all();
+                foreach($role as $r){
+                    if($r->id == $data->role_id)
+                        $role_name = $r->role; 
+                }
+
+                return $role_name;
+            })
         ->make(true);
     }
 
