@@ -14,7 +14,7 @@
                                    <i class="material-icons">supervisor_account</i>
                                    <span>Employee</span>
                                </a>
-                           </li> 
+                           </li>
                            <li>
                                <a href="{{ route('customer') }}">
                                    <i class="material-icons">tag_faces</i>
@@ -39,6 +39,12 @@
                                    <span>Users</span>
                                </a>
                            </li>
+													 <li >
+															<a href="{{ route('roles') }}">
+																	<i class="material-icons">assignment</i>
+																	<span>Roles</span>
+															</a>
+													</li>
                        </ul>
                        </div>
 @endsection
@@ -52,7 +58,7 @@
         </div>
 		<div class="modal fade" id="trucks_modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                 
+
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
@@ -62,7 +68,7 @@
                         </div>
                         <div class="body">
                             <form class="form-horizontal " id="trucks_form">
-                                <input type="hidden" name="id" id="id" value=""> 
+                                <input type="hidden" name="id" id="id" value="">
                                 <input type="hidden" name="button_action" id="button_action" value="">
                                 <div class="row clearfix">
                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -89,7 +95,7 @@
                                         </div>
                                     </div>
                                 </div>
-								
+
                                 <div class="row clearfix">
 									 <div class="modal-footer">
                             <button type="submit" id="add_trucks" class="btn btn-link waves-effect">SAVE CHANGES</button>
@@ -134,5 +140,5 @@
             </div>
 
             <!-- #END# Exportable Table -->
-        
+
 @endsection

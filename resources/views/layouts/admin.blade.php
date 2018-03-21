@@ -19,7 +19,7 @@
 
 
     <!-- Styles -->
-    @if (App::isLocal())    
+    @if (App::isLocal())
         <!-- Sweet Alert Css -->
         <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
 
@@ -28,7 +28,7 @@
 
         <!-- Jquery-ui Css -->
         <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
-        
+
         <!-- Bootstrap Core Css -->
         <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
@@ -37,14 +37,14 @@
 
         <!-- Animation Css -->
         <link href="{{ asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
-      
+
         <!-- Morris Chart Css-->
         <link href="{{ asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
         <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
-        
+
         <!-- JQuery DataTable Css -->
         <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
-        
+
         <!-- Custom Css -->
         <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     @else
@@ -57,7 +57,7 @@
 
         <!-- Jquery-ui Css -->
         <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
-        
+
         <!-- Bootstrap Core Css -->
         <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
@@ -66,14 +66,14 @@
 
         <!-- Animation Css -->
         <link href="{{ asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
-      
+
         <!-- Morris Chart Css-->
         <link href="{{ asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
         <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
-        
+
         <!-- JQuery DataTable Css -->
         <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
-        
+
         <!-- Custom Css -->
         <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
         @else
@@ -85,7 +85,7 @@
 
         <!-- Jquery-ui Css -->
         <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
-        
+
         <!-- Bootstrap Core Css -->
         <link href="{{ secure_asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
@@ -94,19 +94,19 @@
 
         <!-- Animation Css -->
         <link href="{{ secure_asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
-      
+
         <!-- Morris Chart Css-->
         <link href="{{ secure_asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
         <link href="{{ secure_asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
-        
+
         <!-- JQuery DataTable Css -->
         <link href="{{ secure_asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
-        
+
         <!-- Custom Css -->
         <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
         @endif
     @endif
-    
+
 </head>
 <body id="bod" class="theme-grey">
     <!-- Page Loader -->
@@ -163,10 +163,10 @@
                             <li class="header">NOTIFICATIONS</li>
                             <li class="body">
                                 <ul class="menu">
-                                    
-                                  
-                                 
-                                  
+
+
+
+
                                     <li>
                                         <a href="javascript:void(0);">
                                             <div class="icon-circle bg-purple">
@@ -290,7 +290,7 @@
                             <li><a href="{{ route('home') }}"><i class="material-icons">group</i>Main Navigation</a></li>
                             <li><a href="{{ route('company') }}"><i class="material-icons">group</i>Manage</a></li>
                             <li role="seperator" class="divider"></li>
-   
+
 							<li>
 							 <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -315,12 +315,12 @@
                 <div class="copyright">
                     &copy; 2018 <a href="javascript:void(0);">OrbWeaver Web and Mobile Apps Development</a>.
                 </div>
-              
+
             </div>
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-      
+
     </section>
     <section class="content">
         @yield('content')
@@ -342,9 +342,9 @@ $("#bod").toggleClass('overlay-open');
     "language": {
         processing: 'Loading.. Please wait'
     }
- 
+
 });
-			
+
                 //EXPENSE Datatable starts here
             $('#expense_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -355,11 +355,11 @@ $("#bod").toggleClass('overlay-open');
                      .prop("checked", "")
                      .end();
               })
-  
+
               var expensetable = $('#expensetable').DataTable({
                     dom: 'Bfrtip',
                       buttons: [
-      
+
                   ],
                   processing: true,
                   serverSide: true,
@@ -372,15 +372,15 @@ $("#bod").toggleClass('overlay-open');
                   {data: 'created_at', name: 'created_at'},
                   ]
               });
-  
+
               function refresh_expense_table()
               {
-                  expensetable.ajax.reload(); //reload datatable ajax 
+                  expensetable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $("#add_expense").click(function(event) {
               event.preventDefault();
-  
+
                   $.ajax({
                       type: "POST",
                       url: "{{ route('add_expense') }}",
@@ -395,11 +395,11 @@ $("#bod").toggleClass('overlay-open');
                           swal("Oh no!", "Something went wrong, try again.", "error")
                       }
                   });
-  
+
               });
-  
+
               //EXPENSE Datatable ends here
-  
+
               //COMPANY Datatable starts here
               $('#company_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -423,17 +423,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_company_table()
               {
-                  companytable.ajax.reload(); //reload datatable ajax 
+                  companytable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_company_modal', function(){
                   $('.modal_title').text('Add Company');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_company', function(){
                   event.preventDefault();
                   $.ajax({
@@ -454,7 +454,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
                   });
-  
+
               $(document).on('click', '.update_company', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -472,10 +472,10 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_company', function(){
                   var id = $(this).attr('id');
-              
+
 				  swal({
 				  title: "Are you sure?",
 				  text: "Delete this record!",
@@ -498,7 +498,7 @@ $("#bod").toggleClass('overlay-open');
 			});
               });
               //COMPANY Datatable ends here
-  
+
               //CUSTOMER Datatable starts here
               $('#customer_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -525,12 +525,12 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_customer_table()
               {
-                  customertable.ajax.reload(); //reload datatable ajax 
+                  customertable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_customer_modal', function(){
                   $('.modal_title').text('Add Customer');
                   $('#button_action').val('add');
@@ -538,7 +538,7 @@ $("#bod").toggleClass('overlay-open');
                       $(".suki_type_input").remove();
                   }
               });
-  
+
               $("#add_customer").click(function(event) {
                   event.preventDefault();
                   $.ajax({
@@ -560,7 +560,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   });
               });
-  
+
               $(document).on('click', '.update_customer', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -577,7 +577,7 @@ $("#bod").toggleClass('overlay-open');
                           $('#mname').val(data.mname);
                           $('#lname').val(data.lname);
                           if($(".suki_type_input")[0]){
-                              
+
                           } else {
                               $('<div class="row clearfix suki_type_input">'+
                                   '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">'+
@@ -593,16 +593,16 @@ $("#bod").toggleClass('overlay-open');
                               '</div>'
                               ).insertAfter(".in_suki_type");
                           }
-                          
+
                           $('#suki_type').val(data.suki_type);
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_customer', function(){
                   var id = $(this).attr('id');
-               
-				  
+
+
 				  	  swal({
 				  title: "Are you sure?",
 				  text: "Delete this record!",
@@ -625,7 +625,7 @@ $("#bod").toggleClass('overlay-open');
 			});
               });
               //CUSTOMER Datatable ends here
-  
+
               //EMPLOYEE Datatable starts here
               $('#employee_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -652,17 +652,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_employee_table()
               {
-                  employeetable.ajax.reload(); //reload datatable ajax 
+                  employeetable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_employee_modal', function(){
                   $('.modal_title').text('Add Employee');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_employee', function(){
                   event.preventDefault();
                   $.ajax({
@@ -683,7 +683,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_employee', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -704,10 +704,10 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_employee', function(){
                   var id = $(this).attr('id');
-                   
+
 				  	  swal({
 				  title: "Are you sure?",
 				  text: "Delete this record!",
@@ -730,7 +730,7 @@ $("#bod").toggleClass('overlay-open');
 			});
               });
               //EMPLOYEE Datatable ends here
-  
+
               //TRUCKS Datatable starts here
               $('#trucks_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -755,20 +755,20 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_trucks_table()
               {
-                  truckstable.ajax.reload(); //reload datatable ajax 
+                  truckstable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_trucks_modal', function(){
                   $('.modal_title').text('Add Truck');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_trucks', function(){
               event.preventDefault();
-  
+
                   $.ajax({
                       headers: {
                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -787,7 +787,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_trucks', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -806,7 +806,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
                   });
-  
+
               $(document).on('click', '.delete_trucks', function(){
                   var id = $(this).attr('id');
                  	  swal({
@@ -831,7 +831,7 @@ $("#bod").toggleClass('overlay-open');
 			});
               });
               //TRUCKS Datatable ends here
-  
+
               //COMMODITY Datatable starts here
               $('#commodity_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -857,17 +857,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_commodity_table()
               {
-                  commoditytable.ajax.reload(); //reload datatable ajax 
+                  commoditytable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_commodity_modal', function(){
                   $('.modal_title').text('Add Commodity');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_commodity', function(){
                   event.preventDefault();
                   $.ajax({
@@ -888,7 +888,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_commodity', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -908,7 +908,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_commodity', function(){
                   var id = $(this).attr('id');
                    	  swal({
@@ -933,7 +933,7 @@ $("#bod").toggleClass('overlay-open');
 			});
               });
               //COMMODITY Datatable ends here
-  
+
               //USER Datatable starts here
               $('#user_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -959,12 +959,12 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_user_table()
               {
-                  usertable.ajax.reload(); //reload datatable ajax 
+                  usertable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_user_modal', function(){
                   $('.modal_title').text('Add User');
                   $('#button_action').val('add');
@@ -984,7 +984,7 @@ $("#bod").toggleClass('overlay-open');
                       ).insertAfter(".in_password");
                   }
               });
-  
+
               $(document).on('click', '#add_user', function(){
                   event.preventDefault();
                   $.ajax({
@@ -1005,7 +1005,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_user', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -1027,7 +1027,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_user', function(){
                   var id = $(this).attr('id');
                    	  swal({
@@ -1064,17 +1064,121 @@ $("#bod").toggleClass('overlay-open');
                         },
                         success: function(data) {
                             response(data);
-                           
+
                         }
                     });
-                },           
+                },
             });
 
             $('#role_id').select2({
                 dropdownParent: $('#employee_modal')
             });
 
+
+            //roles datatable starts here
+            $('#role_modal').on('hidden.bs.modal', function (e) {
+                $(this)
+                .find("input,textarea,select")
+                    .val('')
+                    .end()
+                .find("input[type=checkbox], input[type=radio]")
+                    .prop("checked", "")
+                    .end();
+            })
+            var rolestable = $('#roletable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('refresh_roles') }}",
+                columns: [
+                {data: 'id', name: 'id'},
+                {data: 'role', name: 'role'},
+                {data: 'rate', name: 'rate'},
+                {data: "action", orderable:false,searchable:false}
+                ]
             });
+
+            function refresh_role_table()
+            {
+                rolestable.ajax.reload(); //reload datatable ajax
+            }
+
+            $(document).on('click','.open_role_modal', function(){
+                $('.modal_title').text('Add Role');
+                $('#button_action').val('add');
+            });
+
+            $(document).on('click', '#add_role', function(){
+            event.preventDefault();
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('add_role') }}",
+                    method: 'POST',
+                    dataType:'text',
+                    data: $('#role_form').serialize(),
+                    success:function(data){
+                        swal("Success!", "Record has been added to database", "success")
+                        $('#role_modal').modal('hide');
+                        refresh_role_table();
+                    },
+                    error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    }
+                })
+            });
+
+            $(document).on('click', '.update_role', function(){
+                var id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('update_role') }}",
+                    method: 'get',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        $('#button_action').val('update');
+                        $('#id').val(id);
+                        $('#role').val(data.role);
+                        $('#rate').val(data.rate);
+                        $('#role_modal').modal('show');
+                        $('.modal_title').text('Update Role');
+                        refresh_role_table();
+                    }
+                })
+            });
+
+                $(document).on('click', '.delete_role', function(){
+                  var id = $(this).attr('id');
+                    swal({
+                      title: "Are you sure?",
+                      text: "Delete this record!",
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Yes, delete it!",
+                      closeOnConfirm: false
+                    },
+                    function(){
+                      $.ajax({
+                          url:"{{ route('delete_role') }}",
+                          method: "get",
+                          data:{id:id},
+                          success:function(data){
+                              refresh_role_table();
+                            }
+                          })
+                          swal("Deleted!", "The record has been deleted.", "success");
+                        });
+                      });
+
+                    });
+
+
+            //USER DATATABLE STARTS Here
 
         </script>
 
@@ -1083,7 +1187,7 @@ $("#bod").toggleClass('overlay-open');
 
         <!-- Waves Effect Plugin Js -->
         <script src="{{ asset('assets/plugins/node-waves/waves.js') }}"></script>
-        
+
         <!-- Custom Js -->
         <script src="{{ asset('assets/js/admin.js') }}"></script>
 
@@ -1151,7 +1255,7 @@ $("#bod").toggleClass('overlay-open');
         <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 
         <script>
-	
+
             $(document).ready(function() {
 
                 //EXPENSE Datatable starts here
@@ -1164,11 +1268,11 @@ $("#bod").toggleClass('overlay-open');
                      .prop("checked", "")
                      .end();
               })
-  
+
               var expensetable = $('#expensetable').DataTable({
                     dom: 'Bfrtip',
                       buttons: [
-      
+
                   ],
                   processing: true,
                   serverSide: true,
@@ -1181,15 +1285,15 @@ $("#bod").toggleClass('overlay-open');
                   {data: 'created_at', name: 'created_at'},
                   ]
               });
-  
+
               function refresh_expense_table()
               {
-                  expensetable.ajax.reload(); //reload datatable ajax 
+                  expensetable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $("#add_expense").click(function(event) {
               event.preventDefault();
-  
+
                   $.ajax({
                       type: "POST",
                       url: "{{ route('add_expense') }}",
@@ -1204,11 +1308,11 @@ $("#bod").toggleClass('overlay-open');
                           swal("Oh no!", "Something went wrong, try again.", "error")
                       }
                   });
-  
+
               });
-  
+
               //EXPENSE Datatable ends here
-  
+
               //COMPANY Datatable starts here
               $('#company_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -1232,17 +1336,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_company_table()
               {
-                  companytable.ajax.reload(); //reload datatable ajax 
+                  companytable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_company_modal', function(){
                   $('.modal_title').text('Add Company');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_company', function(){
                   event.preventDefault();
                   $.ajax({
@@ -1263,7 +1367,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
                   });
-  
+
               $(document).on('click', '.update_company', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -1281,7 +1385,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_company', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -1299,7 +1403,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //COMPANY Datatable ends here
-  
+
               //CUSTOMER Datatable starts here
               $('#customer_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -1326,12 +1430,12 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_customer_table()
               {
-                  customertable.ajax.reload(); //reload datatable ajax 
+                  customertable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_customer_modal', function(){
                   $('.modal_title').text('Add Customer');
                   $('#button_action').val('add');
@@ -1339,7 +1443,7 @@ $("#bod").toggleClass('overlay-open');
                       $(".suki_type_input").remove();
                   }
               });
-  
+
               $("#add_customer").click(function(event) {
                   event.preventDefault();
                   $.ajax({
@@ -1361,7 +1465,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   });
               });
-  
+
               $(document).on('click', '.update_customer', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -1378,7 +1482,7 @@ $("#bod").toggleClass('overlay-open');
                           $('#mname').val(data.mname);
                           $('#lname').val(data.lname);
                           if($(".suki_type_input")[0]){
-                              
+
                           } else {
                               $('<div class="row clearfix suki_type_input">'+
                                   '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">'+
@@ -1394,12 +1498,12 @@ $("#bod").toggleClass('overlay-open');
                               '</div>'
                               ).insertAfter(".in_suki_type");
                           }
-                          
+
                           $('#suki_type').val(data.suki_type);
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_customer', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -1417,7 +1521,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //CUSTOMER Datatable ends here
-  
+
               //EMPLOYEE Datatable starts here
               $('#employee_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -1444,17 +1548,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_employee_table()
               {
-                  employeetable.ajax.reload(); //reload datatable ajax 
+                  employeetable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_employee_modal', function(){
                   $('.modal_title').text('Add Employee');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_employee', function(){
                   event.preventDefault();
                   $.ajax({
@@ -1475,7 +1579,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_employee', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -1496,7 +1600,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_employee', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -1514,7 +1618,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //EMPLOYEE Datatable ends here
-  
+
               //TRUCKS Datatable starts here
               $('#trucks_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -1539,20 +1643,20 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_trucks_table()
               {
-                  truckstable.ajax.reload(); //reload datatable ajax 
+                  truckstable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_trucks_modal', function(){
                   $('.modal_title').text('Add Truck');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_trucks', function(){
               event.preventDefault();
-  
+
                   $.ajax({
                       headers: {
                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1571,7 +1675,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_trucks', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -1590,7 +1694,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
                   });
-  
+
               $(document).on('click', '.delete_trucks', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -1608,7 +1712,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //TRUCKS Datatable ends here
-  
+
               //COMMODITY Datatable starts here
               $('#commodity_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -1634,17 +1738,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_commodity_table()
               {
-                  commoditytable.ajax.reload(); //reload datatable ajax 
+                  commoditytable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_commodity_modal', function(){
                   $('.modal_title').text('Add Commodity');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_commodity', function(){
                   event.preventDefault();
                   $.ajax({
@@ -1665,7 +1769,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_commodity', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -1685,7 +1789,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_commodity', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -1703,7 +1807,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //COMMODITY Datatable ends here
-  
+
               //USER Datatable starts here
               $('#user_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -1729,12 +1833,12 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_user_table()
               {
-                  usertable.ajax.reload(); //reload datatable ajax 
+                  usertable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_user_modal', function(){
                   $('.modal_title').text('Add User');
                   $('#button_action').val('add');
@@ -1754,7 +1858,7 @@ $("#bod").toggleClass('overlay-open');
                       ).insertAfter(".in_password");
                   }
               });
-  
+
               $(document).on('click', '#add_user', function(){
                   event.preventDefault();
                   $.ajax({
@@ -1775,7 +1879,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_user', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -1797,7 +1901,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_user', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -1827,17 +1931,116 @@ $("#bod").toggleClass('overlay-open');
                         },
                         success: function(data) {
                             response(data);
-                           
+
                         }
                     });
-                },     
+                },
             });
 
             $('#role_id').select2({
                 dropdownParent: $('#employee_modal')
             });
 
-                
+            //roles datatable starts here
+            $('#role_modal').on('hidden.bs.modal', function (e) {
+                $(this)
+                .find("input,textarea,select")
+                    .val('')
+                    .end()
+                .find("input[type=checkbox], input[type=radio]")
+                    .prop("checked", "")
+                    .end();
+            })
+            var rolestable = $('#roletable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('refresh_roles') }}",
+                columns: [
+                {data: 'id', name: 'id'},
+                {data: 'role', name: 'role'},
+                {data: 'rate', name: 'rate'},
+                {data: "action", orderable:false,searchable:false}
+                ]
+            });
+
+            function refresh_role_table()
+            {
+                rolestable.ajax.reload(); //reload datatable ajax
+            }
+
+            $(document).on('click','.open_role_modal', function(){
+                $('.modal_title').text('Add Role');
+                $('#button_action').val('add');
+            });
+
+            $(document).on('click', '#add_role', function(){
+            event.preventDefault();
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('add_role') }}",
+                    method: 'POST',
+                    dataType:'text',
+                    data: $('#role_form').serialize(),
+                    success:function(data){
+                        swal("Success!", "Record has been added to database", "success")
+                        $('#role_modal').modal('hide');
+                        refresh_role_table();
+                    },
+                    error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    }
+                })
+            });
+
+            $(document).on('click', '.update_role', function(){
+                var id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('update_role') }}",
+                    method: 'get',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        $('#button_action').val('update');
+                        $('#id').val(id);
+                        $('#role').val(data.role);
+                        $('#rate').val(data.rate);
+                        $('#role_modal').modal('show');
+                        $('.modal_title').text('Update Role');
+                        refresh_role_table();
+                    }
+                })
+            });
+
+                $(document).on('click', '.delete_role', function(){
+                  var id = $(this).attr('id');
+                    swal({
+                      title: "Are you sure?",
+                      text: "Delete this record!",
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Yes, delete it!",
+                      closeOnConfirm: false
+                    },
+                    function(){
+                      $.ajax({
+                          url:"{{ route('delete_role') }}",
+                          method: "get",
+                          data:{id:id},
+                          success:function(data){
+                              refresh_role_table();
+                            }
+                          })
+                          swal("Deleted!", "The record has been deleted.", "success");
+                        });
+                      });
+
 
             });
 
@@ -1924,11 +2127,11 @@ $("#bod").toggleClass('overlay-open');
                      .prop("checked", "")
                      .end();
               })
-  
+
               var expensetable = $('#expensetable').DataTable({
                     dom: 'Bfrtip',
                       buttons: [
-      
+
                   ],
                   processing: true,
                   serverSide: true,
@@ -1941,15 +2144,15 @@ $("#bod").toggleClass('overlay-open');
                   {data: 'created_at', name: 'created_at'},
                   ]
               });
-  
+
               function refresh_expense_table()
               {
-                  expensetable.ajax.reload(); //reload datatable ajax 
+                  expensetable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $("#add_expense").click(function(event) {
               event.preventDefault();
-  
+
                   $.ajax({
                       type: "POST",
                       url: "{{ route('add_expense') }}",
@@ -1964,11 +2167,11 @@ $("#bod").toggleClass('overlay-open');
                           swal("Oh no!", "Something went wrong, try again.", "error")
                       }
                   });
-  
+
               });
-  
+
               //EXPENSE Datatable ends here
-  
+
               //COMPANY Datatable starts here
               $('#company_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -1992,17 +2195,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_company_table()
               {
-                  companytable.ajax.reload(); //reload datatable ajax 
+                  companytable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_company_modal', function(){
                   $('.modal_title').text('Add Company');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_company', function(){
                   event.preventDefault();
                   $.ajax({
@@ -2023,7 +2226,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
                   });
-  
+
               $(document).on('click', '.update_company', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -2041,7 +2244,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_company', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -2059,7 +2262,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //COMPANY Datatable ends here
-  
+
               //CUSTOMER Datatable starts here
               $('#customer_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -2086,12 +2289,12 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_customer_table()
               {
-                  customertable.ajax.reload(); //reload datatable ajax 
+                  customertable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_customer_modal', function(){
                   $('.modal_title').text('Add Customer');
                   $('#button_action').val('add');
@@ -2099,7 +2302,7 @@ $("#bod").toggleClass('overlay-open');
                       $(".suki_type_input").remove();
                   }
               });
-  
+
               $("#add_customer").click(function(event) {
                   event.preventDefault();
                   $.ajax({
@@ -2121,7 +2324,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   });
               });
-  
+
               $(document).on('click', '.update_customer', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -2138,7 +2341,7 @@ $("#bod").toggleClass('overlay-open');
                           $('#mname').val(data.mname);
                           $('#lname').val(data.lname);
                           if($(".suki_type_input")[0]){
-                              
+
                           } else {
                               $('<div class="row clearfix suki_type_input">'+
                                   '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">'+
@@ -2154,12 +2357,12 @@ $("#bod").toggleClass('overlay-open');
                               '</div>'
                               ).insertAfter(".in_suki_type");
                           }
-                          
+
                           $('#suki_type').val(data.suki_type);
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_customer', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -2177,7 +2380,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //CUSTOMER Datatable ends here
-  
+
               //EMPLOYEE Datatable starts here
               $('#employee_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -2204,17 +2407,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_employee_table()
               {
-                  employeetable.ajax.reload(); //reload datatable ajax 
+                  employeetable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_employee_modal', function(){
                   $('.modal_title').text('Add Employee');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_employee', function(){
                   event.preventDefault();
                   $.ajax({
@@ -2235,7 +2438,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_employee', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -2256,7 +2459,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_employee', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -2274,7 +2477,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //EMPLOYEE Datatable ends here
-  
+
               //TRUCKS Datatable starts here
               $('#trucks_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -2299,20 +2502,20 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_trucks_table()
               {
-                  truckstable.ajax.reload(); //reload datatable ajax 
+                  truckstable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_trucks_modal', function(){
                   $('.modal_title').text('Add Truck');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_trucks', function(){
               event.preventDefault();
-  
+
                   $.ajax({
                       headers: {
                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2331,7 +2534,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_trucks', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -2350,7 +2553,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
                   });
-  
+
               $(document).on('click', '.delete_trucks', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -2368,7 +2571,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //TRUCKS Datatable ends here
-  
+
               //COMMODITY Datatable starts here
               $('#commodity_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -2394,17 +2597,17 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_commodity_table()
               {
-                  commoditytable.ajax.reload(); //reload datatable ajax 
+                  commoditytable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_commodity_modal', function(){
                   $('.modal_title').text('Add Commodity');
                   $('#button_action').val('add');
               });
-  
+
               $(document).on('click', '#add_commodity', function(){
                   event.preventDefault();
                   $.ajax({
@@ -2425,7 +2628,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_commodity', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -2445,7 +2648,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_commodity', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -2463,7 +2666,7 @@ $("#bod").toggleClass('overlay-open');
                   }
               });
               //COMMODITY Datatable ends here
-  
+
               //USER Datatable starts here
               $('#user_modal').on('hidden.bs.modal', function (e) {
                   $(this)
@@ -2489,12 +2692,12 @@ $("#bod").toggleClass('overlay-open');
                   {data: "action", orderable:false,searchable:false}
                   ]
               });
-  
+
               function refresh_user_table()
               {
-                  usertable.ajax.reload(); //reload datatable ajax 
+                  usertable.ajax.reload(); //reload datatable ajax
               }
-  
+
               $(document).on('click','.open_user_modal', function(){
                   $('.modal_title').text('Add User');
                   $('#button_action').val('add');
@@ -2514,7 +2717,7 @@ $("#bod").toggleClass('overlay-open');
                       ).insertAfter(".in_password");
                   }
               });
-  
+
               $(document).on('click', '#add_user', function(){
                   event.preventDefault();
                   $.ajax({
@@ -2535,7 +2738,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.update_user', function(){
                   var id = $(this).attr("id");
                   $.ajax({
@@ -2557,7 +2760,7 @@ $("#bod").toggleClass('overlay-open');
                       }
                   })
               });
-  
+
               $(document).on('click', '.delete_user', function(){
                   var id = $(this).attr('id');
                   if(confirm("Are you sure you want to delete this data?")){
@@ -2587,27 +2790,126 @@ $("#bod").toggleClass('overlay-open');
                         },
                         success: function(data) {
                             response(data);
-                           
+
                         }
                     });
-                },    
+                },
             });
 
             $('#role_id').select2({
                 dropdownParent: $('#employee_modal')
             });
-                
+
+            //roles datatable starts here
+            $('#role_modal').on('hidden.bs.modal', function (e) {
+                $(this)
+                .find("input,textarea,select")
+                    .val('')
+                    .end()
+                .find("input[type=checkbox], input[type=radio]")
+                    .prop("checked", "")
+                    .end();
+            })
+            var rolestable = $('#roletable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('refresh_roles') }}",
+                columns: [
+                {data: 'id', name: 'id'},
+                {data: 'role', name: 'role'},
+                {data: 'rate', name: 'rate'},
+                {data: "action", orderable:false,searchable:false}
+                ]
+            });
+
+            function refresh_role_table()
+            {
+                rolestable.ajax.reload(); //reload datatable ajax
+            }
+
+            $(document).on('click','.open_role_modal', function(){
+                $('.modal_title').text('Add Role');
+                $('#button_action').val('add');
+            });
+
+            $(document).on('click', '#add_role', function(){
+            event.preventDefault();
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('add_role') }}",
+                    method: 'POST',
+                    dataType:'text',
+                    data: $('#role_form').serialize(),
+                    success:function(data){
+                        swal("Success!", "Record has been added to database", "success")
+                        $('#role_modal').modal('hide');
+                        refresh_role_table();
+                    },
+                    error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    }
+                })
+            });
+
+            $(document).on('click', '.update_role', function(){
+                var id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('update_role') }}",
+                    method: 'get',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        $('#button_action').val('update');
+                        $('#id').val(id);
+                        $('#role').val(data.role);
+                        $('#rate').val(data.rate);
+                        $('#role_modal').modal('show');
+                        $('.modal_title').text('Update Role');
+                        refresh_role_table();
+                    }
+                })
+            });
+
+                $(document).on('click', '.delete_role', function(){
+                  var id = $(this).attr('id');
+                    swal({
+                      title: "Are you sure?",
+                      text: "Delete this record!",
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Yes, delete it!",
+                      closeOnConfirm: false
+                    },
+                    function(){
+                      $.ajax({
+                          url:"{{ route('delete_role') }}",
+                          method: "get",
+                          data:{id:id},
+                          success:function(data){
+                              refresh_role_table();
+                            }
+                          })
+                          swal("Deleted!", "The record has been deleted.", "success");
+                        });
+                      });
 
             });
 
         </script>
 
-        <!-- Bootstrap Core Js -->        
+        <!-- Bootstrap Core Js -->
         <script src="{{ secure_asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
 
         <!-- Waves Effect Plugin Js -->
         <script src="{{ secure_asset('assets/plugins/node-waves/waves.js') }}"></script>
-        
+
         <!-- Custom Js -->
         <script src="{{ secure_asset('assets/js/admin.js') }}"></script>
 
@@ -2672,6 +2974,6 @@ $("#bod").toggleClass('overlay-open');
         <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         @endif
     @endif
-    
+
 </body>
 </html>

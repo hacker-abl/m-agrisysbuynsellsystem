@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::group(['middleware'], function()
 {
- 
+
  Route::get('/home', 'HomeController@index')->name('home');
  Route::get('/expense', 'expenseController@index')->name('expense');
  Route::post('/add_expense', 'expenseController@store')->name('add_expense');
@@ -33,7 +33,7 @@ Route::group(['middleware'], function()
  Route::get('/purchases', 'purchasesController@index')->name('purchases');
  Route::get('/sales', 'salesController@index')->name('sales');
 
- 
+
 
   //settings
   Route::get('/company', 'companyController@index')->name('company');
@@ -41,7 +41,7 @@ Route::group(['middleware'], function()
   Route::get('/refresh_company', 'companyController@refresh')->name('refresh_company');
   Route::get('/update_company', 'companyController@updatedata')->name('update_company');
   Route::get('/delete_company', 'companyController@deletedata')->name('delete_company');
-  
+
   Route::get('/employee', 'employeeController@index')->name('employee');
   Route::post('/add_employee', 'employeeController@store')->name('add_employee');
   Route::get('/refresh_employee', 'employeeController@refresh')->name('refresh_employee');
@@ -65,13 +65,18 @@ Route::group(['middleware'], function()
   Route::get('/refresh_commodity', 'commodityController@refresh')->name('refresh_commodity');
   Route::get('/update_commodity', 'commodityController@updatedata')->name('update_commodity');
   Route::get('/delete_commodity', 'commodityController@deletedata')->name('delete_commodity');
-  
+
   Route::get('/users', 'usersController@index')->name('users');
   Route::post('/add_user', 'usersController@store')->name('add_user');
   Route::get('/refresh_user', 'usersController@refresh')->name('refresh_user');
   Route::get('/update_user', 'usersController@updatedata')->name('update_user');
   Route::get('/delete_user', 'usersController@deletedata')->name('delete_user');
 
+  Route::get('/roles', 'RolesController@index')->name('roles');
+  Route::post('/add_role', 'RolesController@store')->name('add_role');
+  Route::get('/refresh_roles', 'RolesController@refresh')->name('refresh_roles');
+  Route::get('/update_role', 'RolesController@updatedata')->name('update_role');
+  Route::get('/delete_role', 'RolesController@deletedata')->name('delete_role');
   //SEARCH AUTOCOMPLETE NAME SA EXPENSES
   Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
 
