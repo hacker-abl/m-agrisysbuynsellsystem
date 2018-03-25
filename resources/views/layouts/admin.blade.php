@@ -1252,8 +1252,8 @@ $("#bod").toggleClass('overlay-open');
                             success:function(data){
                                 swal("Success!", "Record has been added to database", "success")
                                 $('#od_modal').modal('hide');
-                                  src = "{{ route('id') }}";
-                            
+
+
                                 refresh_delivery_table();
                             },
                             error: function(data){
@@ -2073,132 +2073,249 @@ $("#bod").toggleClass('overlay-open');
                 },
             });
 
-            $('#role_id').select2({
-                dropdownParent: $('#employee_modal')
-            });
 
-            //roles datatable starts here
-            $('#role_modal').on('hidden.bs.modal', function (e) {
-                $(this)
-                .find("input,textarea,select")
-                    .val('')
-                    .end()
-                .find("input[type=checkbox], input[type=radio]")
-                    .prop("checked", "")
-                    .end();
-            })
-            var rolestable = $('#roletable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                ],
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('refresh_roles') }}",
-                columns: [
-                {data: 'id', name: 'id'},
-                {data: 'role', name: 'role'},
-                {data: 'rate', name: 'rate'},
-                {data: "action", orderable:false,searchable:false}
-                ]
-            });
-
-            function refresh_role_table()
-            {
-                rolestable.ajax.reload(); //reload datatable ajax
-            }
-
-            $(document).on('click','.open_role_modal', function(){
-                $('.modal_title').text('Add Role');
-                $('#button_action').val('add');
-            });
-
-            $(document).on('click', '#add_role', function(){
-            event.preventDefault();
-
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:"{{ route('add_role') }}",
-                    method: 'POST',
-                    dataType:'text',
-                    data: $('#role_form').serialize(),
-                    success:function(data){
-                        swal("Success!", "Record has been added to database", "success")
-                        $('#role_modal').modal('hide');
-                        refresh_role_table();
-                    },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
-                    }
-                })
-            });
-
-            $(document).on('click', '.update_role', function(){
-                var id = $(this).attr("id");
-                $.ajax({
-                    url:"{{ route('update_role') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        $('#button_action').val('update');
-                        $('#id').val(id);
-                        $('#role').val(data.role);
-                        $('#rate').val(data.rate);
-                        $('#role_modal').modal('show');
-                        $('.modal_title').text('Update Role');
-                        refresh_role_table();
-                    }
-                })
-            });
-
-                $(document).on('click', '.delete_role', function(){
-                  var id = $(this).attr('id');
-                    swal({
-                      title: "Are you sure?",
-                      text: "Delete this record!",
-                      type: "warning",
-                      showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Yes, delete it!",
-                      closeOnConfirm: false
-                    },
-                    function(){
-                      $.ajax({
-                          url:"{{ route('delete_role') }}",
-                          method: "get",
-                          data:{id:id},
-                          success:function(data){
-                              refresh_role_table();
-                            }
-                          })
-                          swal("Deleted!", "The record has been deleted.", "success");
+                        $('#role_id').select2({
+                            dropdownParent: $('#employee_modal')
                         });
-                      });
 
-                      var deliveriestable = $('#deliverytable').DataTable({
-                          dom: 'Bfrtip',
-                          buttons: [
-                          ],
-                          processing: true,
-                          serverSide: true,
-                          ajax: "{{ route('refresh_deliveries') }}",
-                          columns: [
-                          {data: 'outboundTicket', name: 'outboundTicket'},
-                          {data: 'destination', name: 'destination'},
-                          {data: 'name', name: 'name'},
-                          {data: 'name', name: 'name'},
-                          {data:'fname',
-                          render: function(data, type, full, meta){
-                            return full.fname +" "+ full.mname+" "+full.lname;
-                          }
-                        },
-                        {data: 'plateno', name: 'plateno'},
-                        {data: 'fuel_liters', name: 'fuel_liters'},
-                          {data: "action", orderable:false,searchable:false}
-                          ]
-                      });
+                        $('#driver_id').select2({
+                            dropdownParent: $('#od_modal')
+                        });
+                        $('#commodity').select2({
+                            dropdownParent: $('#od_modal')
+                        });
+                        $('#company').select2({
+                            dropdownParent: $('#od_modal')
+                        });
+                        //roles datatable starts here
+                        $('#role_modal').on('hidden.bs.modal', function (e) {
+                            $(this)
+                            .find("input,textarea,select")
+                                .val('')
+                                .end()
+                            .find("input[type=checkbox], input[type=radio]")
+                                .prop("checked", "")
+                                .end();
+                        })
+                        var rolestable = $('#roletable').DataTable({
+                            dom: 'Bfrtip',
+                            buttons: [
+                            ],
+                            processing: true,
+                            serverSide: true,
+                            ajax: "{{ route('refresh_roles') }}",
+                            columns: [
+                            {data: 'id', name: 'id'},
+                            {data: 'role', name: 'role'},
+                            {data: 'rate', name: 'rate'},
+                            {data: "action", orderable:false,searchable:false}
+                            ]
+                        });
+
+                        function refresh_role_table()
+                        {
+                            rolestable.ajax.reload(); //reload datatable ajax
+                        }
+
+                        $(document).on('click','.open_role_modal', function(){
+                            $('.modal_title').text('Add Role');
+                            $('#button_action').val('add');
+                        });
+
+                        $(document).on('click', '#add_role', function(){
+                        event.preventDefault();
+
+                            $.ajax({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                url:"{{ route('add_role') }}",
+                                method: 'POST',
+                                dataType:'text',
+                                data: $('#role_form').serialize(),
+                                success:function(data){
+                                    swal("Success!", "Record has been added to database", "success")
+                                    $('#role_modal').modal('hide');
+                                    refresh_role_table();
+                                },
+                                error: function(data){
+                                    swal("Oh no!", "Something went wrong, try again.", "error")
+                                }
+                            })
+                        });
+
+                        $(document).on('click', '.update_role', function(){
+                            var id = $(this).attr("id");
+                            $.ajax({
+                                url:"{{ route('update_role') }}",
+                                method: 'get',
+                                data:{id:id},
+                                dataType:'json',
+                                success:function(data){
+                                    $('#button_action').val('update');
+                                    $('#id').val(id);
+                                    $('#role').val(data.role);
+                                    $('#rate').val(data.rate);
+                                    $('#role_modal').modal('show');
+                                    $('.modal_title').text('Update Role');
+                                    refresh_role_table();
+                                }
+                            })
+                        });
+
+                            $(document).on('click', '.delete_role', function(){
+                              var id = $(this).attr('id');
+                                swal({
+                                  title: "Are you sure?",
+                                  text: "Delete this record!",
+                                  type: "warning",
+                                  showCancelButton: true,
+                                  confirmButtonClass: "btn-danger",
+                                  confirmButtonText: "Yes, delete it!",
+                                  closeOnConfirm: false
+                                },
+                                function(){
+                                  $.ajax({
+                                      url:"{{ route('delete_role') }}",
+                                      method: "get",
+                                      data:{id:id},
+                                      success:function(data){
+                                          refresh_role_table();
+                                        }
+                                      })
+                                      swal("Deleted!", "The record has been deleted.", "success");
+                                    });
+                                  });
+
+
+                                //deliveries datatable starts here
+                                @foreach($temp as $a)
+                              console.log('	{{ $a->temp }}');
+                              var a = parseInt({{ $a->temp }});
+                              var b = a + 1 ;
+                              var c = new Date();
+                              var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                              var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate() ;
+                              $('#ticket').val(currentDate+b);
+                              alert(b);
+                              @endforeach
+
+                              $('#od_modal').on('hidden.bs.modal', function (e) {
+                                  $(this)
+                                  .find("input,textarea,select")
+                                      .val('')
+                                      .end()
+                                  .find("input[type=checkbox], input[type=radio]")
+                                      .prop("checked", "")
+                                      .end();
+                              })
+                                var deliveriestable = $('#deliverytable').DataTable({
+                                    dom: 'Bfrtip',
+                                    buttons: [
+                                    ],
+                                    processing: true,
+                                    serverSide: true,
+                                    ajax: "{{ route('refresh_deliveries') }}",
+                                    columns: [
+                                    {data: 'outboundTicket', name: 'outboundTicket'},
+                                    {data: 'commodity_name', name: 'commodity_name'},
+                                    {data: 'destination', name: 'destination'},
+                                    {data: 'name', name: 'name'},
+                                    {data:'fname',
+                                    render: function(data, type, full, meta){
+                                      return full.fname +" "+ full.mname+" "+full.lname;
+                                    }
+                                  },
+                                  {data: 'plateno', name: 'plateno'},
+                                  {data: 'fuel_liters', name: 'fuel_liters'},
+                                    {data: "action", orderable:false,searchable:false}
+                                    ]
+                                });
+
+                                function refresh_delivery_table()
+                                {
+                                    deliveriestable.ajax.reload(); //reload datatable ajax
+                                }
+                                $(document).on('click','.open_od_modal', function(){
+                                    $('.modal_title').text('Add Delivery');
+                                    $('#button_action').val('add');
+                                });
+
+                                $(document).on('click', '#add_delivery', function(){
+                                event.preventDefault();
+
+                                    $.ajax({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        url:"{{ route('add_delivery') }}",
+                                        method: 'POST',
+                                        dataType:'text',
+                                        data: $('#od_form').serialize(),
+                                        success:function(data){
+                                            swal("Success!", "Record has been added to database", "success")
+                                            $('#od_modal').modal('hide');
+
+
+                                            refresh_delivery_table();
+                                        },
+                                        error: function(data){
+                                            swal("Oh no!", "Something went wrong, try again.", "error")
+                                        }
+                                    })
+                                });
+
+                                $(document).on('click', '.update_delivery', function(){
+                                    var id = $(this).attr("id");
+                                    $.ajax({
+                                        url:"{{ route('update_delivery') }}",
+                                        method: 'get',
+                                        data:{id:id},
+                                        dataType:'json',
+                                        success:function(data){
+                                            $('#button_action').val('update');
+                                            $('#id').val(id);
+                                            $('#ticket').val(data.outboundTicket);
+                                            $('#commodity').val(data.commodity_id);
+                                            $('#destination').val(data.destination);
+                                            $('#driver_id').val(data.driver_id);
+                                            $('#company').val(data.company_id);
+                                            $('#plateno').val(data.plateno);
+                                            $('#liter').val(data.fuel_liters);
+                                            $('#od_modal').modal('show');
+                                            $('.modal_title').text('Update Role');
+                                            refresh_delivery_table();
+                                        }
+                                    })
+                                });
+
+
+                                $(document).on('click', '.delete_delivery', function(){
+                                  var id = $(this).attr('id');
+                                    swal({
+                                      title: "Are you sure?",
+                                      text: "Delete this record!",
+                                      type: "warning",
+                                      showCancelButton: true,
+                                      confirmButtonClass: "btn-danger",
+                                      confirmButtonText: "Yes, delete it!",
+                                      closeOnConfirm: false
+                                    },
+                                    function(){
+                                      $.ajax({
+                                          url:"{{ route('delete_delivery') }}",
+                                          method: "get",
+                                          data:{id:id},
+                                          success:function(data){
+                                              refresh_delivery_table();
+                                            }
+                                          })
+                                          swal("Deleted!", "The record has been deleted.", "success");
+                                        });
+                                      });
+
+
+
             });
 
         </script>
@@ -2953,131 +3070,248 @@ $("#bod").toggleClass('overlay-open');
                 },
             });
 
-            $('#role_id').select2({
-                dropdownParent: $('#employee_modal')
-            });
-
-            //roles datatable starts here
-            $('#role_modal').on('hidden.bs.modal', function (e) {
-                $(this)
-                .find("input,textarea,select")
-                    .val('')
-                    .end()
-                .find("input[type=checkbox], input[type=radio]")
-                    .prop("checked", "")
-                    .end();
-            })
-            var rolestable = $('#roletable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                ],
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('refresh_roles') }}",
-                columns: [
-                {data: 'id', name: 'id'},
-                {data: 'role', name: 'role'},
-                {data: 'rate', name: 'rate'},
-                {data: "action", orderable:false,searchable:false}
-                ]
-            });
-
-            function refresh_role_table()
-            {
-                rolestable.ajax.reload(); //reload datatable ajax
-            }
-
-            $(document).on('click','.open_role_modal', function(){
-                $('.modal_title').text('Add Role');
-                $('#button_action').val('add');
-            });
-
-            $(document).on('click', '#add_role', function(){
-            event.preventDefault();
-
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:"{{ route('add_role') }}",
-                    method: 'POST',
-                    dataType:'text',
-                    data: $('#role_form').serialize(),
-                    success:function(data){
-                        swal("Success!", "Record has been added to database", "success")
-                        $('#role_modal').modal('hide');
-                        refresh_role_table();
-                    },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
-                    }
-                })
-            });
-
-            $(document).on('click', '.update_role', function(){
-                var id = $(this).attr("id");
-                $.ajax({
-                    url:"{{ route('update_role') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        $('#button_action').val('update');
-                        $('#id').val(id);
-                        $('#role').val(data.role);
-                        $('#rate').val(data.rate);
-                        $('#role_modal').modal('show');
-                        $('.modal_title').text('Update Role');
-                        refresh_role_table();
-                    }
-                })
-            });
-
-                $(document).on('click', '.delete_role', function(){
-                  var id = $(this).attr('id');
-                    swal({
-                      title: "Are you sure?",
-                      text: "Delete this record!",
-                      type: "warning",
-                      showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Yes, delete it!",
-                      closeOnConfirm: false
-                    },
-                    function(){
-                      $.ajax({
-                          url:"{{ route('delete_role') }}",
-                          method: "get",
-                          data:{id:id},
-                          success:function(data){
-                              refresh_role_table();
-                            }
-                          })
-                          swal("Deleted!", "The record has been deleted.", "success");
+                        $('#role_id').select2({
+                            dropdownParent: $('#employee_modal')
                         });
-                      });
-                      var deliveriestable = $('#deliverytable').DataTable({
-                          dom: 'Bfrtip',
-                          buttons: [
-                          ],
-                          processing: true,
-                          serverSide: true,
-                          ajax: "{{ route('refresh_deliveries') }}",
-                          columns: [
-                          {data: 'outboundTicket', name: 'outboundTicket'},
-                          {data: 'destination', name: 'destination'},
-                          {data: 'name', name: 'name'},
-                          {data: 'name', name: 'name'},
-                          {data:'fname',
-                          render: function(data, type, full, meta){
-                            return full.fname +" "+ full.mname+" "+full.lname;
-                          }
-                        },
-                        {data: 'plateno', name: 'plateno'},
-                        {data: 'fuel_liters', name: 'fuel_liters'},
-                          {data: "action", orderable:false,searchable:false}
-                          ]
-                      });
+
+                        $('#driver_id').select2({
+                            dropdownParent: $('#od_modal')
+                        });
+                        $('#commodity').select2({
+                            dropdownParent: $('#od_modal')
+                        });
+                        $('#company').select2({
+                            dropdownParent: $('#od_modal')
+                        });
+                        //roles datatable starts here
+                        $('#role_modal').on('hidden.bs.modal', function (e) {
+                            $(this)
+                            .find("input,textarea,select")
+                                .val('')
+                                .end()
+                            .find("input[type=checkbox], input[type=radio]")
+                                .prop("checked", "")
+                                .end();
+                        })
+                        var rolestable = $('#roletable').DataTable({
+                            dom: 'Bfrtip',
+                            buttons: [
+                            ],
+                            processing: true,
+                            serverSide: true,
+                            ajax: "{{ route('refresh_roles') }}",
+                            columns: [
+                            {data: 'id', name: 'id'},
+                            {data: 'role', name: 'role'},
+                            {data: 'rate', name: 'rate'},
+                            {data: "action", orderable:false,searchable:false}
+                            ]
+                        });
+
+                        function refresh_role_table()
+                        {
+                            rolestable.ajax.reload(); //reload datatable ajax
+                        }
+
+                        $(document).on('click','.open_role_modal', function(){
+                            $('.modal_title').text('Add Role');
+                            $('#button_action').val('add');
+                        });
+
+                        $(document).on('click', '#add_role', function(){
+                        event.preventDefault();
+
+                            $.ajax({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                url:"{{ route('add_role') }}",
+                                method: 'POST',
+                                dataType:'text',
+                                data: $('#role_form').serialize(),
+                                success:function(data){
+                                    swal("Success!", "Record has been added to database", "success")
+                                    $('#role_modal').modal('hide');
+                                    refresh_role_table();
+                                },
+                                error: function(data){
+                                    swal("Oh no!", "Something went wrong, try again.", "error")
+                                }
+                            })
+                        });
+
+                        $(document).on('click', '.update_role', function(){
+                            var id = $(this).attr("id");
+                            $.ajax({
+                                url:"{{ route('update_role') }}",
+                                method: 'get',
+                                data:{id:id},
+                                dataType:'json',
+                                success:function(data){
+                                    $('#button_action').val('update');
+                                    $('#id').val(id);
+                                    $('#role').val(data.role);
+                                    $('#rate').val(data.rate);
+                                    $('#role_modal').modal('show');
+                                    $('.modal_title').text('Update Role');
+                                    refresh_role_table();
+                                }
+                            })
+                        });
+
+                            $(document).on('click', '.delete_role', function(){
+                              var id = $(this).attr('id');
+                                swal({
+                                  title: "Are you sure?",
+                                  text: "Delete this record!",
+                                  type: "warning",
+                                  showCancelButton: true,
+                                  confirmButtonClass: "btn-danger",
+                                  confirmButtonText: "Yes, delete it!",
+                                  closeOnConfirm: false
+                                },
+                                function(){
+                                  $.ajax({
+                                      url:"{{ route('delete_role') }}",
+                                      method: "get",
+                                      data:{id:id},
+                                      success:function(data){
+                                          refresh_role_table();
+                                        }
+                                      })
+                                      swal("Deleted!", "The record has been deleted.", "success");
+                                    });
+                                  });
+
+
+                                //deliveries datatable starts here
+                                @foreach($temp as $a)
+                              console.log('	{{ $a->temp }}');
+                              var a = parseInt({{ $a->temp }});
+                              var b = a + 1 ;
+                              var c = new Date();
+                              var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                              var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate() ;
+                              $('#ticket').val(currentDate+b);
+                              alert(b);
+                              @endforeach
+
+                              $('#od_modal').on('hidden.bs.modal', function (e) {
+                                  $(this)
+                                  .find("input,textarea,select")
+                                      .val('')
+                                      .end()
+                                  .find("input[type=checkbox], input[type=radio]")
+                                      .prop("checked", "")
+                                      .end();
+                              })
+                                var deliveriestable = $('#deliverytable').DataTable({
+                                    dom: 'Bfrtip',
+                                    buttons: [
+                                    ],
+                                    processing: true,
+                                    serverSide: true,
+                                    ajax: "{{ route('refresh_deliveries') }}",
+                                    columns: [
+                                    {data: 'outboundTicket', name: 'outboundTicket'},
+                                    {data: 'commodity_name', name: 'commodity_name'},
+                                    {data: 'destination', name: 'destination'},
+                                    {data: 'name', name: 'name'},
+                                    {data:'fname',
+                                    render: function(data, type, full, meta){
+                                      return full.fname +" "+ full.mname+" "+full.lname;
+                                    }
+                                  },
+                                  {data: 'plateno', name: 'plateno'},
+                                  {data: 'fuel_liters', name: 'fuel_liters'},
+                                    {data: "action", orderable:false,searchable:false}
+                                    ]
+                                });
+
+                                function refresh_delivery_table()
+                                {
+                                    deliveriestable.ajax.reload(); //reload datatable ajax
+                                }
+                                $(document).on('click','.open_od_modal', function(){
+                                    $('.modal_title').text('Add Delivery');
+                                    $('#button_action').val('add');
+                                });
+
+                                $(document).on('click', '#add_delivery', function(){
+                                event.preventDefault();
+
+                                    $.ajax({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        url:"{{ route('add_delivery') }}",
+                                        method: 'POST',
+                                        dataType:'text',
+                                        data: $('#od_form').serialize(),
+                                        success:function(data){
+                                            swal("Success!", "Record has been added to database", "success")
+                                            $('#od_modal').modal('hide');
+                              
+
+                                            refresh_delivery_table();
+                                        },
+                                        error: function(data){
+                                            swal("Oh no!", "Something went wrong, try again.", "error")
+                                        }
+                                    })
+                                });
+
+                                $(document).on('click', '.update_delivery', function(){
+                                    var id = $(this).attr("id");
+                                    $.ajax({
+                                        url:"{{ route('update_delivery') }}",
+                                        method: 'get',
+                                        data:{id:id},
+                                        dataType:'json',
+                                        success:function(data){
+                                            $('#button_action').val('update');
+                                            $('#id').val(id);
+                                            $('#ticket').val(data.outboundTicket);
+                                            $('#commodity').val(data.commodity_id);
+                                            $('#destination').val(data.destination);
+                                            $('#driver_id').val(data.driver_id);
+                                            $('#company').val(data.company_id);
+                                            $('#plateno').val(data.plateno);
+                                            $('#liter').val(data.fuel_liters);
+                                            $('#od_modal').modal('show');
+                                            $('.modal_title').text('Update Role');
+                                            refresh_delivery_table();
+                                        }
+                                    })
+                                });
+
+
+                                $(document).on('click', '.delete_delivery', function(){
+                                  var id = $(this).attr('id');
+                                    swal({
+                                      title: "Are you sure?",
+                                      text: "Delete this record!",
+                                      type: "warning",
+                                      showCancelButton: true,
+                                      confirmButtonClass: "btn-danger",
+                                      confirmButtonText: "Yes, delete it!",
+                                      closeOnConfirm: false
+                                    },
+                                    function(){
+                                      $.ajax({
+                                          url:"{{ route('delete_delivery') }}",
+                                          method: "get",
+                                          data:{id:id},
+                                          success:function(data){
+                                              refresh_delivery_table();
+                                            }
+                                          })
+                                          swal("Deleted!", "The record has been deleted.", "success");
+                                        });
+                                      });
+
+
+
 
             });
 
