@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Commodity;
-
+use DB;
 class commodityController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class commodityController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +25,9 @@ class commodityController extends Controller
      */
     public function index()
     {
-        return view('settings.commodity');
+      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
+
+        return view('settings.commodity')->with(compact('temp'));
     }
 
     /**
@@ -60,7 +62,7 @@ class commodityController extends Controller
             $commodity->suki_price = $request->get('suki_price');
             $commodity->save();
         }
-        
+
     }
 
     public function refresh()

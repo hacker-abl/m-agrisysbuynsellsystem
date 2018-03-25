@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Expense;
 use App\Employee;
-
+use DB;
 
 class expenseController extends Controller
 {
@@ -27,9 +27,10 @@ class expenseController extends Controller
      */
     public function index()
     {
- 
+      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-        return view('main.expense');
+
+        return view('main.expense')->with(compact('temp'));
 
     }
 
@@ -51,14 +52,14 @@ class expenseController extends Controller
                 return '₱'.number_format($data->amount, 2, '.', ',');
             })
         ->make(true);
- 
+
     }
 
     public function autoComplete(Request $request){
         $query = $request->get('term','');
-        
+
         $products=Employee::where('fname','LIKE','%'.$query.'%')->orWhere('mname','LIKE','%'.$query.'%')->orWhere('lname','LIKE','%'.$query.'%')->get();
-        
+
         $data=array();
         foreach ($products as $product) {
                 $data[]=array('value'=>$product->fname.' '.$product->mname.' '.$product->lname,'id'=>$product->id);
@@ -69,5 +70,3 @@ class expenseController extends Controller
 
 
 }
-
-

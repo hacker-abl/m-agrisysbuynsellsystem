@@ -28,7 +28,13 @@ Route::group(['middleware'], function()
  Route::get('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
  Route::get('/trips', 'tripController@index')->name('trips');
  Route::get('/dtr', 'dtrController@index')->name('dtr');
+
  Route::get('/outbound', 'odController@index')->name('od');
+ Route::get('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
+ Route::post('/add_delivery', 'odController@store')->name('add_delivery');
+ Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
+ Route::get('/delete_delivery', 'odController@deletedata')->name('delete_delivery');
+
  Route::get('/cashadvance', 'caController@index')->name('ca');
  Route::get('/purchases', 'purchasesController@index')->name('purchases');
  Route::get('/sales', 'salesController@index')->name('sales');
@@ -79,5 +85,4 @@ Route::group(['middleware'], function()
   Route::get('/delete_role', 'RolesController@deletedata')->name('delete_role');
   //SEARCH AUTOCOMPLETE NAME SA EXPENSES
   Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
-
 });

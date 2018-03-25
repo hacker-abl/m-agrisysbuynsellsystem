@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Trucks;
-
+use DB;
 class trucksController extends Controller
 {
     /**
@@ -25,7 +25,9 @@ class trucksController extends Controller
      */
     public function index()
     {
-        return view('settings.trucks');
+      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
+
+        return view('settings.trucks')->with(compact('temp');
     }
 
     /**
@@ -85,7 +87,7 @@ class trucksController extends Controller
         $trucks = Trucks::find($request->input('id'));
         $trucks->delete();
     }
-    
+
 
     /**
      * Display the specified resource.

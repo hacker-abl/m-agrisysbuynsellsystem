@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
-
+use DB;
 class companyController extends Controller
 {
 
@@ -18,18 +18,20 @@ class companyController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-    
+
 
     public function index()
     {
-        return view('settings.company');
+      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
+
+        return view('settings.company')->with(compact('temp'));
     }
 
     /**

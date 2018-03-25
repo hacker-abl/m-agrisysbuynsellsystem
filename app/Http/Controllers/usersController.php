@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Hash;
 use App\User;
-
+use DB;
 class usersController extends Controller
 {
     /**
@@ -26,7 +26,9 @@ class usersController extends Controller
      */
     public function index()
     {
-        return view('settings.users');
+      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
+
+        return view('settings.users')->with(compact('temp');
     }
 
     /**
@@ -55,7 +57,7 @@ class usersController extends Controller
             $user->access_id = 1;
             $user->save();
         }
-        
+
         if($request->get('button_action') == 'update'){
             $user = User::find($request->get('id'));
             $user->name = $request->name;

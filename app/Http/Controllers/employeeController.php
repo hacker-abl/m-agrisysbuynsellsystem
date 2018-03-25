@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Employee;
 use App\Roles;
-
+use DB;
 class employeeController extends Controller
 {
     /**
@@ -27,8 +27,9 @@ class employeeController extends Controller
     public function index()
     {
         $roles = Roles::pluck('role','id')->toArray();
+        $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-        return view('settings.employee')->with(compact('roles'));
+        return view('settings.employee')->with(compact('roles','temp'));
     }
 
     /**
@@ -57,7 +58,7 @@ class employeeController extends Controller
             $employee->role_id = $request->role_id;
             $employee->save();
         }
-        
+
         if($request->get('button_action') == 'update'){
             $employee = Employee::find($request->get('id'));
             $employee->fname = $request->get('fname');
@@ -82,7 +83,7 @@ class employeeController extends Controller
                 $role = Roles::all();
                 foreach($role as $r){
                     if($r->id == $data->role_id)
-                        $role_name = $r->role; 
+                        $role_name = $r->role;
                 }
 
                 return $role_name;
