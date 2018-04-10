@@ -1240,7 +1240,12 @@ $("#bod").toggleClass('overlay-open');
                           dataType:'json',
                           success:function(data){
                               // alert(data[0].temp);
-                               var t = data[0].temp;
+                              var t=0;
+                              if(data[0].temp!=null){
+                                    t = data[0].temp;
+                              }
+
+
                                $("#driver_id").val('').trigger('change');
                                $("#company").val('').trigger('change');
                                $("#commodity").val('').trigger('change');
@@ -2268,8 +2273,11 @@ $("#bod").toggleClass('overlay-open');
                                       data: { temp: 'temp' },
                                       dataType:'json',
                                       success:function(data){
-                                          // alert(data[0].temp);
-                                           var t = data[0].temp;
+                                           var t=0;
+                                          if(data[0].temp!=null){
+                                                t = data[0].temp;
+                                          }
+
                                            $("#driver_id").val('').trigger('change');
                                            $("#company").val('').trigger('change');
                                            $("#commodity").val('').trigger('change');
@@ -3292,8 +3300,11 @@ $("#bod").toggleClass('overlay-open');
                                       data: { temp: 'temp' },
                                       dataType:'json',
                                       success:function(data){
-                                          // alert(data[0].temp);
-                                           var t = data[0].temp;
+                                           var t=0;
+                                           if(data[0].temp!=null){
+                                                t = data[0].temp;
+                                           }
+
                                            $("#driver_id").val('').trigger('change');
                                            $("#company").val('').trigger('change');
                                            $("#commodity").val('').trigger('change');
