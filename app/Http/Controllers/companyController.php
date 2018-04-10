@@ -28,7 +28,7 @@ class companyController extends Controller
 
     public function index()
     {
-      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
+
 
         return view('settings.company');
     }
