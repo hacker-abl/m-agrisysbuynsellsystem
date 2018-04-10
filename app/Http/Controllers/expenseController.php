@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Expense;
 use App\Employee;
-use DB;
-
 class expenseController extends Controller
 {
     /**
@@ -27,10 +25,8 @@ class expenseController extends Controller
      */
     public function index()
     {
-      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-
-        return view('main.expense')->with(compact('temp'));
+        return view('main.expense');
 
     }
 

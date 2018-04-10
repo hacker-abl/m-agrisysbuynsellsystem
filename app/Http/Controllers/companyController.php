@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
-use DB;
 class companyController extends Controller
 {
 
@@ -31,7 +30,7 @@ class companyController extends Controller
     {
       $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-        return view('settings.company')->with(compact('temp'));
+        return view('settings.company');
     }
 
     /**

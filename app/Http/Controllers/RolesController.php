@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Roles;
-use DB;
 class RolesController extends Controller
 {
   /**
@@ -25,9 +24,8 @@ class RolesController extends Controller
    */
   public function index()
   {
-    $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-      return view('settings.roles')->with(compact('temp'));
+      return view('settings.roles');
   }
 
   public function store(Request $request)

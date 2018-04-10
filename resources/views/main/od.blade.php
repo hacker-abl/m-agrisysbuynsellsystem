@@ -197,7 +197,7 @@
 												</h2>
 												<ul class="header-dropdown m-r--5">
 														<li class="dropdown">
-																 <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_od_modal" data-toggle="modal" data-target="#od_modal"><i class="material-icons">library_add</i></button>
+																 <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_od_modal"><i class="material-icons">library_add</i></button>
 														</li>
 												</ul>
 										</div>

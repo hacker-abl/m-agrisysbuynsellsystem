@@ -354,7 +354,9 @@ $("#bod").toggleClass('overlay-open');
                   .find("input[type=checkbox], input[type=radio]")
                      .prop("checked", "")
                      .end();
-              })
+              });
+
+
 
               var expensetable = $('#expensetable').DataTable({
                     dom: 'Bfrtip',
@@ -1072,17 +1074,21 @@ $("#bod").toggleClass('overlay-open');
 
 
             $('#role_id').select2({
-                dropdownParent: $('#employee_modal')
+                dropdownParent: $('#employee_modal'),
+                 placeholder: 'Select an option'
             });
 
             $('#driver_id').select2({
-                dropdownParent: $('#od_modal')
+                dropdownParent: $('#od_modal'),
+                 placeholder: 'Select a driver'
             });
             $('#commodity').select2({
-                dropdownParent: $('#od_modal')
+                dropdownParent: $('#od_modal'),
+                 placeholder: 'Select an item'
             });
             $('#company').select2({
-                dropdownParent: $('#od_modal')
+                dropdownParent: $('#od_modal'),
+                 placeholder: 'Select a company'
             });
             //roles datatable starts here
             $('#role_modal').on('hidden.bs.modal', function (e) {
@@ -1186,16 +1192,7 @@ $("#bod").toggleClass('overlay-open');
 
 
                     //deliveries datatable starts here
-                    @foreach($temp as $a)
-                  console.log('	{{ $a->temp }}');
-                  var a = parseInt({{ $a->temp }});
-                  var b = a + 1 ;
-                  var c = new Date();
-                  var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
-                  var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate() ;
-                  $('#ticket').val(currentDate+b);
-                  alert(b);
-                  @endforeach
+
 
                   $('#od_modal').on('hidden.bs.modal', function (e) {
                       $(this)
@@ -1236,11 +1233,35 @@ $("#bod").toggleClass('overlay-open');
                     $(document).on('click','.open_od_modal', function(){
                         $('.modal_title').text('Add Delivery');
                         $('#button_action').val('add');
+                        $.ajax({
+                          url:"{{ route('refresh_id') }}",
+                          method: 'get',
+                          data: { temp: 'temp' },
+                          dataType:'json',
+                          success:function(data){
+                              // alert(data[0].temp);
+                               var t = data[0].temp;
+                               $("#driver_id").val('').trigger('change');
+                               $("#company").val('').trigger('change');
+                               $("#commodity").val('').trigger('change');
+                             var a = parseInt(t);
+                             var b = a + 1 ;
+                             var c = new Date();
+                             var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                             var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate() ;
+                             $('#ticket').val(currentDate+b);
+                             console.log( $('#ticket').val());
+                              $('#od_modal').modal('show');
+                             //alert(b);
+
+
+                          }
+                       })
                     });
 
                     $(document).on('click', '#add_delivery', function(){
                     event.preventDefault();
-
+                     console.log( $('#od_form').serialize());
                         $.ajax({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1250,9 +1271,11 @@ $("#bod").toggleClass('overlay-open');
                             dataType:'text',
                             data: $('#od_form').serialize(),
                             success:function(data){
+                                $("#driver_id").val('').trigger('change');
+                                $("#company").val('').trigger('change');
+                                $("#commodity").val('').trigger('change');
                                 swal("Success!", "Record has been added to database", "success")
                                 $('#od_modal').modal('hide');
-
 
                                 refresh_delivery_table();
                             },
@@ -2239,6 +2262,31 @@ $("#bod").toggleClass('overlay-open');
                                 $(document).on('click','.open_od_modal', function(){
                                     $('.modal_title').text('Add Delivery');
                                     $('#button_action').val('add');
+                                    $.ajax({
+                                      url:"{{ route('refresh_id') }}",
+                                      method: 'get',
+                                      data: { temp: 'temp' },
+                                      dataType:'json',
+                                      success:function(data){
+                                          // alert(data[0].temp);
+                                           var t = data[0].temp;
+                                           $("#driver_id").val('').trigger('change');
+                                           $("#company").val('').trigger('change');
+                                           $("#commodity").val('').trigger('change');
+                                         var a = parseInt(t);
+                                         var b = a + 1 ;
+                                         var c = new Date();
+                                         var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate() ;
+                                         $('#ticket').val(currentDate+b);
+                                         console.log( $('#ticket').val());
+                                          $('#od_modal').modal('show');
+                                         //alert(b);
+
+
+                                      }
+                                   })
+                                   //alert(b);
                                 });
 
                                 $(document).on('click', '#add_delivery', function(){
@@ -2253,6 +2301,9 @@ $("#bod").toggleClass('overlay-open');
                                         dataType:'text',
                                         data: $('#od_form').serialize(),
                                         success:function(data){
+                                             $("#driver_id").val('').trigger('change');
+                                    $("#company").val('').trigger('change');
+                                    $("#commodity").val('').trigger('change');
                                             swal("Success!", "Record has been added to database", "success")
                                             $('#od_modal').modal('hide');
 
@@ -3235,6 +3286,31 @@ $("#bod").toggleClass('overlay-open');
                                 $(document).on('click','.open_od_modal', function(){
                                     $('.modal_title').text('Add Delivery');
                                     $('#button_action').val('add');
+                                    $.ajax({
+                                      url:"{{ route('refresh_id') }}",
+                                      method: 'get',
+                                      data: { temp: 'temp' },
+                                      dataType:'json',
+                                      success:function(data){
+                                          // alert(data[0].temp);
+                                           var t = data[0].temp;
+                                           $("#driver_id").val('').trigger('change');
+                                           $("#company").val('').trigger('change');
+                                           $("#commodity").val('').trigger('change');
+                                         var a = parseInt(t);
+                                         var b = a + 1 ;
+                                         var c = new Date();
+                                         var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate() ;
+                                         $('#ticket').val(currentDate+b);
+                                         console.log( $('#ticket').val());
+                                          $('#od_modal').modal('show');
+                                         //alert(b);
+
+
+                                      }
+                                   })
+                                   //alert(b);
                                 });
 
                                 $(document).on('click', '#add_delivery', function(){
@@ -3249,9 +3325,12 @@ $("#bod").toggleClass('overlay-open');
                                         dataType:'text',
                                         data: $('#od_form').serialize(),
                                         success:function(data){
-                                            swal("Success!", "Record has been added to database", "success")
-                                            $('#od_modal').modal('hide');
-                              
+                                             $("#driver_id").val('').trigger('change');
+                                             $("#company").val('').trigger('change');
+                                             $("#commodity").val('').trigger('change');
+                                             swal("Success!", "Record has been added to database", "success")
+                                             $('#od_modal').modal('hide');
+
 
                                             refresh_delivery_table();
                                         },

@@ -31,6 +31,7 @@ Route::group(['middleware'], function()
 
  Route::get('/outbound', 'odController@index')->name('od');
  Route::get('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
+ Route::get('/refresh_id', 'odController@updateId')->name('refresh_id');
  Route::post('/add_delivery', 'odController@store')->name('add_delivery');
  Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
  Route::get('/delete_delivery', 'odController@deletedata')->name('delete_delivery');

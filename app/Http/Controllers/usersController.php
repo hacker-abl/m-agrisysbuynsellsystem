@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Hash;
 use App\User;
-use DB;
 class usersController extends Controller
 {
     /**
@@ -26,9 +25,8 @@ class usersController extends Controller
      */
     public function index()
     {
-      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-        return view('settings.users')->with(compact('temp');
+        return view('settings.users');
     }
 
     /**

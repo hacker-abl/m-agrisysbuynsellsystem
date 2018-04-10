@@ -100,6 +100,11 @@ class odController extends Controller
         echo json_encode($output);
     }
 
+    function updateId(){
+       $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
+        echo json_encode($temp);
+    }
+
     function deletedata(Request $request){
         $od = od::find($request->input('id'));
         $od->delete();

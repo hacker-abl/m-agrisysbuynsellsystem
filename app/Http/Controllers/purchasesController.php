@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use DB;
 class purchasesController extends Controller
 {
     /**
@@ -24,9 +23,8 @@ class purchasesController extends Controller
      */
     public function index()
     {
-      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
 
-        return view('main.purchases')->with(compact('temp'));
+        return view('main.purchases');
     }
 }

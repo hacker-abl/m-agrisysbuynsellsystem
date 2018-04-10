@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Employee;
 use App\Roles;
-use DB;
 class employeeController extends Controller
 {
     /**
@@ -27,9 +26,8 @@ class employeeController extends Controller
     public function index()
     {
         $roles = Roles::pluck('role','id')->toArray();
-        $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-        return view('settings.employee')->with(compact('roles','temp'));
+        return view('settings.employee');
     }
 
     /**

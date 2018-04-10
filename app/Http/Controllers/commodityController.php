@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Commodity;
-use DB;
 class commodityController extends Controller
 {
     /**
@@ -25,9 +24,8 @@ class commodityController extends Controller
      */
     public function index()
     {
-      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-        return view('settings.commodity')->with(compact('temp'));
+        return view('settings.commodity');
     }
 
     /**

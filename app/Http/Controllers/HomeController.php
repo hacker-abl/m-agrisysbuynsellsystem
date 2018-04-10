@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
 class HomeController extends Controller
 {
     /**
@@ -23,8 +22,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-      $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
 
-
-        return view('main.home')->with(compact('temp'));
+        return view('main.home');
 }
