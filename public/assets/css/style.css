@@ -15,13 +15,15 @@
   top: 0;
   left: 0;
   z-index: 12;
+  height: 12px;
   width: 100%; }
   .navbar .navbar-brand {
     white-space: nowrap;
     -ms-text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    overflow: hidden; }
+    overflow: hidden;
+     margin-top:-9px;}
   .navbar .navbar-custom-right-menu {
     float: right; }
   .navbar .navbar-toggle {
@@ -39,6 +41,7 @@
     overflow: visible; }
 
 .ls-closed .sidebar {
+
   margin-left: -300px; }
 
 .ls-closed section.content {
@@ -1831,6 +1834,7 @@
   text-decoration: overline; }
 
 .block-header {
+      margin-top:-10px; 
   margin-bottom: 15px; }
   .block-header h2 {
     margin: 0 !important;
@@ -6740,7 +6744,7 @@ fieldset[disabled] .form-control {
 
 .navbar-nav > li > a {
   padding: 7px 7px 2px 7px;
-  margin-top: 17px;
+  margin-top: 9px;
   margin-left: 5px; }
 
 .navbar-nav .dropdown-menu {
@@ -7469,6 +7473,7 @@ fieldset[disabled] .form-control {
   z-index: 99999999; }
 
 .sidebar {
+
   -moz-transition: all 0.5s;
   -o-transition: all 0.5s;
   -webkit-transition: all 0.5s;
@@ -7480,7 +7485,8 @@ fieldset[disabled] .form-control {
   display: inline-block;
   height: calc(100vh - 70px);
   position: fixed;
-  top: 70px;
+  top: 50px;
+  height:95%;
   left: 0;
   -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -7899,9 +7905,11 @@ fieldset[disabled] .form-control {
     top: 20px;
     left: 14px; }
     .search-bar .search-icon .material-icons {
+       margin-top:-10px;
       font-size: 32px;
       color: #999; }
   .search-bar .close-search {
+       margin-top:-10px;
     position: absolute;
     cursor: pointer;
     font-size: 30px;
@@ -7918,6 +7926,7 @@ fieldset[disabled] .form-control {
         opacity: .5; }
   .search-bar input[type="text"] {
     width: 100%;
+    height:10px;
     font-size: 16px;
     padding: 25px 60px 23px 56px;
     border: none; }
@@ -8005,6 +8014,7 @@ fieldset[disabled] .form-control {
 
 /* For Internet Explorer 10 ===================== */
 html.ie10 .sidebar .menu .list li {
+
   line-height: 30px; }
 
 html.ie10 .sidebar .menu .list .ml-menu li.active a:not(.menu-toggle).toggled:before {
