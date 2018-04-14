@@ -27,7 +27,7 @@ class employeeController extends Controller
     {
         $roles = Roles::pluck('role','id')->toArray();
 
-        return view('settings.employee');
+        return view('settings.employee')->with(compact('roles'));
     }
 
     /**
