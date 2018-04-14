@@ -1077,6 +1077,10 @@ $("#bod").toggleClass('overlay-open');
                 dropdownParent: $('#employee_modal'),
                  placeholder: 'Select an option'
             });
+            $('#plateno').select2({
+               dropdownParent: $('#od_modal'),
+               placeholder: 'Select an truck'
+          });
 
             $('#driver_id').select2({
                 dropdownParent: $('#od_modal'),
@@ -1249,6 +1253,7 @@ $("#bod").toggleClass('overlay-open');
                                $("#driver_id").val('').trigger('change');
                                $("#company").val('').trigger('change');
                                $("#commodity").val('').trigger('change');
+                                $("#plateno").val('').trigger('change');
                              var a = parseInt(t);
                              var b = a + 1 ;
                              var c = new Date();
@@ -1301,11 +1306,11 @@ $("#bod").toggleClass('overlay-open');
                                 $('#button_action').val('update');
                                 $('#id').val(id);
                                 $('#ticket').val(data.outboundTicket);
-                                $('#commodity').val(data.commodity_id);
-                                $('#destination').val(data.destination);
-                                $('#driver_id').val(data.driver_id);
-                                $('#company').val(data.company_id);
-                                $('#plateno').val(data.plateno);
+                                $('#destination').val(data.destination);            
+                                $("#driver_id").val(data.driver_id).trigger('change');
+                                $("#company").val(data.company_id).trigger('change');
+                                $("#commodity").val(data.commodity_id).trigger('change');
+                                 $("#plateno").val(data.plateno).trigger('change');
                                 $('#liter').val(data.fuel_liters);
                                 $('#od_modal').modal('show');
                                 $('.modal_title').text('Update Role');
@@ -2102,18 +2107,27 @@ $("#bod").toggleClass('overlay-open');
             });
 
 
+
                         $('#role_id').select2({
-                            dropdownParent: $('#employee_modal')
+                            dropdownParent: $('#employee_modal'),
+                             placeholder: 'Select an option'
                         });
+                        $('#plateno').select2({
+                           dropdownParent: $('#od_modal'),
+                           placeholder: 'Select an truck'
+                      });
 
                         $('#driver_id').select2({
-                            dropdownParent: $('#od_modal')
+                            dropdownParent: $('#od_modal'),
+                             placeholder: 'Select a driver'
                         });
                         $('#commodity').select2({
-                            dropdownParent: $('#od_modal')
+                            dropdownParent: $('#od_modal'),
+                             placeholder: 'Select an item'
                         });
                         $('#company').select2({
-                            dropdownParent: $('#od_modal')
+                            dropdownParent: $('#od_modal'),
+                             placeholder: 'Select a company'
                         });
                         //roles datatable starts here
                         $('#role_modal').on('hidden.bs.modal', function (e) {
@@ -3129,19 +3143,28 @@ $("#bod").toggleClass('overlay-open');
                 },
             });
 
-                        $('#role_id').select2({
-                            dropdownParent: $('#employee_modal')
-                        });
 
-                        $('#driver_id').select2({
-                            dropdownParent: $('#od_modal')
-                        });
-                        $('#commodity').select2({
-                            dropdownParent: $('#od_modal')
-                        });
-                        $('#company').select2({
-                            dropdownParent: $('#od_modal')
-                        });
+                       $('#role_id').select2({
+                            dropdownParent: $('#employee_modal'),
+                            placeholder: 'Select an option'
+                       });
+                       $('#plateno').select2({
+                           dropdownParent: $('#od_modal'),
+                           placeholder: 'Select an truck'
+                      });
+
+                       $('#driver_id').select2({
+                            dropdownParent: $('#od_modal'),
+                            placeholder: 'Select a driver'
+                       });
+                       $('#commodity').select2({
+                            dropdownParent: $('#od_modal'),
+                            placeholder: 'Select an item'
+                       });
+                       $('#company').select2({
+                            dropdownParent: $('#od_modal'),
+                            placeholder: 'Select a company'
+                       });
                         //roles datatable starts here
                         $('#role_modal').on('hidden.bs.modal', function (e) {
                             $(this)

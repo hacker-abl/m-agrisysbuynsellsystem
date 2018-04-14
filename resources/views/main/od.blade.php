@@ -157,9 +157,11 @@
 																</div>
 																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																		<div class="form-group">
-																				<div class="form-line">
-																						<input type="text" id="plateno" name="plateno" class="form-control"   required>
-																				</div>
+																						<select type="text" id="plateno" name="plateno" class="form-control" placeholder="Select truck" required style="width:100%;">
+																							@foreach($trucks as $a)
+																							<option value="{{ $a->id }}">{{ $a->name }} ({{ $a->plate_no }})</option>
+																							@endforeach
+																						</select>
 																		</div>
 																</div>
 														</div>

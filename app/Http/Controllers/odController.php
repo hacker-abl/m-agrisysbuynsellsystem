@@ -9,6 +9,7 @@ use App\Commodity;
 use App\Company;
 use App\od;
 use App\Roles;
+use App\trucks;
 class odController extends Controller
 {
       /**
@@ -37,8 +38,8 @@ class odController extends Controller
 
               $commodity = Commodity::all();
               $company = Company::all();
-              $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
-              return view('main.od')->with(compact('driver','commodity','company','temp'));
+              $trucks = Trucks::all();
+              return view('main.od')->with(compact('driver','commodity','company','trucks'));
     }
 
     public function store(Request $request)
@@ -57,6 +58,7 @@ class odController extends Controller
 
         if($request->get('button_action') == 'update'){
           $commodity= new od;
+          $commodity= od::find($request->get('id'));
           $commodity->outboundTicket = $request->ticket;
           $commodity->commodity_id = $request->commodity;
           $commodity->destination = $request->destination;
@@ -73,9 +75,10 @@ class odController extends Controller
         //$user = User::all();
         $ultimatesickquery= DB::table('deliveries')
                 ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
+                ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
                 ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
                 ->join('company', 'company.id', '=', 'deliveries.company_id')
-                ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name','deliveries.plateno', 'deliveries.fuel_liters')
+                ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters')
                 ->get();
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
