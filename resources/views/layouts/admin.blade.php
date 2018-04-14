@@ -1306,7 +1306,7 @@ $("#bod").toggleClass('overlay-open');
                                 $('#button_action').val('update');
                                 $('#id').val(id);
                                 $('#ticket').val(data.outboundTicket);
-                                $('#destination').val(data.destination);            
+                                $('#destination').val(data.destination);
                                 $("#driver_id").val(data.driver_id).trigger('change');
                                 $("#company").val(data.company_id).trigger('change');
                                 $("#commodity").val(data.commodity_id).trigger('change');
@@ -2231,16 +2231,7 @@ $("#bod").toggleClass('overlay-open');
 
 
                                 //deliveries datatable starts here
-                                @foreach($temp as $a)
-                              console.log('	{{ $a->temp }}');
-                              var a = parseInt({{ $a->temp }});
-                              var b = a + 1 ;
-                              var c = new Date();
-                              var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
-                              var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate() ;
-                              $('#ticket').val(currentDate+b);
-                              alert(b);
-                              @endforeach
+                         
 
                               $('#od_modal').on('hidden.bs.modal', function (e) {
                                   $(this)
