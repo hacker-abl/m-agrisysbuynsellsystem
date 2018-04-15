@@ -32,7 +32,10 @@ class CreateDeliveriesTable extends Migration
                     ->references('id')
                     ->on('company')
                     ->onDelete('cascade');
-          $table->string('plateno', 255);
+          $table->foreign('plateno')
+                    ->references('id')
+                    ->on('trucks')
+                    ->onDelete('cascade');
           $table->integer('fuel_liters');
             $table->timestamps();
         });
