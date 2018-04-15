@@ -32,6 +32,7 @@ class CreateDeliveriesTable extends Migration
                     ->references('id')
                     ->on('company')
                     ->onDelete('cascade');
+          $table->integer('plateno');
           $table->foreign('plateno')
                     ->references('id')
                     ->on('trucks')
