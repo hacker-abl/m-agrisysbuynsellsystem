@@ -45,8 +45,8 @@ class expenseController extends Controller
         $expense = Expense::all();
         return \DataTables::of(Expense::query())
         ->editColumn('amount', function ($data) {
-                return '₱'.number_format($data->amount, 2, '.', ',');
-            })
+            return '₱'.number_format($data->amount, 2, '.', ',');
+        })
         ->make(true);
 
     }
@@ -57,8 +57,8 @@ class expenseController extends Controller
         $products=Employee::where('fname','LIKE','%'.$query.'%')->orWhere('mname','LIKE','%'.$query.'%')->orWhere('lname','LIKE','%'.$query.'%')->get();
 
         $data=array();
-        foreach ($products as $product) {
-                $data[]=array('value'=>$product->fname.' '.$product->mname.' '.$product->lname,'id'=>$product->id);
+        foreach ($products as $product){
+            $data[]=array('value'=>$product->fname.' '.$product->mname.' '.$product->lname,'id'=>$product->id);
         }
         if(count($data))
         return $data;

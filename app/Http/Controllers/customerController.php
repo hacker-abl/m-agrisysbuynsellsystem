@@ -52,7 +52,7 @@ class customerController extends Controller
             $customer->fname = $request->fname;
             $customer->mname = $request->mname;
             $customer->lname = $request->lname;
-            $customer->suki_type = "NO";
+            $customer->suki_type = 0;
             $customer->save();
         }
 
@@ -61,7 +61,12 @@ class customerController extends Controller
             $customer->fname = $request->get('fname');
             $customer->mname = $request->get('mname');
             $customer->lname = $request->get('lname');
-            $customer->suki_type = $request->get('suki_type');
+            if($request->get('suki_type') == 'YES'){
+                $customer->suki_type = 1;
+            }
+            else{
+                $customer->suki_type = 0;
+            }
             $customer->save();
         }
     }
