@@ -16,23 +16,23 @@ class CreateDeliveriesTable extends Migration
         Schema::create('deliveries', function (Blueprint $table) {
           $table->increments('id');
           $table->string('outboundTicket');
-          $table->integer('commodity_id');
+          $table->integer('commodity_id')->unsigned();
           $table->foreign('commodity_id')
                     ->references('id')
                     ->on('commodity')
                     ->onDelete('cascade');
           $table->string('destination', 255);
-          $table->integer('driver_id');
+          $table->integer('driver_id')->unsigned();
           $table->foreign('driver_id')
                     ->references('id')
                     ->on('employee')
                     ->onDelete('cascade');
-          $table->integer('company_id');
+          $table->integer('company_id')->unsigned();
           $table->foreign('company_id')
                     ->references('id')
                     ->on('company')
                     ->onDelete('cascade');
-          $table->integer('plateno');
+          $table->integer('plateno')->unsigned();
           $table->foreign('plateno')
                     ->references('id')
                     ->on('trucks')
