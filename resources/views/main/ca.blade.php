@@ -15,7 +15,7 @@
                     <i class="material-icons">show_chart</i>
                     <span>Expenses</span>
                 </a>
-            </li> 
+            </li>
             <li>
                 <a href="{{ route('trips') }}">
                     <i class="material-icons">directions_bus</i>
@@ -75,7 +75,7 @@
 						<form class="form-horizontal " id="ca_form">
 							<input type="hidden" name="id" id="id" value="">
 							<input type="hidden" name="button_action" id="button_action" value="">
-							
+
 							<div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 									<label for="name">Name</label>
@@ -148,20 +148,15 @@
 
     <!-- View Person Cash Advances Modal -->
     <div class="modal fade" id="ca_view_modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="card">
-					<div class="header">
-						<h2 class="modal_title">View Cash Advance - <span class="modal_title_ca"></span></h2>
-					</div>
-					<div class="body">
-						<form class="form-horizontal " id="ca_view_form">
-							
-                            <div class="row clearfix">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="modal-dialog modal-lg" role="document">
+
+
+                            <div class="row">
+                                 <form class="form-horizontal " id="ca_view_form">
+
                                     <div class="card">
                                         <div class="header">
-                                            <h2>List of cash advances as of {{ date('Y-m-d ') }}</h2>
+                                            <h2> Cash Advance - <span class="modal_title_ca"></span> as of {{ date('Y-m-d ') }}</h2>
                                         </div>
                                         <div class="body">
                                             <div class="table-responsive">
@@ -176,20 +171,19 @@
                                                     </thead>
                                                 </table>
                                             </div>
+                                            <div class="modal-footer">
+                                                 <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                            </div>
                                         </div>
+
                                     </div>
-                                </div>
+                              </form>
                             </div>
 
-							<div class="row clearfix">
-							 	<div class="modal-footer">
-									<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+
+
+
+
 		</div>
 	</div>
 
@@ -279,7 +273,7 @@
                 $("#balance").val('').trigger('change');
                 $('#ca_modal').modal('show');
 			});
-            
+
             //check balance of customer
             $('#customer_id').change(function(){
                 var id = $(this).val();
@@ -298,7 +292,7 @@
                     }
                 })
             });
-            
+
             $("#add_cash_advance").click(function(event){
                 event.preventDefault();
                 $.ajax({
@@ -326,7 +320,7 @@
 
             $(document).on('click', '.view_cash_advance', function(){
                 var id = $(this).attr("id");
-                
+
                 //Datatable for each person
                 $.ajax({
                     url: "{{ route('refresh_view_cashadvance') }}",
@@ -335,7 +329,7 @@
                     dataType: 'json',
                     success:function(data){
                         $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-                        
+
                         $('#view_cash_advancetable').DataTable({
                             dom: 'Bfrtip',
                             bDestroy: true,
