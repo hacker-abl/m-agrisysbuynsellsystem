@@ -29,17 +29,16 @@ class odController extends Controller
      */
     public function index()
     {
+        $driver= DB::table('employee')
+            ->join('roles', 'roles.id', '=', 'employee.role_id')
+            ->select('employee.*','employee.id AS emp_id',  'roles.id','roles.role')
+            ->where('roles.role','LIKE','%driver%')
+            ->get();
 
-      $driver= DB::table('employee')
-              ->join('roles', 'roles.id', '=', 'employee.role_id')
-              ->select('employee.*','employee.id AS emp_id',  'roles.id','roles.role')
-              ->where('roles.role','LIKE','%driver%')
-              ->get();
-
-              $commodity = Commodity::all();
-              $company = Company::all();
-              $trucks = Trucks::all();
-              return view('main.od')->with(compact('driver','commodity','company','trucks'));
+        $commodity = Commodity::all();
+        $company = Company::all();
+        $trucks = Trucks::all();
+        return view('main.od')->with(compact('driver','commodity','company','trucks'));
     }
 
     public function store(Request $request)
@@ -74,12 +73,12 @@ class odController extends Controller
     {
         //$user = User::all();
         $ultimatesickquery= DB::table('deliveries')
-                ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
-                ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
-                ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
-                ->join('company', 'company.id', '=', 'deliveries.company_id')
-                ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters')
-                ->get();
+            ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
+            ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
+            ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
+            ->join('company', 'company.id', '=', 'deliveries.company_id')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters')
+            ->get();
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
             return '<button class="btn btn-xs btn-warning update_delivery" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
