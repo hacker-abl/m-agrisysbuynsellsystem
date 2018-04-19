@@ -107,7 +107,7 @@
         @endif
     @endif
 </head>
-<body id="bod" class="theme-grey">
+<body id="b" class="theme-grey">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -144,8 +144,8 @@
     <nav class="navbar ">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="javascript:void(0);"></a>
-                <a href="javascript:void(0);" class="bars" id="link"  ></a>
+                <a href="#"></a>
+                <a href="#" class="bars" id="l"  ></a>
                 <a class="navbar-brand" href="index.html">*INSERT LOGO* M-AGRI Buy and Sell</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -394,6 +394,21 @@
 
         <!-- Jquery-ui Js -->
         <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+        <script>
+        $('#l').click(function(){
+        //alert('hey')
+        if($('#b').hasClass('overlay-open') && $('#b').hasClass('ls-closed') )
+        {
+             $('#b').addClass('ls-closed');
+            $('#b').removeClass('overlay-open');
+        }
+        else{
+             $('#b').removeClass('ls-closed');
+           $('#b').addClass('overlay-open');
+        }
+
+    });
+        </script>
     @else
         @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
         <!-- Scripts -->
