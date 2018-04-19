@@ -397,13 +397,13 @@
         <script>
         $('#l').click(function(){
         //alert('hey')
-        if($('#b').hasClass('overlay-open') && $('#b').hasClass('ls-closed') )
+        if($('#b').hasClass('overlay-open') )
         {
-             $('#b').addClass('ls-closed');
+
             $('#b').removeClass('overlay-open');
         }
         else{
-             $('#b').removeClass('ls-closed');
+           // $('#b').removeClass('ls-closed');
            $('#b').addClass('overlay-open');
         }
 

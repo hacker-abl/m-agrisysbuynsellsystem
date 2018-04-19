@@ -146,6 +146,10 @@ $.AdminBSB.leftSideBar = {
         }
         else {
             $body.removeClass('ls-closed');
+            var cssObj = {
+                'display':'none'
+           }
+               $('.overlay').css(cssObj);
             $openCloseBar.fadeOut();
         }
     },
