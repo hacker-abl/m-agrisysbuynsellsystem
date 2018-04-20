@@ -146,7 +146,9 @@
             <div class="navbar-header">
                 <a href="#"></a>
                 <a href="#" class="bars" id="l"  ></a>
-                <a class="navbar-brand" href="index.html">*INSERT LOGO* M-AGRI Buy and Sell</a>
+
+                <a class="navbar-brand" href="{{ route('home') }}"><span> <img src="{{ asset('assets/images/logo.png') }}" width="50" height="50" class="logo"/></span> <span class="title">M-Agri Buy & Sell System</span></a>
+
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
