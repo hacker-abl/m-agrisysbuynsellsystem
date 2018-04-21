@@ -49,7 +49,7 @@
             <li class="active">
                 <a href="{{ route('sales') }}">
                     <i class="material-icons">shopping_cart</i>
-                    <span>Purchases</span>
+                    <span>Sales</span>
                 </a>
             </li>
         </ul>
