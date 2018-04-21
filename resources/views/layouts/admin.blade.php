@@ -144,8 +144,8 @@
     <nav class="navbar ">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="#"></a>
-                <a href="#" class="bars" id="l"  ></a>
+                <a href="javascript:void(0)"></a>
+                <a href="javascript:void(0)" class="bars" id="l"  ></a>
 
                 <a class="navbar-brand" href="{{ route('home') }}"><span> <img src="{{ asset('assets/images/logo.png') }}" width="50" height="50" class="logo"/></span> <span class="title">M-Agri Buy & Sell System</span></a>
 
