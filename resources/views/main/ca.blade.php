@@ -283,6 +283,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        console.log(data);
                         if(!$.trim(data)){
                             $('#balance').val(0.00);
                         }

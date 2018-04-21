@@ -43,8 +43,15 @@ Route::group(['middleware'], function()
 
     Route::get('/purchases', 'purchasesController@index')->name('purchases');
     Route::get('/sales', 'salesController@index')->name('sales');
-
-
+    
+    //DTR
+    Route::get('/check_employee', 'dtrController@check_employee')->name('check_employee');
+    Route::get('/dtr_details', 'dtrController@dtr_details')->name('dtr_details');
+    Route::get('/refresh_dtr', 'dtrController@refresh')->name('refresh_dtr');
+    Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
+    Route::post('/add_dtr', 'dtrController@store')->name('add_dtr');
+    Route::post('/add_dtr_expense', 'dtrController@add_dtr_expense')->name('add_dtr_expense');
+    
 
     //settings
     Route::get('/company', 'companyController@index')->name('company');
