@@ -12,6 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('access_levels')->insert([
+            'name' => 'admin',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        
         DB::table('users')->insert([
             'name' => 'Admin BFJAX',
             'username' => 'admin',
