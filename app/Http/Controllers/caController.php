@@ -42,19 +42,20 @@ class caController extends Controller
     }
 
     public function refresh(){
-        $cash_advance = DB::select('
-            SELECT p1.*, p3.fname, p3.mname, p3.lname 
-            FROM cash_advance p1
-            INNER JOIN(
-                SELECT MAX(created_at) maxdate, customer_id
-                FROM cash_advance
-                GROUP BY customer_id
-            ) p2
-            ON p1.customer_id = p2.customer_id
-            AND p1.created_at = p2.maxdate
-            LEFT JOIN customer as p3 ON p1.customer_id = p3.id
-            ORDER BY p1.created_at desc
-        ');
+        $join = DB::table('cash_advance')
+            ->select(DB::raw('max(created_at) as maxdate'), 'customer_id')
+            ->groupBy('customer_id');
+        $sql = '(' . $join->toSql() . ') as ca2';
+
+        $cash_advance = DB::table('cash_advance as ca1')
+            ->select('ca1.*', 'cus.fname', 'cus.mname', 'cus.lname')
+            ->join(DB::raw($sql), function($join){
+                $join->on('ca2.customer_id', '=', 'ca1.customer_id')
+                    ->on('ca2.maxdate', '=', 'ca1.created_at');
+            })
+            ->leftJoin('customer as cus', 'ca1.customer_id', '=', 'cus.id')
+            ->orderBy('p1.created_at', 'desc')
+            ->get();
         return \DataTables::of($cash_advance)
         ->addColumn('action', function($cash_advance){
             return '<button class="btn btn-xs btn-info view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility

@@ -64,19 +64,20 @@ class dtrController extends Controller
     }
 
     public function refresh(){
-        $dtr = DB::select('
-            SELECT p1.*, p3.fname, p3.mname, p3.lname 
-            FROM dtr p1
-            INNER JOIN(
-                SELECT MAX(created_at) maxdate, employee_id
-                FROM dtr
-                GROUP BY employee_id
-            ) p2
-            ON p1.employee_id = p2.employee_id
-            AND p1.created_at = p2.maxdate
-            LEFT JOIN employee as p3 ON p1.employee_id = p3.id
-            ORDER BY p1.created_at desc
-        ');
+        $join = DB::table('dtr')
+            ->select(DB::raw('max(created_at) as maxdate'), 'employee_id')
+            ->groupBy('employee_id');
+        $sql = '(' . $join->toSql() . ') as dtr2';
+
+        $dtr = DB::table('dtr as dtr1')
+            ->select('dtr1.*', 'emp.fname', 'emp.mname', 'emp.lname')
+            ->join(DB::raw($sql), function($join){
+                $join->on('dtr2.employee_id', '=', 'dtr1.employee_id')
+                    ->on('dtr2.maxdate', '=', 'dtr1.created_at');
+            })
+            ->leftJoin('employee as emp', 'dtr1.employee_id', '=', 'emp.id')
+            ->orderBy('dtr1.created_at', 'desc')
+            ->get();
         return \DataTables::of($dtr)
         ->addColumn('action', function($dtr){
             return '<button class="btn btn-xs btn-info view_dtr" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
