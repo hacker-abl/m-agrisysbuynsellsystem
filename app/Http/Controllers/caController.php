@@ -54,7 +54,7 @@ class caController extends Controller
                     ->on('ca2.maxdate', '=', 'ca1.created_at');
             })
             ->leftJoin('customer as cus', 'ca1.customer_id', '=', 'cus.id')
-            ->orderBy('p1.created_at', 'desc')
+            ->orderBy('ca1.created_at', 'desc')
             ->get();
         return \DataTables::of($cash_advance)
         ->addColumn('action', function($cash_advance){
