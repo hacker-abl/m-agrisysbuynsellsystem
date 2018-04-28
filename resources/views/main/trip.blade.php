@@ -100,7 +100,7 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h2 class="modal_title">Trip Update</h2>
+						<h2 class="modal_title">Update Trip(Pick Up)</h2>
 					</div>
 					<div class="body">
                         <form class="form-horizontal trip_form_update" id="trip_form_update">
@@ -288,7 +288,7 @@
                 item=1;
             });
             
-            $(".pickup_modal_update").on("hidden.bs.modal", function(){
+            $('#pickup_modal_update').on('hidden.bs.modal', function (e) {
                 $(this)
                 .find("input,textarea,select")
                     .val('')
@@ -296,7 +296,7 @@
                 .find("input[type=checkbox], input[type=radio]")
                     .prop("checked", "")
                     .end();
-            });
+            })
 
             $(".pickup_modal").on("shown.bs.modal", function(){
                 $('.delete').hide(); 
@@ -469,9 +469,9 @@
             $(document).on('click','.open_pickup_modal', function(){
                 $('#pickup_modal').modal('show');
             });
-
+            
+            //Open Update Modal
             $(document).on('click', '.update_pickup', function(){
-                event.preventDefault();
                 var id = $(this).attr("id");
                 
                 $.ajax({
@@ -480,20 +480,20 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        $('#button_action').val('update');
                         $('#id').val(id);
                         $("#ticket").val(data[0].trip_ticket);
-                        $('#destination').val(data[0].destination);
-                        $("#driver_id").val(data[0].driver_id);
                         $("#expense").val(data[0].expense);
-                        $("#commodity").val(data[0].commodity_name);
-                        $("#plateno").val(data[0].plateno);
+                        $("#commodity").val(data[0].commodity_id).trigger('change');
+                        $("#driver_id").val(data[0].driver_id).trigger('change');
+                        $("#plateno").val(data[0].truck_id).trigger('change');
+                        $('#destination').val(data[0].destination);
                         $('#num_liters').val(data[0].num_liters);
                         $('#pickup_modal_update').modal('show');
                     }
                 })
             });
-
+            
+            //Clicked Update Button
             $("#update_trip").click(function(){
                 event.preventDefault();
                 $.ajax({
@@ -568,8 +568,6 @@
                 });
             });
 
-            
-
             var pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
@@ -603,11 +601,11 @@
                 dropdownParent: $('#pickup_modal_update'),
                 placeholder: '--Select a driver--'
             });
+
             $("#commodity").select2({
                 dropdownParent: $('#pickup_modal_update'),
                 placeholder: '--Select an item--'
             });
-
         });//END DOCUMENT READY
     </script>
 @endsection

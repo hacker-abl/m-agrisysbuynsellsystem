@@ -113,7 +113,7 @@ class tripController extends Controller
             ->join('commodity', 'commodity.id', '=', 'trips.commodity_id')
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
-            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense')
+            ->select('trips.id','trips.trip_ticket','commodity.id AS commodity_id','trucks.plate_no AS plateno', 'trips.destination', 'employee.id as driver_id', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters', 'trucks.id as truck_id', 'trucks.name AS name','trips.expense')
             ->where('trips.id',$id)
             ->get();
         echo json_encode($output);
