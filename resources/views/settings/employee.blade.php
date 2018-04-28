@@ -114,9 +114,9 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <select type="text" id="role_id" name="role_id" class="form-control" placeholder="Enter employee type" required style="width:100%;">
-                                        @foreach($roles as $key => $role)
-                                        <option value="{{ $key }}">{{ $role }}</option>
-                                        @endforeach
+                                            @foreach($roles as $key => $role)
+                                            <option value="{{ $key }}">{{ $role }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
