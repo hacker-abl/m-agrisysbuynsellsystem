@@ -15,8 +15,6 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-
-
 Auth::routes();
 
 Route::group(['middleware'], function()
@@ -28,6 +26,7 @@ Route::group(['middleware'], function()
     Route::get('/trips', 'tripController@index')->name('trips');
     Route::get('/dtr', 'dtrController@index')->name('dtr');
 
+    //OUTBOUND DELIVERIES
     Route::get('/outbound', 'odController@index')->name('od');
     Route::get('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
     Route::get('/refresh_id', 'odController@updateId')->name('refresh_id');
@@ -35,6 +34,7 @@ Route::group(['middleware'], function()
     Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
     Route::get('/delete_delivery', 'odController@deletedata')->name('delete_delivery');
 
+    //CASH ADVANCE
     Route::get('/cashadvance', 'caController@index')->name('ca');
     Route::post('/add_cashadvance', 'caController@store')->name('add_cashadvance');
     Route::get('/refresh_cashadvance', 'caController@refresh')->name('refresh_cashadvance');
@@ -52,6 +52,14 @@ Route::group(['middleware'], function()
     Route::post('/add_dtr', 'dtrController@store')->name('add_dtr');
     Route::post('/add_dtr_expense', 'dtrController@add_dtr_expense')->name('add_dtr_expense');
     
+    //PICK UP
+    Route::get('/get_pickup', 'tripController@updateId')->name('get_pickup');
+    Route::get('/refresh_pickup', 'tripController@refresh')->name('refresh_pickup');
+    Route::get('/update_pickup', 'tripController@updatedata')->name('update_pickup');
+    Route::get('/delete_trip', 'tripController@deletedata')->name('delete_trip');
+    Route::post('/add_pickup', 'tripController@store')->name('add_pickup');
+    Route::post('/update_trip', 'tripController@update_trip')->name('update_trip');
+    Route::post('/add_trip_expense', 'tripController@add_trip_expense')->name('add_trip_expense');
 
     //settings
     Route::get('/company', 'companyController@index')->name('company');
@@ -96,6 +104,6 @@ Route::group(['middleware'], function()
     Route::get('/update_role', 'RolesController@updatedata')->name('update_role');
     Route::get('/delete_role', 'RolesController@deletedata')->name('delete_role');
     
-    //SEARCH AUTOCOMPLETE NAME SA EXPENSES
+    //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
 });

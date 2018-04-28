@@ -1,5 +1,13 @@
 ﻿/* Navbar ====================================== */
 @import url(materialize.css);
+hr {
+  border:none;
+  height: 1px;
+  width: 100%;
+  height: 1px;
+  box-shadow: 0 1px 1px -1px #333;
+}
+
 .logo{
      margin-top:-13px;
 }
@@ -7,6 +15,32 @@
      position: absolute;
      top:19px;
 }
+
+.form-container{
+  padding:10px;
+  padding-bottom:25px;
+  margin:0 auto;
+  margin-top:20px;
+  border-radius:20px;
+}
+
+.add-one{
+  color:green;
+  text-align:center;
+  font-weight:bolder;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+#singlebutton{
+  width:100%;
+  margin-top:20px;
+}
+
+.dynamic-element{
+  margin-bottom:0px;
+}
+
 .navbar {
   font-family: "Roboto", sans-serif;
   -webkit-border-radius: 0;

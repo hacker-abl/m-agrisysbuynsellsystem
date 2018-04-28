@@ -1,0 +1,19 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class trip_expense extends Model
+{
+    protected $primaryKey = 'id';
+    protected $table = 'trip_expense';
+    protected $fillable = array(
+		'trip_id',
+		'description',
+		'type',
+        'amount',
+        'status',
+    );
+    public $timestamps = true;
+}

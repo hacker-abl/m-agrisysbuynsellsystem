@@ -149,41 +149,32 @@
     <!-- View Person Cash Advances Modal -->
     <div class="modal fade" id="ca_view_modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg" role="document">
-
-
-                            <div class="row">
-                                 <form class="form-horizontal " id="ca_view_form">
-
-                                    <div class="card">
-                                        <div class="header">
-                                            <h2> Cash Advance - <span class="modal_title_ca"></span> as of {{ date('Y-m-d ') }}</h2>
-                                        </div>
-                                        <div class="body">
-                                            <div class="table-responsive">
-                                                <table id="view_cash_advancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Reason</th>
-                                                            <th>Amount</th>
-                                                            <th>Date/Time</th>
-                                                            <th>Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                 <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                              </form>
+            <div class="row">
+                <form class="form-horizontal " id="ca_view_form">
+                    <div class="card">
+                        <div class="header">
+                            <h2> Cash Advance - <span class="modal_title_ca"></span> as of {{ date('Y-m-d ') }}</h2>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table id="view_cash_advancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Reason</th>
+                                            <th>Amount</th>
+                                            <th>Date/Time</th>
+                                            <th>Balance</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
-
-
-
-
-
+                            <div class="modal-footer">
+                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 		</div>
 	</div>
 
