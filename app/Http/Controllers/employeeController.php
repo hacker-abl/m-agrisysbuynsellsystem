@@ -77,15 +77,14 @@ class employeeController extends Controller
             <button class="btn btn-xs btn-danger delete_employee" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
         })
         ->editColumn('role_id', function ($data) {
+            $role = Roles::all();
+            foreach($role as $r){
+                if($r->id == $data->role_id)
+                    $role_name = $r->role;
+            }
 
-                $role = Roles::all();
-                foreach($role as $r){
-                    if($r->id == $data->role_id)
-                        $role_name = $r->role;
-                }
-
-                return $role_name;
-            })
+            return $role_name;
+        })
         ->make(true);
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Hash;
 use App\User;
+use App\access_levels;
 class usersController extends Controller
 {
     /**
@@ -82,6 +83,15 @@ class usersController extends Controller
         ->addColumn('action', function($user){
             return '<button class="btn btn-xs btn-warning update_user" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
             <button class="btn btn-xs btn-danger delete_user" id="'.$user->id.'"><i class="material-icons">delete</i></button>';
+        })
+        ->editColumn('access_id', function ($data){
+            $level = access_levels::all();
+            foreach($level as $l){
+                if($l->id == $data->access_id)
+                    $access_name = $l->name;
+            }
+
+            return $access_name;
         })
         ->make(true);
     }
