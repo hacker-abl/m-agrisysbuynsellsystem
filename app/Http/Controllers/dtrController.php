@@ -80,7 +80,7 @@ class dtrController extends Controller
             ->get();
         return \DataTables::of($dtr)
         ->addColumn('action', function($dtr){
-            return '<button class="btn btn-xs btn-info view_dtr" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+            return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
         })
         ->make(true);
     }

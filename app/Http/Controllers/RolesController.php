@@ -50,8 +50,8 @@ class RolesController extends Controller
       $roles = Roles::all();
       return \DataTables::of(Roles::query())
       ->addColumn('action', function($roles){
-          return '<button class="btn btn-xs btn-warning update_role" id="'.$roles->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-          <button class="btn btn-xs btn-danger delete_role" id="'.$roles->id.'"><i class="material-icons">delete</i></button>';
+          return '<button class="btn btn-xs btn-warning update_role waves-effect" id="'.$roles->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
+          <button class="btn btn-xs btn-danger delete_role waves-effect" id="'.$roles->id.'"><i class="material-icons">delete</i></button>';
       })
       ->make(true);
   }
