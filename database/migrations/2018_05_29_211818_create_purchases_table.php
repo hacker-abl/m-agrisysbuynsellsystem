@@ -29,10 +29,14 @@ class CreatePurchasesTable extends Migration
            $table->integer('sacks');
            $table->integer('ca_id')->unsigned();
            $table->foreign('ca_id')
-                     ->references('id')
+                     ->references('customer_id')
                      ->on('cash_advance')
                      ->onDelete('cascade');
-            $table->decimal('balance');
+          $table->integer('balance_id')->unsigned();
+          $table->foreign('balance_id')
+                    ->references('customer_id')
+                    ->on('cash_advance')
+                    ->onDelete('cascade');
             $table->decimal('partial');
             $table->integer('kilo');
             $table->decimal('price');
