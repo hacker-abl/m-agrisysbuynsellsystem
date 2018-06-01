@@ -74,6 +74,10 @@
                         <div class="body">
                              <form class="form-horizontal " id="purchase_form">
                                   <input type="hidden" name="id" id="id" value="">
+                                  <input type="hidden" name="last" id="last" value="">
+                                  <input type="hidden" name="pr" id="pr" value="">
+                                  <input type="hidden" name="suki" id="suki" value="">
+
                                   <input type="hidden" name="button_action" id="button_action" value="">
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -127,7 +131,7 @@
                                             <div class="form-group">
                                                  <label for="name">Sacks</label>
                                                  <div class="form-line">
-                                                      <input type="number" id="sacks" name="sacks" class="form-control"   required>
+                                                      <input type="number" id="sacks"  onkeyup="sacks1(this)" name="sacks" class="form-control"   required>
                                                  </div>
                                             </div>
                                        </div>
@@ -140,7 +144,7 @@
                                                  <div class="form-group">
                                                       <label for="name">Kilograms</label>
                                                       <div class="form-line">
-                                                           <input type="number" id="kilo" name="kilo" class="form-control"   required>
+                                                           <input type="number" id="kilo" name="kilo" onkeyup="kilos1(this)" class="form-control"   required>
                                                       </div>
                                                  </div>
                                             </div>
@@ -175,6 +179,19 @@
                                   </div>
 
                                   <div class="row clearfix">
+                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                           <label for="name">Partial Payment</label>
+                                      </div>
+                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                           <div class="form-group">
+                                                <div class="form-line">
+                                                     <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
+                                                </div>
+                                           </div>
+                                      </div>
+                                 </div>
+
+                                  <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Balance</label>
                                        </div>
@@ -187,18 +204,7 @@
                                        </div>
                                   </div>
 
-                                  <div class="row clearfix">
-                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Partial Payment</label>
-                                       </div>
-                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                            <div class="form-group">
-                                                 <div class="form-line">
-                                                      <input type="number" id="partial" name="partial" class="form-control"   required>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                  </div>
+
 
 
 
@@ -294,6 +300,170 @@
 
 @section('script')
     <script>
+
+    $(document).ready(function () {
+
+    $('#partial').on('keyup keydown', function (e) {
+      if (e.which == 8) {
+
+        if($('#balance').val()!=""){
+             var a = 0;
+             var b = parseInt($('#balance').val());
+             var d = parseInt($('#ca').val());
+             var c = 0;
+             var e =0;
+                if($('#partial').val()!=""){
+                     a = parseInt($('#partial').val());
+
+
+
+                    if($('#total').val()!=""){
+                         e = parseInt($('#total').val());
+                    }
+                    x = a+e;
+                   $('#amount').val(x)
+                }
+
+
+                 c = d-a;
+                  if(c <= d){
+                $('#balance').val(c);
+
+                if($('#total').val()!=""){
+                     e = parseInt($('#total').val());
+                }
+
+                x = a+e;
+
+                if($('#total').val()=="" && $('#partial').val()=="")
+                {
+                     $('#amount').val('')
+                }
+                else{
+                    $('#amount').val(x)
+                }
+
+
+
+           }
+
+
+        }
+        else if ($('#balance').val()==""){
+              var d = parseInt($('#ca').val());
+              $('#balance').val(d);
+
+
+
+        }
+      }
+
+         }); //<----");" AND ANOTHA ONE *DJ KHALED'S VOICE*
+
+
+     });
+
+     function sacks1(value) {
+
+               var a = 0;
+               var b = parseInt($('#price').val());
+               var d = 0;
+               var c = 0;
+               if($('#price').val()!=""){
+                   a = parseInt($('#sacks').val());
+                   d = a*50;
+
+               if($('#sacks').val()==""){
+                 $('#total').val("");
+           }
+               else{
+                    c = d*b;
+                    $('#total').val(c);
+               }
+
+             if($('#kilo').val()!=""){
+
+                  var e = parseInt($('#kilo').val());
+                  var x = b*e;
+                  var z = x+c;
+
+                  $('#total').val(z);
+
+          }
+}
+   }
+
+   function kilos1(value) {
+
+             var a = 0;
+             var b = parseInt($('#price').val());
+             var c = 0;
+               if($('#price').val()!=""){
+                  a = parseInt($('#kilo').val());
+
+
+               if($('#kilo').val()==""){
+                    //a = 0;
+                    $('#total').val("");
+
+           }
+               else{
+                   c = a*b;
+               $('#total').val(c);
+          }
+
+
+
+
+              if($('#sacks').val()!=""){
+
+                   var e = parseInt($('#sacks').val());
+                   var x = b*(e*50);
+                   var z = x+c;
+
+                   $('#total').val(z);
+
+           }
+
+      }
+
+}
+
+    function partial1(value) {
+
+
+       if($('#balance').val()!=""){
+            var a = 0;
+            var b = parseInt($('#balance').val());
+            var d = parseInt($('#ca').val());
+            var c = 0;
+
+               if($('#partial').val()!=""){
+                    a = parseInt($('#partial').val());
+                    var e =0;
+                    if($('#total').val()!=""){
+                        e = parseInt($('#total').val());
+                   }
+                   x = a+e;
+                  $('#amount').val(x)
+               }
+
+                c = b-a;
+               $('#balance').val(c);
+               var e =0;
+               if($('#total').val()!=""){
+                   e = parseInt($('#total').val());
+              }
+              x = a+e;
+             $('#amount').val(x)
+
+
+
+       }
+    }
+
+
+
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -312,7 +482,7 @@
         $(document).on('click','.open_purchase_modal', function(){
              $('.modal_title').text('Add Purchase');
              $('#button_action').val('add');
-               $("#company").val('').trigger('change');
+               $("#commodity").val('').trigger('change');
                $("#customer").val('').trigger('change');
                $('#purchase_modal').modal('show');
         });
@@ -325,6 +495,159 @@
             dropdownParent: $('#purchase_modal'),
              placeholder: 'Select a company'
         });
+
+        $('#customer').on('select2:select', function (e) {
+
+             var id = $(e.currentTarget).val()
+             $.ajax({
+             url: "{{ route('find_amt') }}",
+             data: { id : id },
+             dataType:'json',
+             success: function(data) {
+                  $('#ca').val(data.balance)
+                  $('#balance').val(data.balance)
+                  $('#last').val(data.suki_type)
+                 if($('#partial').val()!=""){
+                      var a = 0;
+                      var b = parseInt($('#balance').val());
+                      var d = parseInt($('#ca').val());
+                      var c = 0;
+                      a = parseInt($('#partial').val());
+                      c = b-a;
+                      $('#balance').val(c);
+
+                }
+
+                if($('#price').val()!=""){
+                     var a = parseInt($('#last').val());
+                     var b = parseInt($('#suki').val());
+                     var c = parseInt($('#pr').val());
+                     var d = 0;
+                     var e = 0;
+                     if(a==1){
+                          $('#price').val(b);
+
+
+                          if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                              var x = 0;
+
+                              if ($('#kilo').val()!=""){
+                                   var x = parseInt($('#kilo').val());
+                              }
+                             if ($('#sacks').val() == "" ){
+                                  d = 0;
+                             }
+                             else{
+                               d =  parseInt($('#sacks').val());
+                          }
+                               e = b * (d*50);
+                               var z = e + (b*x);
+                               //alert(e);
+                               $('#total').val(z);
+                          }
+                     }
+                     else{
+                          $('#price').val(c);
+
+                          if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                               var x = 0;
+
+                               if ($('#kilo').val()!=""){
+                                    var x = parseInt($('#kilo').val());
+                               }
+                               if ($('#sacks').val() == "" ){
+                                    d = 0;
+                               }
+                               else{
+                                d =  parseInt($('#sacks').val());
+                           }
+                                e = c * (d*50);
+                                var z = e + (c*x);
+                                //alert(e);
+                                $('#total').val(z);
+                           }
+                     }
+
+               }
+            console.log(data.amount);
+               }
+          });
+
+        });
+
+        $('#commodity').on('select2:select', function (e) {
+
+             var id = $(e.currentTarget).val()
+             $.ajax({
+             url: "{{ route('find_comm') }}",
+             data: { id : id },
+             dataType:'json',
+             success: function(data) {
+                  $('#pr').val(data.price);
+                  $('#suki').val(data.suki_price);
+                  var a = parseInt($('#last').val());
+                  if(a==1){
+                       $('#price').val(data.suki_price);
+                       var d = 0;
+                       var e = 0;
+                       var b = parseInt($('#suki').val());
+                       var c = parseInt($('#pr').val());
+                       if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                            var x = 0;
+
+                            if ($('#kilo').val()!=""){
+                                 var x = parseInt($('#kilo').val());
+                            }
+                           if ($('#sacks').val() == "" ){
+                                d = 0;
+                           }
+                           else{
+                             d =  parseInt($('#sacks').val());
+                        }
+                             e = b * (d*50);
+                             var z = e + (b*x);
+                             //alert(e);
+                             $('#total').val(z);
+                        }
+                  }
+                  else{
+
+                     $('#price').val(data.price);
+                     var d = 0;
+                     var e = 0;
+                     var b = parseInt($('#suki').val());
+                     var c = parseInt($('#pr').val());
+                     if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                          var x = 0;
+
+                          if ($('#kilo').val()!=""){
+                               var x = parseInt($('#kilo').val());
+                          }
+                          if ($('#sacks').val() == "" ){
+                               d = 0;
+                          }
+                          else{
+                           d =  parseInt($('#sacks').val());
+                      }
+                           e = c * (d*50);
+                           var z = e + (c*x);
+                           //alert(e);
+                           $('#total').val(z);
+                      }
+
+                  }
+
+            console.log(data.suki_price);
+              }
+          });
+
+        });
+
+
+
+
+
+
            });
     </script>
 @endsection

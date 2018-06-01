@@ -48,7 +48,10 @@ Route::group(['middleware'], function()
     Route::get('/refresh_view_cashadvance', 'caController@refresh_view')->name('refresh_view_cashadvance');
     Route::get('/check_balance', 'caController@check_balance')->name('check_balance');
 
+    //PURCHASES
     Route::get('/purchases', 'purchasesController@index')->name('purchases');
+    Route::get('/find_amt', 'purchasesController@findAmount')->name('find_amt');
+    Route::get('/find_comm', 'purchasesController@findcomm')->name('find_comm');
 
     //DTR
     Route::get('/check_employee', 'dtrController@check_employee')->name('check_employee');
