@@ -51,6 +51,7 @@ Route::group(['middleware'], function()
     //PURCHASES
     Route::get('/purchases', 'purchasesController@index')->name('purchases');
     Route::get('/find_amt', 'purchasesController@findAmount')->name('find_amt');
+    Route::get('/refresh_trans', 'purchasesController@updateId')->name('refresh_trans');
     Route::get('/find_comm', 'purchasesController@findcomm')->name('find_comm');
 
     //DTR

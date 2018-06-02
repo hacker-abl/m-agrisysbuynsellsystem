@@ -236,16 +236,19 @@
 
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Remarks</label>
+                                            <label for="type">Remarks</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
-                                                 <div class="form-line">
-                                                      <input type="text" id="remarks" name="remarks" class="form-control"   required>
-                                                 </div>
+                                                 <select type="text" id="remarks" name="remarks" class="form-control" placeholder="Select item" required style="width:100%;">
+
+                                                      <option value="immature">Good</option>
+                                                      <option value="immature">Immature</option>
+                                                 </select>
                                             </div>
                                        </div>
                                   </div>
+
 
 
 
@@ -352,10 +355,9 @@
         else if ($('#balance').val()==""){
               var d = parseInt($('#ca').val());
               $('#balance').val(d);
-
-
-
         }
+
+
       }
 
          }); //<----");" AND ANOTHA ONE *DJ KHALED'S VOICE*
@@ -375,10 +377,16 @@
 
                if($('#sacks').val()==""){
                  $('#total').val("");
+                  $('#amount').val("");
            }
                else{
                     c = d*b;
                     $('#total').val(c);
+                    if($('#kilo').val()== ""){
+                          $('#amount').val(c)
+                    }
+
+
                }
 
              if($('#kilo').val()!=""){
@@ -388,6 +396,7 @@
                   var z = x+c;
 
                   $('#total').val(z);
+                 $('#amount').val(z)
 
           }
 }
@@ -405,11 +414,33 @@
                if($('#kilo').val()==""){
                     //a = 0;
                     $('#total').val("");
+                    $('#amount').val("");
 
            }
                else{
                    c = a*b;
                $('#total').val(c);
+               var r = 0;
+               var t = 0;
+
+               if($('#partial').val()!=""){
+                    r = parseInt($('#partial').val());
+               }
+                   if($('#total').val()!=""){
+                        t = parseInt($('#total').val());
+                   }
+
+                   if($('#sacks').val()=="")
+                   {
+                        $('#amount').val(c);
+                   }
+
+
+
+          if($('#kilo').val()==""){
+               $('#kilo').val("");
+          }
+
           }
 
 
@@ -422,6 +453,7 @@
                    var z = x+c;
 
                    $('#total').val(z);
+                   $('#amount').val(z);
 
            }
 
@@ -479,12 +511,34 @@
 
 
 
+
+
         $(document).on('click','.open_purchase_modal', function(){
              $('.modal_title').text('Add Purchase');
-             $('#button_action').val('add');
-               $("#commodity").val('').trigger('change');
-               $("#customer").val('').trigger('change');
-               $('#purchase_modal').modal('show');
+              $('#button_action').val('add');
+             $.ajax({
+                  url:"{{ route('refresh_trans') }}",
+                  method: 'get',
+                  data: { temp: 'temp' },
+                  dataType:'json',
+                  success:function(data){
+                       var t=0;
+                       if(data[0].temp!=null){
+                            t = data[0].temp;
+                       }
+                       var a = parseInt(t);
+                       var b = a + 1;
+                       var c = new Date();
+                       var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                       var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
+                       $('#ticket').val(currentDate+b);
+                       console.log( $('#ticket').val());
+
+                        $("#commodity").val('').trigger('change');
+                        $("#customer").val('').trigger('change');
+                        $('#purchase_modal').modal('show');
+                  }
+             })
         });
 
         $('#commodity').select2({
@@ -494,6 +548,11 @@
         $('#customer').select2({
             dropdownParent: $('#purchase_modal'),
              placeholder: 'Select a company'
+        });
+
+        $('#remarks').select2({
+            dropdownParent: $('#purchase_modal'),
+            placeholder: 'Select a company'
         });
 
         $('#customer').on('select2:select', function (e) {
@@ -544,6 +603,7 @@
                                var z = e + (b*x);
                                //alert(e);
                                $('#total').val(z);
+                               $('#amount').val(z);
                           }
                      }
                      else{
@@ -565,6 +625,7 @@
                                 var z = e + (c*x);
                                 //alert(e);
                                 $('#total').val(z);
+                                $('#amount').val(z);
                            }
                      }
 
@@ -608,6 +669,7 @@
                              var z = e + (b*x);
                              //alert(e);
                              $('#total').val(z);
+                             $('#amount').val(z);
                         }
                   }
                   else{
@@ -633,6 +695,7 @@
                            var z = e + (c*x);
                            //alert(e);
                            $('#total').val(z);
+                           $('#amount').val(z);
                       }
 
                   }

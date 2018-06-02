@@ -38,6 +38,7 @@ class purchasesController extends Controller
     function findAmount(Request $request){
          $id = $request->input('id');
          $ca = ca::where('customer_id', '=', $id)
+               ->orderBy('updated_at', true)
                ->first();
          $customer = customer::where('id', '=', $id)
                ->first();
@@ -63,6 +64,11 @@ class purchasesController extends Controller
            );
 
          echo json_encode($output);
+    }
+
+    function updateId(){
+       $temp = DB::select('select MAX(id) as "temp" FROM purchases');
+       echo json_encode($temp);
     }
 
 }
