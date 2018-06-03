@@ -305,174 +305,209 @@
     <script>
 
     $(document).ready(function () {
+         $('#partial').on('keyup keydown', function (e) {
+           if (e.which == 8) {
 
-    $('#partial').on('keyup keydown', function (e) {
-      if (e.which == 8) {
+             if($('#balance').val()!=""){
+         	    var a = 0;
+         	    var b = parseInt($('#balance').val());
+         	    var d = parseInt($('#ca').val());
+         	    var c = 0;
+         	    var e =0;
+         		  if($('#partial').val()!=""){
+         			  a = parseInt($('#partial').val());
 
-        if($('#balance').val()!=""){
-             var a = 0;
-             var b = parseInt($('#balance').val());
-             var d = parseInt($('#ca').val());
-             var c = 0;
-             var e =0;
-                if($('#partial').val()!=""){
-                     a = parseInt($('#partial').val());
-
-
-
-                    if($('#total').val()!=""){
-                         e = parseInt($('#total').val());
-                    }
-                    x = a+e;
-                   $('#amount').val(x)
-                }
+         			 if($('#total').val()!=""){
+         				 e = parseInt($('#total').val());
+         			 }
+         			 x = a+e;
+         			$('#amount').val(x)
+         		  }
 
 
-                 c = d-a;
-                  if(c <= d){
-                $('#balance').val(c);
+         		   c = d-a;
+         		    if(c <= d){
+         		  $('#balance').val(c);
 
-                if($('#total').val()!=""){
-                     e = parseInt($('#total').val());
-                }
+         		  if($('#total').val()!=""){
+         			  e = parseInt($('#total').val());
+         		  }
 
-                x = a+e;
+         		  x = a+e;
 
-                if($('#total').val()=="" && $('#partial').val()=="")
-                {
-                     $('#amount').val('')
-                }
-                else{
-                    $('#amount').val(x)
-                }
+         		  if($('#total').val()=="" && $('#partial').val()=="")
+         		  {
+         			  $('#amount').val('');
+                      $('#total').val('');
+         		  }
+         		  else{
+         			 $('#amount').val(x)
+         		  }
 
+
+
+         	  }
+
+
+             }
+             else if ($('#balance').val()==""){
+         	     var d = parseInt($('#ca').val());
+         	     $('#balance').val(d);
+             }
 
 
            }
 
-
-        }
-        else if ($('#balance').val()==""){
-              var d = parseInt($('#ca').val());
-              $('#balance').val(d);
-        }
-
-
-      }
-
-         }); //<----");" AND ANOTHA ONE *DJ KHALED'S VOICE*
+         	});
+     //<----");" AND ANOTHA ONE *DJ KHALED'S VOICE*
 
 
      });
 
      function sacks1(value) {
-
                var a = 0;
                var b = parseInt($('#price').val());
                var d = 0;
                var c = 0;
+               var e = 0;
+               var r = 0;
+               var x = 0;
+               var t = 0;
+               var z = 0;
                if($('#price').val()!=""){
                    a = parseInt($('#sacks').val());
                    d = a*50;
+                   if($('#sacks').val()==""){
 
-               if($('#sacks').val()==""){
-                 $('#total').val("");
-                  $('#amount').val("");
-           }
+                          $('#total').val("");
+                          if($('#partial').val()!="" || $('#total').val()!=""){
+                               if($('#partial').val()!=""){
+                                       r = parseInt($('#partial').val());
+                                  }
+                               if($('#total').val()!=""){
+                                          t = parseInt($('#total').val());
+                                     }
+                               var temp2 = t+r;
+                               $('#amount').val(temp2);
+                               console.log(temp2);
+                          }
+                          else{
+                               $('#amount').val("");
+                          }
+                    }
                else{
                     c = d*b;
+                    var temp = c + r;
                     $('#total').val(c);
+                    $('#amount').val(temp);
+                    //console.log(c+r);
+                    if($('#partial').val()!=""){
+                            r = parseInt($('#partial').val());
+                             temp = c + r;
+                            $('#amount').val(temp);
+
+                       }
+                    if($('#total').val()!=""){
+                               t = parseInt($('#total').val());
+                               temp = c + r;
+                               $('#amount').val(temp);
+                          }
+
                     if($('#kilo').val()== ""){
-                          $('#amount').val(c)
+                         temp = c + r;
+                          $('#amount').val(temp);
                     }
-
-
                }
-
              if($('#kilo').val()!=""){
-
-                  var e = parseInt($('#kilo').val());
-                  var x = b*e;
-                  var z = x+c;
+                  e = parseInt($('#kilo').val());
+                  x = b*e;
+                  z = x+c;
+                  var temp1 = z + r;
 
                   $('#total').val(z);
-                 $('#amount').val(z)
+                 $('#amount').val(temp1);
 
           }
+
 }
    }
-
    function kilos1(value) {
-
              var a = 0;
              var b = parseInt($('#price').val());
              var c = 0;
+             var d = 0 ;
+             var i = 0;
+             var e = 0;
+             var x = 0;
+             var z = 0;
+             var r = 0;
+             var t = 0;
                if($('#price').val()!=""){
-                  a = parseInt($('#kilo').val());
-
-
+                    a = parseInt($('#kilo').val());
                if($('#kilo').val()==""){
-                    //a = 0;
                     $('#total').val("");
-                    $('#amount').val("");
+                    if($('#partial').val()!="" || $('#total').val()!=""){
+                         if($('#partial').val()!=""){
+                                 r = parseInt($('#partial').val());
+                            }
+                         if($('#total').val()!=""){
+                                    t = parseInt($('#total').val());
+                               }
+                         var temp2 = t+r;
+                         $('#amount').val(temp2);
+                         console.log(temp2);
+                    }
+                    else{
+                         $('#amount').val("");
+                    }
 
            }
                else{
-                   c = a*b;
+               c = a*b;
+               var temp = c + r;
                $('#total').val(c);
-               var r = 0;
-               var t = 0;
-
+               $('#amount').val(temp);
                if($('#partial').val()!=""){
                     r = parseInt($('#partial').val());
+                    temp = c + r;
+                    $('#amount').val(temp);
                }
                    if($('#total').val()!=""){
                         t = parseInt($('#total').val());
+                        temp = c + r;
+                       $('#amount').val(temp);
                    }
 
                    if($('#sacks').val()=="")
                    {
-                        $('#amount').val(c);
+                        temp = c + r;
+                        $('#amount').val(temp);
                    }
-
-
-
-          if($('#kilo').val()==""){
-               $('#kilo').val("");
           }
-
-          }
-
-
-
-
               if($('#sacks').val()!=""){
-
-                   var e = parseInt($('#sacks').val());
-                   var x = b*(e*50);
-                   var z = x+c;
-
+                   e = parseInt($('#sacks').val());
+                  x = b*(e*50);
+                   z = x+c ;
+                   i = x+c+r ;
                    $('#total').val(z);
-                   $('#amount').val(z);
+                   $('#amount').val(i);
 
            }
 
       }
-
 }
 
     function partial1(value) {
-
-
+         if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
        if($('#balance').val()!=""){
             var a = 0;
             var b = parseInt($('#balance').val());
             var d = parseInt($('#ca').val());
             var c = 0;
-
+            var e =0;
                if($('#partial').val()!=""){
                     a = parseInt($('#partial').val());
-                    var e =0;
+
                     if($('#total').val()!=""){
                         e = parseInt($('#total').val());
                    }
@@ -480,17 +515,14 @@
                   $('#amount').val(x)
                }
 
-                c = b-a;
+                c = d-a;
                $('#balance').val(c);
-               var e =0;
                if($('#total').val()!=""){
                    e = parseInt($('#total').val());
               }
               x = a+e;
              $('#amount').val(x)
-
-
-
+       }
        }
     }
 
@@ -583,6 +615,7 @@
                      var c = parseInt($('#pr').val());
                      var d = 0;
                      var e = 0;
+                     var t = 0;
                      if(a==1){
                           $('#price').val(b);
 
@@ -599,10 +632,15 @@
                              else{
                                d =  parseInt($('#sacks').val());
                           }
+
+                          if ($('#partial').val() != "" ){
+                              t= parseInt($('#partial').val());
+                          }
                                e = b * (d*50);
-                               var z = e + (b*x);
+                               var y = e + (b*x);
+                                var z = e + (b*x)+t;
                                //alert(e);
-                               $('#total').val(z);
+                               $('#total').val(y);
                                $('#amount').val(z);
                           }
                      }
@@ -621,10 +659,15 @@
                                else{
                                 d =  parseInt($('#sacks').val());
                            }
+
+                           if ($('#partial').val() != "" ){
+                              t =  parseInt($('#partial').val());
+                           }
                                 e = c * (d*50);
-                                var z = e + (c*x);
+                                var y = e + (c*x);
+                                 var z = e + (c*x)+t;
                                 //alert(e);
-                                $('#total').val(z);
+                                $('#total').val(y);
                                 $('#amount').val(z);
                            }
                      }
@@ -653,6 +696,7 @@
                        var e = 0;
                        var b = parseInt($('#suki').val());
                        var c = parseInt($('#pr').val());
+                       var t = 0;
                        if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                             var x = 0;
 
@@ -665,10 +709,15 @@
                            else{
                              d =  parseInt($('#sacks').val());
                         }
+
+                        if ($('#partial').val() != "" ){
+                            t= parseInt($('#partial').val());
+                        }
                              e = b * (d*50);
-                             var z = e + (b*x);
+                             var y = e + (b*x);
+                             var z = e + (b*x)+t;
                              //alert(e);
-                             $('#total').val(z);
+                             $('#total').val(y);
                              $('#amount').val(z);
                         }
                   }
@@ -679,6 +728,7 @@
                      var e = 0;
                      var b = parseInt($('#suki').val());
                      var c = parseInt($('#pr').val());
+                     var t = 0;
                      if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                           var x = 0;
 
@@ -691,10 +741,15 @@
                           else{
                            d =  parseInt($('#sacks').val());
                       }
+
+                      if ($('#partial').val() != "" ){
+                          t= parseInt($('#partial').val());
+                      }
                            e = c * (d*50);
-                           var z = e + (c*x);
+                           var y = e + (c*x);
+                            var z = e + (c*x)+t;
                            //alert(e);
-                           $('#total').val(z);
+                           $('#total').val(y);
                            $('#amount').val(z);
                       }
 
