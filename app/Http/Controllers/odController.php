@@ -81,8 +81,8 @@ class odController extends Controller
             ->get();
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            return '<button class="btn btn-xs btn-warning update_delivery" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_delivery" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
+            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
         })
         ->make(true);
     }

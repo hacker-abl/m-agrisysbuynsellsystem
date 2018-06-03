@@ -42,7 +42,7 @@ class tripController extends Controller
         return view('main.trip')->with(compact('driver','commodity','trucks'));
     }
 
-    public function store(Request $request){         
+    public function store(Request $request){
         $trip= new trips;
         $trip->trip_ticket = $request->ticket;
         $trip->expense = $request->expense;
@@ -54,7 +54,7 @@ class tripController extends Controller
         $trip->save();
         $details =  DB::table('trips')->orderBy('trip_ticket', 'desc')->first();
 
-        echo json_encode($details);      
+        echo json_encode($details);
     }
 
     public function update_trip(Request $request){
@@ -93,8 +93,8 @@ class tripController extends Controller
             ->get();
         return \DataTables::of($trips)
         ->addColumn('action', function($trips){
-            return '<button class="btn btn-xs btn-warning update_pickup" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_pickup" id="'.$trips->id.'"><i class="material-icons">delete</i></button>';
+            return '<button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
+            <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button>';
         })
         ->make(true);
     }

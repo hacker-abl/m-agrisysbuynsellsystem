@@ -34,6 +34,13 @@ Route::group(['middleware'], function()
     Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
     Route::get('/delete_delivery', 'odController@deletedata')->name('delete_delivery');
 
+    //Sales
+    Route::get('/sales', 'salesController@index')->name('sales');
+    Route::get('/refresh_sales', 'salesController@refresh')->name('refresh_sales');
+    Route::post('/add_sales', 'salesController@store')->name('add_sales');
+    Route::get('/update_sales', 'salesController@updatedata')->name('update_sales');
+    Route::get('/delete_sales', 'salesController@deletedata')->name('delete_sales');
+
     //CASH ADVANCE
     Route::get('/cashadvance', 'caController@index')->name('ca');
     Route::post('/add_cashadvance', 'caController@store')->name('add_cashadvance');
@@ -41,9 +48,13 @@ Route::group(['middleware'], function()
     Route::get('/refresh_view_cashadvance', 'caController@refresh_view')->name('refresh_view_cashadvance');
     Route::get('/check_balance', 'caController@check_balance')->name('check_balance');
 
+    //PURCHASES
     Route::get('/purchases', 'purchasesController@index')->name('purchases');
-    Route::get('/sales', 'salesController@index')->name('sales');
-    
+    Route::get('/find_amt', 'purchasesController@findAmount')->name('find_amt');
+    Route::get('/refresh_trans', 'purchasesController@updateId')->name('refresh_trans');
+    Route::get('/find_comm', 'purchasesController@findcomm')->name('find_comm');
+    Route::post('/add_purchases', 'purchasesController@store')->name('add_purchases');
+
     //DTR
     Route::get('/check_employee', 'dtrController@check_employee')->name('check_employee');
     Route::get('/dtr_details', 'dtrController@dtr_details')->name('dtr_details');
@@ -51,7 +62,7 @@ Route::group(['middleware'], function()
     Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
     Route::post('/add_dtr', 'dtrController@store')->name('add_dtr');
     Route::post('/add_dtr_expense', 'dtrController@add_dtr_expense')->name('add_dtr_expense');
-    
+
     //PICK UP
     Route::get('/get_pickup', 'tripController@updateId')->name('get_pickup');
     Route::get('/refresh_pickup', 'tripController@refresh')->name('refresh_pickup');
@@ -103,7 +114,7 @@ Route::group(['middleware'], function()
     Route::get('/refresh_roles', 'RolesController@refresh')->name('refresh_roles');
     Route::get('/update_role', 'RolesController@updatedata')->name('update_role');
     Route::get('/delete_role', 'RolesController@deletedata')->name('delete_role');
-    
+
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
 });
