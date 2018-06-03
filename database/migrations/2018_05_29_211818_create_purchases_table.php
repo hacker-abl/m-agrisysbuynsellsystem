@@ -43,6 +43,7 @@ class CreatePurchasesTable extends Migration
             $table->decimal('total');
             $table->decimal('amtpay');
             $table->string('remarks');
+            $table->timestamps();
 
         });
     }

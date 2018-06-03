@@ -254,7 +254,7 @@
 
                                   <div class="row clearfix">
                                        <div class="modal-footer">
-                                            <button type="submit" id="add_sales" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                            <button type="submit" id="add_purchase" class="btn btn-link waves-effect">SAVE CHANGES</button>
                                             <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                                        </div>
                                   </div>
@@ -305,6 +305,7 @@
     <script>
 
     $(document).ready(function () {
+
          $('#partial').on('keyup keydown', function (e) {
            if (e.which == 8) {
 
@@ -455,7 +456,6 @@
                                }
                          var temp2 = t+r;
                          $('#amount').val(temp2);
-                         console.log(temp2);
                     }
                     else{
                          $('#amount').val("");
@@ -763,7 +763,28 @@
 
 
 
-
+        $(document).on('click', '#add_purchase', function(){
+             event.preventDefault();
+             $.ajax({
+                  headers: {
+                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+                  url:"{{ route('add_purchases') }}",
+                  method: 'POST',
+                  dataType:'text',
+                  data: $('#purchase_form').serialize(),
+                  success:function(data){
+                       $("#customer").val('').trigger('change');
+                       $("#commodity").val('').trigger('change');
+                       swal("Success!", "Record has been added to database", "success")
+                       $('#purchase_modal').modal('hide');
+                       //refresh_delivery_table();
+                  },
+                  error: function(data){
+                       swal("Oh no!", "Something went wrong, try again.", "error")
+                  }
+             })
+        });
 
 
            });

@@ -72,21 +72,18 @@ class purchasesController extends Controller
     {
             $purchases= new Purchases;
             $purchases->trans_no = $request->ticket;
-            $purchases->customer_id = $request->commodity;
-            $purchases->commodity_id= $request->destination;
-            $purchases->sacks = $request->driver_id;
-            $purchases->ca_id = $request->company;
-            $purchases->balance_id = $request->plateno;
-            $purchases->partial_id = $request->liter;
-            $purchases->kilo = $request->liter;
-            $purchases->price = $request->liter;
-            $purchases->total = $request->liter;
-            $purchases->amtpay= $request->liter;
-            $purchases->remarks= $request->liter;
+            $purchases->customer_id = $request->customer;
+            $purchases->commodity_id= $request->commodity;
+            $purchases->sacks = $request->sacks;
+            $purchases->ca_id = $request->customer;
+            $purchases->balance_id = $request->customer;
+            $purchases->partial = $request->partial;
+            $purchases->kilo = $request->kilo;
+            $purchases->price = $request->price;
+            $purchases->total = $request->total;
+            $purchases->amtpay= $request->amount;
+            $purchases->remarks= $request->remarks;
             $purchases->save();
-
-
-
     }
 
     function updateId(){
