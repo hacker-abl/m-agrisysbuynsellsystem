@@ -76,7 +76,7 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodity;
             $purchases->sacks = $request->sacks;
             $purchases->ca_id = $request->customer;
-            $purchases->balance_id = $request->customer;
+            $purchases->balance_id = $request->balance;
             $purchases->partial = $request->partial;
             $purchases->kilo = $request->kilo;
             $purchases->price = $request->price;
@@ -89,6 +89,20 @@ class purchasesController extends Controller
     function updateId(){
        $temp = DB::select('select MAX(id) as "temp" FROM purchases');
        echo json_encode($temp);
+    }
+
+    public function refresh()
+    {
+        //$user = User::all();
+        $ultimatesickquery= DB::table('purchases')
+            ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->join('cash_advance', 'cash_advance.customer_id', '=', 'purchases.customer_id')
+            ->select('purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','cash_advance.balance', 'customer.fname','customer.mname','customer.lname')
+            ->get();
+        return \DataTables::of($ultimatesickquery)
+
+        ->make(true);
     }
 
 }

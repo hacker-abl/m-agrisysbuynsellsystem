@@ -242,8 +242,8 @@
                                             <div class="form-group">
                                                  <select type="text" id="remarks" name="remarks" class="form-control" placeholder="Select item" required style="width:100%;">
 
-                                                      <option value="immature">Good</option>
-                                                      <option value="immature">Immature</option>
+                                                      <option value="Good">Good</option>
+                                                      <option value="Immature">Immature</option>
                                                  </select>
                                             </div>
                                        </div>
@@ -282,6 +282,7 @@
                                        <thead>
                                             <tr>
                                                  <th width="100">ID</th>
+                                                 <th width="100">Customer</th>
                                                  <th width="100">Commodity</th>
                                                  <th width="100">No. of Sacks</th>
                                                  <th width="100">Cash Advance</th>
@@ -289,7 +290,9 @@
                                                  <th width="100">Partial Payment</th>
                                                  <th width="100">No. of Kilos</th>
                                                  <th width="100">Price</th>
+                                                 <th width="100">Total</th>
                                                  <th width="100">Deducted</th>
+                                                 <th width="100">Remarks</th>
                                             </tr>
                                        </thead>
                                   </table>
@@ -305,6 +308,72 @@
     <script>
 
     $(document).ready(function () {
+         $('#last').val(1);
+         $('#balance').val("0");
+         $('#partial').val("0");
+         $.extend( $.fn.dataTable.defaults, {
+             "language": {
+                 processing: 'Loading.. Please wait'
+             }
+         });
+
+         var purchasestable = $('#purchasetable').DataTable({
+              dom: 'Bfrtip',
+              buttons: [
+              ],
+              processing: true,
+              serverSide: true,
+              ajax: "{{ route('refresh_purchases') }}",
+              columns: [
+                   {data: 'trans_no', name: 'trans_no'},
+                   {data:'fname',
+                        render: function(data, type, full, meta){
+                             return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                   },
+                   {data: 'commodity_name', name: 'commodity_name'},
+                   {data: 'sacks', name: 'sacks'},
+
+                   {data: 'balance', name: 'balance'},
+                   {data: 'balance_id', name: 'balance_id'},
+                   {data: 'partial', name: 'partial'},
+                   {data: 'kilo', name: 'kilo'},
+
+                   {data: 'price', name: 'price'},
+                   {data: 'total', name: 'total'},
+                   {data: 'amtpay', name: 'amtpay'},
+                   {data: 'remarks', name: 'remarks'},
+              ]
+         });
+
+
+                 function refresh_purchase_table(){
+                     purchasestable.ajax.reload(); //reload datatable ajax
+                 }
+
+                 $(document).on('click', '#add_purchase', function(){
+                      event.preventDefault();
+                      $.ajax({
+                           headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                           },
+                           url:"{{ route('add_purchases') }}",
+                           method: 'POST',
+                           dataType:'text',
+                           data: $('#purchase_form').serialize(),
+                           success:function(data){
+                                $("#customer").val('').trigger('change');
+                                $("#commodity").val('').trigger('change');
+                                swal("Success!", "Record has been added to database", "success")
+                                $('#purchase_modal').modal('hide');
+                                refresh_purchase_table();
+                                //refresh_delivery_table();
+                           },
+                           error: function(data){
+                                swal("Oh no!", "Something went wrong, try again.", "error")
+                           }
+                      })
+                 });
 
          $('#partial').on('keyup keydown', function (e) {
            if (e.which == 8) {
@@ -761,30 +830,6 @@
 
         });
 
-
-
-        $(document).on('click', '#add_purchase', function(){
-             event.preventDefault();
-             $.ajax({
-                  headers: {
-                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  },
-                  url:"{{ route('add_purchases') }}",
-                  method: 'POST',
-                  dataType:'text',
-                  data: $('#purchase_form').serialize(),
-                  success:function(data){
-                       $("#customer").val('').trigger('change');
-                       $("#commodity").val('').trigger('change');
-                       swal("Success!", "Record has been added to database", "success")
-                       $('#purchase_modal').modal('hide');
-                       //refresh_delivery_table();
-                  },
-                  error: function(data){
-                       swal("Oh no!", "Something went wrong, try again.", "error")
-                  }
-             })
-        });
 
 
            });
