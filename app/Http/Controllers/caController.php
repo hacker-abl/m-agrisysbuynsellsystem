@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Query\Builder;
 use App\ca;
 use App\Customer;
+use App\balance;
 class caController extends Controller
 {
      /**
@@ -39,6 +40,9 @@ class caController extends Controller
         $ca->amount = $request->amount;
         $ca->balance = $request->balance + $request->amount;
         $ca->save();
+
+        $balance = balance::where('customer_id', '=',$request->customer_id)
+                 ->increment('balance',  $request->amount);
     }
 
     public function refresh(){
@@ -76,7 +80,9 @@ class caController extends Controller
     }
 
     public function check_balance(Request $request){
-        $balance = ca::where('customer_id', $request->id)->orderBy('customer_id', 'desc')->latest()->get();
+        //$balance = ca::where('customer_id', $request->id)->orderBy('customer_id', 'desc')->latest()->get();
+        $balance = balance::where('customer_id', '=', $request->id)
+                   ->get();
         echo json_encode($balance);
     }
 }

@@ -66,8 +66,9 @@
                     <div class="body">
                         <form class="form-horizontal " id="customer_form">
                             <input type="hidden" name="id" id="id" value="">
+                            <input type="hidden" name="balance_id" id="balance_id" value="">
                             <input type="hidden" name="button_action" id="button_action" value="">
-                            
+
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                     <label for="fname">First Name</label>
@@ -191,6 +192,8 @@
                     .end();
             })
 
+
+
             var customertable = $('#customertable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
@@ -214,9 +217,26 @@
             {
                 customertable.ajax.reload(); //reload datatable ajax
             }
-            
+
             //Open Customer Modal
             $(document).on('click','.open_customer_modal', function(){
+                 $.ajax({
+                     url:"{{ route('refresh_balance') }}",
+                     method: 'get',
+                     data: { temp: 'temp' },
+                     dataType:'json',
+                     success:function(data){
+                          var t=0;
+                          if(data[0].temp!=null){
+                               t = data[0].temp;
+                          }
+                          var a = parseInt(t);
+                          var x = a+1;
+                            $('#balance_id').val(x);
+                           $('#customer_modal').modal('show');
+                     }
+                })
+
                 $('.modal_title').text('Add Customer');
                 $('#button_action').val('add');
                 if($(".suki_type_input:visible")){

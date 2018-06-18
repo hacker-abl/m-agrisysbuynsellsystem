@@ -91,6 +91,7 @@ Route::group(['middleware'], function()
     Route::get('/refresh_customer', 'customerController@refresh')->name('refresh_customer');
     Route::get('/update_customer', 'customerController@updatedata')->name('update_customer');
     Route::get('/delete_customer', 'customerController@deletedata')->name('delete_customer');
+    Route::get('/refresh_balance', 'customerController@updateId')->name('refresh_balance');
 
     Route::get('/trucks', 'trucksController@index')->name('trucks');
     Route::post('/add_trucks', 'trucksController@store')->name('add_trucks');

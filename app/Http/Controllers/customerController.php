@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Customer;
 use App\balance;
 class customerController extends Controller
@@ -56,6 +57,11 @@ class customerController extends Controller
             $customer->suki_type = 0;
             $customer->save();
 
+            $balance = new balance;
+            $balance->customer_id = $request->balance_id;
+            $balance->balance = 0;
+            $balance->save();
+
         }
 
         if($request->get('button_action') == 'update'){
@@ -85,6 +91,7 @@ class customerController extends Controller
     }
 
     function updatedata(Request $request){
+
         $id = $request->input('id');
         $customer = Customer::find($id);
         $output = array(
@@ -94,6 +101,11 @@ class customerController extends Controller
             'suki_type' => $customer->suki_type
         );
         echo json_encode($output);
+    }
+
+    function updateId(){
+       $temp = DB::select('select MAX(id) as "temp" FROM balance');
+       echo json_encode($temp);
     }
 
     function deletedata(Request $request){
