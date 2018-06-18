@@ -74,6 +74,7 @@
                         <div class="body">
                              <form class="form-horizontal " id="purchase_form">
                                   <input type="hidden" name="id" id="id" value="">
+                                  <input type="hidden" name="balance1" id="balance1" value="">
                                   <input type="hidden" name="last" id="last" value="">
                                   <input type="hidden" name="pr" id="pr" value="">
                                   <input type="hidden" name="suki" id="suki" value="">
@@ -666,6 +667,7 @@
              success: function(data) {
                   $('#ca').val(data.balance)
                   $('#balance').val(data.balance)
+                  $('#balance1').val(data.balance)
                   $('#last').val(data.suki_type)
                  if($('#partial').val()!=""){
                       var a = 0;

@@ -30,7 +30,7 @@ class CreatePurchasesTable extends Migration
            $table->integer('ca_id')->unsigned();
            $table->foreign('ca_id')
                      ->references('customer_id')
-                     ->on('cash_advance')
+                     ->on('balance')
                      ->onDelete('cascade');
             $table->decimal('balance_id');
             $table->decimal('partial');

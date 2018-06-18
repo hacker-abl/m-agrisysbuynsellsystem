@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Customer;
+use App\balance;
 class customerController extends Controller
 {
     /**
@@ -54,6 +55,7 @@ class customerController extends Controller
             $customer->lname = $request->lname;
             $customer->suki_type = 0;
             $customer->save();
+
         }
 
         if($request->get('button_action') == 'update'){

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Commodity;
 use App\Customer;
 use App\ca;
+use App\balance;
 use App\Purchases;
 class purchasesController extends Controller
 {
@@ -38,15 +39,13 @@ class purchasesController extends Controller
 
     function findAmount(Request $request){
          $id = $request->input('id');
-         $ca = ca::where('customer_id', '=', $id)
-               ->orderBy('updated_at', true)
+         $balance = balance::where('customer_id', '=', $id)
                ->first();
          $customer = customer::where('id', '=', $id)
                ->first();
 
         $output = array(
-               'amount' => $ca->amount,
-               'balance' => $ca->balance,
+               'balance' => $balance->balance,
                'suki_type'=> $customer->suki_type,
            );
 
@@ -84,6 +83,12 @@ class purchasesController extends Controller
             $purchases->amtpay= $request->amount;
             $purchases->remarks= $request->remarks;
             $purchases->save();
+
+          $balance = balance::where('customer_id', '=',$request->customer)
+                   ->decrement('balance', $request->balance1 - $request->balance);
+
+
+
     }
 
     function updateId(){
@@ -97,8 +102,8 @@ class purchasesController extends Controller
         $ultimatesickquery= DB::table('purchases')
             ->join('customer', 'customer.id', '=', 'purchases.customer_id')
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->join('cash_advance', 'cash_advance.customer_id', '=', 'purchases.customer_id')
-            ->select('purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','cash_advance.balance', 'customer.fname','customer.mname','customer.lname')
+            ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+            ->select('purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance', 'customer.fname','customer.mname','customer.lname')
             ->get();
         return \DataTables::of($ultimatesickquery)
 
