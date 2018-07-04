@@ -30,6 +30,7 @@ class AddAccessLevelColumnUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function($table) {
+            $table->dropForeign('users_access_id_foreign');
             $table->dropColumn('access_id');
         });
 

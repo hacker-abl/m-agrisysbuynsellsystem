@@ -30,7 +30,8 @@ class AddRolesIdColumnEmployeeTable extends Migration
     public function down()
     {
          Schema::table('employee', function($table) {
+            $table->dropForeign('employee_role_id_foreign');
             $table->dropColumn('role_id');
-         });
+        });
     }
 }

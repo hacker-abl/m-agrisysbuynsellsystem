@@ -29,8 +29,8 @@ class CreatePurchasesTable extends Migration
            $table->integer('sacks');
            $table->integer('ca_id')->unsigned();
            $table->foreign('ca_id')
-                     ->references('customer_id')
-                     ->on('balance')
+                     ->references('id')
+                     ->on('customer')
                      ->onDelete('cascade');
             $table->decimal('balance_id');
             $table->decimal('partial');
