@@ -14,24 +14,24 @@ class CreatePurchasesTable extends Migration
     public function up()
     {
         Schema::create('purchases', function (Blueprint $table) {
-             $table->increments('id');
+            $table->increments('id');
             $table->string('trans_no');
             $table->integer('customer_id')->unsigned();
             $table->foreign('customer_id')
-                    ->references('id')
-                    ->on('customer')
-                    ->onDelete('cascade');
-          $table->integer('commodity_id')->unsigned();
-          $table->foreign('commodity_id')
-                    ->references('id')
-                    ->on('commodity')
-                    ->onDelete('cascade');
-           $table->integer('sacks');
-           $table->integer('ca_id')->unsigned();
-           $table->foreign('ca_id')
-                     ->references('customer_id')
-                     ->on('balance')
-                     ->onDelete('cascade');
+                ->references('id')
+                ->on('customer')
+                ->onDelete('cascade');
+            $table->integer('commodity_id')->unsigned();
+            $table->foreign('commodity_id')
+                ->references('id')
+                ->on('commodity')
+                ->onDelete('cascade');
+            $table->integer('sacks');
+            $table->integer('ca_id')->unsigned();
+            $table->foreign('ca_id')
+                ->references('customer_id')
+                ->on('balance')
+                ->onDelete('cascade');
             $table->decimal('balance_id');
             $table->decimal('partial');
             $table->integer('kilo');
@@ -40,7 +40,6 @@ class CreatePurchasesTable extends Migration
             $table->decimal('amtpay');
             $table->string('remarks');
             $table->timestamps();
-
         });
     }
 

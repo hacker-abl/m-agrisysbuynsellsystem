@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRolesIdColumnEmployeeTable extends Migration
+class CreateBalancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class AddRolesIdColumnEmployeeTable extends Migration
      */
     public function up()
     {
-        Schema::table('employee', function (Blueprint $table) {
-            $table->integer('role_id')->unsigned();
-            $table->foreign('role_id')
+        Schema::create('balance', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('customer_id')->unsigned();
+            $table->foreign('customer_id')
                     ->references('id')
-                    ->on('roles')
+                    ->on('customer')
                     ->onDelete('cascade');
+            $table->integer('balance');
+            $table->timestamps();
         });
     }
 
@@ -29,9 +32,6 @@ class AddRolesIdColumnEmployeeTable extends Migration
      */
     public function down()
     {
-         Schema::table('employee', function($table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
-         });
+        Schema::dropIfExists('balance');
     }
 }

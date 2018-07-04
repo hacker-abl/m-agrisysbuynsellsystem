@@ -13,8 +13,7 @@
 	<h2>Usage</h2>
 	<p> 1. Install Laravel</p>
 	<p> 2. Run Composer</p>
-	<p> 3. Run laravel migrations -> php artisan migrate</p>
-	<p> 4. Run "php artisan db:seed --class=access_levels"</p>
+	<p> 3. Run laravel migrations -> "php artisan migrate"</p>
 	<p> 4. Run "php artisan db:seed"</p>
 	<h2>Sample Accounts</h2>
 	<table>
