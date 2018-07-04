@@ -32,6 +32,6 @@ class AddRolesIdColumnEmployeeTable extends Migration
          Schema::table('employee', function($table) {
             $table->dropForeign(['role_id']);
             $table->dropColumn('role_id');
-         });
+        });
     }
 }
