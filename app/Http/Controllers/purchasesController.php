@@ -106,7 +106,29 @@ class purchasesController extends Controller
             ->select('purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance', 'customer.fname','customer.mname','customer.lname')
             ->get();
         return \DataTables::of($ultimatesickquery)
+        ->editColumn('amtpay', function ($data) {
+            return '₱'.number_format($data->amtpay, 2, '.', ',');
+        })
 
+        ->editColumn('price', function ($data) {
+            return '₱'.number_format($data->price, 2, '.', ',');
+        })
+
+        ->editColumn('balance_id', function ($data) {
+            return '₱'.number_format($data->balance_id, 2, '.', ',');
+        })
+
+        ->editColumn('balance', function ($data) {
+            return '₱'.number_format($data->balance, 2, '.', ',');
+        })
+
+        ->editColumn('partial', function ($data) {
+            return '₱'.number_format($data->partial, 2, '.', ',');
+        })
+
+        ->editColumn('total', function ($data) {
+            return '₱'.number_format($data->total, 2, '.', ',');
+        })
         ->make(true);
     }
 

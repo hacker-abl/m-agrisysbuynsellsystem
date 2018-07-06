@@ -68,10 +68,17 @@
          <div class="modal-dialog" role="document">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                    <div class="card">
-                        <div class="header">
-                             <h2 class="modal_title">Add User</h2>
-                        </div>
+
                         <div class="body">
+                             <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" id ="homeclick" href="#home">Customer Purchases</a></li>
+                                <li><a data-toggle="tab" id="homeclick1" href="#home1">Walk-in Purchases</a></li>
+                             </ul>
+                             <div class="clearfix"></div>
+                             <br>
+
+                              <div class="tab-content">
+                             <div id="home" class="tab-pane fade in active">
                              <form class="form-horizontal " id="purchase_form">
                                   <input type="hidden" name="id" id="id" value="">
                                   <input type="hidden" name="balance1" id="balance1" value="">
@@ -261,10 +268,18 @@
                                   </div>
                              </form>
                         </div>
+                           <div id="home1" class="tab-pane fade in active">
+                                <p>
+                                     MGA BOBO
+                                </p>
+                           </div>
+                      </div>
+                        </div>
                    </div>
               </div>
          </div>
     </div>
+
 
     <div class="row clearfix">
          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -309,6 +324,9 @@
     <script>
 
     $(document).ready(function () {
+
+        
+
          $('#last').val(1);
          $('#balance').val("0");
          $('#partial').val("0");

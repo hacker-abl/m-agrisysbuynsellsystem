@@ -36,8 +36,8 @@ class CreatePurchasesTable extends Migration
             $table->decimal('partial');
             $table->integer('kilo');
             $table->decimal('price');
-            $table->decimal('total');
-            $table->decimal('amtpay');
+            $table->decimal('total', 10);
+            $table->decimal('amtpay', 10);
             $table->string('remarks');
             $table->timestamps();
         });
