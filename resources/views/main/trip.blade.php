@@ -15,7 +15,7 @@
                     <i class="material-icons">show_chart</i>
                     <span>Expenses</span>
                 </a>
-            </li> 
+            </li>
             <li class="active">
                 <a href="{{ route('trips') }}">
                     <i class="material-icons">directions_bus</i>
@@ -202,7 +202,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <div class="row clearfix">
                                 <div class="modal-footer">
                                     <button type="submit" id="update_trip" class="btn btn-link waves-effect" ng-disable="trip_form_update.$invalid">SAVE CHANGES</button>
@@ -258,7 +258,7 @@
         });
 
         $(document).ready(function() {
-            $('.delete').hide(); 
+            $('.delete').hide();
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -266,7 +266,7 @@
             });
 
             var num_elements=0;
-            
+
             var item=1;
             var num=0;
             var div;
@@ -275,19 +275,19 @@
                 e.preventDefault();
                 div= $('.dynamic-element form').last().attr('id');
                 item = (div.match(/\d+/g));
-            
+
                 $('#trip_form'+(item)+'').detach();
                 if(item==1){
-                    $('.delete').hide(); 
+                    $('.delete').hide();
                 }
             });
 
             $(".pickup_modal").on("hidden.bs.modal", function(){
                 $(".trip_form").detach();
-                $('.delete').hide(); 
+                $('.delete').hide();
                 item=1;
             });
-            
+
             $('#pickup_modal_update').on('hidden.bs.modal', function (e) {
                 $(this)
                 .find("input,textarea,select")
@@ -299,11 +299,11 @@
             })
 
             $(".pickup_modal").on("shown.bs.modal", function(){
-                $('.delete').hide(); 
+                $('.delete').hide();
             });
 
             $('.add-one').click(function(){
-            
+
                 $(".dynamic-element").append(
                     '<form class="form-horizontal trip_form" id="trip_form'+item+'">'+
                         '<h4 align="center">Pick Up '+item+'</h4>'+
@@ -321,7 +321,7 @@
                                 '</div>'+
                             '</div>'+
                         '</div>'+
-                            
+
                         '<div class="row clearfix">'+
                             '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">'+
                                 '<label for="name">Expense</label>'+
@@ -407,9 +407,9 @@
                         '</div>'+
 
                         '<hr noshade width="100%" >'+
-                    '</form>'  
+                    '</form>'
                 )
-                
+
                 $('#plateno'+item+'').select2({
                     dropdownParent: $('#trip_form'+item),
                     placeholder: '--Select a truck--'
@@ -437,14 +437,14 @@
                     success:function(data){
                         var t=0;
                         if(data[0].temp!=null){
-                            t = data[0].temp;
-                        }else{
-                            t=0;
-                        }  
+                             t = data[0].temp;
+                        }
                         var stringticket= t.toString();
+
                         var e=stringticket;
                         if(stringticket!="0"){
-                            e= stringticket.substr(8, 15);
+                            e= stringticket.substr(7, 7);
+                            console.log(e);
                         }
                         var a = parseInt(e);
 
@@ -469,11 +469,11 @@
             $(document).on('click','.open_pickup_modal', function(){
                 $('#pickup_modal').modal('show');
             });
-            
+
             //Open Update Modal
             $(document).on('click', '.update_pickup', function(){
                 var id = $(this).attr("id");
-                
+
                 $.ajax({
                     url:"{{ route('update_pickup') }}",
                     method: 'get',
@@ -492,7 +492,7 @@
                     }
                 })
             });
-            
+
             //Clicked Update Button
             $("#update_trip").click(function(){
                 event.preventDefault();
@@ -504,9 +504,9 @@
                     method: 'POST',
                     dataType:'text',
                     data: $('#trip_form_update').serialize(),
-                    success:function(data){          
+                    success:function(data){
                         swal("Success!", "Update Success", "success")
-                      
+
                         $('#pickup_modal_update').modal('hide');
                        refresh_pickup();
                     },
