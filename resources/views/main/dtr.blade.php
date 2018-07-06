@@ -70,6 +70,11 @@
 				<div class="card">
 					<div class="header">
 						<h2 class="modal_title">Add DTR</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_dtr" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            </li>
+                        </ul>
 					</div>
 					<div class="body">
 						<form class="form-horizontal " id="dtr_form">
@@ -367,6 +372,13 @@
 						swal("Oh no!", "Something went wrong, try again.", "error");
 					}
                 });
+            });
+
+            $("#print_dtr").click(function(event) {
+                event.preventDefault();
+                $("#add_dtr").trigger("click");
+                window.open("{{ route('print_dtr')}}",'_blank');
+
             });
 
             $(document).on('click', '.view_dtr', function(){

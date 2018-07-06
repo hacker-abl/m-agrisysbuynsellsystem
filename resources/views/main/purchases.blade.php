@@ -69,7 +69,12 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                    <div class="card">
                         <div class="header">
-                             <h2 class="modal_title">Add User</h2>
+                             <h2 class="modal_title">Add Purchases</h2>
+                             <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_purchase" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            </li>
+                        </ul>
                         </div>
                         <div class="body">
                              <form class="form-horizontal " id="purchase_form">
@@ -348,33 +353,42 @@
          });
 
 
-                 function refresh_purchase_table(){
-                     purchasestable.ajax.reload(); //reload datatable ajax
-                 }
+         function refresh_purchase_table(){
+             purchasestable.ajax.reload(); //reload datatable ajax
+         }
 
-                 $(document).on('click', '#add_purchase', function(){
-                      event.preventDefault();
-                      $.ajax({
-                           headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                           },
-                           url:"{{ route('add_purchases') }}",
-                           method: 'POST',
-                           dataType:'text',
-                           data: $('#purchase_form').serialize(),
-                           success:function(data){
-                                $("#customer").val('').trigger('change');
-                                $("#commodity").val('').trigger('change');
-                                swal("Success!", "Record has been added to database", "success")
-                                $('#purchase_modal').modal('hide');
-                                refresh_purchase_table();
-                                //refresh_delivery_table();
-                           },
-                           error: function(data){
-                                swal("Oh no!", "Something went wrong, try again.", "error")
-                           }
-                      })
-                 });
+         $(document).on('click', '#add_purchase', function(){
+              event.preventDefault();
+              $.ajax({
+                   headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   url:"{{ route('add_purchases') }}",
+                   method: 'POST',
+                   dataType:'text',
+                   data: $('#purchase_form').serialize(),
+                   success:function(data){
+                        $("#customer").val('').trigger('change');
+                        $("#commodity").val('').trigger('change');
+                        swal("Success!", "Record has been added to database", "success")
+                        $('#purchase_modal').modal('hide');
+                        refresh_purchase_table();
+                        //refresh_delivery_table();
+                   },
+                   error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error")
+                   }
+              })
+         });
+
+        $("#print_purchase").click(function(event) {
+            event.preventDefault();
+            $("#add_purchase").trigger("click");
+            window.open("{{ route('print_purchase')}}",'_blank');
+
+        });
+
+
 
          $('#partial').on('keyup keydown', function (e) {
            if (e.which == 8) {
