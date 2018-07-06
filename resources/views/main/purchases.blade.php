@@ -269,9 +269,175 @@
                              </form>
                         </div>
                            <div id="home1" class="tab-pane fade in active">
-                                <p>
-                                     MGA BOBO
-                                </p>
+                                <form class="form-horizontal " id="purchase_form1">
+                                     <input type="hidden" name="stat" id="stat" value="">
+                                     <input type="hidden" name="id1" id="id1" value="">
+                                     <input type="hidden" name="balance2" id="balance2" value="">
+                                     <input type="hidden" name="last1" id="last1" value="">
+                                     <input type="hidden" name="pr1" id="pr1" value="">
+                                     <input type="hidden" name="suki1" id="suki1" value="">
+                                      <input type="hidden" name="ca1" id="ca1" value="">
+                                      <input type="hidden" name="partial1" id="partial1" value="">
+                                      <input type="hidden" name="balance1" id="balance1" value="">
+                                       <input type="hidden" name="total1" id="total1" value="">
+                                        <input type="hidden" name="pricenopad" id="pricenopad" value="">
+
+                                        <input type="hidden" name="customerid" id="customerid" value="">
+
+                                     <input type="hidden" name="button_action" id="button_action" value="">
+                                     <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Transaction Number</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="text" id="ticket1" name="ticket1" readonly="readonly" value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
+
+                                     <div class="row clearfix">
+                                          <div class="col-md-4">
+                                          <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <label for="name">First Name</label>
+                                                    <div class="form-line">
+                                                         <input type="text" id="fname"   name="fname" class="form-control"   required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
+                                           <div class="col-md-4">
+                                               <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+
+                                               </div>
+                                               <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                    <div class="form-group">
+                                                         <label for="name">Middle Name</label>
+                                                         <div class="form-line">
+                                                              <input type="text" id="mname" name="mname"  class="form-control"   required>
+                                                         </div>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                           </div>
+                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                <div class="form-group">
+                                                     <label for="name">Last Name</label>
+                                                     <div class="form-line">
+                                                          <input type="text" id="lname" name="lname"  value="" class="form-control" required>
+                                                     </div>
+                                                </div>
+                                           </div>
+                                      </div>
+                                          </div>
+
+
+                                     <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="type">Commodity</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <select type="text" id="commodity1" name="commodity1" class="form-control" placeholder="Select item" required style="width:100%;">
+                                                         @foreach($commodity as $a)
+                                                         <option value="{{ $a->id }}">{{ $a->name }} Price: {{ $a->price }}({{ $a->suki_price }})</option>
+                                                         @endforeach
+                                                    </select>
+                                               </div>
+                                          </div>
+                                     </div>
+
+                                     <div class="row clearfix">
+                                          <div class="col-md-4">
+                                          <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <label for="name">Sacks</label>
+                                                    <div class="form-line">
+                                                         <input type="number" id="sacks1"  onkeyup="sacks2(this)" name="sacks1" class="form-control"   required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
+                                           <div class="col-md-4">
+                                               <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+
+                                               </div>
+                                               <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                    <div class="form-group">
+                                                         <label for="name">Kilograms</label>
+                                                         <div class="form-line">
+                                                              <input type="number" id="kilo1" name="kilo1" onkeyup="kilos2(this)" class="form-control"   required>
+                                                         </div>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                           </div>
+                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                <div class="form-group">
+                                                     <label for="name">Price</label>
+                                                     <div class="form-line">
+                                                          <input type="text" id="price1" name="price1" readonly="readonly" value="" class="form-control" required>
+                                                     </div>
+                                                </div>
+                                           </div>
+                                      </div>
+                                          </div>
+
+
+
+                                     <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Total</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="text" id="amount1" name="amount1" readonly="readonly" value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
+
+                                     <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="type">Remarks</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <select type="text" id="remarks1" name="remarks1" class="form-control" placeholder="Select item" required style="width:100%;">
+
+                                                         <option value="Good">Good</option>
+                                                         <option value="Immature">Immature</option>
+                                                    </select>
+                                               </div>
+                                          </div>
+                                     </div>
+
+
+
+
+                                     <div class="row clearfix">
+                                          <div class="modal-footer">
+                                               <button type="submit" id="add_purchase1" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                               <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                          </div>
+                                     </div>
+                                </form>
                            </div>
                       </div>
                         </div>
@@ -325,10 +491,17 @@
 
     $(document).ready(function () {
 
-        
+         $("#homeclick").on('click', function() {
+               $('#stat').val("old");
+         });
+
+         $("#homeclick1").on('click', function() {
+              $('#stat').val("new");
+        });
 
          $('#last').val(1);
          $('#balance').val("0");
+         $('#ca1').val("0");
          $('#partial').val("0");
          $.extend( $.fn.dataTable.defaults, {
              "language": {
@@ -394,20 +567,45 @@
                       })
                  });
 
+
+                 $(document).on('click', '#add_purchase1', function(){
+                    event.preventDefault();
+                    $.ajax({
+                         headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                         },
+                         url:"{{ route('add_purchases') }}",
+                         method: 'POST',
+                         dataType:'text',
+                         data: $('#purchase_form1').serialize(),
+                         success:function(data){
+
+                              $("#commodity1").val('').trigger('change');
+                              swal("Success!", "Record has been added to database", "success")
+                              $('#purchase_modal').modal('hide');
+                              refresh_purchase_table();
+                              //refresh_delivery_table();
+                         },
+                         error: function(data){
+                              swal("Oh no!", "Something went wrong, try again.", "error")
+                         }
+                    })
+                });
+
          $('#partial').on('keyup keydown', function (e) {
            if (e.which == 8) {
 
              if($('#balance').val()!=""){
          	    var a = 0;
-         	    var b = parseInt($('#balance').val());
-         	    var d = parseInt($('#ca').val());
+         	    var b = parseFloat($('#balance').val());
+         	    var d = parseFloat($('#ca').val());
          	    var c = 0;
          	    var e =0;
          		  if($('#partial').val()!=""){
-         			  a = parseInt($('#partial').val());
+         			  a = parseFloat($('#partial').val());
 
          			 if($('#total').val()!=""){
-         				 e = parseInt($('#total').val());
+         				 e = parseFloat($('#total').val());
          			 }
          			 x = a+e;
          			$('#amount').val(x)
@@ -419,7 +617,7 @@
          		  $('#balance').val(c);
 
          		  if($('#total').val()!=""){
-         			  e = parseInt($('#total').val());
+         			  e = parseFloat($('#total').val());
          		  }
 
          		  x = a+e;
@@ -440,7 +638,7 @@
 
              }
              else if ($('#balance').val()==""){
-         	     var d = parseInt($('#ca').val());
+         	     var d = parseFloat($('#ca').val());
          	     $('#balance').val(d);
              }
 
@@ -455,7 +653,7 @@
 
      function sacks1(value) {
                var a = 0;
-               var b = parseInt($('#price').val());
+               var b = parseFloat($('#price').val());
                var d = 0;
                var c = 0;
                var e = 0;
@@ -464,17 +662,17 @@
                var t = 0;
                var z = 0;
                if($('#price').val()!=""){
-                   a = parseInt($('#sacks').val());
+                   a = parseFloat($('#sacks').val());
                    d = a*50;
                    if($('#sacks').val()==""){
 
                           $('#total').val("");
                           if($('#partial').val()!="" || $('#total').val()!=""){
                                if($('#partial').val()!=""){
-                                       r = parseInt($('#partial').val());
+                                       r = parseFloat($('#partial').val());
                                   }
                                if($('#total').val()!=""){
-                                          t = parseInt($('#total').val());
+                                          t = parseFloat($('#total').val());
                                      }
                                var temp2 = t+r;
                                $('#amount').val(temp2);
@@ -491,13 +689,13 @@
                     $('#amount').val(temp);
                     //console.log(c+r);
                     if($('#partial').val()!=""){
-                            r = parseInt($('#partial').val());
+                            r = parseFloat($('#partial').val());
                              temp = c + r;
                             $('#amount').val(temp);
 
                        }
                     if($('#total').val()!=""){
-                               t = parseInt($('#total').val());
+                               t = parseFloat($('#total').val());
                                temp = c + r;
                                $('#amount').val(temp);
                           }
@@ -508,7 +706,7 @@
                     }
                }
              if($('#kilo').val()!=""){
-                  e = parseInt($('#kilo').val());
+                  e = parseFloat($('#kilo').val());
                   x = b*e;
                   z = x+c;
                   var temp1 = z + r;
@@ -522,7 +720,7 @@
    }
    function kilos1(value) {
              var a = 0;
-             var b = parseInt($('#price').val());
+             var b = parseFloat($('#price').val());
              var c = 0;
              var d = 0 ;
              var i = 0;
@@ -532,15 +730,15 @@
              var r = 0;
              var t = 0;
                if($('#price').val()!=""){
-                    a = parseInt($('#kilo').val());
+                    a = parseFloat($('#kilo').val());
                if($('#kilo').val()==""){
                     $('#total').val("");
                     if($('#partial').val()!="" || $('#total').val()!=""){
                          if($('#partial').val()!=""){
-                                 r = parseInt($('#partial').val());
+                                 r = parseFloat($('#partial').val());
                             }
                          if($('#total').val()!=""){
-                                    t = parseInt($('#total').val());
+                                    t = parseFloat($('#total').val());
                                }
                          var temp2 = t+r;
                          $('#amount').val(temp2);
@@ -556,12 +754,12 @@
                $('#total').val(c);
                $('#amount').val(temp);
                if($('#partial').val()!=""){
-                    r = parseInt($('#partial').val());
+                    r = parseFloat($('#partial').val());
                     temp = c + r;
                     $('#amount').val(temp);
                }
                    if($('#total').val()!=""){
-                        t = parseInt($('#total').val());
+                        t = parseFloat($('#total').val());
                         temp = c + r;
                        $('#amount').val(temp);
                    }
@@ -573,7 +771,7 @@
                    }
           }
               if($('#sacks').val()!=""){
-                   e = parseInt($('#sacks').val());
+                   e = parseFloat($('#sacks').val());
                   x = b*(e*50);
                    z = x+c ;
                    i = x+c+r ;
@@ -589,15 +787,15 @@
          if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
        if($('#balance').val()!=""){
             var a = 0;
-            var b = parseInt($('#balance').val());
-            var d = parseInt($('#ca').val());
+            var b = parseFloat($('#balance').val());
+            var d = parseFloat($('#ca').val());
             var c = 0;
             var e =0;
                if($('#partial').val()!=""){
-                    a = parseInt($('#partial').val());
+                    a = parseFloat($('#partial').val());
 
                     if($('#total').val()!=""){
-                        e = parseInt($('#total').val());
+                        e = parseFloat($('#total').val());
                    }
                    x = a+e;
                   $('#amount').val(x)
@@ -606,13 +804,174 @@
                 c = d-a;
                $('#balance').val(c);
                if($('#total').val()!=""){
-                   e = parseInt($('#total').val());
+                   e = parseFloat($('#total').val());
               }
               x = a+e;
              $('#amount').val(x)
        }
        }
     }
+
+    function sacks2(value) {
+              var a = 0;
+              var b = parseFloat($('#price1').val());
+              var d = 0;
+              var c = 0;
+              var e = 0;
+              var r = 0;
+              var x = 0;
+              var t = 0;
+              var z = 0;
+              if($('#price1').val()!=""){
+                  a = parseFloat($('#sacks1').val());
+                  d = a*50;
+                  if($('#sacks1').val()==""){
+
+                        $('#total1').val("");
+                        if($('#partial1').val()!="" || $('#total1').val()!=""){
+                             if($('#partial1').val()!=""){
+                                     r = parseFloat($('#partial1').val());
+                                 }
+                             if($('#total1').val()!=""){
+                                         t = parseFloat($('#total1').val());
+                                    }
+                             var temp2 = t+r;
+                             $('#amount1').val(temp2);
+                             console.log(temp2);
+                        }
+                        else{
+                             $('#amount1').val("");
+                        }
+                   }
+              else{
+                   c = d*b;
+                   var temp = c + r;
+                   $('#total1').val(c);
+                   $('#amount1').val(temp);
+                   //console.log(c+r);
+                   if($('#partial1').val()!=""){
+                           r = parseFloat($('#partial1').val());
+                            temp = c + r;
+                           $('#amount1').val(temp);
+
+                      }
+                   if($('#total1').val()!=""){
+                             t = parseFloat($('#total1').val());
+                             temp = c + r;
+                             $('#amount1').val(temp);
+                        }
+
+                   if($('#kilo1').val()== ""){
+                        temp = c + r;
+                        $('#amount1').val(temp);
+                   }
+              }
+            if($('#kilo1').val()!=""){
+                 e = parseFloat($('#kilo1').val());
+                 x = b*e;
+                 z = x+c;
+                 var temp1 = z + r;
+
+                 $('#total1').val(z);
+                $('#amount1').val(temp1);
+
+         }
+
+}
+  }
+  function kilos2(value) {
+            var a = 0;
+            var b = parseFloat($('#price1').val());
+            var c = 0;
+            var d = 0 ;
+            var i = 0;
+            var e = 0;
+            var x = 0;
+            var z = 0;
+            var r = 0;
+            var t = 0;
+              if($('#price1').val()!=""){
+                   a = parseFloat($('#kilo1').val());
+              if($('#kilo1').val()==""){
+                   $('#total1').val("");
+                   if($('#partial1').val()!="" || $('#total1').val()!=""){
+                        if($('#partial1').val()!=""){
+                                r = parseFloat($('#partial1').val());
+                           }
+                        if($('#total1').val()!=""){
+                                   t = parseFloat($('#total1').val());
+                             }
+                        var temp2 = t+r;
+                        $('#amount1').val(temp2);
+                   }
+                   else{
+                        $('#amount1').val("");
+                   }
+
+          }
+              else{
+              c = a*b;
+              var temp = c + r;
+              $('#total1').val(c);
+              $('#amount1').val(temp);
+              if($('#partial1').val()!=""){
+                   r = parseFloat($('#partial1').val());
+                   temp = c + r;
+                   $('#amount1').val(temp);
+              }
+                  if($('#total1').val()!=""){
+                       t = parseFloat($('#total1').val());
+                       temp = c + r;
+                      $('#amount1').val(temp);
+                  }
+
+                  if($('#sacks1').val()=="")
+                  {
+                       temp = c + r;
+                       $('#amount1').val(temp);
+                  }
+         }
+             if($('#sacks1').val()!=""){
+                  e = parseFloat($('#sacks1').val());
+                 x = b*(e*50);
+                  z = x+c ;
+                  i = x+c+r ;
+                  $('#total1').val(z);
+                  $('#amount1').val(i);
+
+          }
+
+     }
+}
+
+   function partial2(value) {
+        if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
+      if($('#balance1').val()!=""){
+          var a = 0;
+          var b = parseFloat($('#balance1').val());
+          var d = 0;
+          var c = 0;
+          var e =0;
+              if($('#partial').val()!=""){
+                   a = parseFloat($('#partial1').val());
+
+                   if($('#total1').val()!=""){
+                       e = parseFloat($('#total1').val());
+                  }
+                  x = a+e;
+                 $('#amount1').val(x)
+              }
+
+               c = d-a;
+              $('#balance1').val(c);
+              if($('#total1').val()!=""){
+                  e = parseFloat($('#total1').val());
+             }
+             x = a+e;
+            $('#amount1').val(x)
+      }
+      }
+   }
 
 
 
@@ -646,17 +1005,38 @@
                        if(data[0].temp!=null){
                             t = data[0].temp;
                        }
-                       var a = parseInt(t);
+                       var a = parseFloat(t);
                        var b = a + 1;
+                        $('#id1').val(b);
                        var c = new Date();
                        var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
                        var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                        $('#ticket').val(currentDate+b);
+                        $('#ticket1').val(currentDate+b);
                        console.log( $('#ticket').val());
 
                         $("#commodity").val('').trigger('change');
+                        $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
                         $('#purchase_modal').modal('show');
+                  }
+             })
+
+             $.ajax({
+                  url:"{{ route('findCustomer') }}",
+                  method: 'get',
+                  data: { temp: 'temp' },
+                  dataType:'json',
+                  success:function(data){
+                       var t=0;
+                       if(data[0].temp!=null){
+                            t = data[0].temp;
+                       }
+                       var a = parseFloat(t);
+                       var b = a + 1;
+                      $('#customerid').val(b);
+                       console.log( $('#customerid').val(b));
+
                   }
              })
         });
@@ -665,12 +1045,22 @@
             dropdownParent: $('#purchase_modal'),
              placeholder: 'Select an item'
         });
+
+        $('#commodity1').select2({
+            dropdownParent: $('#purchase_modal'),
+            placeholder: 'Select an item'
+        });
         $('#customer').select2({
             dropdownParent: $('#purchase_modal'),
              placeholder: 'Select a company'
         });
 
         $('#remarks').select2({
+            dropdownParent: $('#purchase_modal'),
+            placeholder: 'Select a company'
+        });
+
+        $('#remarks1').select2({
             dropdownParent: $('#purchase_modal'),
             placeholder: 'Select a company'
         });
@@ -689,19 +1079,19 @@
                   $('#last').val(data.suki_type)
                  if($('#partial').val()!=""){
                       var a = 0;
-                      var b = parseInt($('#balance').val());
-                      var d = parseInt($('#ca').val());
+                      var b = parseFloat($('#balance').val());
+                      var d = parseFloat($('#ca').val());
                       var c = 0;
-                      a = parseInt($('#partial').val());
+                      a = parseFloat($('#partial').val());
                       c = b-a;
                       $('#balance').val(c);
 
                 }
 
                 if($('#price').val()!=""){
-                     var a = parseInt($('#last').val());
-                     var b = parseInt($('#suki').val());
-                     var c = parseInt($('#pr').val());
+                     var a = parseFloat($('#last').val());
+                     var b = parseFloat($('#suki').val());
+                     var c = parseFloat($('#pr').val());
                      var d = 0;
                      var e = 0;
                      var t = 0;
@@ -713,17 +1103,17 @@
                               var x = 0;
 
                               if ($('#kilo').val()!=""){
-                                   var x = parseInt($('#kilo').val());
+                                   var x = parseFloat($('#kilo').val());
                               }
                              if ($('#sacks').val() == "" ){
                                   d = 0;
                              }
                              else{
-                               d =  parseInt($('#sacks').val());
+                               d =  parseFloat($('#sacks').val());
                           }
 
                           if ($('#partial').val() != "" ){
-                              t= parseInt($('#partial').val());
+                              t= parseFloat($('#partial').val());
                           }
                                e = b * (d*50);
                                var y = e + (b*x);
@@ -740,17 +1130,17 @@
                                var x = 0;
 
                                if ($('#kilo').val()!=""){
-                                    var x = parseInt($('#kilo').val());
+                                    var x = parseFloat($('#kilo').val());
                                }
                                if ($('#sacks').val() == "" ){
                                     d = 0;
                                }
                                else{
-                                d =  parseInt($('#sacks').val());
+                                d =  parseFloat($('#sacks').val());
                            }
 
                            if ($('#partial').val() != "" ){
-                              t =  parseInt($('#partial').val());
+                              t =  parseFloat($('#partial').val());
                            }
                                 e = c * (d*50);
                                 var y = e + (c*x);
@@ -778,29 +1168,29 @@
              success: function(data) {
                   $('#pr').val(data.price);
                   $('#suki').val(data.suki_price);
-                  var a = parseInt($('#last').val());
+                  var a = parseFloat($('#last').val());
                   if(a==1){
                        $('#price').val(data.suki_price);
                        var d = 0;
                        var e = 0;
-                       var b = parseInt($('#suki').val());
-                       var c = parseInt($('#pr').val());
+                       var b = parseFloat($('#suki').val());
+                       var c = parseFloat($('#pr').val());
                        var t = 0;
                        if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                             var x = 0;
 
                             if ($('#kilo').val()!=""){
-                                 var x = parseInt($('#kilo').val());
+                                 var x = parseFloat($('#kilo').val());
                             }
                            if ($('#sacks').val() == "" ){
                                 d = 0;
                            }
                            else{
-                             d =  parseInt($('#sacks').val());
+                             d =  parseFloat($('#sacks').val());
                         }
 
                         if ($('#partial').val() != "" ){
-                            t= parseInt($('#partial').val());
+                            t= parseFloat($('#partial').val());
                         }
                              e = b * (d*50);
                              var y = e + (b*x);
@@ -815,24 +1205,24 @@
                      $('#price').val(data.price);
                      var d = 0;
                      var e = 0;
-                     var b = parseInt($('#suki').val());
-                     var c = parseInt($('#pr').val());
+                     var b = parseFloat($('#suki').val());
+                     var c = parseFloat($('#pr').val());
                      var t = 0;
                      if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                           var x = 0;
 
                           if ($('#kilo').val()!=""){
-                               var x = parseInt($('#kilo').val());
+                               var x = parseFloat($('#kilo').val());
                           }
                           if ($('#sacks').val() == "" ){
                                d = 0;
                           }
                           else{
-                           d =  parseInt($('#sacks').val());
+                           d =  parseFloat($('#sacks').val());
                       }
 
                       if ($('#partial').val() != "" ){
-                          t= parseInt($('#partial').val());
+                          t= parseFloat($('#partial').val());
                       }
                            e = c * (d*50);
                            var y = e + (c*x);
@@ -850,8 +1240,94 @@
 
         });
 
+        $('#commodity1').on('select2:select', function (e) {
+
+            var id = $(e.currentTarget).val()
+            $.ajax({
+            url: "{{ route('find_comm') }}",
+            data: { id : id },
+            dataType:'json',
+            success: function(data) {
+                  $('#pr1').val(data.price);
+                  $('#suki1').val(data.suki_price);
+
+                  var a = parseFloat($('#last1').val());
+                  if(a==1){
+                       $('#price1').val(data.suki_price);
+                       var d = 0;
+                       var e = 0;
+                       var b = parseFloat($('#suki').val());
+                       var c = parseFloat($('#pr').val());
+                       var t = 0;
+                       if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                            var x = 0;
+
+                            if ($('#kilo1').val()!=""){
+                                 var x = parseFloat($('#kilo').val());
+                            }
+                          if ($('#sacks1').val() == "" ){
+                               d = 0;
+                          }
+                          else{
+                             d =  parseFloat($('#sacks1').val());
+                        }
+
+                        if ($('#partial1').val() != "" ){
+                            t= parseFloat($('#partial1').val());
+                        }
+                             e = b * (d*50);
+                             var y = e + (b*x);
+                             var z = e + (b*x)+t;
+                             //alert(e);
+                             $('#total1').val(y);
+                             $('#amount1').val(z);
+                        }
+                  }
+                  else{
+
+                     $('#price1').val(data.price);
+                     var d = 0;
+                     var e = 0;
+                     var b = parseFloat($('#suki1').val());
+                     var c = parseFloat($('#pr1').val());
+                     var t = 0;
+                     if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                          var x = 0;
+
+                          if ($('#kilo1').val()!=""){
+                               var x = parseFloat($('#kilo1').val());
+                          }
+                          if ($('#sacks1').val() == "" ){
+                               d = 0;
+                          }
+                          else{
+                          d =  parseFloat($('#sacks1').val());
+                     }
+
+                     if ($('#partial1').val() != "" ){
+                          t= parseFloat($('#partial1').val());
+                     }
+                          e = c * (d*50);
+                          var y = e + (c*x);
+                            var z = e + (c*x)+t;
+                          //alert(e);
+                          $('#total1').val(y);
+                          $('#amount1').val(z);
+                     }
+
+                  }
+
+            console.log(data.suki_price);
+              }
+          });
+
+        });
+
 
 
            });
+
+
+
     </script>
 @endsection

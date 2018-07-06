@@ -110,7 +110,11 @@ class customerController extends Controller
 
     function deletedata(Request $request){
         $customer = Customer::find($request->input('id'));
+        $balance = balance::find($request->input('id'));
         $customer->delete();
+        $balance->delete();
+
+
     }
     /**
      * Display the specified resource.

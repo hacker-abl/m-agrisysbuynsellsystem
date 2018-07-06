@@ -52,6 +52,7 @@ Route::group(['middleware'], function()
     Route::get('/purchases', 'purchasesController@index')->name('purchases');
     Route::get('/find_amt', 'purchasesController@findAmount')->name('find_amt');
     Route::get('/refresh_trans', 'purchasesController@updateId')->name('refresh_trans');
+    Route::get('/findCustomer', 'purchasesController@updatecustomerId')->name('findCustomer');
     Route::get('/find_comm', 'purchasesController@findcomm')->name('find_comm');
     Route::post('/add_purchases', 'purchasesController@store')->name('add_purchases');
     Route::get('/refresh_purchases', 'purchasesController@refresh')->name('refresh_purchases');

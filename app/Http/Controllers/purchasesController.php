@@ -69,6 +69,7 @@ class purchasesController extends Controller
 
     public function store(Request $request)
     {
+          if($request->get('stat') == 'old'){
             $purchases= new Purchases;
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customer;
@@ -86,13 +87,52 @@ class purchasesController extends Controller
 
           $balance = balance::where('customer_id', '=',$request->customer)
                    ->decrement('balance', $request->balance1 - $request->balance);
+              }
 
+              if($request->get('stat') == 'new'){
+                  $customer = new Customer;
+                  $customer->fname = $request->fname;
+                  $customer->mname = $request->mname;
+                  $customer->lname = $request->lname;
+                  $customer->suki_type = 0;
+                  $customer->save();
+
+                  $balance = new balance;
+                  $balance->customer_id = $request->customerid;
+                  $balance->balance = 0;
+                  $balance->save();
+
+
+
+               $purchases= new Purchases;
+               $purchases->trans_no = $request->ticket1;
+               $purchases->customer_id = $request->customerid;
+               $purchases->commodity_id= $request->commodity1;
+               $purchases->sacks = $request->sacks1;
+               $purchases->ca_id = $request->customerid;
+               $purchases->balance_id = 0;
+               $purchases->partial = 0;
+               $purchases->kilo = $request->kilo1;
+               $purchases->price = $request->price1;
+               $purchases->total = $request->amount1;
+               $purchases->amtpay= $request->amount1;
+               $purchases->remarks= $request->remarks1;
+               $purchases->save();
+
+             $balance = balance::where('customer_id', '=',$request->customerid)
+                      ->decrement('balance', $request->balance1 - $request->balance);
+                 }
 
 
     }
 
     function updateId(){
        $temp = DB::select('select MAX(id) as "temp" FROM purchases');
+       echo json_encode($temp);
+    }
+
+    function updatecustomerId(){
+       $temp = DB::select('select MAX(id) as "temp" FROM customer');
        echo json_encode($temp);
     }
 
