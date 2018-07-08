@@ -104,7 +104,7 @@ class customerController extends Controller
     }
 
     function updateId(){
-       $temp = DB::select('select MAX(id) as "temp" FROM balance');
+       $temp = DB::select('select MAX(id) as "temp" FROM customer');
        echo json_encode($temp);
     }
 
