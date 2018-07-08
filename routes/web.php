@@ -120,4 +120,7 @@ Route::group(['middleware'], function()
 
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
+
+    //Notifications
+    Route::get('/notification/get', 'NotificationController@get');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 class HomeController extends Controller
 {
     /**
@@ -22,8 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        return view('main.home');
-}
+        if(Auth::user()->access_id === 1) {
+            return view('main.home');
+        } else if(Auth::user()->access_id === 2) {
+            return view('cashier.home');
+        }
+    }
 
 }

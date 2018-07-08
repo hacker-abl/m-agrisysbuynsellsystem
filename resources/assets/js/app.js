@@ -15,8 +15,63 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('notification-counter', require('./components/NotificationCounter.vue'));
+Vue.component('notification-content', require('./components/NotificationContent.vue'));
+Vue.component('notification-list', require('./components/NotificationList.vue')); 
 
-const app = new Vue({
-    el: '#app'
+const request = new Vue({
+    el: '#request',
+    data: {
+		requests: []
+    },
+    methods: {
+    	// requestApproved: function(notification){
+    	// 	axios.get('notification/approve', {params: {id: notification.id}}).then((response) => {
+	    		
+	    // 	});
+    	// },
+    	// requestCancelled: function(notification){
+        //     axios.get('notification/cancel', {params: {id: notification.id}}).then((response) => {
+                
+        //     });
+    	// },
+        // paginate: function(offset){
+        //     var id = offset.id;
+
+        //     axios.get('/notification/retrieve/request/more/'+id).then((response) => {
+        //         var data = response.data;
+        //         if(data) {
+        //             for (var i = 0; i < data.length; i++) {
+        //                 this.requests.push(data[i]);
+        //             };
+        //         }
+        //     });
+        // }
+    },
+    created() {
+    	// let user_id = document.head.querySelector('meta[name="user_id"]').content;
+
+    	axios.get('/notification/get').then((response) => {
+            this.requests = response.data;
+        });
+
+    	// window.Echo.private('request.'+user_id)
+		// 	.listen('RequestEvent', (e) => {
+		// 		var notify = e;
+		// 		this.requests.unshift(e);
+		// 	});
+
+        // window.Echo.private('request.update.'+user_id)
+        //     .listen('RequestUpdateEvent', e => {
+        //         axios.get('/notification/retrieve/request').then((response) => {
+        //             this.requests = response.data;
+        //         });
+        //     });
+
+    },
+    mounted() {
+	    // $('.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a').click(function(e) {
+	    //     e.stopPropagation();
+	    // });
+    }
 });

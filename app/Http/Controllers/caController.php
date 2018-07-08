@@ -10,6 +10,9 @@ use Illuminate\Database\Query\Builder;
 use App\ca;
 use App\Customer;
 use App\balance;
+use App\Notification;
+use Auth;
+
 class caController extends Controller
 {
      /**
@@ -40,6 +43,16 @@ class caController extends Controller
         $ca->amount = $request->amount;
         $ca->balance = $request->balance + $request->amount;
         $ca->save();
+
+        if($ca) {
+            $notification = new Notification;
+            $notification->notification_type = "Cash Advance";
+            $notification->message = "Cash Advance";
+            $notification->status = "Pending";
+            $notification->admin_id = Auth::id();
+            $notification->cash_advance_id = $ca->id;
+            $notification->save();
+        }
 
         $balance = balance::where('customer_id', '=',$request->customer_id)
                  ->increment('balance',  $request->amount);

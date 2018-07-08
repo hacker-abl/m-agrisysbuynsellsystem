@@ -15,4 +15,8 @@ class ca extends Model
 		'balance',
     );
     public $timestamps = true;
+
+    public function customer() {
+        return $this->hasOne('App\customer', 'id', 'customer_id');
+    }
 }
