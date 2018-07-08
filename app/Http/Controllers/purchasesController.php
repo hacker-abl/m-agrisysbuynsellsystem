@@ -90,6 +90,8 @@ class purchasesController extends Controller
               }
 
               if($request->get('stat') == 'new'){
+
+
                   $customer = new Customer;
                   $customer->fname = $request->fname;
                   $customer->mname = $request->mname;
@@ -119,8 +121,7 @@ class purchasesController extends Controller
                $purchases->remarks= $request->remarks1;
                $purchases->save();
 
-             $balance = balance::where('customer_id', '=',$request->customerid)
-                      ->decrement('balance', $request->balance1 - $request->balance);
+            
                  }
 
 
