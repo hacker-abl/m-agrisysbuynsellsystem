@@ -67,7 +67,12 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h2 class="modal_title">Add User</h2>
+						<h2 class="modal_title">Add Sales</h2>
+						<ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_sales" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            </li>
+                        </ul>
 					</div>
 					<div class="body">
 						<form class="form-horizontal " id="sales_form">
@@ -250,6 +255,13 @@
 					}
 				})
 			});
+
+			$("#print_sales").click(function(event) {
+                event.preventDefault();
+                $("#add_sales").trigger("click");
+                window.open("{{ route('print_sales')}}",'_blank');
+
+            });
 
 			$(document).on('click', '.update_sales', function(){
 				var id = $(this).attr("id");

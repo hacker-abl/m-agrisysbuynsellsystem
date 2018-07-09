@@ -70,6 +70,11 @@
 				<div class="card">
 					<div class="header">
 						<h2 class="modal_title">Add Cash Advance</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_ca" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            </li>
+                        </ul>
 					</div>
 					<div class="body">
 						<form class="form-horizontal " id="ca_form">
@@ -308,6 +313,13 @@
 						swal("Oh no!", "Something went wrong, try again.", "error");
 					}
                 });
+            });
+
+            $("#print_ca").click(function(event) {
+                event.preventDefault();
+                $("#add_cash_advance").trigger("click");
+                window.open("{{ route('print_ca')}}",'_blank');
+
             });
 
             $(document).on('click', '.view_cash_advance', function(){

@@ -120,4 +120,12 @@ Route::group(['middleware'], function()
 
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
+
+    Route::get('/print_trip/{trip_counter}', 'pdfController@trips')->name('print_trip');
+    Route::get('/print_expense', 'pdfController@expenses')->name('print_expense');
+    Route::get('/print_dtr', 'pdfController@dtr')->name('print_dtr');
+    Route::get('/print_od', 'pdfController@od')->name('print_od');
+    Route::get('/print_ca', 'pdfController@ca')->name('print_ca');
+    Route::get('/print_purchase', 'pdfController@purchases')->name('print_purchase');
+    Route::get('/print_sales', 'pdfController@sales')->name('print_sales');
 });
