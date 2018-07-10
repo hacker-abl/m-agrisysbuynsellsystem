@@ -243,12 +243,11 @@ class pdfController extends Controller
 
     public function purchases(){
 
-	    $details =  DB::table('deliveries')->latest()->first();
+	    $details =  DB::table('purchases')->latest()->first();
 
+	    $customer =  DB::table('customer')->where('id', $details->customer_id)->first();
 	    $commodity =  DB::table('commodity')->where('id', $details->commodity_id)->first();
-	    $driver =  DB::table('employee')->where('id', $details->driver_id)->first();
-	    $company =  DB::table('company')->where('id', $details->company_id)->first();
-	    $truck =  DB::table('trucks')->where('id', $details->plateno)->first();
+	    $cash_advance =  DB::table('balance')->where('id', $details->ca_id)->first();
 
 	    $pdf = "<html>
 		<head>
@@ -264,26 +263,41 @@ class pdfController extends Controller
 		<basefont size='4'>
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
-				<span>Outbound ticket: </span>
-				<span><b>".$details->outboundTicket."</b></span>
+				<span>Transaction No.: </span>
+				<span><b>".$details->trans_no."</b></span>
+				<br>
+				<span>Customer: </span>
+				<span><b>".$customer->fname." ".$customer->mname." ".$customer->lname."</b></span>
 				<br>
 				<span>Commodity: </span>
 				<span><b>".$commodity->name."</b></span>
 				<br>
-				<span>Destination: </span>
-				<span><b>".$details->destination."</b></span>
+				<span>Sacks: </span>
+				<span><b>".$details->sacks."</b></span>
 				<br>
-				<span>Driver: </span>
-				<span><b>".$driver->fname." ".$driver->mname." ".$driver->lname."</b></span>
+				<span>Cash Advance: </span>
+				<span><b>PhP ".$cash_advance->balance."</b></span>
 				<br>
-				<span>Company: </span>
-				<span><b>".$company->name."</b></span>
+				<span>Balance: </span>
+				<span><b>PhP ".$details->balance_id."</b></span>
 				<br>
-				<span>Plate #: </span>
-				<span><b>".$truck->plate_no."</b></span>
+				<span>Partial payment: </span>
+				<span><b>PhP ".$details->partial."</b></span>
 				<br>
-				<span>No. of liters: </span>
-				<span><b>PhP ".$details->fuel_liters."</b></span>
+				<span>No. of kilos: </span>
+				<span><b>".$details->kilo."</b></span>
+				<br>
+				<span>Price: </span>
+				<span><b>PhP ".$details->price."</b></span>
+				<br>
+				<span>Total: </span>
+				<span><b>PhP ".$details->total."</b></span>
+				<br>
+				<span>Deducted: </span>
+				<span><b>PhP ".$details->amtpay."</b></span>
+				<br>
+				<span>Remarks: </span>
+				<span><b>".$details->remarks."</b></span>
 				<br>
 
 		        </div>";

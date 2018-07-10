@@ -68,9 +68,6 @@
          <div class="modal-dialog" role="document">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                    <div class="card">
-<<<<<<< HEAD
-
-=======
                         <div class="header">
                              <h2 class="modal_title">Add Purchases</h2>
                              <ul class="header-dropdown m-r--5">
@@ -79,7 +76,6 @@
                             </li>
                         </ul>
                         </div>
->>>>>>> print_new
                         <div class="body">
                              <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab" id ="homeclick" href="#home">Customer Purchases</a></li>
