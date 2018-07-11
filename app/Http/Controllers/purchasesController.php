@@ -100,10 +100,9 @@ class purchasesController extends Controller
                   $customer->save();
 
                   $balance = new balance;
-                  $balance->customer_id = $request->customerid;
+                  $balance->customer_id = $customer->id;
                   $balance->balance = 0;
                   $balance->save();
-
 
 
                $purchases= new Purchases;

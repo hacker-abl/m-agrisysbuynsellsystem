@@ -87,7 +87,7 @@
                               <div class="tab-content">
                              <div id="home" class="tab-pane fade in active">
                              <form class="form-horizontal " id="purchase_form">
-                                   <input type="hidden" name="stat1" id="stat1" value="">
+                                   <input type="hidden" name="stat1" id="stat1" value="old">
                                   <input type="hidden" name="id" id="id" value="">
                                   <input type="hidden" name="balance1" id="balance1" value="">
                                   <input type="hidden" name="last" id="last" value="">
@@ -276,9 +276,9 @@
                                   </div>
                              </form>
                         </div>
-                           <div id="home1" class="tab-pane fade in active">
+                           <div id="home1" class="tab-pane fade in ">
                                 <form class="form-horizontal " id="purchase_form1">
-                                     <input type="hidden" name="stat" id="stat" value="">
+                                     <input type="hidden" name="stat" id="stat" value="new">
                                      <input type="hidden" name="id1" id="id1" value="">
                                      <input type="hidden" name="balance2" id="balance2" value="">
                                      <input type="hidden" name="last1" id="last1" value="">
