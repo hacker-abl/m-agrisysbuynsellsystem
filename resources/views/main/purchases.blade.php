@@ -87,6 +87,7 @@
                               <div class="tab-content">
                              <div id="home" class="tab-pane fade in active">
                              <form class="form-horizontal " id="purchase_form">
+                                   <input type="hidden" name="stat1" id="stat1" value="">
                                   <input type="hidden" name="id" id="id" value="">
                                   <input type="hidden" name="balance1" id="balance1" value="">
                                   <input type="hidden" name="last" id="last" value="">
@@ -499,7 +500,7 @@
     $(document).ready(function () {
 
          $("#homeclick").on('click', function() {
-               $('#stat').val("old");
+               $('#stat1').val("old");
          });
 
          $("#homeclick1").on('click', function() {

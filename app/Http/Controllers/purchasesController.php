@@ -69,7 +69,7 @@ class purchasesController extends Controller
 
     public function store(Request $request)
     {
-          if($request->get('stat') == 'old'){
+          if($request->get('stat1') == 'old'){
             $purchases= new Purchases;
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customer;
@@ -121,7 +121,7 @@ class purchasesController extends Controller
                $purchases->remarks= $request->remarks1;
                $purchases->save();
 
-            
+
                  }
 
 
