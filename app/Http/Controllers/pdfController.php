@@ -247,7 +247,7 @@ class pdfController extends Controller
 
 	    $customer =  DB::table('customer')->where('id', $details->customer_id)->first();
 	    $commodity =  DB::table('commodity')->where('id', $details->commodity_id)->first();
-	    $cash_advance =  DB::table('balance')->where('id', $details->ca_id)->first();
+	    $cash_advance =  DB::table('balance')->where('customer_id', $details->ca_id)->first();
 
 	    $pdf = "<html>
 		<head>
