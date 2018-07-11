@@ -234,7 +234,7 @@ class pdfController extends Controller
 				<br>
 				<span>Balance: </span>
 				<span><b>".$details->balance."</b></span>
-				
+
 
 		        </div>";
 

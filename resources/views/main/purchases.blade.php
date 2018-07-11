@@ -1052,7 +1052,7 @@
                        var a = parseFloat(t);
                        var b = a + 1;
                       $('#customerid').val(b);
-                       console.log( $('#customerid').val(b));
+                       console.log( b);
 
                   }
              })
