@@ -567,6 +567,25 @@
                         swal("Success!", "Record has been added to database", "success")
                         $('#purchase_modal').modal('hide');
                         refresh_purchase_table();
+                        $("#sacks").val("");
+                        $("#kilo").val("");
+                         $("#price").val("");
+                         $("#sacks1").val("");
+                         $("#kilo1").val("");
+                          $("#price1").val("");
+                          $("#fname").val("");
+                          $("#mname").val("");
+                           $("#lname").val("");
+                            $("#amount1").val("");
+                             $("#total").val("");
+                              $("#amount").val("");
+                               $("#ca").val("");
+                                $("#balance").val("");
+
+                          $("#partial").val("0");
+                          $("#commodity").val('').trigger('change');
+                          $("#commodity1").val('').trigger('change');
+                          $("#customer").val('').trigger('change');
                         //refresh_delivery_table();
                    },
                    error: function(data){
@@ -596,7 +615,13 @@
                          dataType:'text',
                          data: $('#purchase_form1').serialize(),
                          success:function(data){
-
+                              $("#sacks1").val("");
+                              $("#kilo1").val("");
+                               $("#price1").val("");
+                               $("#fname").val("");
+                               $("#mname").val("");
+                                $("#lname").val("");
+                                $("#amount1").val("");
                               $("#commodity1").val('').trigger('change');
                               swal("Success!", "Record has been added to database", "success")
                               $('#purchase_modal').modal('hide');
