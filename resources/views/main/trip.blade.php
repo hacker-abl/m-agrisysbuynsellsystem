@@ -451,10 +451,6 @@
                         var e=stringticket;
                         if(stringticket!="0"){
                             e= stringticket.substr(7, 7);
-<<<<<<< HEAD
-                            console.log(e);
-=======
->>>>>>> print_new
                         }
                         var a = parseInt(e);
                         var b = a + 1;

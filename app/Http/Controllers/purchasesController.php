@@ -9,7 +9,7 @@ use App\Commodity;
 use App\Customer;
 use App\ca;
 use App\balance;
-use App\Purchases;
+use App\purchases;
 class purchasesController extends Controller
 {
     /**
