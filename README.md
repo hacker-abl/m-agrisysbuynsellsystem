@@ -29,6 +29,10 @@
 				<td>admin</td>
 				<td>password</td>
 			</tr>
+			<tr>
+				<td>cashier</td>
+				<td>password</td>
+			</tr>
 		</tbody>
 	</table>
 </html>
