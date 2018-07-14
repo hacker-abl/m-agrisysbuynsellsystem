@@ -597,7 +597,8 @@
          });
 
         $("#print_purchase").click(function(event) {
-          
+          event.preventDefault();
+
             if($('#stat1').val()=="old"){
               $("#add_purchase").trigger("click");
             }else if($('#stat').val()=="new"){
