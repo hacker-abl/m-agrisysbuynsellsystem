@@ -1131,8 +1131,6 @@ var request = new Vue({
     created: function created() {
         var _this = this;
 
-        // let user_id = document.head.querySelector('meta[name="user_id"]').content;
-
         axios.get('/notification/get').then(function (response) {
             _this.requests = response.data;
         });
