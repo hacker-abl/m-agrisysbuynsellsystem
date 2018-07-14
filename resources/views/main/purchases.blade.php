@@ -500,11 +500,13 @@
     $(document).ready(function () {
 
          $("#homeclick").on('click', function() {
+               $('#stat').val("old");
                $('#stat1').val("old");
          });
 
          $("#homeclick1").on('click', function() {
               $('#stat').val("new");
+              $('#stat1').val("new");
         });
 
          $('#last').val(1);
@@ -595,10 +597,14 @@
          });
 
         $("#print_purchase").click(function(event) {
-            event.preventDefault();
-            $("#add_purchase").trigger("click");
-            window.open("{{ route('print_purchase')}}",'_blank');
+          
+            if($('#stat1').val()=="old"){
+              $("#add_purchase").trigger("click");
+            }else if($('#stat').val()=="new"){
+              $("#add_purchase1").trigger("click");
+            }
 
+            window.open("{{ route('print_purchase')}}",'_blank')
         });
 
 
