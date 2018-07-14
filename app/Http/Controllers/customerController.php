@@ -58,7 +58,7 @@ class customerController extends Controller
             $customer->save();
 
             $balance = new balance;
-            $balance->customer_id = $request->balance_id;
+            $balance->customer_id = $customer->id;
             $balance->balance = 0;
             $balance->save();
 
@@ -110,9 +110,10 @@ class customerController extends Controller
 
     function deletedata(Request $request){
         $customer = Customer::find($request->input('id'));
-        $balance = balance::find($request->input('id'));
+      //  $balance = balance::find($request->input('id'));
+
         $customer->delete();
-        $balance->delete();
+       DB::table('balance')->where('customer_id', $request->input('id'))->delete();
 
 
     }

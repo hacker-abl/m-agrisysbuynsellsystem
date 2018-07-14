@@ -9,7 +9,7 @@ use App\Commodity;
 use App\Customer;
 use App\ca;
 use App\balance;
-use App\Purchases;
+use App\purchases;
 class purchasesController extends Controller
 {
     /**
@@ -69,7 +69,7 @@ class purchasesController extends Controller
 
     public function store(Request $request)
     {
-          if($request->get('stat') == 'old'){
+          if($request->get('stat1') == 'old'){
             $purchases= new Purchases;
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customer;
@@ -100,10 +100,9 @@ class purchasesController extends Controller
                   $customer->save();
 
                   $balance = new balance;
-                  $balance->customer_id = $request->customerid;
+                  $balance->customer_id = $customer->id;
                   $balance->balance = 0;
                   $balance->save();
-
 
 
                $purchases= new Purchases;
@@ -121,7 +120,7 @@ class purchasesController extends Controller
                $purchases->remarks= $request->remarks1;
                $purchases->save();
 
-            
+
                  }
 
 

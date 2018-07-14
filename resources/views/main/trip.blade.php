@@ -65,13 +65,18 @@
 
     <!-- Add Pickup Modal -->
     <div class="modal fade pickup_modal" id="pickup_modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="card">
-					<div class="header">
-						<h2 class="modal_title">Add Trip(Pick Up)</h2>
-					</div>
-					<div class="body">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2 class="modal_title">Add Trip(Pick Up)</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_trip" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
                         <div class="form-group dynamic-element"></div>
                         <button type="button" class="btn btn-danger delete">Delete Trip</button>
                         <div class="form-group">
@@ -96,13 +101,13 @@
 
     <!-- Update Pickup Modal -->
     <div class="modal fade pickup_modal_update" id="pickup_modal_update" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="card">
-					<div class="header">
-						<h2 class="modal_title">Update Trip(Pick Up)</h2>
-					</div>
-					<div class="body">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2 class="modal_title">Update Trip(Pick Up)</h2>
+                    </div>
+                    <div class="body">
                         <form class="form-horizontal trip_form_update" id="trip_form_update">
                             <input type="hidden" name="id" id="id" value="">
 
@@ -217,15 +222,15 @@
     </div>
 
     <div class="row clearfix">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="card">
-				<div class="header">
-					<h2>List of Pick Ups as of {{ date('Y-m-d ') }}</h2>
-						<ul class="header-dropdown m-r--5">
-							<li class="dropdown">
-								<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_pickup_modal"><i class="material-icons">library_add</i></button>
-							</li>
-						</ul>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>List of Pick Ups as of {{ date('Y-m-d ') }}</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_pickup_modal"><i class="material-icons">library_add</i></button>
+                            </li>
+                        </ul>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -264,6 +269,8 @@
                     processing: 'Loading.. Please wait'
                 }
             });
+            var trip_counter = 1;
+            var print_indicator = false;
 
             var num_elements=0;
 
@@ -444,10 +451,8 @@
                         var e=stringticket;
                         if(stringticket!="0"){
                             e= stringticket.substr(7, 7);
-                            console.log(e);
                         }
                         var a = parseInt(e);
-
                         var b = a + 1;
                         var c = new Date();
                         var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
@@ -542,6 +547,7 @@
             });
 
             $("#add_trip").click(function(){
+                var count_length = $('.trip_form').length;
                 $('.trip_form').each(function(){
                     valuesToSend = $(this).serialize();
                     $.ajax({
@@ -556,6 +562,22 @@
                             dataparsed = $.parseJSON(data);
                             $("#id").val(dataparsed.driver_id);
 
+                            if(trip_counter<count_length){
+                                trip_counter++;
+                            }else{
+                                //MAONIIIIII
+                                if(print_indicator){
+                                    for(var x=0;x<trip_counter;x++){
+                                        var print_url = "/print_trip/"+x;
+                                        window.open(print_url,'_blank');
+                                        console.log(print_url)
+                                    }
+                                    print_indicator = false;
+                                }
+                                trip_counter = 1;
+                            }
+                            
+
                             swal("Success!", "Record has been added to database", "success")
                             $('#pickup_modal').modal('hide');
                             refresh_pickup();
@@ -566,6 +588,14 @@
                         }
                     })
                 });
+            });
+
+            $("#print_trip").click(function(event) {
+                event.preventDefault();
+                print_indicator = true;
+                $("#add_trip").trigger("click");
+                
+
             });
 
             var pickuptable = $('#triptable').DataTable({

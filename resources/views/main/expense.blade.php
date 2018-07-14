@@ -70,7 +70,7 @@
                         <h2>Add Expense</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                                <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
                         </ul>
                     </div>
@@ -79,7 +79,7 @@
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="expense">Expense</label>
+                                    <label for="expense">Name</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
@@ -145,7 +145,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Expense Description</th>
+                                    <th>Name</th>
                                     <th>Type</th>
                                     <th>Amount</th>
                                     <th>Date</th>
@@ -222,6 +222,13 @@
                         swal("Oh no!", "Something went wrong, try again.", "error")
                     }
                 });
+            });
+
+            $("#print_expense").click(function(event) {
+                event.preventDefault();
+                $("#add_expense").trigger("click");
+                window.open("{{ route('print_expense')}}",'_blank');
+
             });
             //EXPENSE Datatable ends here
 

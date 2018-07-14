@@ -68,7 +68,14 @@
          <div class="modal-dialog" role="document">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                    <div class="card">
-
+                        <div class="header">
+                             <h2 class="modal_title">Add Purchases</h2>
+                             <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_purchase" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            </li>
+                        </ul>
+                        </div>
                         <div class="body">
                              <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab" id ="homeclick" href="#home">Customer Purchases</a></li>
@@ -80,6 +87,7 @@
                               <div class="tab-content">
                              <div id="home" class="tab-pane fade in active">
                              <form class="form-horizontal " id="purchase_form">
+                                   <input type="hidden" name="stat1" id="stat1" value="old">
                                   <input type="hidden" name="id" id="id" value="">
                                   <input type="hidden" name="balance1" id="balance1" value="">
                                   <input type="hidden" name="last" id="last" value="">
@@ -268,9 +276,9 @@
                                   </div>
                              </form>
                         </div>
-                           <div id="home1" class="tab-pane fade in active">
+                           <div id="home1" class="tab-pane fade in ">
                                 <form class="form-horizontal " id="purchase_form1">
-                                     <input type="hidden" name="stat" id="stat" value="">
+                                     <input type="hidden" name="stat" id="stat" value="new">
                                      <input type="hidden" name="id1" id="id1" value="">
                                      <input type="hidden" name="balance2" id="balance2" value="">
                                      <input type="hidden" name="last1" id="last1" value="">
@@ -492,7 +500,7 @@
     $(document).ready(function () {
 
          $("#homeclick").on('click', function() {
-               $('#stat').val("old");
+               $('#stat1').val("old");
          });
 
          $("#homeclick1").on('click', function() {
@@ -539,33 +547,61 @@
          });
 
 
-                 function refresh_purchase_table(){
-                     purchasestable.ajax.reload(); //reload datatable ajax
-                 }
+         function refresh_purchase_table(){
+             purchasestable.ajax.reload(); //reload datatable ajax
+         }
 
-                 $(document).on('click', '#add_purchase', function(){
-                      event.preventDefault();
-                      $.ajax({
-                           headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                           },
-                           url:"{{ route('add_purchases') }}",
-                           method: 'POST',
-                           dataType:'text',
-                           data: $('#purchase_form').serialize(),
-                           success:function(data){
-                                $("#customer").val('').trigger('change');
-                                $("#commodity").val('').trigger('change');
-                                swal("Success!", "Record has been added to database", "success")
-                                $('#purchase_modal').modal('hide');
-                                refresh_purchase_table();
-                                //refresh_delivery_table();
-                           },
-                           error: function(data){
-                                swal("Oh no!", "Something went wrong, try again.", "error")
-                           }
-                      })
-                 });
+         $(document).on('click', '#add_purchase', function(){
+              event.preventDefault();
+              $.ajax({
+                   headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   url:"{{ route('add_purchases') }}",
+                   method: 'POST',
+                   dataType:'text',
+                   data: $('#purchase_form').serialize(),
+                   success:function(data){
+                        $("#customer").val('').trigger('change');
+                        $("#commodity").val('').trigger('change');
+                        swal("Success!", "Record has been added to database", "success")
+                        $('#purchase_modal').modal('hide');
+                        refresh_purchase_table();
+                        $("#sacks").val("");
+                        $("#kilo").val("");
+                         $("#price").val("");
+                         $("#sacks1").val("");
+                         $("#kilo1").val("");
+                          $("#price1").val("");
+                          $("#fname").val("");
+                          $("#mname").val("");
+                           $("#lname").val("");
+                            $("#amount1").val("");
+                             $("#total").val("");
+                              $("#amount").val("");
+                               $("#ca").val("");
+                                $("#balance").val("");
+
+                          $("#partial").val("0");
+                          $("#commodity").val('').trigger('change');
+                          $("#commodity1").val('').trigger('change');
+                          $("#customer").val('').trigger('change');
+                        //refresh_delivery_table();
+                   },
+                   error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error")
+                   }
+              })
+         });
+
+        $("#print_purchase").click(function(event) {
+            event.preventDefault();
+            $("#add_purchase").trigger("click");
+            window.open("{{ route('print_purchase')}}",'_blank');
+
+        });
+
+
 
 
                  $(document).on('click', '#add_purchase1', function(){
@@ -579,7 +615,13 @@
                          dataType:'text',
                          data: $('#purchase_form1').serialize(),
                          success:function(data){
-
+                              $("#sacks1").val("");
+                              $("#kilo1").val("");
+                               $("#price1").val("");
+                               $("#fname").val("");
+                               $("#mname").val("");
+                                $("#lname").val("");
+                                $("#amount1").val("");
                               $("#commodity1").val('').trigger('change');
                               swal("Success!", "Record has been added to database", "success")
                               $('#purchase_modal').modal('hide');
@@ -1035,7 +1077,7 @@
                        var a = parseFloat(t);
                        var b = a + 1;
                       $('#customerid').val(b);
-                       console.log( $('#customerid').val(b));
+                       console.log( b);
 
                   }
              })

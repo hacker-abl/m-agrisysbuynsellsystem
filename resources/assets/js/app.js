@@ -55,23 +55,10 @@ const request = new Vue({
             this.requests = response.data;
         });
 
-    	// window.Echo.private('request.'+user_id)
-		// 	.listen('RequestEvent', (e) => {
-		// 		var notify = e;
-		// 		this.requests.unshift(e);
-		// 	});
+        window.Echo.channel('notifications.cashier')
+            .listen('NewNotification', e => {
+                this.requests.unshift(e.notification);
+            });
 
-        // window.Echo.private('request.update.'+user_id)
-        //     .listen('RequestUpdateEvent', e => {
-        //         axios.get('/notification/retrieve/request').then((response) => {
-        //             this.requests = response.data;
-        //         });
-        //     });
-
-    },
-    mounted() {
-	    // $('.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a').click(function(e) {
-	    //     e.stopPropagation();
-	    // });
     }
 });

@@ -10,7 +10,7 @@
 					Cash Advance request
                 </p>
                 <p>
-                    <i class="material-icons">access_time</i> {{ request.time }} by {{ request.notifications.admin.name }}
+                    <i class="material-icons">access_time</i> Served by {{ request.notifications.admin.name }} {{ request.time }}
                 </p>
             </div>
 	    </a>

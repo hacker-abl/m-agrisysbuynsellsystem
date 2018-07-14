@@ -1137,23 +1137,9 @@ var request = new Vue({
             _this.requests = response.data;
         });
 
-        // window.Echo.private('request.'+user_id)
-        // 	.listen('RequestEvent', (e) => {
-        // 		var notify = e;
-        // 		this.requests.unshift(e);
-        // 	});
-
-        // window.Echo.private('request.update.'+user_id)
-        //     .listen('RequestUpdateEvent', e => {
-        //         axios.get('/notification/retrieve/request').then((response) => {
-        //             this.requests = response.data;
-        //         });
-        //     });
-    },
-    mounted: function mounted() {
-        // $('.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a').click(function(e) {
-        //     e.stopPropagation();
-        // });
+        window.Echo.channel('notifications.cashier').listen('NewNotification', function (e) {
+            _this.requests.unshift(e.notification);
+        });
     }
 });
 
@@ -18704,10 +18690,10 @@ var render = function() {
                 _vm._v("access_time")
               ]),
               _vm._v(
-                " " +
-                  _vm._s(_vm.request.time) +
-                  " by " +
+                " Served by " +
                   _vm._s(_vm.request.notifications.admin.name) +
+                  " " +
+                  _vm._s(_vm.request.time) +
                   "\n                "
               )
             ])
