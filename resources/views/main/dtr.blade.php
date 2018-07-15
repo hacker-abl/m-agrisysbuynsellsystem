@@ -74,6 +74,17 @@
                             <li class="dropdown">
                                 <button id="print_dtr" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_dtr') }}">
+                                <input type="hidden" id="employee_id_clone" name="employee_id_clone">
+                                <input type="hidden" id="role_clone" name="role_clone">
+                                <input type="hidden" id="overtime_clone" name="overtime_clone">
+                                <input type="hidden" id="rate_clone" name="rate_clone">
+                                <input type="hidden" id="num_hours_clone" name="num_hours_clone">
+                                <input type="hidden" id="salary_clone" name="salary_clone">
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                </form>
+                            </li>
                         </ul>
 					</div>
 					<div class="body">
@@ -377,8 +388,16 @@
             $("#print_dtr").click(function(event) {
                 event.preventDefault();
                 $("#add_dtr").trigger("click");
-                window.open("{{ route('print_dtr')}}",'_blank');
+                $("#print_form").trigger("click");
+            });
 
+            $("#print_form").click(function(event) {
+                $("#employee_id_clone").val($("#employee_id option:selected").text());
+                $("#role_clone").val($("#role").val());
+                $("#overtime_clone").val($("#overtime").val());
+                $("#rate_clone").val($("#rate").val());
+                $("#num_hours_clone").val($("#num_hours").val());
+                $("#salary_clone").val($("#salary").val());
             });
 
             $(document).on('click', '.view_dtr', function(){

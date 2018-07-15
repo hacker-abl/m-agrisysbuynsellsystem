@@ -74,6 +74,21 @@
                             <li class="dropdown">
                                 <button id="print_trip" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_trip') }}">
+                                <input type="hidden" id="item_num" name="item_num">
+                                <input type="hidden" id="ticket_clone" name="ticket_clone">
+                                <input type="hidden" id="expense_clone" name="expense_clone">
+                                <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                <input type="hidden" id="driver_id_clone" name="driver_id_clone">
+                                <input type="hidden" id="plateno_clone" name="plateno_clone">
+                                <input type="hidden" id="destination_clone" name="destination_clone">
+                                <input type="hidden" id="num_liters_clone" name="num_liters_clone">
+                                </form>
+                            </li>
+                            <li class="dropdown">
+                                <button class="btn btn-sm btn-icon print-icon" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            </li>
                         </ul>
                     </div>
                     <div class="body">
@@ -336,7 +351,7 @@
                             '<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">'+
                                 '<div class="form-group">'+
                                     '<div class="form-line">'+
-                                        '<input type="number" id="expense" name="expense" min="0" class="form-control" required>'+
+                                        '<input type="number" id="expense'+item+'" name="expense" min="0" class="form-control" required>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+
@@ -394,7 +409,7 @@
                             '<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">'+
                                 '<div class="form-group">'+
                                     '<div class="form-line">'+
-                                        '<input type="text" id="destination" name="destination" class="form-control" required>'+
+                                        '<input type="text" id="destination'+item+'" name="destination" class="form-control" required>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+
@@ -407,7 +422,7 @@
                             '<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">'+
                                 '<div class="form-group">'+
                                     '<div class="form-line">'+
-                                        '<input type="number" id="num_liters" min="0" name="num_liters" class="form-control" required>'+
+                                        '<input type="number" id="num_liters'+item+'" min="0" name="num_liters" class="form-control" required>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+
@@ -562,22 +577,6 @@
                             dataparsed = $.parseJSON(data);
                             $("#id").val(dataparsed.driver_id);
 
-                            if(trip_counter<count_length){
-                                trip_counter++;
-                            }else{
-                                //MAONIIIIII
-                                if(print_indicator){
-                                    for(var x=0;x<trip_counter;x++){
-                                        var print_url = "/print_trip/"+x;
-                                        window.open(print_url,'_blank');
-                                        console.log(print_url)
-                                    }
-                                    print_indicator = false;
-                                }
-                                trip_counter = 1;
-                            }
-                            
-
                             swal("Success!", "Record has been added to database", "success")
                             $('#pickup_modal').modal('hide');
                             refresh_pickup();
@@ -590,13 +589,49 @@
                 });
             });
 
+            // $("#print_trip").click(function(event) {
+            //     event.preventDefault();
+            //     print_indicator = true;
+            //     $("#add_trip").trigger("click");
+            // });
+
             $("#print_trip").click(function(event) {
                 event.preventDefault();
-                print_indicator = true;
+                $("#print_form").trigger("click");
                 $("#add_trip").trigger("click");
-                
-
             });
+
+            $("#print_form").click(function(event) {
+                print_loop();
+            });
+
+            function print_loop () {
+                
+            var count_length = $('.trip_form').length;
+
+            setTimeout(function () {    
+
+                $("#ticket_clone").val($("#ticket"+trip_counter).val());
+                $("#expense_clone").val($("#expense"+trip_counter).val());
+                $("#commodity_clone").val($("#commodity"+trip_counter+" option:selected").text());
+                $("#driver_id_clone").val($("#driver_id"+trip_counter+" option:selected").text());
+                $("#plateno_clone").val($("#plateno"+trip_counter+" option:selected").text());
+                $("#destination_clone").val($("#destination"+trip_counter).val());
+                $("#num_liters_clone").val($("#num_liters"+trip_counter).val());
+
+                $("#printForm").submit();
+
+                trip_counter++;                     
+                if (trip_counter <= count_length) {
+                    print_loop();             
+                }else{
+                    trip_counter=1;
+                }
+            }, 100)
+
+            }
+
+            
 
             var pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',

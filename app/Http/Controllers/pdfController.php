@@ -26,13 +26,7 @@ class pdfController extends Controller
 		$dompdf->stream($name, array("Attachment" => false));
 	}
 
-    public function trips($skip_count){
-
-	    $details =  DB::table('trips')->orderBy('id', 'desc')->skip($skip_count)->first();
-
-	    $commodity =  DB::table('commodity')->where('id', $details->commodity_id)->first();
-	    $driver =  DB::table('employee')->where('id', $details->driver_id)->first();
-	    $truck =  DB::table('trucks')->where('id', $details->truck_id)->first();
+    public function trips(Request $request){
 
 	    $pdf = "<html>
 		<head>
@@ -49,25 +43,25 @@ class pdfController extends Controller
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
 				<span>Trip Ticket: </span>
-				<span><b>".$details->trip_ticket."</b></span>
+				<span><b>".$request->ticket_clone."</b></span>
 				<br>
 				<span>Expense: </span>
-				<span><b>PhP ".$details->expense."</b></span>
+				<span><b>PhP ".$request->expense_clone."</b></span>
 				<br>
 				<span>Commodity: </span>
-				<span><b>".$commodity->name."</b></span>
+				<span><b>".$request->commodity_clone."</b></span>
 				<br>
 				<span>Driver: </span>
-				<span><b>".$driver->fname." ".$driver->mname." ".$driver->lname."</b></span>
+				<span><b>".$request->driver_id_clone."</b></span>
 				<br>
 				<span>Plate #: </span>
-				<span><b>".$truck->name."  ".$truck->plate_no."</b></span>
+				<span><b>".$request->plateno_clone."</b></span>
 				<br>
 				<span>Destination: </span>
-				<span><b>".$details->destination."</b></span>
+				<span><b>".$request->destination_clone."</b></span>
 				<br>
 				<span># of Liters: </span>
-				<span><b>".$details->num_liters."</b></span>
+				<span><b>".$request->num_liters_clone."</b></span>
 				<br>
 
 		         </div>";
@@ -75,10 +69,7 @@ class pdfController extends Controller
 		self::generate_pdf($pdf,'trips');
     }
 
-    public function expenses(){
-
-	    $details =  DB::table('expenses')->latest()->first();
-
+    public function expenses(Request $request){
 
 	    $pdf = "<html>
 		<head>
@@ -95,13 +86,13 @@ class pdfController extends Controller
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
 				<span>Name: </span>
-				<span><b>".$details->description."</b></span>
+				<span><b>".$request->expense_clone."</b></span>
 				<br>
 				<span>Type: </span>
-				<span><b>".$details->type."</b></span>
+				<span><b>".$request->type_clone."</b></span>
 				<br>
 				<span>Amount: </span>
-				<span><b>PhP ".$details->amount."</b></span>
+				<span><b>PhP ".$request->amount_clone."</b></span>
 				<br>
 
 		        </div>";
@@ -109,11 +100,7 @@ class pdfController extends Controller
 		self::generate_pdf($pdf,'expense');
     }
 
-    public function dtr(){
-
-	    $details =  DB::table('dtr')->latest()->first();
-
-	    $employee =  DB::table('employee')->where('id', $details->employee_id)->first();
+    public function dtr(Request $request){
 
 	    $pdf = "<html>
 		<head>
@@ -130,22 +117,22 @@ class pdfController extends Controller
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
 				<span>Name: </span>
-				<span><b>".$employee->fname." ".$employee->mname." ".$employee->lname."</b></span>
+				<span><b>".$request->employee_id_clone."</b></span>
 				<br>
 				<span>Role: </span>
-				<span><b>".$details->role."</b></span>
+				<span><b>".$request->role_clone."</b></span>
 				<br>
 				<span>Overtime: </span>
-				<span><b>".$details->overtime."</b></span>
+				<span><b>".$request->overtime_clone."</b></span>
 				<br>
 				<span>Rate: </span>
-				<span><b>PhP ".$details->rate."</b></span>
+				<span><b>PhP ".$request->rate_clone."</b></span>
 				<br>
 				<span>Number of hours: </span>
-				<span><b>".$details->num_hours."</b></span>
+				<span><b>".$request->num_hours_clone."</b></span>
 				<br>
 				<span>Salary: </span>
-				<span><b>PhP ".$details->salary."</b></span>
+				<span><b>PhP ".$request->salary_clone."</b></span>
 				<br>
 
 		        </div>";
@@ -153,14 +140,7 @@ class pdfController extends Controller
 		self::generate_pdf($pdf,'dtr');
     }
 
-    public function od(){
-
-	    $details =  DB::table('deliveries')->latest()->first();
-
-	    $commodity =  DB::table('commodity')->where('id', $details->commodity_id)->first();
-	    $driver =  DB::table('employee')->where('id', $details->driver_id)->first();
-	    $company =  DB::table('company')->where('id', $details->company_id)->first();
-	    $truck =  DB::table('trucks')->where('id', $details->plateno)->first();
+    public function od(Request $request){
 
 	    $pdf = "<html>
 		<head>
@@ -177,25 +157,25 @@ class pdfController extends Controller
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
 				<span>Outbound ticket: </span>
-				<span><b>".$details->outboundTicket."</b></span>
+				<span><b>".$request->ticket_clone."</b></span>
 				<br>
 				<span>Commodity: </span>
-				<span><b>".$commodity->name."</b></span>
+				<span><b>".$request->commodity_clone."</b></span>
 				<br>
 				<span>Destination: </span>
-				<span><b>".$details->destination."</b></span>
+				<span><b>".$request->destination_clone."</b></span>
 				<br>
 				<span>Driver: </span>
-				<span><b>".$driver->fname." ".$driver->mname." ".$driver->lname."</b></span>
+				<span><b>".$request->driver_id_clone."</b></span>
 				<br>
 				<span>Company: </span>
-				<span><b>".$company->name."</b></span>
+				<span><b>".$request->company_clone."</b></span>
 				<br>
 				<span>Plate #: </span>
-				<span><b>".$truck->plate_no."</b></span>
+				<span><b>".$request->plateno_clone."</b></span>
 				<br>
 				<span>No. of liters: </span>
-				<span><b>PhP ".$details->fuel_liters."</b></span>
+				<span><b>".$request->liter_clone."</b></span>
 				<br>
 
 		        </div>";
@@ -203,11 +183,7 @@ class pdfController extends Controller
 		self::generate_pdf($pdf,'od');
     }
 
-    public function ca(){
-
-	    $details =  DB::table('cash_advance')->latest()->first();
-
-	    $customer =  DB::table('customer')->where('id', $details->customer_id)->first();
+    public function ca(Request $request){
 
 	    $pdf = "<html>
 		<head>
@@ -224,16 +200,16 @@ class pdfController extends Controller
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
 				<span>Name: </span>
-				<span><b>".$customer->fname." ".$customer->mname." ".$customer->lname."</b></span>
+				<span><b>".$request->customer_id_clone."</b></span>
 				<br>
 				<span>Reason: </span>
-				<span><b>".$details->reason."</b></span>
+				<span><b>".$request->reason_clone."</b></span>
 				<br>
 				<span>Amount: </span>
-				<span><b>".$details->amount."</b></span>
+				<span><b>".$request->amount_clone."</b></span>
 				<br>
 				<span>Balance: </span>
-				<span><b>".$details->balance."</b></span>
+				<span><b>".$request->balance_clone."</b></span>
 
 
 		        </div>";
@@ -241,13 +217,7 @@ class pdfController extends Controller
 		self::generate_pdf($pdf,'ca');
     }
 
-    public function purchases(){
-
-	    $details =  DB::table('purchases')->latest()->first();
-
-	    $customer =  DB::table('customer')->where('id', $details->customer_id)->first();
-	    $commodity =  DB::table('commodity')->where('id', $details->commodity_id)->first();
-	    $cash_advance =  DB::table('balance')->where('customer_id', $details->ca_id)->first();
+    public function purchases(Request $request){
 
 	    $pdf = "<html>
 		<head>
@@ -264,40 +234,40 @@ class pdfController extends Controller
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
 				<span>Transaction No.: </span>
-				<span><b>".$details->trans_no."</b></span>
+				<span><b>".$request->ticket_clone."</b></span>
 				<br>
 				<span>Customer: </span>
-				<span><b>".$customer->fname." ".$customer->mname." ".$customer->lname."</b></span>
+				<span><b>".$request->customer_clone."</b></span>
 				<br>
 				<span>Commodity: </span>
-				<span><b>".$commodity->name."</b></span>
+				<span><b>".$request->commodity_clone."</b></span>
 				<br>
 				<span>Sacks: </span>
-				<span><b>".$details->sacks."</b></span>
+				<span><b>".$request->sacks_clone."</b></span>
 				<br>
 				<span>Cash Advance: </span>
-				<span><b>PhP ".$cash_advance->balance."</b></span>
+				<span><b>PhP ".$request->ca_clone."</b></span>
 				<br>
 				<span>Balance: </span>
-				<span><b>PhP ".$details->balance_id."</b></span>
+				<span><b>PhP ".$request->balance_clone."</b></span>
 				<br>
 				<span>Partial payment: </span>
-				<span><b>PhP ".$details->partial."</b></span>
+				<span><b>PhP ".$request->partial_clone."</b></span>
 				<br>
 				<span>No. of kilos: </span>
-				<span><b>".$details->kilo."</b></span>
+				<span><b>".$request->kilos_clone."</b></span>
 				<br>
 				<span>Price: </span>
-				<span><b>PhP ".$details->price."</b></span>
+				<span><b>PhP ".$request->price_clone."</b></span>
 				<br>
 				<span>Total: </span>
-				<span><b>PhP ".$details->total."</b></span>
+				<span><b>PhP ".$request->total_clone."</b></span>
 				<br>
 				<span>Deducted: </span>
-				<span><b>PhP ".$details->amtpay."</b></span>
+				<span><b>PhP ".$request->amount_clone."</b></span>
 				<br>
 				<span>Remarks: </span>
-				<span><b>".$details->remarks."</b></span>
+				<span><b>".$request->remarks_clone."</b></span>
 				<br>
 
 		        </div>";
@@ -305,12 +275,7 @@ class pdfController extends Controller
 		self::generate_pdf($pdf,'purchases');
     }
 
-    public function sales(){
-
-	    $details =  DB::table('sales')->latest()->first();
-
-	    $commodity =  DB::table('commodity')->where('id', $details->commodity_id)->first();
-	    $company =  DB::table('company')->where('id', $details->company_id)->first();
+    public function sales(Request $request){
 
 	    $pdf = "<html>
 		<head>
@@ -327,16 +292,16 @@ class pdfController extends Controller
 		<h2>RECENT TRANSACTION</h2>";
 		$pdf .= "<div>
 				<span>Commodity: </span>
-				<span><b>".$commodity->name."</b></span>
+				<span><b>".$request->commodity_clone."</b></span>
 				<br>
 				<span>Company: </span>
-				<span><b>".$company->name."</b></span>
+				<span><b>".$request->company_clone."</b></span>
 				<br>
 				<span>Kilos: </span>
-				<span><b>".$details->kilos."</b></span>
+				<span><b>".$request->kilos_clone."</b></span>
 				<br>
 				<span>Amount: </span>
-				<span><b>PhP ".$details->amount."</b></span>
+				<span><b>PhP ".$request->amount_clone."</b></span>
 				<br>
 
 		        </div>";
