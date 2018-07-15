@@ -123,11 +123,12 @@ Route::group(['middleware'], function()
 
     //Notifications
     Route::get('/notification/get', 'NotificationController@get');
-    Route::get('/print_trip/{trip_counter}', 'pdfController@trips')->name('print_trip');
-    Route::get('/print_expense', 'pdfController@expenses')->name('print_expense');
-    Route::get('/print_dtr', 'pdfController@dtr')->name('print_dtr');
-    Route::get('/print_od', 'pdfController@od')->name('print_od');
-    Route::get('/print_ca', 'pdfController@ca')->name('print_ca');
-    Route::get('/print_purchase', 'pdfController@purchases')->name('print_purchase');
-    Route::get('/print_sales', 'pdfController@sales')->name('print_sales');
+
+    Route::post('/print_trip', 'pdfController@trips')->name('print_trip');
+    Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
+    Route::post('/print_dtr', 'pdfController@dtr')->name('print_dtr');
+    Route::post('/print_od', 'pdfController@od')->name('print_od');
+    Route::post('/print_ca', 'pdfController@ca')->name('print_ca');
+    Route::post('/print_purchase', 'pdfController@purchases')->name('print_purchase');
+    Route::post('/print_sales', 'pdfController@sales')->name('print_sales');
 });

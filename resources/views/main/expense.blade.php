@@ -70,7 +70,15 @@
                         <h2>Add Expense</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                                <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" title="PRINT AND SAVE" ><i class="material-icons">print</i></button>
+                            </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_expense') }}">
+                                <input type="hidden" id="expense_clone" name="expense_clone">
+                                <input type="hidden" id="type_clone" name="type_clone">
+                                <input type="hidden" id="amount_clone" name="amount_clone">
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -209,7 +217,10 @@
             $("#add_expense").click(function(event) {
                 event.preventDefault();
                 $.ajax({
-                    type: "POST",
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     url: "{{ route('add_expense') }}",
                     dataType: "text",
                     data: $('#expense_form').serialize(),
@@ -227,8 +238,13 @@
             $("#print_expense").click(function(event) {
                 event.preventDefault();
                 $("#add_expense").trigger("click");
-                window.open("{{ route('print_expense')}}",'_blank');
+                $("#print_form").trigger("click");
+            });
 
+            $("#print_form").click(function(event) {
+                $("#expense_clone").val($("#expense").val());
+                $("#type_clone").val($("#type").val());
+                $("#amount_clone").val($("#amount").val());
             });
             //EXPENSE Datatable ends here
 

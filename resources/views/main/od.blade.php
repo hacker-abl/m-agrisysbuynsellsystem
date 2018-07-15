@@ -72,6 +72,18 @@
                             <li class="dropdown">
                                 <button id="print_od" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_od') }}">
+                                <input type="hidden" id="ticket_clone" name="ticket_clone">
+                                <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                <input type="hidden" id="destination_clone" name="destination_clone">
+                                <input type="hidden" id="driver_id_clone" name="driver_id_clone">
+                                <input type="hidden" id="company_clone" name="company_clone">
+                                <input type="hidden" id="plateno_clone" name="plateno_clone">
+                                <input type="hidden" id="liter_clone" name="liter_clone">
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                </form>
+                            </li>
                         </ul>
 					</div>
 					<div class="body">
@@ -335,9 +347,19 @@
 			$("#print_od").click(function(event) {
                 event.preventDefault();
                 $("#add_delivery").trigger("click");
-                window.open("{{ route('print_od')}}",'_blank');
-
+                $("#print_form").trigger("click");
             });
+
+            $("#print_form").click(function(event) {
+                $("#ticket_clone").val($("#ticket").val());
+                $("#commodity_clone").val($("#commodity option:selected").text());
+                $("#destination_clone").val($("#destination").val());
+                $("#driver_id_clone").val($("#driver_id option:selected").text());
+                $("#company_clone").val($("#company option:selected").text());
+                $("#plateno_clone").val($("#plateno option:selected").text());
+                $("#liter_clone").val($("#liter").val());
+            });
+
 
 			$(document).on('click', '.update_delivery', function(){
 				var id = $(this).attr("id");

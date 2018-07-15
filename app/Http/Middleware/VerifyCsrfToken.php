@@ -13,6 +13,14 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-    	'/add_expense'
+    	'/print_expense',
+    	'/print_trip',
+    	'/print_dtr',
+    	'/print_od',
+    	'/print_ca',
+    	'/print_purchase',
+    	'/print_sales',
+    	
+
     ];
 }
