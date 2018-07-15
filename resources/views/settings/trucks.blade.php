@@ -186,7 +186,7 @@
                 $('#button_action').val('add');
             });
 
-            $(document).on('click', '#add_trucks', function(){
+            $(document).on('click', '#add_trucks', function(event){
                 event.preventDefault();
                 $.ajax({
                     headers: {

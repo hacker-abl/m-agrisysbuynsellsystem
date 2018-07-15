@@ -219,7 +219,7 @@
             });
 
             //Add Employee
-            $(document).on('click', '#add_employee', function(){
+            $(document).on('click', '#add_employee', function(event){
                 event.preventDefault();
                 $.ajax({
                     headers: {

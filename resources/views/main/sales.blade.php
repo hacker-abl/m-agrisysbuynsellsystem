@@ -233,7 +233,7 @@
                     $('#sales_modal').modal('show');
 			});
 
-			$(document).on('click', '#add_sales', function(){
+			$(document).on('click', '#add_sales', function(event){
 				event.preventDefault();
 				$.ajax({
 					headers: {

@@ -190,7 +190,7 @@
             });
 
             //Add Role
-            $(document).on('click', '#add_role', function(){
+            $(document).on('click', '#add_role', function(event){
                 event.preventDefault();
                 $.ajax({
                     headers: {

@@ -278,8 +278,8 @@
             var num=0;
             var div;
 
-            $('.delete').click(function(e){
-                e.preventDefault();
+            $('.delete').click(function(event){
+                event.preventDefault();
                 div= $('.dynamic-element form').last().attr('id');
                 item = (div.match(/\d+/g));
 
@@ -499,7 +499,7 @@
             });
 
             //Clicked Update Button
-            $("#update_trip").click(function(){
+            $("#update_trip").click(function(event){
                 event.preventDefault();
                 $.ajax({
                     headers: {

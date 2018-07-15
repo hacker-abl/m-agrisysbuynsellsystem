@@ -173,7 +173,7 @@
             });
             
             //Add Company
-            $(document).on('click', '#add_company', function(){
+            $(document).on('click', '#add_company', function(event){
                 event.preventDefault();
                 $.ajax({
                     headers: {

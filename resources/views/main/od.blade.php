@@ -308,7 +308,7 @@
 				})
 			});
 
-			$(document).on('click', '#add_delivery', function(){
+			$(document).on('click', '#add_delivery', function(event){
 				event.preventDefault();
 				$.ajax({
 					headers: {

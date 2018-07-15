@@ -553,7 +553,7 @@
              purchasestable.ajax.reload(); //reload datatable ajax
          }
 
-         $(document).on('click', '#add_purchase', function(){
+         $(document).on('click', '#add_purchase', function(event){
               event.preventDefault();
               $.ajax({
                    headers: {
@@ -611,7 +611,7 @@
 
 
 
-                 $(document).on('click', '#add_purchase1', function(){
+                 $(document).on('click', '#add_purchase1', function(event){
                     event.preventDefault();
                     $.ajax({
                          headers: {

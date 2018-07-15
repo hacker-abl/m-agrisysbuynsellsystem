@@ -207,7 +207,7 @@
             });
             
             //Add Commodity
-            $(document).on('click', '#add_commodity', function(){
+            $(document).on('click', '#add_commodity', function(event){
                 event.preventDefault();
                 $.ajax({
                     headers: {

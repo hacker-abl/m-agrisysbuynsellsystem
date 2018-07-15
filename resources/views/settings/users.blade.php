@@ -218,7 +218,7 @@
             });
 
             //Add User
-            $(document).on('click', '#add_user', function(){
+            $(document).on('click', '#add_user', function(event){
                 event.preventDefault();
                 $.ajax({
                     headers: {
