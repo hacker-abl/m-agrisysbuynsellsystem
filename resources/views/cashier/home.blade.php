@@ -10,19 +10,6 @@
                <span>Home</span>
             </a>
         </li>
-
-        <li >
-            <a href="{{ route('ca') }}">
-               <i class="material-icons">monetization_on</i>
-               <span>Cash Advance</span>
-            </a>
-        </li>
-        <li >
-            <a href="{{ route('customer') }}">
-                <i class="material-icons">tag_faces</i>
-                <span>Customer</span>
-            </a>
-        </li>
     </ul>
 </div>
 @endsection
