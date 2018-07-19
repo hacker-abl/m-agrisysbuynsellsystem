@@ -11,15 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('auth/login');
-});
-
 Auth::routes();
 
-Route::group(['middleware'], function()
-{
-    Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware'=>['auth', 'cashier']], function() {
+    //Notifications
+    Route::get('/notification/get', 'NotificationController@get');
+});
+
+Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::get('/expense', 'expenseController@index')->name('expense');
     Route::post('/add_expense', 'expenseController@store')->name('add_expense');
     Route::get('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
@@ -40,7 +39,7 @@ Route::group(['middleware'], function()
     Route::post('/add_sales', 'salesController@store')->name('add_sales');
     Route::get('/update_sales', 'salesController@updatedata')->name('update_sales');
     Route::get('/delete_sales', 'salesController@deletedata')->name('delete_sales');
-
+    
     //CASH ADVANCE
     Route::get('/cashadvance', 'caController@index')->name('ca');
     Route::post('/add_cashadvance', 'caController@store')->name('add_cashadvance');
@@ -121,9 +120,6 @@ Route::group(['middleware'], function()
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
 
-    //Notifications
-    Route::get('/notification/get', 'NotificationController@get');
-
     Route::post('/print_trip', 'pdfController@trips')->name('print_trip');
     Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
     Route::post('/print_dtr', 'pdfController@dtr')->name('print_dtr');
@@ -131,4 +127,13 @@ Route::group(['middleware'], function()
     Route::post('/print_ca', 'pdfController@ca')->name('print_ca');
     Route::post('/print_purchase', 'pdfController@purchases')->name('print_purchase');
     Route::post('/print_sales', 'pdfController@sales')->name('print_sales');
+});
+
+Route::group(['middleware'], function()
+{
+    Route::get('/', function () {
+        return redirect('/home');
+    });
+
+    Route::get('/home', 'HomeController@index')->name('home');
 });

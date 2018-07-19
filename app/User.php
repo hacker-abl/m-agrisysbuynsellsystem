@@ -35,4 +35,8 @@ class User extends Authenticatable
         'password',
         'remember_token'
     ];
+
+    public function role() {
+        return $this->hasOne('App\access_levels', 'id', 'access_id');
+    }
 }

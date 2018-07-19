@@ -10,8 +10,6 @@
                <span>Home</span>
             </a>
         </li>
-
-       
     </ul>
 </div>
 @endsection
