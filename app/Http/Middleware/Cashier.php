@@ -24,6 +24,6 @@ class Cashier
             return $next($request);
         }
 
-        abort(500);
+        return back();
     }
 }
