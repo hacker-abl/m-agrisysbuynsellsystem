@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="login-box">
+    <div class="login-box ">
         <div class="logo">
             <a href="javascript:void(0);"><b>M-Agri Buy & Sell</b></a>
             
