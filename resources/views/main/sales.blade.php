@@ -72,6 +72,15 @@
                             <li class="dropdown">
                                 <button id="print_sales" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_sales') }}">
+                                <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                <input type="hidden" id="company_clone" name="company_clone">
+                                <input type="hidden" id="kilos_clone" name="kilos_clone">
+                                <input type="hidden" id="amount_clone" name="amount_clone">
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                </form>
+                            </li>
                         </ul>
 					</div>
 					<div class="body">
@@ -259,8 +268,14 @@
 			$("#print_sales").click(function(event) {
                 event.preventDefault();
                 $("#add_sales").trigger("click");
-                window.open("{{ route('print_sales')}}",'_blank');
+                $("#print_form").trigger("click");
+            });
 
+            $("#print_form").click(function(event) {
+                $("#commodity_clone").val($("#commodity option:selected").text());
+                $("#company_clone").val($("#company option:selected").text());
+                $("#kilos_clone").val($("#kilos").val());
+                $("#amount_clone").val($("#amount").val());
             });
 
 			$(document).on('click', '.update_sales', function(){

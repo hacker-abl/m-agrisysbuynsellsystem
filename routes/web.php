@@ -113,20 +113,13 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
 
-    //CASH ADVANCE
-    Route::get('/cashadvance', 'caController@index')->name('ca');
-    Route::post('/add_cashadvance', 'caController@store')->name('add_cashadvance');
-    Route::get('/refresh_cashadvance', 'caController@refresh')->name('refresh_cashadvance');
-    Route::get('/refresh_view_cashadvance', 'caController@refresh_view')->name('refresh_view_cashadvance');
-    Route::get('/check_balance', 'caController@check_balance')->name('check_balance');
-
-    Route::get('/print_trip/{trip_counter}', 'pdfController@trips')->name('print_trip');
-    Route::get('/print_expense', 'pdfController@expenses')->name('print_expense');
-    Route::get('/print_dtr', 'pdfController@dtr')->name('print_dtr');
-    Route::get('/print_od', 'pdfController@od')->name('print_od');
-    Route::get('/print_ca', 'pdfController@ca')->name('print_ca');
-    Route::get('/print_purchase', 'pdfController@purchases')->name('print_purchase');
-    Route::get('/print_sales', 'pdfController@sales')->name('print_sales');
+    Route::post('/print_trip', 'pdfController@trips')->name('print_trip');
+    Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
+    Route::post('/print_dtr', 'pdfController@dtr')->name('print_dtr');
+    Route::post('/print_od', 'pdfController@od')->name('print_od');
+    Route::post('/print_ca', 'pdfController@ca')->name('print_ca');
+    Route::post('/print_purchase', 'pdfController@purchases')->name('print_purchase');
+    Route::post('/print_sales', 'pdfController@sales')->name('print_sales');
 });
 
 Route::group(['middleware'], function()

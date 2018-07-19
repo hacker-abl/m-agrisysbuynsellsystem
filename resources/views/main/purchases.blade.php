@@ -74,6 +74,23 @@
                             <li class="dropdown">
                                 <button id="print_purchase" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_purchase') }}">
+                                <input type="hidden" id="ticket_clone" name="ticket_clone">
+                                <input type="hidden" id="customer_clone" name="customer_clone">
+                                <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                <input type="hidden" id="sacks_clone" name="sacks_clone">
+                                <input type="hidden" id="ca_clone" name="ca_clone">
+                                <input type="hidden" id="balance_clone" name="balance_clone">
+                                <input type="hidden" id="partial_clone" name="partial_clone">
+                                <input type="hidden" id="kilos_clone" name="kilos_clone">
+                                <input type="hidden" id="price_clone" name="price_clone">
+                                <input type="hidden" id="total_clone" name="total_clone">
+                                <input type="hidden" id="amount_clone" name="amount_clone">
+                                <input type="hidden" id="remarks_clone" name="remarks_clone">
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                </form>
+                            </li>
                         </ul>
                         </div>
                         <div class="body">
@@ -596,19 +613,46 @@
               })
          });
 
+
         $("#print_purchase").click(function(event) {
           event.preventDefault();
-
             if($('#stat1').val()=="old"){
               $("#add_purchase").trigger("click");
             }else if($('#stat').val()=="new"){
               $("#add_purchase1").trigger("click");
             }
-
-            window.open("{{ route('print_purchase')}}",'_blank')
+          $("#print_form").trigger("click");
         });
 
-
+        $("#print_form").click(function(event) {
+          if($('#stat1').val()=="old"){
+            $("#ticket_clone").val($("#ticket").val());
+            $("#customer_clone").val($("#customer option:selected").text());
+            $("#commodity_clone").val($("#commodity option:selected").text());
+            $("#sacks_clone").val($("#sacks").val());
+            $("#ca_clone").val($("#ca").val());
+            $("#balance_clone").val($("#balance").val());
+            $("#partial_clone").val($("#partial").val());
+            $("#kilos_clone").val($("#kilo").val());
+            $("#price_clone").val($("#price").val());
+            $("#total_clone").val($("#total").val());
+            $("#amount_clone").val($("#amount").val());
+            $("#remarks_clone").val($("#remarks").val());
+          }else if($('#stat').val()=="new"){
+            $("#ticket_clone").val($("#ticket1").val());
+            $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
+            $("#commodity_clone").val($("#commodity1 option:selected").text());
+            $("#sacks_clone").val($("#sacks1").val());
+            $("#ca_clone").val("0");
+            $("#balance_clone").val("0");
+            $("#partial_clone").val("0");
+            $("#kilos_clone").val($("#kilo1").val());
+            $("#price_clone").val($("#price1").val());
+            $("#total_clone").val($("#amount1").val());
+            $("#amount_clone").val($("#amount1").val());
+            $("#remarks_clone").val($("#remarks1").val());
+          }
+        });
 
 
                  $(document).on('click', '#add_purchase1', function(event){

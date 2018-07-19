@@ -74,6 +74,15 @@
                             <li class="dropdown">
                                 <button id="print_ca" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
+                                <input type="hidden" id="customer_id_clone" name="customer_id_clone">
+                                <input type="hidden" id="reason_clone" name="reason_clone">
+                                <input type="hidden" id="amount_clone" name="amount_clone">
+                                <input type="hidden" id="balance_clone" name="balance_clone">
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                </form>
+                            </li>
                         </ul>
 					</div>
 					<div class="body">
@@ -318,8 +327,14 @@
             $("#print_ca").click(function(event) {
                 event.preventDefault();
                 $("#add_cash_advance").trigger("click");
-                window.open("{{ route('print_ca')}}",'_blank');
+                $("#print_form").trigger("click");
+            });
 
+            $("#print_form").click(function(event) {
+                $("#customer_id_clone").val($("#customer_id option:selected").text());
+                $("#reason_clone").val($("#reason").val());
+                $("#amount_clone").val($("#amount").val());
+                $("#balance_clone").val($("#balance").val());
             });
 
             $(document).on('click', '.view_cash_advance', function(){
