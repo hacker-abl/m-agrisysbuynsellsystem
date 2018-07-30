@@ -1,5 +1,46 @@
 ﻿/* Navbar ====================================== */
 @import url(materialize.css);
+hr {
+  border:none;
+  height: 1px;
+  width: 100%;
+  height: 1px;
+  box-shadow: 0 1px 1px -1px #333;
+}
+
+.logo{
+     margin-top:-13px;
+}
+.title{
+     position: absolute;
+     top:19px;
+}
+
+.form-container{
+  padding:10px;
+  padding-bottom:25px;
+  margin:0 auto;
+  margin-top:20px;
+  border-radius:20px;
+}
+
+.add-one{
+  color:green;
+  text-align:center;
+  font-weight:bolder;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+#singlebutton{
+  width:100%;
+  margin-top:20px;
+}
+
+.dynamic-element{
+  margin-bottom:0px;
+}
+
 .navbar {
   font-family: "Roboto", sans-serif;
   -webkit-border-radius: 0;
@@ -15,13 +56,15 @@
   top: 0;
   left: 0;
   z-index: 12;
+  height: 12px;
   width: 100%; }
   .navbar .navbar-brand {
     white-space: nowrap;
     -ms-text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    overflow: hidden; }
+    overflow: hidden;
+     margin-top:-9px;}
   .navbar .navbar-custom-right-menu {
     float: right; }
   .navbar .navbar-toggle {
@@ -39,6 +82,7 @@
     overflow: visible; }
 
 .ls-closed .sidebar {
+
   margin-left: -300px; }
 
 .ls-closed section.content {
@@ -1831,6 +1875,7 @@
   text-decoration: overline; }
 
 .block-header {
+      margin-top:-10px;
   margin-bottom: 15px; }
   .block-header h2 {
     margin: 0 !important;
@@ -2363,7 +2408,7 @@
 
 /* General ===================================== */
 body {
-  background-color: #e9e9e9;
+  /*background-color: #e9e9e9*/;
   -moz-transition: all 0.5s;
   -o-transition: all 0.5s;
   -webkit-transition: all 0.5s;
@@ -6683,6 +6728,7 @@ fieldset[disabled] .form-control {
   margin-left: 15px; }
 
 .ls-closed .bars:after, .ls-closed .bars:before {
+      margin-top:-10px;
   font-family: 'Material Icons';
   font-size: 24px;
   position: absolute;
@@ -6740,7 +6786,7 @@ fieldset[disabled] .form-control {
 
 .navbar-nav > li > a {
   padding: 7px 7px 2px 7px;
-  margin-top: 17px;
+  margin-top: 9px;
   margin-left: 5px; }
 
 .navbar-nav .dropdown-menu {
@@ -7469,6 +7515,7 @@ fieldset[disabled] .form-control {
   z-index: 99999999; }
 
 .sidebar {
+
   -moz-transition: all 0.5s;
   -o-transition: all 0.5s;
   -webkit-transition: all 0.5s;
@@ -7480,7 +7527,8 @@ fieldset[disabled] .form-control {
   display: inline-block;
   height: calc(100vh - 70px);
   position: fixed;
-  top: 70px;
+  top: 50px;
+  height:95%;
   left: 0;
   -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -7720,7 +7768,7 @@ fieldset[disabled] .form-control {
 
 /* Login Page ================================== */
 .login-page {
-  background-color:#777777;
+  background-color: #9E9E9E;
   padding-left: 0;
   max-width: 360px;
   margin: 5% auto;
@@ -7899,9 +7947,11 @@ fieldset[disabled] .form-control {
     top: 20px;
     left: 14px; }
     .search-bar .search-icon .material-icons {
+       margin-top:-10px;
       font-size: 32px;
       color: #999; }
   .search-bar .close-search {
+       margin-top:-10px;
     position: absolute;
     cursor: pointer;
     font-size: 30px;
@@ -7918,6 +7968,7 @@ fieldset[disabled] .form-control {
         opacity: .5; }
   .search-bar input[type="text"] {
     width: 100%;
+    height:10px;
     font-size: 16px;
     padding: 25px 60px 23px 56px;
     border: none; }
@@ -8005,6 +8056,7 @@ fieldset[disabled] .form-control {
 
 /* For Internet Explorer 10 ===================== */
 html.ie10 .sidebar .menu .list li {
+
   line-height: 30px; }
 
 html.ie10 .sidebar .menu .list .ml-menu li.active a:not(.menu-toggle).toggled:before {
@@ -8039,3 +8091,7 @@ html.ie11 .dropdown-menu ul.menu li a {
 
 html.ie11 .bs-searchbox .form-control {
   width: 90%; }
+
+.ui-autocomplete {
+z-index: 9999999999;
+}
