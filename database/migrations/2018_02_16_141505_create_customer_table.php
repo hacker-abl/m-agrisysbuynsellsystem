@@ -18,6 +18,8 @@ class CreateCustomerTable extends Migration
             $table->string('fname', 100);
             $table->string('mname', 100);
             $table->string('lname', 100);
+            $table->string('address', 100);
+            $table->string('contacts', 100);
             $table->integer('suki_type')->unsigned();
             $table->timestamps();
         });

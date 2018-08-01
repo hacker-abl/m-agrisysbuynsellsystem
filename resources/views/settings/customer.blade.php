@@ -107,6 +107,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row clearfix">
+                              <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                   <label for="lname">Address</label>
+                              </div>
+                              <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                   <div class="form-group">
+                                      <div class="form-line">
+                                           <input type="text" id="address" name="address" class="form-control" placeholder="Enter customer's address"  >
+                                      </div>
+                                   </div>
+                              </div>
+                          </div>
+                          <div class="row clearfix">
+                              <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                  <label for="lname">Contacts</label>
+                              </div>
+                              <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                  <div class="form-group">
+                                      <div class="form-line">
+                                          <input type="number" id="contacts" name="contacts" class="form-control" placeholder="Enter customer's contact number">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
 
                             <div class="row clearfix suki_type_input">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -154,6 +178,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Contact Number</th>
                                     <th>Suki</th>
                                     <th width="50">Action</th>
                                 </tr>
@@ -206,6 +232,8 @@
                     {render:function(data, type, full, meta){
                         return full.fname + " " + full.mname + " " + full.lname;
                     }},
+                    {data: 'address', name: 'address'},
+                    {data: 'contacts', name: 'contacts'},
                     {render:function(data, type, row){
                         return row.suki_type == 1 ? 'YES' : 'NO'
                     }},
@@ -283,6 +311,15 @@
                         $('#fname').val(data.fname);
                         $('#mname').val(data.mname);
                         $('#lname').val(data.lname);
+                        if(data.address != "Not Specified" && data.contacts != "Not Specified"){
+                             $('#address').val(data.address);
+                            $('#contacts').val(data.contacts);
+                        }
+                        else{
+                             $('#address').val("");
+                            $('#contacts').val("");
+                        }
+
                         //Make input for suki type visible when updating customer
                         if($(".suki_type_input:hidden")){
                             $(".suki_type_input").show();

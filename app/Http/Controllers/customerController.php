@@ -54,6 +54,20 @@ class customerController extends Controller
             $customer->fname = $request->fname;
             $customer->mname = $request->mname;
             $customer->lname = $request->lname;
+
+             if($request->contacts == ""){
+                  $customer->contacts ="Not Specified";
+             }
+             else{
+                     $customer->contacts = $request->contacts;
+             }
+             if($request->address == ""){
+                  $customer->address ="Not Specified";
+             }
+             else{
+                     $customer->address = $request->address;
+             }
+
             $customer->suki_type = 0;
             $customer->save();
 
@@ -69,6 +83,20 @@ class customerController extends Controller
             $customer->fname = $request->get('fname');
             $customer->mname = $request->get('mname');
             $customer->lname = $request->get('lname');
+
+            if($request->get('contacts') == ""){
+                 $customer->contacts ="Not Specified";
+            }
+            else{
+                      $customer->contacts = $request->get('contacts');
+            }
+            if($request->get('address') == ""){
+                 $customer->address ="Not Specified";
+            }
+            else{
+                $customer->address = $request->get('address');
+            }
+            
             if($request->get('suki_type') == 'YES'){
                 $customer->suki_type = 1;
             }
@@ -98,6 +126,8 @@ class customerController extends Controller
             'fname' => $customer->fname,
             'mname' => $customer->mname,
             'lname' => $customer->lname,
+            'address' => $customer->address,
+            'contacts' => $customer->contacts,
             'suki_type' => $customer->suki_type
         );
         echo json_encode($output);
