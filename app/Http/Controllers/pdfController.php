@@ -45,7 +45,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "purchases"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,204,400);
+			$customPaper = array(0,0,204,350);
 			$dompdf->set_paper($customPaper);
 		}
 		
