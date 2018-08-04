@@ -96,7 +96,7 @@
                         <button type="button" class="btn btn-danger delete">Delete Trip</button>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12" align="center" style="cursor: pointer;">
                                     <p class="add-one">+ADD TRIP</p>
                                 </div>
                             </div>
@@ -260,6 +260,7 @@
                                     <th>Driver</th>
                                     <th>Plate No.</th>
                                     <th>Liters</th>
+                                    <th>Date</th>
                                     <th width="50">Action</th>
                                 </tr>
                             </thead>
@@ -562,9 +563,12 @@
             });
 
             $("#add_trip").click(function(){
+                var  datasend="";
                 var count_length = $('.trip_form').length;
                 $('.trip_form').each(function(){
                     valuesToSend = $(this).serialize();
+                    console.log(valuesToSend);
+                    
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -575,16 +579,21 @@
                         data: valuesToSend,
                         success:function(data){
                             dataparsed = $.parseJSON(data);
+                            console.log(datasend);
+                                     
+                           
                             $("#id").val(dataparsed.driver_id);
 
                             swal("Success!", "Record has been added to database", "success")
                             $('#pickup_modal').modal('hide');
                             refresh_pickup();
                             $('.delete').toggle(false);
+
                         },
                         error: function(data){
                             swal("Oh no!", "Something went wrong, try again.", "error")
                         }
+
                     })
                 });
             });
@@ -653,6 +662,7 @@
                     },
                     {data: 'plateno', name: 'plateno'},
                     {data: 'num_liters', name: 'num_liters'},
+                    {data: 'created_at', name: 'created_at'},
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
