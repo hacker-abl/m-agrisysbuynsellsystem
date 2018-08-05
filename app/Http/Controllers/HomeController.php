@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
-use App\UserPermission;
 
 class HomeController extends Controller
 {
@@ -31,10 +30,8 @@ class HomeController extends Controller
         
         if($user->role->name === "admin") {
             return view('main.home');
-        } else if($user->role->name === "user") {
-            $permissions = UserPermission::with('permission')->get();
-
-            return view('cashier.home', compact('permissions'));
+        } else if($user->role->name === "cashier") {
+            return view('cashier.home');
         }
     }
 

@@ -13,17 +13,14 @@ class Cashier
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $permission
      * @return mixed
      */
-    public function handle($request, Closure $next, $permission)
+    public function handle($request, Closure $next)
     {
         $id = Auth::user()->id;
         $user = User::find($id);
 
-        // dd($permission);
-
-        if($user->role->name === "user") {
+        if($user->role->name === "cashier") {
             return $next($request);
         }
 
