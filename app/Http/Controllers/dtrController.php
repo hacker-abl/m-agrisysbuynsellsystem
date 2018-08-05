@@ -10,7 +10,6 @@ use Illuminate\Database\Query\Builder;
 use App\dtr;
 use App\dtr_expense;
 use App\employee;
-use Auth;
 class dtrController extends Controller
 {
    /**
@@ -57,20 +56,11 @@ class dtrController extends Controller
         $dtr->type ="DTR EXPENSE";
         $dtr->amount = $request->salary;
         $dtr->status = "On-Hand";
-        $dtr->released_by = '';
         $dtr->save();
 
         $details = dtr_expense::all();
 
         echo json_encode($details);
-    }
-     public function release_update_dtr(Request $request){
-        $logged_id = Auth::user()->name;         
-        $released=dtr::find($request->id);
-        $released->status = "Released";
-        $released->released_by = $logged_id;
-        $released->save();
-        echo json_encode("released");
     }
 
     public function refresh(){
@@ -103,22 +93,6 @@ class dtrController extends Controller
             ->where('dtr.employee_id', $id)
             ->get();
         return \DataTables::of($dtr_view)
-        ->addColumn('action', function($dtr_view){
-            if($dtr_view->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>';
-            }else{
-                 return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>';
-            }
-           
-        })
-         ->editColumn('released_by', function ($data) {
-            if($data->released_by==""){
-                return 'None';
-            }else{
-                return $data->released_by;
-            }
-            
-        })
         ->make(true);
         echo json_encode($dtr_view);
     }

@@ -186,7 +186,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 
     <!-- View Person DTR Modal -->
@@ -208,9 +207,6 @@
                                         <th>Date/Time</th>
                                         <th>Salary</th>
                                         <th>Status</th>
-                                         <th>Released By</th>
-                                          <th>Releasing</th>
-
                                         </tr>
                                     </thead>
                                 </table>
@@ -224,7 +220,7 @@
             </div>
 		</div>
 	</div>
- 
+
     <div class="row clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="card">
@@ -257,25 +253,6 @@
 				</div>
 			</div>
 		</div>
-        <div class="modal fade" id="release_modal_dtr" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>Are You Sure?</h2>
-                    </div>
-                    <div class="body">
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="release_money_dtr" class="btn btn-success waves-effect">CONTINUE</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 	</div>
 @endsection
 
@@ -283,9 +260,6 @@
     <script>
     var overtime;
     var salary;
-    var id;
-    var dtr_info;
-    var person_id;
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -372,49 +346,7 @@
                 $('#salary').val(overtime*salary);
             })
 
-             $(document).on('click', '.release_expense_dtr', function(event){
-                event.preventDefault();
-                 id = $(this).attr("id");
-                  $.ajax({
-                                url:"{{ route('release_update_dtr') }}",
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data:{id:id},
-                                dataType:'json',
-                                success:function(data){
-                                   console.log(data);
-                                
-                               $.ajax({
-                    url: "{{ route('refresh_view_dtr') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                    dtr_info= $('#view_dtr_table').DataTable({
-                            dom: 'Bfrtip',
-                            bDestroy: true,
-                            buttons: [
-                            ],
-                            data: data.data,
-                            columns:[
-                                {data: 'overtime', name: 'overtime'},
-                                {data: 'num_hours', name: 'num_hours'},
-                                {data: 'created_at', name: 'created_at'},
-                                {data: 'salary', name: 'salary'},
-                                {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
-                            ]
-                        });
-                         dtr.ajax.reload();
-                    }
-                });
-                                   
-                                }
-                            })
-            });
+
             $("#add_dtr").click(function(event){
                 event.preventDefault();
                 $.ajax({
@@ -470,7 +402,7 @@
 
             $(document).on('click', '.view_dtr', function(){
                 var id = $(this).attr("id");
-                person_id=id;
+
                 //Datatable for each person
                 $.ajax({
                     url: "{{ route('refresh_view_dtr') }}",
@@ -480,7 +412,7 @@
                     success:function(data){
                         $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")");
 
-                    dtr_info= $('#view_dtr_table').DataTable({
+                        $('#view_dtr_table').DataTable({
                             dom: 'Bfrtip',
                             bDestroy: true,
                             buttons: [
@@ -492,8 +424,6 @@
                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'salary', name: 'salary'},
                                 {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
                             ]
                         });
                         $('#dtr_view_modal').modal('show');
