@@ -18,7 +18,7 @@
             </a>
         </li>
         @endif
-        @if($permissions[1]->permission->middleware === "trips")
+        @if($permissions[0]->permission->middleware === "trips")
         <li>
             <a href="{{ route('trips') }}">
                 <i class="material-icons">directions_bus</i>
@@ -26,7 +26,7 @@
             </a>
         </li>
         @endif
-        @if($permissions[2]->permission->middleware === "dtr")
+        @if($permissions[0]->permission->middleware === "dtr")
         <li>
             <a href="{{ route('dtr') }}">
                 <i class="material-icons">access_time</i>
@@ -34,7 +34,7 @@
             </a>
         </li>
         @endif
-        @if($permissions[3]->permission->middleware === "od")
+        @if($permissions[0]->permission->middleware === "od")
         <li>
             <a href="{{ route('od') }}">
                 <i class="material-icons">arrow_upward</i>
@@ -42,7 +42,7 @@
             </a>
         </li>
         @endif
-        @if($permissions[4]->permission->middleware === "ca")
+        @if($permissions[0]->permission->middleware === "ca")
         <li>
             <a href="{{ route('ca') }}">
                 <i class="material-icons">monetization_on</i>
@@ -50,7 +50,7 @@
             </a>
         </li>
         @endif
-        @if($permissions[5]->permission->middleware === "purchases")
+        @if($permissions[0]->permission->middleware === "purchases")
         <li>
             <a href="{{ route('purchases') }}">
                 <i class="material-icons">bookmark_border</i>
@@ -58,7 +58,7 @@
             </a>
         </li>
         @endif
-        @if($permissions[6]->permission->middleware === "sales")
+        @if($permissions[0]->permission->middleware === "sales")
         <li>
             <a href="{{ route('sales') }}">
                 <i class="material-icons">shopping_cart</i>
