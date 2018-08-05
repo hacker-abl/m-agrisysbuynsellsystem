@@ -119,6 +119,34 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="user-permission" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <form class="form-horizontal " id="user-permission-form">
+                        <input type="hidden" name="id" value="">
+                        <div class="header">
+                            <h2 class="modal_title">Permissions </h2>
+                        </div>
+                        <div class="body">
+                            <div class="demo-checkbox">
+                                <input type="checkbox" id="permission1" class="chk-col-red" checked="">
+                                <label for="permission1">PERMISSION 1</label>
+                                <input type="checkbox" id="permission2" class="chk-col-red" checked="">
+                                <label for="permission2">PERMISSION 2</label>
+                                <input type="checkbox" id="permission3" class="chk-col-red" checked="">
+                                <label for="permission3">PERMISSION 3</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="add_user" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
@@ -287,6 +315,11 @@
 			    });
             });
             //USER Datatable ends here
+        });
+
+        $("#user-permission").on('shown.bs.modal', function(e) {
+            var id = $(e.relatedTarget).data('id');
+            $('#user-permission form#user-permission-form input[name="id"]').val(id);
         });
     </script>
 @endsection

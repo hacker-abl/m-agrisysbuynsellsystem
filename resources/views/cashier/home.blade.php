@@ -1,4 +1,4 @@
-@extends('layouts.cashier')
+@extends('layouts.user')
 
 @section('sidenav')
 <div class="menu">
@@ -10,6 +10,62 @@
                <span>Home</span>
             </a>
         </li>
+        @if($permissions[0]->permission->middleware === "expenses")
+        <li>
+            <a href="{{ route('expense') }}">
+                <i class="material-icons">show_chart</i>
+                <span>Expenses</span>
+            </a>
+        </li>
+        @endif
+        @if($permissions[0]->permission->middleware === "trips")
+        <li>
+            <a href="{{ route('trips') }}">
+                <i class="material-icons">directions_bus</i>
+                <span>Trips</span>
+            </a>
+        </li>
+        @endif
+        @if($permissions[0]->permission->middleware === "dtr")
+        <li>
+            <a href="{{ route('dtr') }}">
+                <i class="material-icons">access_time</i>
+                <span>Daily Time Record</span>
+            </a>
+        </li>
+        @endif
+        @if($permissions[0]->permission->middleware === "od")
+        <li>
+            <a href="{{ route('od') }}">
+                <i class="material-icons">arrow_upward</i>
+                <span>Outbound Deliveries</span>
+            </a>
+        </li>
+        @endif
+        @if($permissions[0]->permission->middleware === "ca")
+        <li>
+            <a href="{{ route('ca') }}">
+                <i class="material-icons">monetization_on</i>
+                <span>Cash Advance</span>
+            </a>
+        </li>
+        @endif
+        @if($permissions[0]->permission->middleware === "purchases")
+        <li>
+            <a href="{{ route('purchases') }}">
+                <i class="material-icons">bookmark_border</i>
+                <span>Purchases</span>
+            </a>
+        </li>
+        @endif
+        @if($permissions[0]->permission->middleware === "sales")
+        <li>
+            <a href="{{ route('sales') }}">
+                <i class="material-icons">shopping_cart</i>
+                <span>Sales</span>
+            </a>
+        </li>
+        @endif
     </ul>
 </div>
 @endsection
