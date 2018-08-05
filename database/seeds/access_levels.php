@@ -21,7 +21,7 @@ class access_levels extends Seeder
             ),
             array(
                 'id' => 2,
-                'name' => 'user',
+                'name' => 'cashier',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             )
