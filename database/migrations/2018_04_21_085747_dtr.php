@@ -26,6 +26,7 @@ class Dtr extends Migration
             $table->decimal('rate', 10,2);
             $table->decimal('salary');
             $table->string('status');
+            $table->string('released_by');
             $table->timestamps();
         });
     }
