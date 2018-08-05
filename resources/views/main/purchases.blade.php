@@ -164,7 +164,7 @@
                                             <div class="form-group">
                                                  <label for="name">Sacks</label>
                                                  <div class="form-line">
-                                                      <input type="number" id="sacks"  name="sacks" class="form-control"   required>
+                                                      <input type="number" id="sacks"  onkeyup="sacks1(this)" name="sacks" class="form-control"   required>
                                                  </div>
                                             </div>
                                        </div>
@@ -365,30 +365,6 @@
                                       </div>
                                           </div>
 
-                                          <div class="row clearfix">
-                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                                 <label for="lname">Address</label>
-                                            </div>
-                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                                 <div class="form-group">
-                                                    <div class="form-line">
-                                                         <input type="text" id="address" name="address" class="form-control" placeholder="Enter customer's address"  >
-                                                    </div>
-                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="row clearfix">
-                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                                <label for="lname">Contacts</label>
-                                            </div>
-                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                                <div class="form-group">
-                                                    <div class="form-line">
-                                                        <input type="number" id="contacts" name="contacts" class="form-control" placeholder="Enter customer's contact number">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -414,7 +390,7 @@
                                                <div class="form-group">
                                                     <label for="name">Sacks</label>
                                                     <div class="form-line">
-                                                         <input type="number" id="sacks1"   name="sacks1" class="form-control"   required>
+                                                         <input type="number" id="sacks1"  onkeyup="sacks2(this)" name="sacks1" class="form-control"   required>
                                                     </div>
                                                </div>
                                           </div>
@@ -512,7 +488,6 @@
                                   <table id="purchasetable" class="table table-bordered table-striped table-hover  ">
                                        <thead>
                                             <tr>
-                                                 <th width="100">Date</th>
                                                  <th width="100">ID</th>
                                                  <th width="100">Customer</th>
                                                  <th width="100">Commodity</th>
@@ -569,7 +544,6 @@
               serverSide: true,
               ajax: "{{ route('refresh_purchases') }}",
               columns: [
-                   {data: 'created_at', name: 'created_at'},
                    {data: 'trans_no', name: 'trans_no'},
                    {data:'fname',
                         render: function(data, type, full, meta){
@@ -739,7 +713,7 @@
          			  e = parseFloat($('#total').val());
          		  }
 
-         		  x = e-a;
+         		  x = a+e;
 
          		  if($('#total').val()=="" && $('#partial').val()=="")
          		  {
@@ -781,7 +755,7 @@
                var t = 0;
                var z = 0;
                if($('#price').val()!=""){
-                   a = 0;
+                   a = parseFloat($('#sacks').val());
                    d = a*50;
                    if($('#sacks').val()==""){
 
@@ -890,7 +864,7 @@
                    }
           }
               if($('#sacks').val()!=""){
-                   e = 0;
+                   e = parseFloat($('#sacks').val());
                   x = b*(e*50);
                    z = x+c ;
                    i = x+c+r ;
@@ -925,7 +899,7 @@
                if($('#total').val()!=""){
                    e = parseFloat($('#total').val());
               }
-              x = e-a;
+              x = a+e;
              $('#amount').val(x)
        }
        }
@@ -942,7 +916,7 @@
               var t = 0;
               var z = 0;
               if($('#price1').val()!=""){
-                  a = 0;
+                  a = parseFloat($('#sacks1').val());
                   d = a*50;
                   if($('#sacks1').val()==""){
 
@@ -1051,7 +1025,7 @@
                   }
          }
              if($('#sacks1').val()!=""){
-                  e =0;
+                  e = parseFloat($('#sacks1').val());
                  x = b*(e*50);
                   z = x+c ;
                   i = x+c+r ;
