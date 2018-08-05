@@ -24,6 +24,7 @@ class DtrExpense extends Migration
             $table->string('type');
             $table->decimal('amount');
             $table->string('status');
+            $table->string('released_by');
             $table->timestamps();
         });
     }
