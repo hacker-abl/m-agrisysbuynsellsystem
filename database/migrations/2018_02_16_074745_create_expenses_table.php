@@ -18,8 +18,6 @@ class CreateExpensesTable extends Migration
             $table->string('description');
             $table->string('type');
             $table->decimal('amount');
-            $table->string('status');
-            $table->string('released_by');
             $table->timestamps();
         });
     }

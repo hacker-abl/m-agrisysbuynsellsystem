@@ -22,12 +22,8 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::get('/expense', 'expenseController@index')->name('expense');
     Route::post('/add_expense', 'expenseController@store')->name('add_expense');
     Route::get('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
-    Route::get('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
     Route::get('/trips', 'tripController@index')->name('trips');
     Route::get('/dtr', 'dtrController@index')->name('dtr');
-    Route::post('/release_update', 'tripController@release_update')->name('release_update');
-    Route::post('/release_update_normal', 'expenseController@release_update_normal')->name('release_update_normal');
-    Route::post('/release_update_dtr', 'dtrController@release_update_dtr')->name('release_update_dtr');
 
     //OUTBOUND DELIVERIES
     Route::get('/outbound', 'odController@index')->name('od');
@@ -75,8 +71,8 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::get('/delete_trip', 'tripController@deletedata')->name('delete_trip');
     Route::post('/add_pickup', 'tripController@store')->name('add_pickup');
     Route::post('/update_trip', 'tripController@update_trip')->name('update_trip');
+    Route::post('/add_trip_expense', 'tripController@add_trip_expense')->name('add_trip_expense');
 
-    
     //settings
     Route::get('/company', 'companyController@index')->name('company');
     Route::post('/add_company', 'companyController@store')->name('add_company');

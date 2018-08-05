@@ -57,21 +57,11 @@
 @endsection
 
 @section('content')
- <div class="container-fluid">
-     <ul class="nav nav-tabs">
-        <li class="active"><a href="#expense"><div class="block-header">
+    <div class="container-fluid">
+        <div class="block-header">
             <h2>Expense Dashboard</h2>
-        </div></a></li>
-        <li><a href="#trip_expense"><div class="block-header">
-            <h2>Trip Expenses Dashboard</h2>
-        </div></a></li>
-        <!--  <li><a href="#DTR_expense"><div class="block-header">
-            <h2>DTR Expenses Dashboard</h2>
-        </div></a></li> -->
-      </ul>        
-   
-   <div class="tab-content">
-    <div id="expense" class="tab-pane fade in active">
+        </div>
+    </div>
     <div class="modal fade" id="expense_modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -162,13 +152,11 @@
                         <table id ="expensetable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Type</th>
                                     <th>Amount</th>
-                                    <th>Status</th>
                                     <th>Date</th>
-                                    <th>Released By</th>
-                                    <th>Releasing</th>
                                 </tr>
                             </thead>
                         </table>
@@ -177,137 +165,16 @@
             </div>
         </div>
     </div>
-</div>
-
-
-<div id="trip_expense" class="tab-pane fade">
-   
-
-     <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>List of Trip Expenses as of {{ date('Y-m-d ') }}</h2>
-                   
-                </div>
-                <div class="body">
-                    <div class="table-responsive">
-                        <table id="trip_expensetable" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Trip ID</th>
-                                    <th>Destination</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Released By</th>
-                                    <th>Releasing</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    <!-- <div id="DTR_expense" class="tab-pane fade">
-   
-
-     <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>List of DTR Expenses as of {{ date('Y-m-d ') }}</h2>
-                   
-                </div>
-                <div class="body">
-                    <div class="table-responsive">
-                        <table id="DTR_expensetable" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Trip ID</th>
-                                    <th>Destination</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Released By</th>
-                                    <th>Releasing</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div> -->
-
-</div>
-</div>
- <div class="modal fade" id="release_modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>Are You Sure?</h2>
-                    </div>
-                    <div class="body">
-                        <form action="#" class="form-horizontal " id="expense_form">
-
-                            
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="release_money" class="btn btn-success waves-effect">CONTINUE</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="release_modal_normal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>Are You Sure?</h2>
-                    </div>
-                    <div class="body">
-                        <form action="#" class="form-horizontal " id="expense_form">
-
-                            
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="release_money_normal" class="btn btn-success waves-effect">CONTINUE</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- #END# Exportable Table -->
 @endsection
 
 @section('script')
     <script>
-        var id;
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
 
         $(document).ready(function() {
-            $(".nav-tabs a").click(function(){
-        $(this).tab('show');
-    });
 
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
@@ -335,92 +202,13 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_expense') }}",
                 columns: [
+                    {data: 'id', name: 'id'},
                     {data: 'description', name: 'description'},
                     {data: 'type', name: 'type'},
                     {data: 'amount', name: 'amount'},
-                    {data: 'status', name: 'status'},
                     {data: 'created_at', name: 'created_at'},
-                    {data: 'released_by', name: 'released_by'},
-                    {data: "action", orderable:false,searchable:false}
                 ]
             });
-            var trip_expensetable = $('#trip_expensetable').DataTable({
-                dom: 'Bfrtip',
-                    buttons: [
-
-                ],
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('trip_expense_view') }}",
-                columns: [
-                    {data: 'trip_id', name: 'trip_id'},
-                    {data: 'description', name: 'description'},
-                    {data: 'type', name: 'type'},
-                    {data: 'amount', name: 'amount'},
-                    {data: 'status', name: 'status'},
-                    {data: 'created_at', name: 'created_at'},
-                    {data: 'released_by', name: 'released_by'},
-                    {data: "action", orderable:false,searchable:false}
-                ]
-            });
-
-             $(document).on('click', '.release_expense', function(){
-                 id = $(this).attr("id");
-               // alert(id);
-               // $('#release_expense').modal('show');
-                // $.ajax({
-                //     url:"{{ route('release_update') }}",
-                //     method: 'post',
-                //     data:{id:id},
-                //     dataType:'json',
-                //     success:function(data){
-                //        console.log(data);
-                //     }
-                // })
-            });
-             $(document).on('click', '.release_expense_normal', function(){
-                 id = $(this).attr("id");
-            });
-            $(document).on('click', '#release_money', function(){
-                           console.log(id);
-                            
-                            $.ajax({
-                                url:"{{ route('release_update') }}",
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data:{id:id},
-                                dataType:'json',
-                                success:function(data){
-                                   console.log(data);
-                                   $('#release_modal').modal('hide');
-
-                                        trip_expensetable.ajax.reload(); //reload datatable ajax
-                                   
-                                }
-                            })
-                        });
-             $(document).on('click', '#release_money_normal', function(){
-                           console.log(id);
-                            
-                            $.ajax({
-                                url:"{{ route('release_update_normal') }}",
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data:{id:id},
-                                dataType:'json',
-                                success:function(data){
-                                   console.log(data);
-                                   $('#release_modal_normal').modal('hide');
-
-                                       expensetable.ajax.reload(); //reload datatable ajax
-                                   
-                                }
-                            })
-                        });
 
             function refresh_expense_table(){
                 expensetable.ajax.reload(); //reload datatable ajax
