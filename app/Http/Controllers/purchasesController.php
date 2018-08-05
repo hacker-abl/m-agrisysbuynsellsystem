@@ -96,20 +96,6 @@ class purchasesController extends Controller
                   $customer->fname = $request->fname;
                   $customer->mname = $request->mname;
                   $customer->lname = $request->lname;
-
-                   if($request->contacts == ""){
-                        $customer->contacts ="Not Specified";
-                   }
-                   else{
-                           $customer->contacts = $request->contacts;
-                   }
-                   if($request->address == ""){
-                        $customer->address ="Not Specified";
-                   }
-                   else{
-                           $customer->address = $request->address;
-                   }
-
                   $customer->suki_type = 0;
                   $customer->save();
 
@@ -157,10 +143,8 @@ class purchasesController extends Controller
             ->join('customer', 'customer.id', '=', 'purchases.customer_id')
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
             ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
-            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance', 'customer.fname','customer.mname','customer.lname')
-          //  ->orderBy('purchases.id', 'desc')
-               ->latest();
-
+            ->select('purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance', 'customer.fname','customer.mname','customer.lname')
+            ->get();
         return \DataTables::of($ultimatesickquery)
         ->editColumn('amtpay', function ($data) {
             return '₱'.number_format($data->amtpay, 2, '.', ',');

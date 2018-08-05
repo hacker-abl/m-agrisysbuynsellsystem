@@ -12,8 +12,6 @@ class Customer extends Model
         'fname',
         'mname',
         'lname',
-        'customer',
-        'contacts',
         'suki_type'
     );
 
