@@ -59,10 +59,10 @@
 @section('content')
  <div class="container-fluid">
      <ul class="nav nav-tabs">
-        <li class="active"><a href="#expense"><div class="block-header">
+        <li class="active"><a href="#expense_tab"><div class="block-header">
             <h2>Expense Dashboard</h2>
         </div></a></li>
-        <li><a href="#trip_expense"><div class="block-header">
+        <li><a href="#trip_expense_tab"><div class="block-header">
             <h2>Trip Expenses Dashboard</h2>
         </div></a></li>
         <!--  <li><a href="#DTR_expense"><div class="block-header">
@@ -71,7 +71,7 @@
       </ul>        
    
    <div class="tab-content">
-    <div id="expense" class="tab-pane fade in active">
+    <div id="expense_tab" class="tab-pane fade in active">
     <div class="modal fade" id="expense_modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -180,7 +180,7 @@
 </div>
 
 
-<div id="trip_expense" class="tab-pane fade">
+<div id="trip_expense_tab" class="tab-pane fade">
    
 
      <div class="row clearfix">
