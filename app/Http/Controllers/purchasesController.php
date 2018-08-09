@@ -116,6 +116,7 @@ class purchasesController extends Controller
                   $balance = new balance;
                   $balance->customer_id = $customer->id;
                   $balance->balance = 0;
+                  $balance->logs_ID = $customer->id;
                   $balance->save();
 
 

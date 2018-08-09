@@ -74,6 +74,7 @@ class customerController extends Controller
             $balance = new balance;
             $balance->customer_id = $customer->id;
             $balance->balance = 0;
+            $balance->logs_ID = $customer->id;
             $balance->save();
 
         }
@@ -96,7 +97,7 @@ class customerController extends Controller
             else{
                 $customer->address = $request->get('address');
             }
-            
+
             if($request->get('suki_type') == 'YES'){
                 $customer->suki_type = 1;
             }

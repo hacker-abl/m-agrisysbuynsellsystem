@@ -21,6 +21,11 @@ class CreateBalancesTable extends Migration
                     ->on('customer')
                     ->onDelete('cascade');
             $table->integer('balance');
+            $table->integer('logs_id')->unsigned();
+            $table->foreign('logs_id')
+                    ->references('id')
+                    ->on('customer')
+                    ->onDelete('cascade');
             $table->timestamps();
         });
     }

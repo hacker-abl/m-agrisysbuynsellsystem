@@ -43,13 +43,16 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::post('/add_sales', 'salesController@store')->name('add_sales');
     Route::get('/update_sales', 'salesController@updatedata')->name('update_sales');
     Route::get('/delete_sales', 'salesController@deletedata')->name('delete_sales');
-    
+
     //CASH ADVANCE
     Route::get('/cashadvance', 'caController@index')->name('ca');
     Route::post('/add_cashadvance', 'caController@store')->name('add_cashadvance');
     Route::get('/refresh_cashadvance', 'caController@refresh')->name('refresh_cashadvance');
     Route::get('/refresh_view_cashadvance', 'caController@refresh_view')->name('refresh_view_cashadvance');
     Route::get('/check_balance', 'caController@check_balance')->name('check_balance');
+    Route::get('/refresh_balancedt', 'balanceController@refresh')->name('refresh_balancedt');
+    Route::get('/balancelogs', 'balanceController@balance')->name('balancelogs');
+    Route::post('/add_payment', 'balanceController@store')->name('add_payment');
 
     //PURCHASES
     Route::get('/purchases', 'purchasesController@index')->name('purchases');
@@ -76,7 +79,7 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::post('/add_pickup', 'tripController@store')->name('add_pickup');
     Route::post('/update_trip', 'tripController@update_trip')->name('update_trip');
 
-    
+
     //settings
     Route::get('/company', 'companyController@index')->name('company');
     Route::post('/add_company', 'companyController@store')->name('add_company');
