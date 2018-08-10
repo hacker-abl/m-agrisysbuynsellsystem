@@ -337,8 +337,6 @@ class pdfController extends Controller
 
     	$generator = new BarcodeGeneratorHTML();
 
-    	$generator = new BarcodeGeneratorHTML();
-
 	    $pdf = "<html>
 		<head>
 		<title>Purchases PDF</title>
