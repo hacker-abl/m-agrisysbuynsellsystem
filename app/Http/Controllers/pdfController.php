@@ -467,7 +467,7 @@ class pdfController extends Controller
 
 	    $pdf = "<html>
 		<head>
-		<title>Cash Advance PDF</title>
+		<title>Balance Payment PDF</title>
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
 		body {
