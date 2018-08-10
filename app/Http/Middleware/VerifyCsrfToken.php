@@ -20,6 +20,7 @@ class VerifyCsrfToken extends Middleware
     	'/print_ca',
     	'/print_purchase',
     	'/print_sales',
+        '/print_balance_payment',
     	
 
     ];

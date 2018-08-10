@@ -134,6 +134,7 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::post('/print_ca', 'pdfController@ca')->name('print_ca');
     Route::post('/print_purchase', 'pdfController@purchases')->name('print_purchase');
     Route::post('/print_sales', 'pdfController@sales')->name('print_sales');
+    Route::post('/print_balance_payment', 'pdfController@balance_payment')->name('print_balance_payment');
 });
 
 Route::group(['middleware'], function()

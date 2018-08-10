@@ -66,16 +66,17 @@
                   <div class="header">
                        <h2 class="modal_title">Add Payment</h2>
                    <ul class="header-dropdown m-r--5">
-                       <li class="dropdown">
-                            <button id="print_ca" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                        <li class="dropdown">
+                            <button id="print_balance_payment" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                        </li>
                        <li class="dropdown">
-                            <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
-                            <input type="hidden" id="customer_id_clone" name="customer_id_clone">
-                            <input type="hidden" id="reason_clone" name="reason_clone">
-                            <input type="hidden" id="amount_clone" name="amount_clone">
-                            <input type="hidden" id="balance_clone" name="balance_clone">
-                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            <form method="POST" id="printBalanceForm" name="printBalanceForm" target="_blank" action="{{ route('print_balance_payment') }}">
+                            <input type="hidden" id="customer_id1_clone" name="customer_id1_clone">
+                            <input type="hidden" id="paymentmethod_clone" name="paymentmethod_clone">
+                            <input type="hidden" id="checknumber_clone" name="checknumber_clone">
+                            <input type="hidden" id="amount1_clone" name="amount1_clone">
+                            <input type="hidden" id="balance2_clone" name="balance2_clone">
+                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li>
                    </ul>
@@ -623,6 +624,20 @@
                 $("#reason_clone").val($("#reason").val());
                 $("#amount_clone").val($("#amount").val());
                 $("#balance_clone").val($("#balance").val());
+            });
+
+            $("#print_balance_payment").click(function(event) {
+                event.preventDefault();
+                $("#add_balance").trigger("click");
+                $("#print_balance_form").trigger("click");
+            });
+
+            $("#print_balance_form").click(function(event) {
+                $("#customer_id1_clone").val($("#customer_id1 option:selected").text());
+                $("#paymentmethod_clone").val($("#paymentmethod option:selected").text());
+                $("#checknumber_clone").val($("#checknumber").val());
+                $("#amount1_clone").val($("#amount1").val());
+                $("#balance2_clone").val($("#balance2").val());
             });
 
             $(document).on('click', '.view_balance', function(){

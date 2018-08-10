@@ -47,6 +47,10 @@ class pdfController extends Controller
 			// (Optional) Setup the paper size and orientation
 			$customPaper = array(0,0,204,350);
 			$dompdf->set_paper($customPaper);
+		}else if($name == "balance_payment"){
+			// (Optional) Setup the paper size and orientation
+			$customPaper = array(0,0,204,200);
+			$dompdf->set_paper($customPaper);
 		}
 		
 
@@ -317,11 +321,11 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span><b>".$request->amount_clone."</b></span></td>
+				<td align='right'><span><b><span style='font-family: DejaVu Sans; sans-serif;'>&#8369;</span> ".number_format($request->amount_clone, 2, '.', ',')."</b></span></td>
 				</tr>
 				<tr>
 				<td><span>Balance: </span></td>
-				<td align='right'><span><b>".$request->balance_clone."</b></span></td>
+				<td align='right'><span><b><span style='font-family: DejaVu Sans; sans-serif;'>&#8369;</span> ".number_format($request->balance_clone, 2, '.', ',')."</b></span></td>
 				</tr>
 				</table>
 		        </div>";
@@ -456,4 +460,53 @@ class pdfController extends Controller
 
 		self::generate_pdf($pdf,'sales');
     }
+
+    public function balance_payment(Request $request){
+
+    	$generator = new BarcodeGeneratorHTML();
+
+	    $pdf = "<html>
+		<head>
+		<title>Cash Advance PDF</title>
+		<style>
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		body {
+			font-family: sans-serif;
+		    font-style: normal;
+		    font-size: 12px;
+		}
+		</style>
+		</head>
+		<body>
+		<basefont size='4'>
+		<h3 align='center'>M-AGRI - BALANCE PAYMENT</h3>
+		<br>";
+		$pdf .= "<div>
+				<table style='width:100%'>
+				<tr>
+				<td width='40%'><span>Name: </span></td>
+				<td width='60%' align='right'><span><b>".$request->customer_id1_clone."</b></span></td>
+				</tr>";
+
+		if($request->paymentmethod_clone == "Check"){
+			$pdf .= "
+				<tr>
+				<td width='40%'><span>Check #: </span></td>
+				<td width='60%' align='right'><span><b>".$request->checknumber_clone."</b></span></td>
+				</tr>";
+		}
+		$pdf .= "
+				<tr>
+				<td><span>Amount: </span></td>
+				<td align='right'><span><b><span style='font-family: DejaVu Sans; sans-serif;'>&#8369;</span> ".number_format($request->amount1_clone, 2, '.', ',')."</b></span></td>
+				</tr>
+				<tr>
+				<td><span>Balance: </span></td>
+				<td align='right'><span><b><span style='font-family: DejaVu Sans; sans-serif;'>&#8369;</span> ".number_format($request->balance2_clone, 2, '.', ',')."</b></span></td>
+				</tr>
+				</table>
+		        </div>";
+
+		self::generate_pdf($pdf,'balance_payment');
+	}
 }
