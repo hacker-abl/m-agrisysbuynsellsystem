@@ -65,10 +65,11 @@ class balanceController extends Controller
 		     $balance = balance::find($request->customer_id1);
 		     $balance->balance = 0;
 			 $balance->save();
-	    }
+		}
+	
 	    else{
 		    $balance = balance::where('customer_id', '=',$request->customer_id1)
-				   ->decrement('balance', $request->balance2 - $request->amount1);
+				   ->decrement('balance', $request->amount1);
 	    }
 
 		   }
