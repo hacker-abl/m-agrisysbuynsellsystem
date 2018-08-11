@@ -15,7 +15,7 @@
                     <i class="material-icons">show_chart</i>
                     <span>Expenses</span>
                 </a>
-            </li> 
+            </li>
             <li>
                 <a href="{{ route('trips') }}">
                     <i class="material-icons">directions_bus</i>
@@ -68,8 +68,8 @@
         <!--  <li><a href="#DTR_expense"><div class="block-header">
             <h2>DTR Expenses Dashboard</h2>
         </div></a></li> -->
-      </ul>        
-   
+      </ul>
+
    <div class="tab-content">
     <div id="expense_tab" class="tab-pane fade in active">
     <div class="modal fade" id="expense_modal" tabindex="-1" role="dialog">
@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                     <label for="amount">Amount</label>
@@ -133,7 +133,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row clearfix">
                                 <div class="modal-footer">
                                     <button type="button" id="add_expense" class="btn btn-link waves-effect">SAVE CHANGES</button>
@@ -162,13 +162,13 @@
                         <table id ="expensetable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Released By</th>
-                                    <th>Releasing</th>
+                                    <th  width="100" style="text-align:center;">Name</th>
+                                    <th  width="100" style="text-align:center;">Type</th>
+                                    <th  width="100" style="text-align:center;">Amount</th>
+                                    <th  width="100" style="text-align:center;">Status</th>
+                                    <th  width="100" style="text-align:center;">Date</th>
+                                    <th  width="100" style="text-align:center;">Released By</th>
+                                    <th  width="100" style="text-align:center;">Releasing</th>
                                 </tr>
                             </thead>
                         </table>
@@ -181,28 +181,26 @@
 
 
 <div id="trip_expense_tab" class="tab-pane fade">
-   
-
      <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header">
                     <h2>List of Trip Expenses as of {{ date('Y-m-d ') }}</h2>
-                   
+
                 </div>
                 <div class="body">
                     <div class="table-responsive">
                         <table id="trip_expensetable" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Trip ID</th>
-                                    <th>Destination</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Released By</th>
-                                    <th>Releasing</th>
+                                    <th  width="100" style="text-align:center;">Trip ID</th>
+                                    <th  width="100" style="text-align:center;">Destination</th>
+                                    <th  width="100" style="text-align:center;">Type</th>
+                                    <th  width="100" style="text-align:center;">Amount</th>
+                                    <th  width="100" style="text-align:center;">Status</th>
+                                    <th  width="100" style="text-align:center;">Date</th>
+                                    <th  width="100" style="text-align:center;">Released By</th>
+                                    <th  width="100" style="text-align:center;">Releasing</th>
                                 </tr>
                             </thead>
                         </table>
@@ -213,14 +211,14 @@
     </div>
     </div>
     <!-- <div id="DTR_expense" class="tab-pane fade">
-   
+
 
      <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header">
                     <h2>List of DTR Expenses as of {{ date('Y-m-d ') }}</h2>
-                   
+
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -257,7 +255,7 @@
                     <div class="body">
                         <form action="#" class="form-horizontal " id="expense_form">
 
-                            
+
                             <div class="row clearfix">
                                 <div class="modal-footer">
                                     <button type="button" id="release_money" class="btn btn-success waves-effect">CONTINUE</button>
@@ -280,7 +278,7 @@
                     <div class="body">
                         <form action="#" class="form-horizontal " id="expense_form">
 
-                            
+
                             <div class="row clearfix">
                                 <div class="modal-footer">
                                     <button type="button" id="release_money_normal" class="btn btn-success waves-effect">CONTINUE</button>
@@ -314,7 +312,7 @@
                     processing: 'Loading.. Please wait'
                 }
             });
-            
+
             //EXPENSE Datatable starts here
             $('#expense_modal').on('hidden.bs.modal', function (e) {
                 $(this)
@@ -383,7 +381,7 @@
             });
             $(document).on('click', '#release_money', function(){
                            console.log(id);
-                            
+
                             $.ajax({
                                 url:"{{ route('release_update') }}",
                                 method: 'POST',
@@ -397,13 +395,13 @@
                                    $('#release_modal').modal('hide');
 
                                         trip_expensetable.ajax.reload(); //reload datatable ajax
-                                   
+
                                 }
                             })
                         });
              $(document).on('click', '#release_money_normal', function(){
                            console.log(id);
-                            
+
                             $.ajax({
                                 url:"{{ route('release_update_normal') }}",
                                 method: 'POST',
@@ -417,7 +415,7 @@
                                    $('#release_modal_normal').modal('hide');
 
                                        expensetable.ajax.reload(); //reload datatable ajax
-                                   
+
                                 }
                             })
                         });

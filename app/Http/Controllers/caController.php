@@ -52,16 +52,16 @@ class caController extends Controller
             $notification->admin_id = Auth::id();
             $notification->cash_advance_id = $ca->id;
             $notification->save();
-            
+
             $datum = Notification::where('id', $notification->id)->with('admin', 'cash_advance')->get();
 
             // return $datum;
-            $notification = array();     
+            $notification = array();
 
             $notification = array(
                 'notifications' => $datum[0],
                 'customer' => $datum[0]->cash_advance->customer,
-                'time' => time_elapsed_string($datum[0]->updated_at), 
+                'time' => time_elapsed_string($datum[0]->updated_at),
             );
 
             event(new \App\Events\NewNotification($notification));
@@ -78,17 +78,24 @@ class caController extends Controller
         $sql = '(' . $join->toSql() . ') as ca2';
 
         $cash_advance = DB::table('cash_advance as ca1')
-            ->select('ca1.*', 'cus.fname', 'cus.mname', 'cus.lname')
+            ->select('ca1.*', 'cus.fname', 'cus.mname', 'cus.lname','balance.balance')
             ->join(DB::raw($sql), function($join){
                 $join->on('ca2.customer_id', '=', 'ca1.customer_id')
                     ->on('ca2.maxdate', '=', 'ca1.created_at');
             })
             ->leftJoin('customer as cus', 'ca1.customer_id', '=', 'cus.id')
+             ->join('balance', 'balance.customer_id', '=', 'ca1.customer_id')
             ->orderBy('ca1.created_at', 'desc')
             ->get();
         return \DataTables::of($cash_advance)
         ->addColumn('action', function($cash_advance){
-            return '<button class="btn btn-xs btn-info view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+            return '<button class="btn btn-xs btn-info  waves-effect view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+        })
+        ->editColumn('balance', function ($data) {
+            return '₱'.number_format($data->balance, 2, '.', ',');
+        })
+        ->editColumn('amount', function ($data) {
+            return '₱'.number_format($data->amount, 2, '.', ',');
         })
         ->make(true);
     }
@@ -99,16 +106,23 @@ class caController extends Controller
             ->join('customer', 'customer.id', '=', 'cash_advance.customer_id')
             ->select('cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at', 'cash_advance.balance')
             ->where('cash_advance.customer_id', $id)
-            ->get();
+            ->latest();
         return \DataTables::of($cash_advance)
+        ->editColumn('balance', function ($data) {
+           return '₱'.number_format($data->balance, 2, '.', ',');
+        })
+        ->editColumn('amount', function ($data) {
+            return '₱'.number_format($data->amount, 2, '.', ',');
+        })
         ->make(true);
+
         echo json_encode($cash_advance);
     }
 
     public function check_balance(Request $request){
         //$balance = ca::where('customer_id', $request->id)->orderBy('customer_id', 'desc')->latest()->get();
         $balance = balance::where('customer_id', '=', $request->id)
-                   ->get();
+            ->get();
         echo json_encode($balance);
     }
 }

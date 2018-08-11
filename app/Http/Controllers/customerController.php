@@ -55,18 +55,18 @@ class customerController extends Controller
             $customer->mname = $request->mname;
             $customer->lname = $request->lname;
 
-             if($request->contacts == ""){
-                  $customer->contacts ="Not Specified";
-             }
-             else{
-                     $customer->contacts = $request->contacts;
-             }
-             if($request->address == ""){
-                  $customer->address ="Not Specified";
-             }
-             else{
-                     $customer->address = $request->address;
-             }
+            if($request->contacts == ""){
+                $customer->contacts ="Not Specified";
+            }
+            else{
+                    $customer->contacts = $request->contacts;
+            }
+            if($request->address == ""){
+                $customer->address ="Not Specified";
+            }
+            else{
+                $customer->address = $request->address;
+            }
 
             $customer->suki_type = 0;
             $customer->save();
@@ -74,8 +74,8 @@ class customerController extends Controller
             $balance = new balance;
             $balance->customer_id = $customer->id;
             $balance->balance = 0;
+            $balance->logs_ID = $customer->id;
             $balance->save();
-
         }
 
         if($request->get('button_action') == 'update'){
@@ -85,18 +85,18 @@ class customerController extends Controller
             $customer->lname = $request->get('lname');
 
             if($request->get('contacts') == ""){
-                 $customer->contacts ="Not Specified";
+                $customer->contacts ="Not Specified";
             }
             else{
-                      $customer->contacts = $request->get('contacts');
+                $customer->contacts = $request->get('contacts');
             }
             if($request->get('address') == ""){
-                 $customer->address ="Not Specified";
+                $customer->address ="Not Specified";
             }
             else{
                 $customer->address = $request->get('address');
             }
-            
+
             if($request->get('suki_type') == 'YES'){
                 $customer->suki_type = 1;
             }
@@ -144,8 +144,6 @@ class customerController extends Controller
 
         $customer->delete();
        DB::table('balance')->where('customer_id', $request->input('id'))->delete();
-
-
     }
     /**
      * Display the specified resource.

@@ -170,12 +170,12 @@
 							<table id="salestable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
-										<th width="100">ID</th>
-										<th width="100">Commodity</th>
-										<th width="100">Company</th>
-										<th width="100">No. Of Kilos</th>
-										<th width="100">Amount</th>
-										<th width="100">Action</th>
+										<th width="100" style="text-align:center;">Date</th>
+										<th width="100" style="text-align:center;">Commodity</th>
+										<th width="100" style="text-align:center;">Company</th>
+										<th width="100" style="text-align:center;">No. Of Kilos</th>
+										<th width="100" style="text-align:center;">Amount</th>
+										<th width="100" style="text-align:center;">Action</th>
 									</tr>
 								</thead>
 							</table>
@@ -220,7 +220,7 @@
 				serverSide: true,
 				ajax: "{{ route('refresh_sales') }}",
 				columns: [
-                         {data: 'id', name: 'id'},
+                         {data: 'created_at', name: 'created_at'},
 					{data: 'commodity_name', name: 'commodity_name'},
 					{data: 'name', name: 'name'},
                          {data: 'kilos', name: 'kilos'},

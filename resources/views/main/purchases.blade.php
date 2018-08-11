@@ -512,19 +512,20 @@
                                   <table id="purchasetable" class="table table-bordered table-striped table-hover  ">
                                        <thead>
                                             <tr>
-                                                 <th width="100">Date</th>
-                                                 <th width="100">ID</th>
-                                                 <th width="100">Customer</th>
-                                                 <th width="100">Commodity</th>
-                                                 <th width="100">No. of Sacks</th>
-                                                 <th width="100">Cash Advance</th>
-                                                 <th width="100">Balance</th>
-                                                 <th width="100">Partial Payment</th>
-                                                 <th width="100">No. of Kilos</th>
-                                                 <th width="100">Price</th>
-                                                 <th width="100">Total</th>
-                                                 <th width="100">Deducted</th>
-                                                 <th width="100">Remarks</th>
+                                                 <th width="100" style="text-align:center;">ID</th>
+
+                                                 <th width="100" style="text-align:center;">Customer</th>
+                                                 <th width="100" style="text-align:center;">Commodity</th>
+                                                 <th width="100" style="text-align:center;">No. of Sacks</th>
+                                                 <th width="100" style="text-align:center;">Cash Advance</th>
+                                                 <th width="100" style="text-align:center;">Balance</th>
+                                                 <th width="100" style="text-align:center;">Partial Payment</th>
+                                                 <th width="100" style="text-align:center;" >No. of Kilos</th>
+                                                 <th width="100" style="text-align:center;">Price</th>
+                                                 <th width="100" style="text-align:center;">Total</th>
+                                                 <th width="100" style="text-align:center;">Deducted</th>
+                                                 <th width="100" style="text-align:center;">Date</th>
+                                                 <th width="100" style="text-align:center;">Remarks</th>
                                             </tr>
                                        </thead>
                                   </table>
@@ -569,7 +570,6 @@
               serverSide: true,
               ajax: "{{ route('refresh_purchases') }}",
               columns: [
-                   {data: 'created_at', name: 'created_at'},
                    {data: 'trans_no', name: 'trans_no'},
                    {data:'fname',
                         render: function(data, type, full, meta){
@@ -578,16 +578,16 @@
                    },
                    {data: 'commodity_name', name: 'commodity_name'},
                    {data: 'sacks', name: 'sacks'},
-
                    {data: 'balance', name: 'balance'},
                    {data: 'balance_id', name: 'balance_id'},
                    {data: 'partial', name: 'partial'},
                    {data: 'kilo', name: 'kilo'},
-
                    {data: 'price', name: 'price'},
                    {data: 'total', name: 'total'},
                    {data: 'amtpay', name: 'amtpay'},
+                   {data:'created_at',name:'created_at'},
                    {data: 'remarks', name: 'remarks'},
+
               ]
          });
 

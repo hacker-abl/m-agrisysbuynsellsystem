@@ -252,16 +252,16 @@
                         <table id="triptable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
-                                    <th>Ticket</th>
-                                    <th>Commodity</th>
-                                    <th>Expense</th>
-                                    <th>Destination</th>
-                                    <th>Truck</th>
-                                    <th>Driver</th>
-                                    <th>Plate No.</th>
-                                    <th>Liters</th>
-                                    <th>Date</th>
-                                    <th width="50">Action</th>
+                                    <th  style="text-align:center;">Ticket</th>
+                                    <th  style="text-align:center;">Commodity</th>
+                                    <th  style="text-align:center;">Expense</th>
+                                    <th  style="text-align:center;">Destination</th>
+                                    <th  style="text-align:center;">Truck</th>
+                                    <th  style="text-align:center;">Driver</th>
+                                    <th  style="text-align:center;">Plate No.</th>
+                                    <th  style="text-align:center;">Liters</th>
+                                    <th  style="text-align:center;">Date</th>
+                                    <th  style="text-align:center;" width="50">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -568,7 +568,7 @@
                 $('.trip_form').each(function(){
                     valuesToSend = $(this).serialize();
                     console.log(valuesToSend);
-                    
+
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -580,8 +580,8 @@
                         success:function(data){
                             dataparsed = $.parseJSON(data);
                             console.log(datasend);
-                                     
-                           
+
+
                             $("#id").val(dataparsed.driver_id);
 
                             swal("Success!", "Record has been added to database", "success")
@@ -615,10 +615,10 @@
             });
 
             function print_loop () {
-                
+
             var count_length = $('.trip_form').length;
 
-            setTimeout(function () {    
+            setTimeout(function () {
 
                 $("#ticket_clone").val($("#ticket"+trip_counter).val());
                 $("#expense_clone").val($("#expense"+trip_counter).val());
@@ -630,9 +630,9 @@
 
                 $("#printForm").submit();
 
-                trip_counter++;                     
+                trip_counter++;
                 if (trip_counter <= count_length) {
-                    print_loop();             
+                    print_loop();
                 }else{
                     trip_counter=1;
                 }
@@ -640,7 +640,7 @@
 
             }
 
-            
+
 
             var pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
