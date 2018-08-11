@@ -116,14 +116,13 @@ class caController extends Controller
         })
         ->make(true);
 
-
         echo json_encode($cash_advance);
     }
 
     public function check_balance(Request $request){
         //$balance = ca::where('customer_id', $request->id)->orderBy('customer_id', 'desc')->latest()->get();
         $balance = balance::where('customer_id', '=', $request->id)
-                   ->get();
+            ->get();
         echo json_encode($balance);
     }
 }

@@ -17,15 +17,15 @@ class CreateBalancesTable extends Migration
             $table->increments('id');
             $table->integer('customer_id')->unsigned();
             $table->foreign('customer_id')
-                    ->references('id')
-                    ->on('customer')
-                    ->onDelete('cascade');
+                ->references('id')
+                ->on('customer')
+                ->onDelete('cascade');
             $table->integer('balance');
             $table->integer('logs_id')->unsigned();
             $table->foreign('logs_id')
-                    ->references('id')
-                    ->on('customer')
-                    ->onDelete('cascade');
+                ->references('id')
+                ->on('customer')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -14,14 +14,14 @@ class CreatePaymentLogsTable extends Migration
     public function up()
     {
         Schema::create('payment_logs', function (Blueprint $table) {
-          $table->increments('id');
-          $table->integer('logs_id')->unsigned();
-          $table->foreign('logs_id')
-                   ->references('id')
-                   ->on('customer')
-                   ->onDelete('cascade');
-          $table->string('paymentmethod');
-          $table->string('checknumber');
+            $table->increments('id');
+            $table->integer('logs_id')->unsigned();
+            $table->foreign('logs_id')
+                ->references('id')
+                ->on('customer')
+                ->onDelete('cascade');
+            $table->string('paymentmethod');
+            $table->string('checknumber');
 
             $table->integer('paymentamount');
             $table->timestamps();

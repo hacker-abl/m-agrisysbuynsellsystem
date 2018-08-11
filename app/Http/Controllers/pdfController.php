@@ -128,7 +128,7 @@ class pdfController extends Controller
 				<div style='margin:0 auto; width:160px;'>
 				".$generator->getBarcode($request->ticket_clone, $generator::TYPE_CODE_39, 1)."
 				</div>
-		         </div>";
+				</div>";
 
 		self::generate_pdf($pdf,'trips');
     }
