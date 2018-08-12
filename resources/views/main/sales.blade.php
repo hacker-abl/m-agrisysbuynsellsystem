@@ -218,6 +218,13 @@
 				],
 				processing: true,
 				serverSide: true,
+				columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
 				ajax: "{{ route('refresh_sales') }}",
 				columns: [
                          {data: 'created_at', name: 'created_at'},

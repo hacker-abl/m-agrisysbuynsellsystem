@@ -52,6 +52,7 @@ class odController extends Controller
             $commodity->company_id = $request->company;
             $commodity->plateno = $request->plateno;
             $commodity->fuel_liters = $request->liter;
+            $commodity->allowance = $request->allowance;
             $commodity->save();
           }
 
@@ -65,6 +66,7 @@ class odController extends Controller
           $commodity->company_id = $request->company;
           $commodity->plateno = $request->plateno;
           $commodity->fuel_liters = $request->liter;
+          $commodity->allowance = $request->allowance;
           $commodity->save();
         }
     }
@@ -77,12 +79,15 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters')
+            ->select('deliveries.id','deliveries.outboundTicket','deliveries.allowance','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters')
             ->get();
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+        })
+        ->editColumn('allowance', function ($data) {
+            return '₱'.number_format($data->allowance, 2, '.', ',');
         })
         ->make(true);
     }
@@ -98,6 +103,7 @@ class odController extends Controller
             'company_id' => $od->company_id,
             'plateno' => $od->plateno,
             'fuel_liters' => $od->fuel_liters,
+            'allowance' => $od->allowance,
         );
         echo json_encode($output);
     }

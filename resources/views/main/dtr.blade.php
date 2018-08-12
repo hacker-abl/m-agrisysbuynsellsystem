@@ -241,14 +241,14 @@
 							<table id="dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
 								<thead>
 									<tr>
-										<th>Name</th>
-										<th>Role</th>
-										<th>Overtime</th>
-										<th>Number of Hours</th>
-                                        <th>Date/Time</th>
-                                        <th>Salary</th>
-                                        <th>Status</th>
-										<th width="50">Action</th>
+										<th width="100" style="text-align:center;">Name</th>
+										<th width="100" style="text-align:center;">Role</th>
+										<th width="100" style="text-align:center;">Overtime</th>
+										<th width="100" style="text-align:center;">No. of Hours</th>
+                                        <th width="100" style="text-align:center;">Date/Time</th>
+                                        <th width="100" style="text-align:center;">Salary</th>
+                                        <th width="100" style="text-align:center;">Status</th>
+										<th width="100" style="text-align:center;">Action</th>
 									</tr>
 								</thead>
 							</table>
@@ -314,6 +314,13 @@
 				buttons: [
 				],
 				processing: true,
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
 				serverSide: true,
 				ajax: "{{ route('refresh_dtr') }}",
 				columns: [

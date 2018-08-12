@@ -89,8 +89,11 @@ class salesController extends Controller
             ->latest();
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            return '<button class="btn btn-xs btn-warning update_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+        })
+        ->editColumn('amount', function ($data) {
+            return '₱'.number_format($data->amount, 2, '.', ',');
         })
         ->make(true);
     }

@@ -169,6 +169,13 @@
                 buttons: [
                 ],
                 processing: true,
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 serverSide: true,
                 ajax: "{{ route('refresh_roles') }}",
                 columns: [

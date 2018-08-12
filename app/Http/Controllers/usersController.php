@@ -81,8 +81,8 @@ class usersController extends Controller
         $user = User::all();
         return \DataTables::of(User::query())
         ->addColumn('action', function($user){
-            return '<button class="btn btn-xs btn-warning update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button>';
+            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button></div>';
         })
         ->editColumn('access_id', function ($data){
             $level = access_levels::all();

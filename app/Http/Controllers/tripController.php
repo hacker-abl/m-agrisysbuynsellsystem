@@ -100,8 +100,8 @@ class tripController extends Controller
             ->get();
         return \DataTables::of($trips)
         ->addColumn('action', function($trips){
-            return '<button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button>';
+            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
         })
         ->editColumn('expense', function ($data) {
             return '₱ '.number_format($data->expense, 2, '.', ',');

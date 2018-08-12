@@ -191,6 +191,19 @@
 							</div>
 
 							<div class="row clearfix">
+								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+									<label for="name">Allowance</label>
+								</div>
+								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="allowance" name="allowance" class="form-control"   required>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row clearfix">
 							 	<div class="modal-footer">
 									<button type="submit" id="add_delivery" class="btn btn-link waves-effect">SAVE CHANGES</button>
 									<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
@@ -219,14 +232,15 @@
 							<table id="deliverytable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
-										<th>Ticket No</th>
-										<th>Commodity</th>
-										<th>Destination</th>
-										<th>Company</th>
-										<th>Driver</th>
-										<th>Plate No.</th>
-										<th>Liters</th>
-										<th width="50">Action</th>
+										<th width="20" style="text-align:center;">Ticket No</th>
+										<th width="100" style="text-align:center;">Commodity</th>
+										<th width="100" style="text-align:center;">Destination</th>
+										<th width="100" style="text-align:center;">Company</th>
+										<th width="100" style="text-align:center;">Driver</th>
+										<th width="100" style="text-align:center;">Plate No.</th>
+										<th width="100" style="text-align:center;">Liters</th>
+										<th width="100" style="text-align:center;">Allowance</th>
+										<th width="100" style="text-align:center;">Action</th>
 									</tr>
 								</thead>
 							</table>
@@ -245,6 +259,8 @@
         });
 
         $(document).ready(function() {
+			$($.fn.dataTable.tables( true ) ).css('width', '100%');
+        $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
 
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
@@ -269,6 +285,14 @@
 				],
 				processing: true,
 				serverSide: true,
+				responsive: true,
+				columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
 				ajax: "{{ route('refresh_deliveries') }}",
 				columns: [
 					{data: 'outboundTicket', name: 'outboundTicket'},
@@ -282,6 +306,7 @@
 					},
 					{data: 'plateno', name: 'plateno'},
 					{data: 'fuel_liters', name: 'fuel_liters'},
+					{data: 'allowance', name: 'allowance'},
 					{data: "action", orderable:false,searchable:false}
 				]
 			});
@@ -303,7 +328,6 @@
 						if(data[0].temp!=null){
 							t = data[0].temp;
 						}
-
 						$("#driver_id").val('').trigger('change');
 						$("#company").val('').trigger('change');
 						$("#commodity").val('').trigger('change');
@@ -378,6 +402,7 @@
 						$("#commodity").val(data.commodity_id).trigger('change');
 						$("#plateno").val(data.plateno).trigger('change');
 						$('#liter').val(data.fuel_liters);
+						$('#allowance').val(data.allowance);
 						$('#od_modal').modal('show');
 						$('.modal_title').text('Update Role');
 						refresh_delivery_table();

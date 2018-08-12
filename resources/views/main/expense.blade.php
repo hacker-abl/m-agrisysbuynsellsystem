@@ -59,17 +59,17 @@
 @section('content')
  <div class="container-fluid">
      <ul class="nav nav-tabs">
-        <li class="active"><a href="#expense_tab"><div class="block-header">
+        <li class="active"><a href="#expense_tab" data-toggle="tab"><div class="block-header">
             <h2>Expense Dashboard</h2>
         </div></a></li>
-        <li><a href="#trip_expense_tab"><div class="block-header">
+        <li><a href="#trip_expense_tab" data-toggle="tab" id="render"><div class="block-header">
             <h2>Trip Expenses Dashboard</h2>
         </div></a></li>
         <!--  <li><a href="#DTR_expense"><div class="block-header">
             <h2>DTR Expenses Dashboard</h2>
         </div></a></li> -->
       </ul>
-
+</div>
    <div class="tab-content">
     <div id="expense_tab" class="tab-pane fade in active">
     <div class="modal fade" id="expense_modal" tabindex="-1" role="dialog">
@@ -210,40 +210,8 @@
         </div>
     </div>
     </div>
-    <!-- <div id="DTR_expense" class="tab-pane fade">
 
 
-     <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>List of DTR Expenses as of {{ date('Y-m-d ') }}</h2>
-
-                </div>
-                <div class="body">
-                    <div class="table-responsive">
-                        <table id="DTR_expensetable" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Trip ID</th>
-                                    <th>Destination</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Released By</th>
-                                    <th>Releasing</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div> -->
-
-</div>
 </div>
  <div class="modal fade" id="release_modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -303,10 +271,12 @@
         });
 
         $(document).ready(function() {
+         
             $(".nav-tabs a").click(function(){
         $(this).tab('show');
     });
 
+    
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -330,6 +300,13 @@
 
                 ],
                 processing: true,
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 serverSide: true,
                 ajax: "{{ route('refresh_expense') }}",
                 columns: [
@@ -347,6 +324,14 @@
                     buttons: [
 
                 ],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
+                responsive: true,
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('trip_expense_view') }}",
@@ -360,8 +345,12 @@
                     {data: 'released_by', name: 'released_by'},
                     {data: "action", orderable:false,searchable:false}
                 ]
-            });
-
+            });     
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+      
+        $($.fn.dataTable.tables( true ) ).css('width', '100%');
+        $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
+    } ); 
              $(document).on('click', '.release_expense', function(){
                  id = $(this).attr("id");
                // alert(id);

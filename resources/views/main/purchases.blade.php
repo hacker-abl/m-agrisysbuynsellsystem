@@ -568,6 +568,13 @@
               ],
               processing: true,
               serverSide: true,
+              columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
               ajax: "{{ route('refresh_purchases') }}",
               columns: [
                    {data: 'trans_no', name: 'trans_no'},

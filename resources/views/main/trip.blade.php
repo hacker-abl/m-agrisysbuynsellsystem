@@ -261,7 +261,7 @@
                                     <th  style="text-align:center;">Plate No.</th>
                                     <th  style="text-align:center;">Liters</th>
                                     <th  style="text-align:center;">Date</th>
-                                    <th  style="text-align:center;" width="50">Action</th>
+                                    <th  style="text-align:center;" width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -648,6 +648,13 @@
                 ],
                 processing: true,
                 serverSide: true,
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax: "{{ route('refresh_pickup') }}",
                 columns: [
                     {data: 'trip_ticket', name: 'trip_ticket'},

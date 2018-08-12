@@ -68,8 +68,8 @@ class commodityController extends Controller
         $commodity = Commodity::all();
         return \DataTables::of(Commodity::query())
         ->addColumn('action', function($commodity){
-            return '<button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
+            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button></div>';
         })
         ->make(true);
     }
