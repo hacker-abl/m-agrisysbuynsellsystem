@@ -639,7 +639,7 @@
                     buttons: [
 
                 ],
-<<<<<<< HEAD
+                paging: true,
                 columnDefs: [
   				{
     			  	"targets": "_all", // your case first column
@@ -647,9 +647,6 @@
       				
  				}
 				],
-                responsive: true,
-=======
-                paging: true,
                 pageLength: 10,
                 order:[],
                 ajax:{
@@ -667,7 +664,6 @@
                        
                   
                 },
->>>>>>> origin/date_range
                 processing: true,
                 serverSide: true,
                 columns: [
@@ -680,14 +676,6 @@
                     {data: 'released_by'},
                     {data: "action", orderable:false,searchable:false}
                 ]
-<<<<<<< HEAD
-            });     
-            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-      
-        $($.fn.dataTable.tables( true ) ).css('width', '100%');
-        $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
-    } ); 
-=======
             });
 
 
@@ -696,9 +684,13 @@
                 maxDateFilter = new Date(this.value).getTime();
                 //oTable.fnDraw();
               });
+              $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+      
+      $($.fn.dataTable.tables( true ) ).css('width', '100%');
+      $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
+  } ); 
  //-----------------------------------             //END OF TRIP EXPENSE
 
->>>>>>> origin/date_range
              $(document).on('click', '.release_expense', function(){
                  id = $(this).attr("id");
                // alert(id);
