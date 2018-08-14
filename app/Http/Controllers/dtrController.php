@@ -92,6 +92,12 @@ class dtrController extends Controller
         ->addColumn('action', function($dtr){
             return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
         })
+        ->editColumn('overtime', function ($data) {
+            return '₱'.number_format($data->overtime, 2, '.', ',');
+        })
+        ->editColumn('salary', function ($data) {
+            return '₱'.number_format($data->salary, 2, '.', ',');
+        })
         ->make(true);
     }
 

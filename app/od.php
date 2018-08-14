@@ -16,5 +16,6 @@ class od extends Model
 		'company_id',
 		'plateno',
 		'fuel_liters',
+		'allowance',
 	);
 }

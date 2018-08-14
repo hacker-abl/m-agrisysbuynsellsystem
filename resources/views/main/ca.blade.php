@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(isAdmin() ? 'layouts.admin' : 'layouts.user')
 
 @section('sidenav')
     <div class="menu">
@@ -446,6 +446,13 @@
 				],
 				processing: true,
 				serverSide: true,
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
 				ajax: "{{ route('refresh_cashadvance') }}",
 				columns: [
 					{render: function(data, type, full, meta){
@@ -464,6 +471,13 @@
                        ],
                        processing: true,
                        serverSide: true,
+                       columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                        ajax: "{{ route('refresh_balancedt') }}",
                        columns: [
                             {data:'fname',

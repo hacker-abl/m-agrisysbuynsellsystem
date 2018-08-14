@@ -109,8 +109,8 @@
                         <table id="companytable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Name</th>
+                                    <th width="100" style="text-align:center;">No</th>
+                                    <th width="100" style="text-align:center;">Name</th>
                                     <th width="50">Action</th>
                                 </tr>
                             </thead>
@@ -153,6 +153,13 @@
                 buttons: [
                 ],
                 processing: true,
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 serverSide: true,
                 ajax: "{{ route('refresh_company') }}",
                 columns: [

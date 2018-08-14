@@ -91,20 +91,39 @@ class tripController extends Controller
         $released->save();
         echo json_encode("released");
     }
-    public function refresh(){
-        $trips = DB::table('trips')
+    public function refresh(Request $request){
+        $from = $request->date_from;
+        $to = $request->date_to;
+
+        if($to==""){
+          $trips = DB::table('trips')
             ->join('commodity', 'commodity.id', '=', 'trips.commodity_id')
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
             ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at')
             ->get();
+        }else{
+           
+              $trips = DB::table('trips')
+            ->join('commodity', 'commodity.id', '=', 'trips.commodity_id')
+            ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
+            ->join('employee', 'employee.id', '=', 'trips.driver_id')
+            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at')
+             ->where('trips.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+             ->where('trips.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+            ->get();
+        }
+       
         return \DataTables::of($trips)
         ->addColumn('action', function($trips){
-            return '<button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button>';
+            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
         })
         ->editColumn('expense', function ($data) {
             return '₱ '.number_format($data->expense, 2, '.', ',');
+        })
+        ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
         })
 
         ->make(true);
@@ -134,12 +153,25 @@ class tripController extends Controller
         $trips = trips::find($request->input('id'));
         $trips->delete();
     }
-     public function trip_expense_view()
+     public function trip_expense_view(Request $request)
     {
-       $trip_expense = DB::table('trips')
+       $from = $request->date_from;
+       $to = $request->date_to;
+       if($to==""&&$from==""){
+          $trip_expense = DB::table('trips')
             ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
             ->select('trip_expense.id','trips.trip_ticket AS trip_id','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
             ->get();
+        }else{
+           
+             $trip_expense = DB::table('trips')
+            ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
+            ->select('trip_expense.id','trips.trip_ticket AS trip_id','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
+                ->where('trip_expense.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+                ->where('trip_expense.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+                      ->get();
+        }
+      
         return \DataTables::of($trip_expense)
         ->addColumn('action', function($trip_expense){
             if($trip_expense->status=="On-Hand"){
@@ -151,6 +183,9 @@ class tripController extends Controller
         })
         ->editColumn('amount', function ($data) {
             return '₱'.number_format($data->amount, 2, '.', ',');
+        })
+         ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
         })
         ->editColumn('released_by', function ($data) {
             if($data->released_by==""){

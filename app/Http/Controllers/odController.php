@@ -52,6 +52,7 @@ class odController extends Controller
             $commodity->company_id = $request->company;
             $commodity->plateno = $request->plateno;
             $commodity->fuel_liters = $request->liter;
+            $commodity->allowance = $request->allowance;
             $commodity->save();
           }
 
@@ -65,24 +66,47 @@ class odController extends Controller
           $commodity->company_id = $request->company;
           $commodity->plateno = $request->plateno;
           $commodity->fuel_liters = $request->liter;
+          $commodity->allowance = $request->allowance;
           $commodity->save();
         }
     }
 
-    public function refresh()
+    public function refresh(Request $request)
     {
-        //$user = User::all();
-        $ultimatesickquery= DB::table('deliveries')
+        $from = $request->date_from;
+        $to = $request->date_to;
+
+        if($to==""){
+         $ultimatesickquery= DB::table('deliveries')
             ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.created_at')
             ->get();
+        }else{
+            $ultimatesickquery= DB::table('deliveries')
+            ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
+            ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
+            ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
+            ->join('company', 'company.id', '=', 'deliveries.company_id')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.created_at')
+            ->where('deliveries.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+            ->where('deliveries.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+            ->get();
+        }
+        //$user = User::all();
+       
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+        })
+        ->editColumn('allowance', function ($data) {
+            return '₱'.number_format($data->allowance, 2, '.', ',');
+        })
+         ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
         })
         ->make(true);
     }
@@ -98,6 +122,7 @@ class odController extends Controller
             'company_id' => $od->company_id,
             'plateno' => $od->plateno,
             'fuel_liters' => $od->fuel_liters,
+            'allowance' => $od->allowance,
         );
         echo json_encode($output);
     }

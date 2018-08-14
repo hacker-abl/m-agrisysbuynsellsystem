@@ -160,14 +160,14 @@
                 </div>
                 <div class="body">
                     <div class="table-responsive">
-                        <table id="usertable" class="table table-bordered table-striped table-hover  ">
+                        <table id="usertable" class="table table-bordered table-striped table-hover" width="100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Access Level</th>
-                                    <th width="50">Action</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -208,6 +208,13 @@
                 buttons: [
                 ],
                 processing: true,
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 serverSide: true,
                 ajax: "{{ route('refresh_user') }}",
                 columns: [
@@ -316,7 +323,7 @@
             });
             //USER Datatable ends here
         });
-        
+
         $("#user-permission").on('shown.bs.modal', function(e) {
             var id = $(e.relatedTarget).data('id');
             $('#user-permission form#user-permission-form input[name="id"]').val(id);

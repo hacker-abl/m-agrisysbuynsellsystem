@@ -51,3 +51,9 @@ function time_elapsed_string($datetime, $full = false) {
     if (!$full) $string = array_slice($string, 0, 1);
     return $string ? implode(', ', $string) . ' ago' : 'just now';
 }
+
+function isAdmin() {
+    $user = \App\User::with('role')->find(Auth::id())->role;
+
+    return ($user->name === 'admin' ? true : false);
+}
