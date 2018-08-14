@@ -167,6 +167,11 @@
 					</div>
 					<div class="body">
 						<div class="table-responsive">
+							 <p id="date_filter">
+                                <h5>Date Range Filter</h5>
+                                <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="sales_datepicker_from" />
+                                <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="sales_datepicker_to" />
+                            </p>
 							<table id="salestable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
@@ -189,6 +194,9 @@
 
 @section('script')
     <script>
+    	var salestable;
+    	var sales_date_from;
+    	var sales_date_to;
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -212,22 +220,198 @@
 					.end();
 			})
 
-		var salestable = $('#salestable').DataTable({
+		 salestable = $('#salestable').DataTable({
 				dom: 'Bfrtip',
 				buttons: [
 				],
 				processing: true,
 				serverSide: true,
-				ajax: "{{ route('refresh_sales') }}",
+				order:[],
+                ajax:{
+                 
+                      url: "{{ route('refresh_sales') }}",
+                      // dataType: 'text',
+                      type: 'post',
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                      data: {
+                          date_from: sales_date_from,
+                          date_to: sales_date_to,
+                      },
+                     
+                
+                },
 				columns: [
-                         {data: 'created_at', name: 'created_at'},
-					{data: 'commodity_name', name: 'commodity_name'},
-					{data: 'name', name: 'name'},
-                         {data: 'kilos', name: 'kilos'},
-					{data: 'amount', name: 'amount'},
+                    {data: 'created_at'},
+					{data: 'commodity_name'},
+					{data: 'name'},
+                    {data: 'kilos'},
+					{data: 'amount'},
 					{data: "action", orderable:false,searchable:false}
 				]
 			});
+		 	//Start of Date Range Filter
+				$("#sales_datepicker_from").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                   
+                  minDateFilter = new Date(date).getTime();
+                  var df= new Date(date);
+                  sales_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                  $('#salestable').dataTable().fnDestroy();
+                  salestable = $('#salestable').DataTable({
+					dom: 'Bfrtip',
+					buttons: [
+					],
+					processing: true,
+					serverSide: true,
+					order:[],
+	                ajax:{
+	                 
+	                      url: "{{ route('refresh_sales') }}",
+	                      // dataType: 'text',
+	                      type: 'post',
+	                      headers: {
+	                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	                        },
+	                      data: {
+	                          date_from: sales_date_from,
+	                          date_to: sales_date_to,
+	                      },
+	                     
+	                
+	                },
+					columns: [
+	                    {data: 'created_at'},
+						{data: 'commodity_name'},
+						{data: 'name'},
+	                    {data: 'kilos'},
+						{data: 'amount'},
+						{data: "action", orderable:false,searchable:false}
+					]
+				});
+
+                }
+              }).keyup(function() {
+              	sales_date_from="";
+               $('#salestable').dataTable().fnDestroy();
+                 salestable = $('#salestable').DataTable({
+					dom: 'Bfrtip',
+					buttons: [
+					],
+					processing: true,
+					serverSide: true,
+					order:[],
+	                ajax:{
+	                 
+	                      url: "{{ route('refresh_sales') }}",
+	                      // dataType: 'text',
+	                      type: 'post',
+	                      headers: {
+	                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	                        },
+	                      data: {
+	                          date_from: sales_date_from,
+	                          date_to: sales_date_to,
+	                      },
+	                     
+	                
+	                },
+					columns: [
+	                    {data: 'created_at'},
+						{data: 'commodity_name'},
+						{data: 'name'},
+	                    {data: 'kilos'},
+						{data: 'amount'},
+						{data: "action", orderable:false,searchable:false}
+					]
+				});
+
+              });
+
+              $("#sales_datepicker_to").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                  maxDateFilter = new Date(date).getTime();
+                  //oTable.fnDraw();
+                 var dt= new Date(date);
+                   sales_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                  $('#salestable').dataTable().fnDestroy();
+                 salestable = $('#salestable').DataTable({
+					dom: 'Bfrtip',
+					buttons: [
+					],
+					processing: true,
+					serverSide: true,
+					order:[],
+	                ajax:{
+	                 
+	                      url: "{{ route('refresh_sales') }}",
+	                      // dataType: 'text',
+	                      type: 'post',
+	                      headers: {
+	                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	                        },
+	                      data: {
+	                          date_from: sales_date_from,
+	                          date_to: sales_date_to,
+	                      },
+	                     
+	                
+	                },
+					columns: [
+	                    {data: 'created_at'},
+						{data: 'commodity_name'},
+						{data: 'name'},
+	                    {data: 'kilos'},
+						{data: 'amount'},
+						{data: "action", orderable:false,searchable:false}
+					]
+				});
+
+                }
+              }).keyup(function() {
+              	sales_date_to="";
+                $('#salestable').dataTable().fnDestroy();
+                 salestable = $('#salestable').DataTable({
+					dom: 'Bfrtip',
+					buttons: [
+					],
+					processing: true,
+					serverSide: true,
+					order:[],
+	                ajax:{
+	                 
+	                      url: "{{ route('refresh_sales') }}",
+	                      // dataType: 'text',
+	                      type: 'post',
+	                      headers: {
+	                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	                        },
+	                      data: {
+	                          date_from: sales_date_from,
+	                          date_to: sales_date_to,
+	                      },
+	                     
+	                
+	                },
+					columns: [
+	                    {data: 'created_at'},
+						{data: 'commodity_name'},
+						{data: 'name'},
+	                    {data: 'kilos'},
+						{data: 'amount'},
+						{data: "action", orderable:false,searchable:false}
+					]
+				});
+
+              });		 	
+		 	//End of Date Range Filter
 
 
 			function refresh_sales_table(){
