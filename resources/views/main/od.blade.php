@@ -299,23 +299,6 @@
 					.end();
 			})
                     
-<<<<<<< HEAD
-			var deliveriestable = $('#deliverytable').DataTable({
-				dom: 'Bfrtip',
-				buttons: [
-				],
-				processing: true,
-				serverSide: true,
-				responsive: true,
-				columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
-				ajax: "{{ route('refresh_deliveries') }}",
-=======
 			deliveriestable = $('#deliverytable').DataTable({
 				 dom: 'Bfrtip',
                     buttons: [
@@ -492,7 +475,6 @@
                 },
                 processing:true,
                 serverSide:true,
->>>>>>> origin/date_range
 				columns: [
 					{data: 'outboundTicket'},
 					{data: 'commodity_name'},

@@ -575,7 +575,7 @@
               ],
               processing: true,
               serverSide: true,
-<<<<<<< HEAD
+              order:[],
               columnDefs: [
   				{
     			  	"targets": "_all", // your case first column
@@ -583,9 +583,6 @@
       				
  				}
 				],
-              ajax: "{{ route('refresh_purchases') }}",
-=======
-              order:[],
               ajax:{
                  
                       url: "{{ route('refresh_purchases') }}",
@@ -601,7 +598,6 @@
                      
                 
               },
->>>>>>> origin/date_range
               columns: [
                    {data: 'trans_no'},
                    {data:'fname',

@@ -850,9 +850,7 @@
                     buttons: [
 
                 ],
-<<<<<<< HEAD
-                processing: true,
-                serverSide: true,
+                paging: true,
                 columnDefs: [
   				{
     			  	"targets": "_all", // your case first column
@@ -860,9 +858,6 @@
       				
  				}
 				],
-                ajax: "{{ route('refresh_pickup') }}",
-=======
-                paging: true,
                 pageLength: 10,
                 order:[],
                 ajax:{
@@ -880,7 +875,6 @@
                        
                   
                 },
->>>>>>> origin/date_range
                 columns: [
                     {data: 'trip_ticket'},
                     {data: 'commodity_name'},

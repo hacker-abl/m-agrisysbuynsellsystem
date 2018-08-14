@@ -226,7 +226,6 @@
 				],
 				processing: true,
 				serverSide: true,
-<<<<<<< HEAD
 				columnDefs: [
   				{
     			  	"targets": "_all", // your case first column
@@ -234,8 +233,6 @@
       				
  				}
 				],
-				ajax: "{{ route('refresh_sales') }}",
-=======
 				order:[],
                 ajax:{
                  
@@ -252,7 +249,6 @@
                      
                 
                 },
->>>>>>> origin/date_range
 				columns: [
                     {data: 'created_at'},
 					{data: 'commodity_name'},
