@@ -293,7 +293,7 @@
 						$('#kilos').val(data.kilos);
                               $('#amount').val(data.amount);
 						$('#sales_modal').modal('show');
-						$('.modal_title').text('Update Role');
+						$('.modal_title').text('Update Sales');
 						refresh_sales_table();
 					}
 				})
