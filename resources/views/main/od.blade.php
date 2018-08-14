@@ -237,7 +237,6 @@
 							<table id="deliverytable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
-<<<<<<< HEAD
 										<th width="20" style="text-align:center;">Ticket No</th>
 										<th width="100" style="text-align:center;">Commodity</th>
 										<th width="100" style="text-align:center;">Destination</th>
@@ -246,18 +245,8 @@
 										<th width="100" style="text-align:center;">Plate No.</th>
 										<th width="100" style="text-align:center;">Liters</th>
 										<th width="100" style="text-align:center;">Allowance</th>
+										<th width="100" style="text-align:center;">Date</th>
 										<th width="100" style="text-align:center;">Action</th>
-=======
-										<th>Ticket No</th>
-										<th>Commodity</th>
-										<th>Destination</th>
-										<th>Company</th>
-										<th>Driver</th>
-										<th>Plate No.</th>
-										<th>Liters</th>
-										<th>Date</th>
-										<th width="50">Action</th>
->>>>>>> origin/date_range
 									</tr>
 								</thead>
 							</table>
@@ -485,15 +474,10 @@
 							return full.fname +" "+ full.mname+" "+full.lname;
 						}
 					},
-<<<<<<< HEAD
 					{data: 'plateno', name: 'plateno'},
 					{data: 'fuel_liters', name: 'fuel_liters'},
 					{data: 'allowance', name: 'allowance'},
-=======
-					{data: 'plateno'},
-					{data: 'fuel_liters'},
-					{data: 'created_at'},
->>>>>>> origin/date_range
+					{data: 'created_at', name: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
 				]
 			});
