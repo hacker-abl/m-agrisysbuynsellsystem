@@ -509,6 +509,11 @@
                         </div>
                         <div class="body">
                              <div class="table-responsive">
+                              <p id="date_filter">
+                                <h5>Date Range Filter</h5>
+                                <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="purchase_datepicker_from" />
+                                <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="purchase_datepicker_to" />
+                            </p>
                                   <table id="purchasetable" class="table table-bordered table-striped table-hover  ">
                                        <thead>
                                             <tr>
@@ -539,7 +544,9 @@
 
 @section('script')
     <script>
-
+    var purchasestable;
+    var purchase_date_from;
+    var purchase_date_to;
     $(document).ready(function () {
 
          $("#homeclick").on('click', function() {
@@ -562,12 +569,13 @@
              }
          });
 
-         var purchasestable = $('#purchasetable').DataTable({
+          purchasestable = $('#purchasetable').DataTable({
               dom: 'Bfrtip',
               buttons: [
               ],
               processing: true,
               serverSide: true,
+<<<<<<< HEAD
               columnDefs: [
   				{
     			  	"targets": "_all", // your case first column
@@ -576,28 +584,166 @@
  				}
 				],
               ajax: "{{ route('refresh_purchases') }}",
+=======
+              order:[],
+              ajax:{
+                 
+                      url: "{{ route('refresh_purchases') }}",
+                      // dataType: 'text',
+                      type: 'post',
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                      data: {
+                          date_from: purchase_date_from,
+                          date_to: purchase_date_to,
+                      },
+                     
+                
+              },
+>>>>>>> origin/date_range
               columns: [
-                   {data: 'trans_no', name: 'trans_no'},
+                   {data: 'trans_no'},
                    {data:'fname',
                         render: function(data, type, full, meta){
                              return full.fname +" "+ full.mname+" "+full.lname;
                         }
                    },
-                   {data: 'commodity_name', name: 'commodity_name'},
-                   {data: 'sacks', name: 'sacks'},
-                   {data: 'balance', name: 'balance'},
-                   {data: 'balance_id', name: 'balance_id'},
-                   {data: 'partial', name: 'partial'},
-                   {data: 'kilo', name: 'kilo'},
-                   {data: 'price', name: 'price'},
-                   {data: 'total', name: 'total'},
-                   {data: 'amtpay', name: 'amtpay'},
-                   {data:'created_at',name:'created_at'},
-                   {data: 'remarks', name: 'remarks'},
+                   {data: 'commodity_name'},
+                   {data: 'sacks'},
+                   {data: 'balance'},
+                   {data: 'balance_id'},
+                   {data: 'partial'},
+                   {data: 'kilo'},
+                   {data: 'price'},
+                   {data: 'total'},
+                   {data: 'amtpay'},
+                   {data:'created_at'},
+                   {data: 'remarks'},
 
               ]
          });
 
+          //Start of Date Range Filter
+          $("#purchase_datepicker_from").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                   
+                  minDateFilter = new Date(date).getTime();
+                  var df= new Date(date);
+                  purchase_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                  $('#purchasetable').dataTable().fnDestroy();
+                  purchasestable = $('#purchasetable').DataTable({
+              dom: 'Bfrtip',
+              buttons: [
+              ],
+              processing: true,
+              serverSide: true,
+              order:[],
+              ajax:{
+                 
+                      url: "{{ route('refresh_purchases') }}",
+                      // dataType: 'text',
+                      type: 'post',
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                      data: {
+                          date_from: purchase_date_from,
+                          date_to: purchase_date_to,
+                      },
+                     
+                
+              },
+              columns: [
+                   {data: 'trans_no'},
+                   {data:'fname',
+                        render: function(data, type, full, meta){
+                             return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                   },
+                   {data: 'commodity_name'},
+                   {data: 'sacks'},
+                   {data: 'balance'},
+                   {data: 'balance_id'},
+                   {data: 'partial'},
+                   {data: 'kilo'},
+                   {data: 'price'},
+                   {data: 'total'},
+                   {data: 'amtpay'},
+                   {data:'created_at'},
+                   {data: 'remarks'},
+
+              ]
+         });
+
+                }
+              }).keyup(function() {
+                minDateFilter = new Date(this.value).getTime();
+              });
+
+              $("#purchase_datepicker_to").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                  maxDateFilter = new Date(date).getTime();
+                  //oTable.fnDraw();
+                 var dt= new Date(date);
+                   purchase_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                  $('#purchasetable').dataTable().fnDestroy();
+                 purchasestable = $('#purchasetable').DataTable({
+              dom: 'Bfrtip',
+              buttons: [
+              ],
+              processing: true,
+              serverSide: true,
+              order:[],
+              ajax:{
+                 
+                      url: "{{ route('refresh_purchases') }}",
+                      // dataType: 'text',
+                      type: 'post',
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                      data: {
+                          date_from: purchase_date_from,
+                          date_to: purchase_date_to,
+                      },
+                     
+                
+              },
+              columns: [
+                   {data: 'trans_no'},
+                   {data:'fname',
+                        render: function(data, type, full, meta){
+                             return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                   },
+                   {data: 'commodity_name'},
+                   {data: 'sacks'},
+                   {data: 'balance'},
+                   {data: 'balance_id'},
+                   {data: 'partial'},
+                   {data: 'kilo'},
+                   {data: 'price'},
+                   {data: 'total'},
+                   {data: 'amtpay'},
+                   {data:'created_at'},
+                   {data: 'remarks'},
+
+              ]
+         });
+
+                }
+              }).keyup(function() {
+                maxDateFilter = new Date(this.value).getTime();
+                //oTable.fnDraw();
+              });
+          //End of Date Range Filter
 
          function refresh_purchase_table(){
              purchasestable.ajax.reload(); //reload datatable ajax

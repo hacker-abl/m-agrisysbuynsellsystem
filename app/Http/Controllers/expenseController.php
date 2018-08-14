@@ -52,9 +52,19 @@ class expenseController extends Controller
         echo json_encode("released");
     }
 
-    public function refresh()
-    {
-        $expense = Expense::all();
+    public function refresh(Request $request){  
+
+      $from = $request->date_from;
+      $to = $request->date_to;    
+        if($to==""){
+         $expense =Expense::all();
+        }else{
+           
+             $expense =Expense::where('created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+                ->where('created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+                      ->get();
+        }
+          
        return \DataTables::of($expense)
        ->addColumn('action', function($expense){
             if($expense->status=="On-Hand"){
@@ -67,6 +77,9 @@ class expenseController extends Controller
         ->editColumn('amount', function ($data) {
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
+         ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
+        })
          ->editColumn('released_by', function ($data) {
             if($data->released_by==""){
                 return 'None';
@@ -77,7 +90,7 @@ class expenseController extends Controller
         })
         ->make(true);
 
-    }
+     }
 
     public function autoComplete(Request $request){
         $query = $request->get('term','');

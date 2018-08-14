@@ -21,8 +21,8 @@ Route::group(['middleware'=>['auth', 'cashier']], function() {
 Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::get('/expense', 'expenseController@index')->name('expense');
     Route::post('/add_expense', 'expenseController@store')->name('add_expense');
-    Route::get('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
-    Route::get('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
+    Route::post('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
+    Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
     Route::get('/trips', 'tripController@index')->name('trips');
     Route::get('/dtr', 'dtrController@index')->name('dtr');
     Route::post('/release_update', 'tripController@release_update')->name('release_update');
@@ -31,7 +31,7 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
 
     //OUTBOUND DELIVERIES
     Route::get('/outbound', 'odController@index')->name('od');
-    Route::get('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
+    Route::post('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
     Route::get('/refresh_id', 'odController@updateId')->name('refresh_id');
     Route::post('/add_delivery', 'odController@store')->name('add_delivery');
     Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
@@ -39,7 +39,7 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
 
     //Sales
     Route::get('/sales', 'salesController@index')->name('sales');
-    Route::get('/refresh_sales', 'salesController@refresh')->name('refresh_sales');
+    Route::post('/refresh_sales', 'salesController@refresh')->name('refresh_sales');
     Route::post('/add_sales', 'salesController@store')->name('add_sales');
     Route::get('/update_sales', 'salesController@updatedata')->name('update_sales');
     Route::get('/delete_sales', 'salesController@deletedata')->name('delete_sales');
@@ -61,7 +61,7 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
     Route::get('/findCustomer', 'purchasesController@updatecustomerId')->name('findCustomer');
     Route::get('/find_comm', 'purchasesController@findcomm')->name('find_comm');
     Route::post('/add_purchases', 'purchasesController@store')->name('add_purchases');
-    Route::get('/refresh_purchases', 'purchasesController@refresh')->name('refresh_purchases');
+    Route::post('/refresh_purchases', 'purchasesController@refresh')->name('refresh_purchases');
 
     //DTR
     Route::get('/check_employee', 'dtrController@check_employee')->name('check_employee');
@@ -73,7 +73,7 @@ Route::group(['middleware'=>['auth', 'admin']], function() {
 
     //PICK UP
     Route::get('/get_pickup', 'tripController@updateId')->name('get_pickup');
-    Route::get('/refresh_pickup', 'tripController@refresh')->name('refresh_pickup');
+    Route::post('/refresh_pickup', 'tripController@refresh')->name('refresh_pickup');
     Route::get('/update_pickup', 'tripController@updatedata')->name('update_pickup');
     Route::get('/delete_trip', 'tripController@deletedata')->name('delete_trip');
     Route::post('/add_pickup', 'tripController@store')->name('add_pickup');

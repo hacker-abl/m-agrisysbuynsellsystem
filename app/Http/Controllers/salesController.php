@@ -79,14 +79,29 @@ class salesController extends Controller
         $sales->delete();
     }
 
-    public function refresh()
+    public function refresh(Request $request)
     {
-        //$user = User::all();
-        $ultimatesickquery= DB::table('sales')
+        $from = $request->date_from;
+        $to = $request->date_to; 
+
+        if($to==""){
+         $ultimatesickquery= DB::table('sales')
             ->join('commodity', 'commodity.id', '=', 'sales.commodity_id')
             ->join('company', 'company.id', '=', 'sales.company_id')
             ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name')
             ->latest();
+        }else{
+           $ultimatesickquery= DB::table('sales')
+            ->join('commodity', 'commodity.id', '=', 'sales.commodity_id')
+            ->join('company', 'company.id', '=', 'sales.company_id')
+            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name')
+            ->where('sales.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+            ->where('sales.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+            ->latest();
+               
+                      
+        }   
+        
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
             return '<div class="btn-group"><button class="btn btn-xs btn-warning update_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
@@ -94,6 +109,12 @@ class salesController extends Controller
         })
         ->editColumn('amount', function ($data) {
             return '₱'.number_format($data->amount, 2, '.', ',');
+        })
+        ->editColumn('amount', function ($data) {
+            return '₱ '.number_format($data->amount, 2, '.', ',');
+        })
+         ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
         })
         ->make(true);
     }

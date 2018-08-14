@@ -151,16 +151,35 @@ class purchasesController extends Controller
        echo json_encode($temp);
     }
 
-    public function refresh()
-    {
+    public function refresh(Request $request)
+    {   
+        $from = $request->date_from;
+        $to = $request->date_to;    
         //$user = User::all();
-        $ultimatesickquery= DB::table('purchases')
+
+        if($to==""&&$from==""){
+          $ultimatesickquery= DB::table('purchases')
             ->join('customer', 'customer.id', '=', 'purchases.customer_id')
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
             ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
             ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance', 'customer.fname','customer.mname','customer.lname')
           //  ->orderBy('purchases.id', 'desc')
                ->latest();
+        }else{
+           
+              $ultimatesickquery= DB::table('purchases')
+            ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance', 'customer.fname','customer.mname','customer.lname')
+            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+          //  ->orderBy('purchases.id', 'desc')
+               ->latest();
+               
+                      
+        }
+       
 
         return \DataTables::of($ultimatesickquery)
         ->editColumn('amtpay', function ($data) {
@@ -185,6 +204,9 @@ class purchasesController extends Controller
 
         ->editColumn('total', function ($data) {
             return '₱'.number_format($data->total, 2, '.', ',');
+        })
+        ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
         })
         ->make(true);
     }

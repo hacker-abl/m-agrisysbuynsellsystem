@@ -220,7 +220,7 @@
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="card">
 				<div class="header">
-					<h2>List of users as of {{ date('Y-m-d ') }}</h2>
+					<h2>List of Outbound Deliveries as of {{ date('Y-m-d ') }}</h2>
 						<ul class="header-dropdown m-r--5">
 							<li class="dropdown">
 								<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_od_modal"><i class="material-icons">library_add</i></button>
@@ -229,9 +229,15 @@
 					</div>
 					<div class="body">
 						<div class="table-responsive">
+							<p id="date_filter">
+                            <h5>Date Range Filter</h5>
+                            <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="od_datepicker_from" />
+                            <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="od_datepicker_to" />
+                        </p>
 							<table id="deliverytable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
+<<<<<<< HEAD
 										<th width="20" style="text-align:center;">Ticket No</th>
 										<th width="100" style="text-align:center;">Commodity</th>
 										<th width="100" style="text-align:center;">Destination</th>
@@ -241,6 +247,17 @@
 										<th width="100" style="text-align:center;">Liters</th>
 										<th width="100" style="text-align:center;">Allowance</th>
 										<th width="100" style="text-align:center;">Action</th>
+=======
+										<th>Ticket No</th>
+										<th>Commodity</th>
+										<th>Destination</th>
+										<th>Company</th>
+										<th>Driver</th>
+										<th>Plate No.</th>
+										<th>Liters</th>
+										<th>Date</th>
+										<th width="50">Action</th>
+>>>>>>> origin/date_range
 									</tr>
 								</thead>
 							</table>
@@ -254,6 +271,9 @@
 
 @section('script')
     <script>
+    	var deliveriestable;
+    	var od_date_from;
+    	var od_date_to;
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -279,6 +299,7 @@
 					.end();
 			})
                     
+<<<<<<< HEAD
 			var deliveriestable = $('#deliverytable').DataTable({
 				dom: 'Bfrtip',
 				buttons: [
@@ -294,23 +315,254 @@
  				}
 				],
 				ajax: "{{ route('refresh_deliveries') }}",
+=======
+			deliveriestable = $('#deliverytable').DataTable({
+				 dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_deliveries') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: od_date_from,
+                            date_to: od_date_to,
+                        },
+                       
+                  
+                },
+                processing:true,
+                serverSide:true,
 				columns: [
-					{data: 'outboundTicket', name: 'outboundTicket'},
-					{data: 'commodity_name', name: 'commodity_name'},
-					{data: 'destination', name: 'destination'},
-					{data: 'name', name: 'name'},
+					{data: 'outboundTicket'},
+					{data: 'commodity_name'},
+					{data: 'destination'},
+					{data: 'name'},
 					{data:'fname',
 						render: function(data, type, full, meta){
 							return full.fname +" "+ full.mname+" "+full.lname;
 						}
 					},
-					{data: 'plateno', name: 'plateno'},
-					{data: 'fuel_liters', name: 'fuel_liters'},
-					{data: 'allowance', name: 'allowance'},
+					{data: 'plateno'},
+					{data: 'fuel_liters'},
+					{data: 'created_at'},
+					{data: "action", orderable:false,searchable:false}
+				]
+			});
+			//START OF DATE RANGE FILTER
+			$("#od_datepicker_from").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                   
+                  minDateFilter = new Date(date).getTime();
+                  var df= new Date(date);
+                  od_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                  $('#deliverytable').dataTable().fnDestroy();
+                  deliveriestable = $('#deliverytable').DataTable({
+				 dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_deliveries') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: od_date_from,
+                            date_to: od_date_to,
+                        },
+                       
+                  
+                },
+                processing:true,
+                serverSide:true,
+				columns: [
+					{data: 'outboundTicket'},
+					{data: 'commodity_name'},
+					{data: 'destination'},
+					{data: 'name'},
+					{data:'fname',
+						render: function(data, type, full, meta){
+							return full.fname +" "+ full.mname+" "+full.lname;
+						}
+					},
+					{data: 'plateno'},
+					{data: 'fuel_liters'},
+					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
 				]
 			});
 
+                }
+              }).keyup(function() {
+              	od_datepicker_from="";
+                $('#deliverytable').dataTable().fnDestroy();
+                  deliveriestable = $('#deliverytable').DataTable({
+				 dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_deliveries') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: od_date_from,
+                            date_to: od_date_to,
+                        },
+                       
+                  
+                },
+                processing:true,
+                serverSide:true,
+				columns: [
+					{data: 'outboundTicket'},
+					{data: 'commodity_name'},
+					{data: 'destination'},
+					{data: 'name'},
+					{data:'fname',
+						render: function(data, type, full, meta){
+							return full.fname +" "+ full.mname+" "+full.lname;
+						}
+					},
+					{data: 'plateno'},
+					{data: 'fuel_liters'},
+					{data: 'created_at'},
+					{data: "action", orderable:false,searchable:false}
+				]
+			});
+              });
+
+              $("#od_datepicker_to").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                  maxDateFilter = new Date(date).getTime();
+                  //oTable.fnDraw();
+                 var dt= new Date(date);
+                   od_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                  $('#deliverytable').dataTable().fnDestroy();
+                 deliveriestable = $('#deliverytable').DataTable({
+				 dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_deliveries') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: od_date_from,
+                            date_to: od_date_to,
+                        },
+                       
+                  
+                },
+                processing:true,
+                serverSide:true,
+>>>>>>> origin/date_range
+				columns: [
+					{data: 'outboundTicket'},
+					{data: 'commodity_name'},
+					{data: 'destination'},
+					{data: 'name'},
+					{data:'fname',
+						render: function(data, type, full, meta){
+							return full.fname +" "+ full.mname+" "+full.lname;
+						}
+					},
+<<<<<<< HEAD
+					{data: 'plateno', name: 'plateno'},
+					{data: 'fuel_liters', name: 'fuel_liters'},
+					{data: 'allowance', name: 'allowance'},
+=======
+					{data: 'plateno'},
+					{data: 'fuel_liters'},
+					{data: 'created_at'},
+>>>>>>> origin/date_range
+					{data: "action", orderable:false,searchable:false}
+				]
+			});
+                }
+              }).keyup(function() {
+              	od_date_to="";
+              	console.log(od_date_to);
+                $('#deliverytable').dataTable().fnDestroy();
+                  deliveriestable = $('#deliverytable').DataTable({
+				 dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_deliveries') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: od_date_from,
+                            date_to: od_date_to,
+                        },
+                       
+                  
+                },
+                processing:true,
+                serverSide:true,
+				columns: [
+					{data: 'outboundTicket'},
+					{data: 'commodity_name'},
+					{data: 'destination'},
+					{data: 'name'},
+					{data:'fname',
+						render: function(data, type, full, meta){
+							return full.fname +" "+ full.mname+" "+full.lname;
+						}
+					},
+					{data: 'plateno'},
+					{data: 'fuel_liters'},
+					{data: 'created_at'},
+					{data: "action", orderable:false,searchable:false}
+				]
+			});
+              });
+			//END OF DATE RANGE FILTER
 			function refresh_delivery_table(){
 				deliveriestable.ajax.reload(); //reload datatable ajax
 			}

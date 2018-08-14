@@ -249,6 +249,11 @@
                 </div>
                 <div class="body">
                     <div class="table-responsive">
+                        <p id="date_filter">
+                            <h5>Date Range Filter</h5>
+                            <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="trip_datepicker_from" />
+                            <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="trip_datepicker_to" />
+                        </p>
                         <table id="triptable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
@@ -293,7 +298,205 @@
             var item=1;
             var num=0;
             var div;
+            var pickuptable;
+            var trip_date_from;
+            var trip_date_to;
 
+            //Date Range Filter
+            $("#trip_datepicker_from").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                   
+                  minDateFilter = new Date(date).getTime();
+                  var df= new Date(date);
+                  trip_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                  $('#triptable').dataTable().fnDestroy();
+                  pickuptable = $('#triptable').DataTable({
+                dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_pickup') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: trip_date_from,
+                            date_to: trip_date_to,
+                        },
+                       
+                  
+                },
+                columns: [
+                    {data: 'trip_ticket'},
+                    {data: 'commodity_name'},
+                    {data: 'expense'},
+                    {data: 'destination'},
+                    {data: 'name'},
+                    {data:'fname',
+                        render: function(data, type, full, meta){
+                            return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                    },
+                    {data: 'plateno'},
+                    {data: 'num_liters'},
+                    {data: 'created_at'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
+
+                }
+              }).keyup(function() {
+                trip_date_from="";
+                $('#triptable').dataTable().fnDestroy();
+                  pickuptable = $('#triptable').DataTable({
+                dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_pickup') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: trip_date_from,
+                            date_to: trip_date_to,
+                        },
+                       
+                  
+                },
+                columns: [
+                    {data: 'trip_ticket'},
+                    {data: 'commodity_name'},
+                    {data: 'expense'},
+                    {data: 'destination'},
+                    {data: 'name'},
+                    {data:'fname',
+                        render: function(data, type, full, meta){
+                            return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                    },
+                    {data: 'plateno'},
+                    {data: 'num_liters'},
+                    {data: 'created_at'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
+              });
+
+              $("#trip_datepicker_to").datepicker({
+                showOn: "button",
+                buttonImage: 'assets/images/calendar2.png',
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                  maxDateFilter = new Date(date).getTime();
+                  //oTable.fnDraw();
+                 var dt= new Date(date);
+                   trip_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                  $('#triptable').dataTable().fnDestroy();
+                  pickuptable = $('#triptable').DataTable({
+                dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_pickup') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: trip_date_from,
+                            date_to: trip_date_to,
+                        },
+                       
+                  
+                },
+                columns: [
+                    {data: 'trip_ticket'},
+                    {data: 'commodity_name'},
+                    {data: 'expense'},
+                    {data: 'destination'},
+                    {data: 'name'},
+                    {data:'fname',
+                        render: function(data, type, full, meta){
+                            return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                    },
+                    {data: 'plateno'},
+                    {data: 'num_liters'},
+                    {data: 'created_at'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
+                }
+              }).keyup(function() {
+                trip_date_to="";
+               $('#triptable').dataTable().fnDestroy();
+                  pickuptable = $('#triptable').DataTable({
+                dom: 'Bfrtip',
+                    buttons: [
+
+                ],
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_pickup') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: trip_date_from,
+                            date_to: trip_date_to,
+                        },
+                       
+                  
+                },
+                columns: [
+                    {data: 'trip_ticket'},
+                    {data: 'commodity_name'},
+                    {data: 'expense'},
+                    {data: 'destination'},
+                    {data: 'name'},
+                    {data:'fname',
+                        render: function(data, type, full, meta){
+                            return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                    },
+                    {data: 'plateno'},
+                    {data: 'num_liters'},
+                    {data: 'created_at'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
+              });
+
+            //END OF DATE RANGE FILTER
             $('.delete').click(function(event){
                 event.preventDefault();
                 div= $('.dynamic-element form').last().attr('id');
@@ -642,10 +845,12 @@
 
 
 
-            var pickuptable = $('#triptable').DataTable({
+             pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
-                buttons: [
+                    buttons: [
+
                 ],
+<<<<<<< HEAD
                 processing: true,
                 serverSide: true,
                 columnDefs: [
@@ -656,20 +861,40 @@
  				}
 				],
                 ajax: "{{ route('refresh_pickup') }}",
+=======
+                paging: true,
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_pickup') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: trip_date_from,
+                            date_to: trip_date_to,
+                        },
+                       
+                  
+                },
+>>>>>>> origin/date_range
                 columns: [
-                    {data: 'trip_ticket', name: 'trip_ticket'},
-                    {data: 'commodity_name', name: 'commodity_name'},
-                    {data: 'expense', name: 'expense'},
-                    {data: 'destination', name: 'destination'},
-                    {data: 'name', name: 'name'},
+                    {data: 'trip_ticket'},
+                    {data: 'commodity_name'},
+                    {data: 'expense'},
+                    {data: 'destination'},
+                    {data: 'name'},
                     {data:'fname',
                         render: function(data, type, full, meta){
                             return full.fname +" "+ full.mname+" "+full.lname;
                         }
                     },
-                    {data: 'plateno', name: 'plateno'},
-                    {data: 'num_liters', name: 'num_liters'},
-                    {data: 'created_at', name: 'created_at'},
+                    {data: 'plateno'},
+                    {data: 'num_liters'},
+                    {data: 'created_at'},
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
@@ -689,5 +914,7 @@
                 placeholder: '--Select an item--'
             });
         });//END DOCUMENT READY
+
+            
     </script>
 @endsection
