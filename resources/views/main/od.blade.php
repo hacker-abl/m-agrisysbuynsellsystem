@@ -81,6 +81,7 @@
                                 <input type="hidden" id="company_clone" name="company_clone">
                                 <input type="hidden" id="plateno_clone" name="plateno_clone">
                                 <input type="hidden" id="liter_clone" name="liter_clone">
+                                <input type="hidden" id="allowance_clone" name="allowance_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
@@ -600,6 +601,7 @@
                 $("#company_clone").val($("#company option:selected").text());
                 $("#plateno_clone").val($("#plateno option:selected").text());
                 $("#liter_clone").val($("#liter").val());
+                $("#allowance_clone").val($("#allowance").val());
             });
 
 

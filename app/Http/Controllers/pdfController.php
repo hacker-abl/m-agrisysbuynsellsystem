@@ -277,6 +277,10 @@ class pdfController extends Controller
 				<td><span># of liters: </span></td>
 				<td align='right'><span><b>".$request->liter_clone."</b></span></td>
 				</tr>
+				<tr>
+				<td><span>Allowance: </span></td>
+				<td align='right'><span><b><span style='font-family: DejaVu Sans; sans-serif;'>&#8369;</span> ".number_format($request->allowance_clone, 2, '.', ',')."</b></span></td>
+				</tr>
 				</table>
 				<br>
 				<br>
