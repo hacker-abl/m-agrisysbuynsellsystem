@@ -71,7 +71,7 @@
                         </div>
                         <div class="content">
                             <div class="text">TOTAL EXPENSE</div>
-                            <div class="number count-to" data-from="0" data-to="{{ $totalExpense[0]->total_expense }}" data-speed="1000" data-fresh-interval="20"></div>
+                            <div class="number count-to" data-from="0" data-to="{{ $finalTotalExpense }}" data-speed="1000" data-fresh-interval="20"></div>
                         </div>
                     </div>
                 </div>

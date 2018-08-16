@@ -14,6 +14,7 @@ use App\purchases;
 use App\sales;
 use App\balance;
 use App\expense;
+use App\trip_expense;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -56,9 +57,12 @@ class HomeController extends Controller
         $totalPurchases = purchases::get([DB::raw('SUM(total) AS total_purchases')]);
         $totalBalance = balance::get([DB::raw('SUM(balance) AS total_balance')]);
         $totalExpense = expense::get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpense = trip_expense::get([DB::raw('SUM(amount) AS total_trip_expense')]);
+
+        $finalTotalExpense = $totalExpense[0]->total_expense + $totalTripExpense[0]->total_trip_expense;
 
         if($user->role->name === "admin") {
-            return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'latestCustomer', 'totalSales', 'totalPurchases', 'totalBalance', 'totalExpense'));
+            return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'latestCustomer', 'totalSales', 'totalPurchases', 'totalBalance', 'finalTotalExpense'));
         } else if($user->role->name === "user") {
             $permissions = UserPermission::with('permission')->get();
             
