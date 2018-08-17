@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Hash;
 use App\User;
 use App\access_levels;
+use App\Permission;
+use App\UserPermission;
+
 class usersController extends Controller
 {
     /**
@@ -26,8 +29,9 @@ class usersController extends Controller
      */
     public function index()
     {
+        $permissions = Permission::all();
 
-        return view('settings.users');
+        return view('settings.users')->with(['permissions' => $permissions]);
     }
 
     /**
@@ -35,9 +39,16 @@ class usersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function get($option = null, Request $request)
     {
-        //
+        if($option === "permission") {
+            $request->validate([
+                'id' => 'required'
+            ]);
+
+            return User::with('userpermission.permission')->find($request->id);
+            
+        }
     }
 
     /**
@@ -53,7 +64,7 @@ class usersController extends Controller
             $user->name = $request->name;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
-            $user->access_id = 1;
+            $user->access_id = 2;
             $user->save();
         }
 
@@ -78,8 +89,8 @@ class usersController extends Controller
 
     public function refresh()
     {
-        $user = User::all();
-        return \DataTables::of(User::query())
+        // $user = User::where('access_id', '!=', 1)->get();
+        return \DataTables::of(User::where('access_id', '!=', 1)->get())
         ->addColumn('action', function($user){
             return '<button class="btn btn-xs btn-info update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>&nbsp
             <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button>
@@ -143,5 +154,31 @@ class usersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function permission($option, Request $request) {
+        if($option === 'update') {            
+            $request->validate([
+                'id' => 'required'
+            ]);
+            $authorized = ($request->permission)?$request->permission:array();
+            $permission = array();
+
+            if($authorized) {
+                $permissions = Permission::select('id')->whereNotIn('id', $authorized)->get();
+
+                foreach ($authorized as $key => $value) {
+                    UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id], ['permit' => 1]);
+                }
+            }
+
+            if($permissions) {
+                foreach ($permissions as $key => $value) {
+                    UserPermission::updateOrCreate(['permission_id'=>$value->id, 'user_id'=>$request->id], ['permit' => 0]);
+                }
+            }
+
+            return 'true';
+        }
     }
 }
