@@ -1,55 +1,5 @@
 @extends('layouts.admin')
 
-@section('sidenav')
-    <div class="menu">
-        <ul class="list">
-            <li class="header">MANAGE SETTINGS</li>
-            <li>
-                <a href="{{ route('company') }}">
-                    <i class="material-icons">business</i>
-                    <span>Company</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('employee') }}">
-                    <i class="material-icons">supervisor_account</i>
-                    <span>Employee</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('customer') }}">
-                    <i class="material-icons">tag_faces</i>
-                    <span>Customer</span>
-                </a>
-            </li>
-                <li>
-                <a href="{{ route('trucks') }}">
-                    <i class="material-icons">local_shipping</i>
-                    <span>Trucks</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('commodity') }}">
-                    <i class="material-icons">receipt</i>
-                    <span>Commodity</span>
-                </a>
-            </li>
-            <li class="active">
-                <a href="{{ route('users') }}">
-                    <i class="material-icons">person</i>
-                    <span>Users</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('roles') }}">
-                    <i class="material-icons">assignment</i>
-                    <span>Roles</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-@endsection
-
 @section('content')
     <div class="container-fluid">
         <div class="block-header">
@@ -124,22 +74,35 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <form class="form-horizontal " id="user-permission-form">
+                        @csrf
                         <input type="hidden" name="id" value="">
                         <div class="header">
                             <h2 class="modal_title">Permissions </h2>
                         </div>
                         <div class="body">
-                            <div class="demo-checkbox">
-                                <input type="checkbox" id="permission1" class="chk-col-red" checked="">
-                                <label for="permission1">PERMISSION 1</label>
-                                <input type="checkbox" id="permission2" class="chk-col-red" checked="">
-                                <label for="permission2">PERMISSION 2</label>
-                                <input type="checkbox" id="permission3" class="chk-col-red" checked="">
-                                <label for="permission3">PERMISSION 3</label>
+                            <div class="col-md-12 text-center">
+                                <div class="preloader pl-size-xl">
+                                    <div class="spinner-layer">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="demo-checkbox hidden">
+                                @if($permissions)
+                                    @foreach($permissions as $key=>$permission)
+                                    <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
+                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" id="add_user" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                            <button type="submit" class="btn btn-link waves-effect">SAVE CHANGES</button>
                             <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                         </div>
                     </form>
@@ -232,7 +195,7 @@
 
             //Open User Modal
             $(document).on('click','.open_user_modal', function(){
-                $('.modal_title').text('Add User');
+                $('.open_user_modal .modal_title').text('Add User');
                 $('#button_action').val('add');
                 //Generate input for password when adding User
                 if(!$(".password_input")[0]){
@@ -292,7 +255,7 @@
                         $('#name').val(data.name);
                         $('#username').val(data.username);
                         $('#user_modal').modal('show');
-                        $('.modal_title').text('Update User');
+                        $('.update_user .modal_title').text('Update User');
                         refresh_user_table();
                     }
                 })
@@ -326,7 +289,53 @@
 
         $("#user-permission").on('shown.bs.modal', function(e) {
             var id = $(e.relatedTarget).data('id');
+
+            $.ajax({
+                url: '/get/permission',
+                method: 'GET',
+                data: {id: id},
+                dataType: 'json',
+                beforeSend: function() {
+                    $('#user-permission form#user-permission-form .preloader').removeClass('hidden');
+                    $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
+                },
+                success: function(data) {
+                    $.each(data.userpermission, function(i, val){
+                        if(val.permit != 0)
+                        $('#user-permission form#user-permission-form input[id="permission'+val.permission_id+'"]').prop('checked', true);
+                    });
+                    
+                    $('#user-permission form#user-permission-form .preloader').addClass('hidden');
+                    $('#user-permission form#user-permission-form .demo-checkbox').removeClass('hidden');
+                }
+            })
+
             $('#user-permission form#user-permission-form input[name="id"]').val(id);
+        });
+
+        $("#user-permission").on('hidden.bs.modal', function(e) {
+            $('#user-permission form#user-permission-form input[type="checkbox"]').prop('checked', false);
+            $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
+        });
+
+        $('form#user-permission-form').submit(function(e) {
+            e.preventDefault();
+            var data = $(this).serialize();
+
+            $.ajax({
+                url: '{{route("permission", "update")}}',
+                method:'POST',
+                data: data,
+                dataType: 'json',
+                success: function(data) {
+                    if(data) {
+                        swal("Success!", "Permission has been updated!", "success");
+                    }
+                },
+                error: function(err) {
+                    swal("Error!", "Something went wrong! Please try again.", "error");
+                }
+            });
         });
     </script>
 @endsection

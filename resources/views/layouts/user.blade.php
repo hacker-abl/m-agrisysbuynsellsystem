@@ -121,7 +121,79 @@
             </div>
             <!-- #User Info -->
             <!-- Menu -->
-            @yield('sidenav')
+            @auth
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="{{ (Request::path() === 'home') ? 'active' : '' }}">
+                        <a href="{{ route('home') }}">
+                        <i class="material-icons">home</i>
+                        <span>Home</span>
+                        </a>
+                    </li>
+                    @if($permissions = userpermission())
+                    @foreach($permissions as $key => $permission)
+                        @if($permissions[$key]->permission->middleware === "expenses" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                        <li class="{{ (Request::path() === 'expense') ? 'active' : '' }}">
+                            <a href="{{ route('expense') }}">
+                                <i class="material-icons">show_chart</i>
+                                <span>Expenses</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if($permissions[$key]->permission->middleware === "trips" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                        <li class="{{ (Request::path() === 'trips') ? 'active' : '' }}">
+                            <a href="{{ route('trips') }}">
+                                <i class="material-icons">directions_bus</i>
+                                <span>Trips</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if($permissions[$key]->permission->middleware === "dtr" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                        <li class="{{ (Request::path() === 'dtr') ? 'active' : '' }}">
+                            <a href="{{ route('dtr') }}">
+                                <i class="material-icons">access_time</i>
+                                <span>Daily Time Record</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if($permissions[$key]->permission->middleware === "od" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                        <li class="{{ (Request::path() === 'outbound') ? 'active' : '' }}">
+                            <a href="{{ route('od') }}">
+                                <i class="material-icons">arrow_upward</i>
+                                <span>Outbound Deliveries</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if($permissions[$key]->permission->middleware === "ca" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                        <li class="{{ (Request::path() === 'cashadvance') ? 'active' : '' }}">
+                            <a href="{{ route('ca') }}">
+                                <i class="material-icons">monetization_on</i>
+                                <span>Cash Advance</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if($permissions[$key]->permission->middleware === "purchases" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                        <li class="{{ (Request::path() === 'purchases') ? 'active' : '' }}">
+                            <a href="{{ route('purchases') }}">
+                                <i class="material-icons">bookmark_border</i>
+                                <span>Purchases</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if($permissions[$key]->permission->middleware === "sales" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                        <li class="{{ (Request::path() === 'sales') ? 'active' : '' }}">
+                            <a href="{{ route('sales') }}">
+                                <i class="material-icons">shopping_cart</i>
+                                <span>Sales</span>
+                            </a>
+                        </li>
+                        @endif
+                    @endforeach
+                    @endif
+                </ul>
+            </div>
+            @endauth
             <!-- #Menu -->
             <!-- Footer -->
             <div class="legal">
@@ -142,17 +214,28 @@
     <!-- Scripts -->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 
+    @yield('script')
+
     <!-- Bootstrap Core Js -->
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
 
-    <!-- Select Plugin Js -->
-    <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
-    
-    <!-- Slimscroll Plugin Js -->
-    <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
-
     <!-- Waves Effect Plugin Js -->
     <script src="{{ asset('assets/plugins/node-waves/waves.js') }}"></script>
+
+    <!-- Custom Js -->
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+
+        <!-- Sweet Alert Plugin Js -->
+    <script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+    <!-- Select2 Plugin Js -->
+    <script src="{{ asset('assets/plugins/select2/dist/js/select2.full.min.js') }}"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
 
     <!-- Jquery CountTo Plugin Js -->
     <script src="{{ asset('assets/plugins/jquery-countto/jquery.countTo.js') }}"></script>
@@ -174,12 +257,46 @@
     <!-- Sparkline Chart Plugin Js -->
     <script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.js') }}"></script>
 
+        <!-- Jquery DataTable Plugin Js -->
+    <script src="{{ asset('assets/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+    <!-- Jquery Validation Plugin Css -->
+    <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
+
     <!-- Custom Js -->
     <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/index.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/tables/jquery-datatable.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/ui/modals.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/forms/form-validation.js') }}"></script>
 
     <!-- Demo Js -->
     <script src="{{ asset('assets/js/demo.js') }}"></script>
-    
+
+    <!-- Jquery-ui Js -->
+    <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script>
+    $('#l').click(function(){
+        //alert('hey')
+        if($('#b').hasClass('overlay-open') )
+        {
+
+            $('#b').removeClass('overlay-open');
+        }
+        else{
+        // $('#b').removeClass('ls-closed');
+        $('#b').addClass('overlay-open');
+        }
+    });
+    </script>
     <!-- App Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
