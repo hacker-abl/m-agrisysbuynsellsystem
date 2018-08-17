@@ -1,55 +1,5 @@
 @extends('layouts.admin')
 
-@section('sidenav')
-    <div class="menu">
-        <ul class="list">
-            <li class="header">MANAGE SETTINGS</li>
-            <li>
-                <a href="{{ route('company') }}">
-                    <i class="material-icons">business</i>
-                    <span>Company</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('employee') }}">
-                    <i class="material-icons">supervisor_account</i>
-                    <span>Employee</span>
-                </a>
-            </li>
-            <li class="active">
-                <a href="{{ route('customer') }}">
-                    <i class="material-icons">tag_faces</i>
-                    <span>Customer</span>
-                </a>
-            </li>
-                <li>
-                <a href="{{ route('trucks') }}">
-                    <i class="material-icons">local_shipping</i>
-                    <span>Trucks</span>
-                </a>
-            </li>
-            <li >
-                <a href="{{ route('commodity') }}">
-                    <i class="material-icons">receipt</i>
-                    <span>Commodity</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('users') }}">
-                    <i class="material-icons">person</i>
-                    <span>Users</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('roles') }}">
-                    <i class="material-icons">assignment</i>
-                    <span>Roles</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-@endsection
-
 @section('content')
     <div class="container-fluid">
         <div class="block-header">

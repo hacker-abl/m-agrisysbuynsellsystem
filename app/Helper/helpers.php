@@ -57,3 +57,8 @@ function isAdmin() {
 
     return ($user->name === 'admin' ? true : false);
 }
+
+function userpermission() {
+    $id = Auth::id();
+    return \App\UserPermission::with('permission')->where('user_id', $id)->orderBy('permission_id')->get();
+}
