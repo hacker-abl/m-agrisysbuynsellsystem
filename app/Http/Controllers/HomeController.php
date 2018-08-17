@@ -21,6 +21,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Query\Builder;
 use Response;
 use View;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -53,16 +54,33 @@ class HomeController extends Controller
             ->limit(4)
             ->get(['commodity_id', DB::raw('SUM(total) AS total')]);
         $latestCustomer = customer::latest()->first();
-        $totalSales = sales::get([DB::raw('SUM(amount) AS total_sales')]);
-        $totalPurchases = purchases::get([DB::raw('SUM(total) AS total_purchases')]);
-        $totalBalance = balance::get([DB::raw('SUM(balance) AS total_balance')]);
-        $totalExpense = expense::get([DB::raw('SUM(amount) AS total_expense')]);
-        $totalTripExpense = trip_expense::get([DB::raw('SUM(amount) AS total_trip_expense')]);
+
+        $totalSales = sales::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(amount) AS total_sales')]);
+        $totalPurchases = purchases::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(total) AS total_purchases')]);
+        $totalBalance = balance::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(balance) AS total_balance')]);
+        $totalExpense = expense::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpense = trip_expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_trip_expense')]);
 
         $finalTotalExpense = $totalExpense[0]->total_expense + $totalTripExpense[0]->total_trip_expense;
 
+        $totalSalesToday = sales::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_sales')]);
+        $totalPurchasesToday = purchases::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(total) AS total_purchases')]);
+        $totalBalanceToday = balance::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(balance) AS total_balance')]);
+        $totalExpenseToday = expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpenseToday = trip_expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+
+        $finalTotalExpenseToday = $totalExpenseToday[0]->total_expense + $totalTripExpenseToday[0]->total_trip_expense;
+
+        $totalSalesMonth = sales::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(amount) AS total_sales')]);
+        $totalPurchasesMonth = purchases::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(total) AS total_purchases')]);
+        $totalBalanceMonth = balance::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(balance) AS total_balance')]);
+        $totalExpenseMonth = expense::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpenseMonth = trip_expense::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+
+        $finalTotalExpenseMonth = $totalExpenseMonth[0]->total_expense + $totalTripExpenseMonth[0]->total_trip_expense;
+
         if($user->role->name === "admin") {
-            return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'latestCustomer', 'totalSales', 'totalPurchases', 'totalBalance', 'finalTotalExpense'));
+            return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'latestCustomer', 'totalSales', 'totalPurchases', 'totalBalance', 'finalTotalExpense', 'totalSalesToday', 'totalPurchasesToday', 'totalBalanceToday', 'finalTotalExpenseToday', 'totalSalesMonth', 'totalPurchasesMonth', 'totalBalanceMonth', 'finalTotalExpenseMonth'));
         } else if($user->role->name === "user") {
             $permissions = UserPermission::with('permission')->get();
             
