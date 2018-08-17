@@ -15,8 +15,4 @@ class paymentlogs extends Model
 		'paymentamount',
 	);
 	public $timestamps = true;
-
-	public function customerName(){
-	    return $this->hasMany('App\customer','id','logs_id');
-	}
 }

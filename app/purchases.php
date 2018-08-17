@@ -22,8 +22,4 @@ class purchases extends Model
 	    'amtpay',
 	    'remarks',
      );
-
-    public function commodityName(){
-	    return $this->hasMany('App\commodity','id','commodity_id');
-	}
 }
