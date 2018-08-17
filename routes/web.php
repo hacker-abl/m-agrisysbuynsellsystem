@@ -13,7 +13,7 @@
 
 Auth::routes();
 
-Route::group(['middleware'=>['auth', 'user:notification']], function() {
+Route::group(['middleware'=>['auth', 'user']], function() {
     //Notifications
     Route::get('/notification/get', 'NotificationController@get');
 });
@@ -56,8 +56,6 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/refresh_user', 'usersController@refresh')->name('refresh_user');
     Route::get('/update_user', 'usersController@updatedata')->name('update_user');
     Route::get('/delete_user', 'usersController@deletedata')->name('delete_user');
-    Route::get('/get/{option}', 'usersController@get');
-    Route::post('/permission/{option}', 'usersController@permission')->name('permission');
 
     Route::get('/roles', 'RolesController@index')->name('roles');
     Route::post('/add_role', 'RolesController@store')->name('add_role');
@@ -73,7 +71,6 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
     Route::post('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
     Route::post('/release_update_normal', 'expenseController@release_update_normal')->name('release_update_normal');
     Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
-    Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
 
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
@@ -81,6 +78,7 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {
     //TRIPS
+    Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
     Route::get('/trips', 'tripController@index')->name('trips');
     Route::post('/release_update', 'tripController@release_update')->name('release_update');
     Route::post('/release_update_dtr', 'dtrController@release_update_dtr')->name('release_update_dtr');
