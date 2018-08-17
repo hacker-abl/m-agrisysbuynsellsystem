@@ -234,109 +234,7 @@ ul {
             </div>
             <!-- #User Info -->
             <!-- Menu -->
-            @auth
-            <div class="menu">
-                <ul class="list">
-                @if(Request::path() === 'home' || Request::path() === 'expense' || Request::path() === 'trips' || Request::path() === 'dtr' || Request::path() === 'outbound' || Request::path() === 'cashadvance' || Request::path() === 'purchases' || Request::path() === 'sales')
-                    <li class="header">MAIN NAVIGATION</li>
-                    <li class="{{ (Request::path() === 'home') ? 'active' : '' }}">
-                        <a href="{{ route('home') }}">
-                        <i class="material-icons">home</i>
-                        <span>Home</span>
-                        </a>
-                    </li>
-                    @if(Auth::user()->access_id === 1)
-                    <li class="{{ (Request::path() === 'expense') ? 'active' : '' }}">
-                        <a href="{{ route('expense') }}">
-                            <i class="material-icons">show_chart</i>
-                            <span>Expenses</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'trips') ? 'active' : '' }}">
-                        <a href="{{ route('trips') }}">
-                            <i class="material-icons">directions_bus</i>
-                            <span>Trips</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'dtr') ? 'active' : '' }}">
-                        <a href="{{ route('dtr') }}">
-                            <i class="material-icons">access_time</i>
-                            <span>Daily Time Record</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'outbound') ? 'active' : '' }}">
-                        <a href="{{ route('od') }}">
-                            <i class="material-icons">arrow_upward</i>
-                            <span>Outbound Deliveries</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'cashadvance') ? 'active' : '' }}">
-                        <a href="{{ route('ca') }}">
-                            <i class="material-icons">monetization_on</i>
-                            <span>Cash Advance</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'purchases') ? 'active' : '' }}">
-                        <a href="{{ route('purchases') }}">
-                            <i class="material-icons">bookmark_border</i>
-                            <span>Purchases</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'sales') ? 'active' : '' }}">
-                        <a href="{{ route('sales') }}">
-                            <i class="material-icons">shopping_cart</i>
-                            <span>Sales</span>
-                        </a>
-                    </li>
-                    @endif
-                @else
-                    <li class="header">MANAGE SETTINGS</li>
-                    <li class="{{ (Request::path() === 'company') ? 'active' : '' }}">
-                        <a href="{{ route('company') }}">
-                            <i class="material-icons">business</i>
-                            <span>Company</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'employee') ? 'active' : '' }}">
-                        <a href="{{ route('employee') }}">
-                            <i class="material-icons">supervisor_account</i>
-                            <span>Employee</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'customer') ? 'active' : '' }}">
-                        <a href="{{ route('customer') }}">
-                            <i class="material-icons">tag_faces</i>
-                            <span>Customer</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'trucks') ? 'active' : '' }}">
-                        <a href="{{ route('trucks') }}">
-                            <i class="material-icons">local_shipping</i>
-                            <span>Trucks</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'commodity') ? 'active' : '' }}">
-                        <a href="{{ route('commodity') }}">
-                            <i class="material-icons">receipt</i>
-                            <span>Commodity</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'users') ? 'active' : '' }}">
-                        <a href="{{ route('users') }}">
-                            <i class="material-icons">person</i>
-                            <span>Users</span>
-                        </a>
-                    </li>
-                    <li class="{{ (Request::path() === 'roles') ? 'active' : '' }}">
-                        <a href="{{ route('roles') }}">
-                            <i class="material-icons">assignment</i>
-                            <span>Roles</span>
-                        </a>
-                    </li>
-                @endif
-                </ul>
-            </div>
-            @endauth
+            @yield('sidenav')
             <!-- #Menu -->
             <!-- Footer -->
             <div class="legal">
@@ -430,17 +328,18 @@ ul {
         <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script>
         $('#l').click(function(){
-            //alert('hey')
-            if($('#b').hasClass('overlay-open') )
-            {
+        //alert('hey')
+        if($('#b').hasClass('overlay-open') )
+        {
 
-                $('#b').removeClass('overlay-open');
-            }
-            else{
-            // $('#b').removeClass('ls-closed');
-            $('#b').addClass('overlay-open');
-            }
-        });
+            $('#b').removeClass('overlay-open');
+        }
+        else{
+           // $('#b').removeClass('ls-closed');
+           $('#b').addClass('overlay-open');
+        }
+
+    });
         </script>
     @else
         @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
