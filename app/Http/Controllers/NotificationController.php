@@ -17,8 +17,7 @@ class NotificationController extends Controller
         } else {
             $data = Notification::orderBy('id', 'DESC')
                     ->with('admin', 'cash_advance')
-                    ->get();     
-            $notification = array();
+                    ->get();          
 
             foreach ($data as $datum) {
                 $notification[] = array(

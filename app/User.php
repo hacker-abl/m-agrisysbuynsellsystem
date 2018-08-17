@@ -39,8 +39,4 @@ class User extends Authenticatable
     public function role() {
         return $this->hasOne('App\access_levels', 'id', 'access_id');
     }
-    
-    public function userpermission() {
-        return $this->hasMany('App\UserPermission', 'user_id');
-    }
 }
