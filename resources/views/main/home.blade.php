@@ -67,44 +67,44 @@
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-pink hover-expand-effect">
                         <div class="icon">
-                            <i class="material-icons">playlist_add_check</i>
+                            <i class="material-icons">show_chart</i>
                         </div>
                         <div class="content">
-                            <div class="text">TOTAL EXPENSE</div>
-                            <div class="number count-to" data-from="0" data-to="{{ $finalTotalExpense }}" data-speed="1000" data-fresh-interval="20"></div>
+                            <div class="text">EXPENSES - TODAY</div>
+                            <h4>&#8369; {{ number_format( $finalTotalExpenseToday , 2, '.', ',') }}</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-cyan hover-expand-effect">
                         <div class="icon">
-                            <i class="material-icons">help</i>
+                            <i class="material-icons">shopping_cart</i>
                         </div>
                         <div class="content">
-                            <div class="text">TOTAL SALES</div>
-                            <div class="number count-to" data-from="0" data-to="{{ $totalSales[0]->total_sales }}" data-speed="1000" data-fresh-interval="20"></div>
+                            <div class="text">SALES - TODAY</div>
+                            <h4>&#8369; {{ number_format( $totalSalesToday[0]->total_sales , 2, '.', ',') }}</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-light-green hover-expand-effect">
                         <div class="icon">
-                            <i class="material-icons">forum</i>
+                            <i class="material-icons">bookmark_border</i>
                         </div>
                         <div class="content">
-                            <div class="text">TOTAL PURCHASES</div>
-                            <div class="number count-to" data-from="0" data-to="{{ $totalPurchases[0]->total_purchases }}" data-speed="1000" data-fresh-interval="20"></div>
+                            <div class="text">PURCHASES - TODAY</div>
+                            <h4>&#8369; {{ number_format( $totalPurchasesToday[0]->total_purchases , 2, '.', ',') }}</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-orange hover-expand-effect">
                         <div class="icon">
-                            <i class="material-icons">person_add</i>
+                            <i class="material-icons">money_off</i>
                         </div>
                         <div class="content">
-                            <div class="text">TOTAL BALANCE</div>
-                            <div class="number count-to" data-from="0" data-to="{{ $totalBalance[0]->total_balance }}" data-speed="1000" data-fresh-interval="20"></div>
+                            <div class="text">BALANCE - TODAY</div>
+                            <h4>&#8369; {{ number_format( $totalBalanceToday[0]->total_balance , 2, '.', ',') }}</h4>
                         </div>
                     </div>
                 </div>
@@ -238,6 +238,105 @@
                 </div>
                 <!-- #END# Browser Usage -->
             </div>
+
+            <!-- Widgets -->
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">show_chart</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">EXPENSES - MONTH</div>
+                            <h4>&#8369; {{ number_format( $finalTotalExpenseMonth , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">shopping_cart</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">SALES - MONTH</div>
+                            <h4>&#8369; {{ number_format( $totalSalesMonth[0]->total_sales , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">bookmark_border</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">PURCHASES - MONTH</div>
+                            <h4>&#8369; {{ number_format( $totalPurchasesMonth[0]->total_purchases , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">money_off</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">BALANCE - MONTH</div>
+                            <h4>&#8369; {{ number_format( $totalBalanceMonth[0]->total_balance , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Widgets -->
+
+            <!-- Widgets -->
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">show_chart</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">EXPENSES - YEAR</div>
+                            <h4>&#8369; {{ number_format( $finalTotalExpense , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">shopping_cart</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">SALES - YEAR</div>
+                            <h4>&#8369; {{ number_format( $totalSales[0]->total_sales , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">bookmark_border</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">PURCHASES - YEAR</div>
+                            <h4>&#8369; {{ number_format( $totalPurchases[0]->total_purchases , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">money_off</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">BALANCE - YEAR</div>
+                            <h4>&#8369; {{ number_format( $totalBalance[0]->total_balance , 2, '.', ',') }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Widgets -->
+
         </div>  
 
 @endsection
