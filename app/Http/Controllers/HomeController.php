@@ -82,7 +82,7 @@ class HomeController extends Controller
         if($user->role->name === "admin") {
             return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'latestCustomer', 'totalSales', 'totalPurchases', 'totalBalance', 'finalTotalExpense', 'totalSalesToday', 'totalPurchasesToday', 'totalBalanceToday', 'finalTotalExpenseToday', 'totalSalesMonth', 'totalPurchasesMonth', 'totalBalanceMonth', 'finalTotalExpenseMonth'));
         } else if($user->role->name === "user") {
-            $permissions = UserPermission::with('permission')->get();
+            $permissions = UserPermission::with('permission')->where('user_id', $id)->orderBy('permission_id')->get();
             
             return view('cashier.home', compact('permissions'));
         }
