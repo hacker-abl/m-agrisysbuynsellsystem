@@ -271,6 +271,9 @@
     <!-- Jquery Validation Plugin Css -->
     <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
 
+    <!-- Jquery-ui Css -->
+    <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
+
     <!-- Custom Js -->
     <script src="{{ asset('assets/js/admin.js') }}"></script>
     <script src="{{ asset('assets/js/pages/index.js') }}"></script>
