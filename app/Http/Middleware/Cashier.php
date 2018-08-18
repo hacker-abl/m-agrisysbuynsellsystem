@@ -25,7 +25,6 @@ class Cashier
         $permission = UserPermission::select('user_id', 'middleware')->join('permissions', 'permissions.id', 'user_permissions.permission_id', 'right');
 
         if($user->role->name === "user") {
-            if($middleware === 'notification') return $next($request);
             if($permission->where(['user_id' => $id, 'middleware' => $middleware, 'permit' => 1])->first()) return $next($request);
         } else {
             return $next($request);

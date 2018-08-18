@@ -32,9 +32,8 @@ class HomeController extends Controller
         if($user->role->name === "admin") {
             return view('main.home');
         } else if($user->role->name === "user") {
-            $permissions = UserPermission::with('permission')->where('user_id', $id)->orderBy('permission_id')->get();
+            $permissions = UserPermission::with('permission')->get();
             
-            // return $permissions;
             return view('cashier.home', compact('permissions'));
         }
     }
