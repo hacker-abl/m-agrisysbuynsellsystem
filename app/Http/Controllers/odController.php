@@ -82,7 +82,7 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.created_at')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.allowance','deliveries.created_at')
             ->get();
         }else{
             $ultimatesickquery= DB::table('deliveries')
@@ -90,7 +90,7 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.created_at')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.allowance','deliveries.created_at')
             ->where('deliveries.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('deliveries.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->get();

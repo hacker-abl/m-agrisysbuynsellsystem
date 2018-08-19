@@ -270,6 +270,7 @@
 					},
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
+					{data: 'allowance'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
 				]
@@ -322,6 +323,7 @@
 					},
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
+					{data: 'allowance'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
 				]
@@ -368,6 +370,7 @@
 					},
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
+					{data: 'allowance'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
 				]
@@ -468,6 +471,7 @@
 					},
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
+					{data: 'allowance'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
 				]
