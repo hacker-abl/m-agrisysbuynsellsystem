@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Input as input;
+use App\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +22,9 @@ Route::group(['middleware'=>['auth', 'user:notification']], function() {
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function() {
+    //profile
+    Route::get('/profile', 'profileController@index')->name('profile');
+
     //settings
     Route::get('/company', 'companyController@index')->name('company');
     Route::post('/add_company', 'companyController@store')->name('add_company');
