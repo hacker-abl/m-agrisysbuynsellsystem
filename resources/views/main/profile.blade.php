@@ -4,7 +4,7 @@
 
     <div class="container-fluid">
         <div class="block-header">
-            <h1>Profile</h1>
+            <h2>Profile</h2>
         </div>
     </div>
     <div class="row clearfix">
@@ -34,7 +34,7 @@
             <div class="col-lg-7">
                 <form class="form-horizontal" id="profile_form" style="text-align: center; display: block;">
                 
-                    <h3>Basic Information</h3>
+                    <h4>Basic Information</h4>
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="col-lg-2"></div>
@@ -83,7 +83,7 @@
 
                     <div class="row clearfix">
 
-                        <h3>Edit Credentials</h3>
+                        <h4>Edit Credentials</h4>
                         <input type="hidden" name="id" class="form-control" value="{{ $user->id }}">
                         <div class="col-md-12">
                             <div class="col-lg-2"></div>
