@@ -87,11 +87,10 @@
                         <table id ="commoditytable" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>Suki Price</th>
-                                    <th width="50">Action</th>
+                                    <th width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -145,7 +144,6 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_commodity') }}",
                 columns: [
-                    {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'price', name: 'price'},
                     {data: 'suki_price', name: 'suki_price'},

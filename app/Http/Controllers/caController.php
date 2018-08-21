@@ -89,7 +89,7 @@ class caController extends Controller
             ->get();
         return \DataTables::of($cash_advance)
         ->addColumn('action', function($cash_advance){
-            return '<button class="btn btn-xs btn-info  waves-effect view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+            return '<button class="btn btn-xs btn-info waves-effect view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
         })
         ->editColumn('balance', function ($data) {
             return '₱'.number_format($data->balance, 2, '.', ',');

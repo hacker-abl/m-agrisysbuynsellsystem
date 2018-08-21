@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Hash;
 use Auth;
 use App\User;
 
@@ -19,8 +20,30 @@ class profileController extends Controller
         $id = Auth::user()->id;
         $user = User::find($id);
 
-
         return view('main.profile', compact('user'));
+    }
+
+    public function oldpass(Request $request){
+        $id = Auth::user()->id;
+        $user = User::find($id);
+        if(Hash::check($request->get('opassword'), Auth::user()->password)){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public function newpass(Request $request){
+        $id = Auth::user()->id;
+        
+        $user = User::find($id);
+
+        if($user){
+            $user->password = Hash::make($request->get('npassword'));
+            $user->save();
+        }
+
     }
 
     /**

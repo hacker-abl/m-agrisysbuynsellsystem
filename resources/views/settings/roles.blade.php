@@ -74,10 +74,9 @@
                         <table id="roletable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Role</th>
                                     <th>Rate</th>
-                                    <th width="50">Action</th>
+                                    <th width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -129,7 +128,6 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_roles') }}",
                 columns: [
-                    {data: 'id', name: 'id'},
                     {data: 'role', name: 'role'},
                     {data: 'rate', name: 'rate'},
                     {data: "action", orderable:false,searchable:false}

@@ -83,8 +83,7 @@
 
                     <div class="row clearfix">
 
-                        <h4>Edit Credentials</h4>
-                        <input type="hidden" name="id" class="form-control" value="{{ $user->id }}">
+                        <h4>Change Password</h4>
                         <div class="col-md-12">
                             <div class="col-lg-2"></div>
                             <div class="col-lg-3 col-md-5 col-sm-5 col-xs-5 form-control-label">
@@ -93,7 +92,7 @@
                             <div class="col-lg-5 col-md-4 col-sm-5 col-xs-7">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="" name="username" class="form-control" value="{{ $user->name }}" readonly>
+                                        <input type="" name="username" class="form-control" value="{{ $user->username }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -146,6 +145,10 @@
                         </div>
 
                         <div class="col-md-12 col-sm-12">
+                            <p id="incorrect" style="color: red; display: none; text-align: center;">Old Password incorrect</p>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12">
                             <button type="submit" id="changePass" class="btn btn-link waves-effect">SAVE CHANGES</button>
                         </div>
                         
@@ -155,11 +158,13 @@
             <br>
         </div>
     </div>
+
 @endsection
 
 @section('script')
     <script>
         var role = {{$user->access_id}};
+        
 
         if(role == 1){
             role = "admin";
@@ -169,5 +174,51 @@
         }
 
         $('#role').attr("placeholder", role);
+
+
+        $(document).on('click', '#changePass', function(event){
+            event.preventDefault();
+            
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:"{{ route('oldpass') }}",
+                method: 'POST',
+                data: $('#profile_form').serialize(),
+                success:function(data){
+                    if(data == 1){
+                        $('#incorrect').hide();
+                        $('#notMatch').hide();
+                        console.log($('#npassword').val() + " " + $('#cnpassword').val());
+                        
+                        if($('#npassword').val() == $('#cnpassword').val()){
+                            {{ route('newpass') }}
+                            $.ajax({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                method: 'POST',
+                                url: "{{ route('newpass') }}",
+                                data: $('#profile_form').serialize(),
+                                success:function(data){
+                                    swal("Change Password", "Password changed, please log in again.", "success");
+                                    document.getElementById('logout-form').submit();
+                                }
+                            });
+                        }
+                        else{
+                            $('#notMatch').show();
+                        }
+                    }
+                    else{
+                        $('#incorrect').show();
+                    }
+                },
+                error: function(data){
+                    swal("Oh no!", "Something went wrong, try again.", "error")
+                }
+            });
+        });
     </script>
 @endsection
