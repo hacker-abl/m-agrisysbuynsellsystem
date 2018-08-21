@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Customer;
 use App\balance;
 use App\paymentlogs;
+use App\Events\BalanceUpdated;
+
 class balanceController extends Controller
 {
 	public function __construct()
@@ -70,6 +72,8 @@ class balanceController extends Controller
 	    else{
 		    $balance = balance::where('customer_id', '=',$request->customer_id1)
 				->decrement('balance', $request->amount1);
-	    }
+			}
+			
+			event(new BalanceUpdated($paymentlogs));
 	}
 }
