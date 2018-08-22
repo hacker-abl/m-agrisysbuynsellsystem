@@ -306,11 +306,11 @@
 							<table id="cash_advancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
 								<thead>
 									<tr>
-                                                  <th>Name</th>
-                                                  <th>Recent Amount</th>
-                                                  <th>Latest Date/Time</th>
-                                                  <th>Total Balance</th>
-                                                   <th width="50">View History</th>
+                                        <th>Name</th>
+                                        <th>Recent Amount</th>
+                                        <th>Latest Date/Time</th>
+                                        <th>Total Balance</th>
+                                        <th width="90">View History</th>
 									</tr>
 								</thead>
 							</table>
@@ -340,9 +340,9 @@
                                   <table id="balancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
                                        <thead>
                                             <tr>
-                                                 <th style="text-align:center;">Name</th>
-                                                 <th  style="text-align:center;">Total Balance</th>
-                                                 <th style="text-align:center;">Action</th>
+                                                <th>Name</th>
+                                                <th>Total Balance</th>
+                                                <th width="90">Action</th>
                                             </tr>
                                        </thead>
                                   </table>

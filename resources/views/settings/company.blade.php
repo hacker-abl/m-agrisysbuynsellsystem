@@ -56,12 +56,11 @@
                 </div>
                 <div class="body">
                     <div class="table-responsive">
-                        <table id="companytable" class="table table-bordered table-striped table-hover  ">
+                        <table id="companytable" class="table table-bordered table-striped table-hover" width="100%">
                             <thead>
                                 <tr>
-                                    <th width="100" style="text-align:center;">No</th>
-                                    <th width="100" style="text-align:center;">Name</th>
-                                    <th width="50">Action</th>
+                                    <th>Name</th>
+                                    <th width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -113,7 +112,6 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_company') }}",
                 columns: [
-                    {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: "action", orderable:false,searchable:false}
                 ]

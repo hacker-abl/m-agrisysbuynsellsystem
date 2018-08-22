@@ -72,10 +72,9 @@
                         <table id ="truckstable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Name</th>
                                     <th>Plate #</th>
-                                    <th width="50">Action</th>
+                                    <th width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -127,7 +126,6 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_trucks') }}",
                 columns: [
-                    {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'plate_no', name: 'plate_no'},
                     {data: "action", orderable:false,searchable:false}

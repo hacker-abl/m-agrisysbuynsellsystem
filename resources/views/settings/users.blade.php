@@ -126,11 +126,10 @@
                         <table id="usertable" class="table table-bordered table-striped table-hover" width="100%">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Access Level</th>
-                                    <th>Action</th>
+                                    <th width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -181,7 +180,6 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_user') }}",
                 columns: [
-                    {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'username', name: 'username'},
                     {data: 'access_id', name: 'access_id'},

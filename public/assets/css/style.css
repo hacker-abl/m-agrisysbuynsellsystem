@@ -9,12 +9,14 @@ hr {
 }
 
 .logo{
-     margin-top:-13px;
+  margin-top:-13px;
 }
+
 .title{
-     position: absolute;
-     top:19px;
+  position: absolute;
+  top:19px;
 }
+
 
 .form-container{
   padding:10px;
@@ -39,6 +41,16 @@ hr {
 
 .dynamic-element{
   margin-bottom:0px;
+}
+
+.propic>img{
+	width: 200px;
+	height: 200px;
+	border: 1px solid black;
+}
+
+.col-md-12{
+	margin-bottom: 5px;
 }
 
 .navbar {

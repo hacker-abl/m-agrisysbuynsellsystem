@@ -126,12 +126,11 @@
                         <table id="customertable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Contact Number</th>
                                     <th>Suki</th>
-                                    <th width="50">Action</th>
+                                    <th width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -185,7 +184,6 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_customer') }}",
                 columns: [
-                    {data: 'id', name: 'id'},
                     {render:function(data, type, full, meta){
                         return full.fname + " " + full.mname + " " + full.lname;
                     }},
