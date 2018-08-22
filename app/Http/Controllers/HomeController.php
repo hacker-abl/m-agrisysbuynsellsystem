@@ -23,6 +23,7 @@ use Response;
 use View;
 use Carbon\Carbon;
 
+
 class HomeController extends Controller
 {
     /**
@@ -86,6 +87,36 @@ class HomeController extends Controller
             
             return view('cashier.home', compact('permissions'));
         }
+    }
+
+    public function sales_today(){
+        $totalSalesToday = sales::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS amount')]);
+        
+        return $totalSalesToday;
+    }
+
+    public function purchases_today(){
+        $totalPurchasesToday = purchases::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(total) AS total')]);
+        
+        return $totalPurchasesToday;
+    }
+
+    public function balance_today(){
+        $totalBalanceToday = balance::whereDate('updated_at', Carbon::today())->get([DB::raw('SUM(balance) AS amount')]);
+        
+        return $totalBalanceToday;
+    }
+
+    public function expenses_today(){
+        $totalExpenseToday = expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpenseToday = trip_expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+
+        // $finalTotalExpenseToday = new \stdClass();
+        $finalTotalExpenseToday = $totalExpenseToday[0]->total_expense + $totalTripExpenseToday[0]->total_trip_expense;
+        $arr = array('amount' => $finalTotalExpenseToday);
+        return response()->json([
+            $arr
+        ]);
     }
 
 

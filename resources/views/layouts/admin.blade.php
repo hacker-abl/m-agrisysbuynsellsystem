@@ -589,6 +589,8 @@ ul {
         <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         @endif
     @endif
-
+        
+        <!-- App Scripts -->
+        <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

@@ -14,6 +14,8 @@ use App\Commodity;
 use App\Roles;
 use App\trip_expense;
 use Auth;
+use App\Events\ExpensesUpdated;
+
 class tripController extends Controller
 {
     /**
@@ -68,6 +70,8 @@ class tripController extends Controller
         $details =  DB::table('trips')->orderBy('trip_ticket', 'desc')->first();
 
         echo json_encode($details);
+
+        event(new ExpensesUpdated($dtr));
     }
 
     public function update_trip(Request $request){

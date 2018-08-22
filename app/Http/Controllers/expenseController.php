@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Expense;
 use App\Employee;
 use Auth;
+use App\Events\ExpensesUpdated;
+
 class expenseController extends Controller
 {
     /**
@@ -41,6 +43,9 @@ class expenseController extends Controller
         $expense->status = "On-Hand";
         $expense->released_by = '';
         $expense->save();
+
+        
+        event(new ExpensesUpdated($expense));
     }
      public function release_update_normal(Request $request){
         $logged_id = Auth::user()->name;
