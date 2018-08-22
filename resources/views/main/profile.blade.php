@@ -140,18 +140,11 @@
                             </div>
                         </div>
                         
-                        <div class="col-md-12 col-sm-12">
-                            <p id="notMatch" style="color: red; display: none; text-align: center;">New Password fields do not match</p>
-                        </div>
-
-                        <div class="col-md-12 col-sm-12">
-                            <p id="incorrect" style="color: red; display: none; text-align: center;">Old Password incorrect</p>
-                        </div>
-
-                        <div class="col-md-12 col-sm-12">
-                            <button type="submit" id="changePass" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                        </div>
+                        <p id="notMatch" style="color: red; display: none; text-align: center;">New Password fields do not match</p>
                         
+                        <p id="incorrect" style="color: red; display: none; text-align: center;">Old Password incorrect</p>
+                        
+                        <button type="submit" id="changePass" class="btn btn-link waves-effect">SAVE CHANGES</button>
                     </div>
                 </form>
             </div>
