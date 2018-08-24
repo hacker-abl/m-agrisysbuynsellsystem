@@ -20,6 +20,7 @@
             fetchHomepageUpdate() {
                 axios.get('/expenses_today').then((response) => {
                     this.expenses = response.data;
+
                 })
             },
             listenForChanges() {
@@ -28,6 +29,15 @@
 
                     this.expenses[0].amount = parseFloat(this.expenses[0].amount) + parseFloat(e.amount);
                     
+                    var totalMonth = parseFloat($( "#totalExpensesMonth" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                    var valueMonth = (totalMonth/1).toFixed(2).replace(',', '.');
+                    valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    $( "#totalExpensesMonth" ).html("&#8369; "+valueMonth);
+
+                    var totalYear = parseFloat($( "#totalExpensesYear" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                    var valueYear = (totalYear/1).toFixed(2).replace(',', '.');
+                    valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    $( "#totalExpensesYear" ).html("&#8369; "+valueYear);
                 })
             },
             formatPrice(value) {

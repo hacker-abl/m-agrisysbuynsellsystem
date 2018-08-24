@@ -1213,7 +1213,7 @@ window.Pusher = __webpack_require__(33);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
-  key: "7f37ca92ef6b42373a24",
+  key: "b9b550394a26b7bb3f20",
   cluster: "ap1",
   encrypted: true
 });
@@ -18968,6 +18968,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Echo.channel('homepage').listen('SalesUpdated', function (e) {
 
                 _this2.sales[0].amount = parseFloat(_this2.sales[0].amount) + parseFloat(e.amount);
+
+                var totalMonth = parseFloat($("#totalSalesMonth").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                var valueMonth = (totalMonth / 1).toFixed(2).replace(',', '.');
+                valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalSalesMonth").html("&#8369; " + valueMonth);
+
+                var totalYear = parseFloat($("#totalSalesYear").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                var valueYear = (totalYear / 1).toFixed(2).replace(',', '.');
+                valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalSalesYear").html("&#8369; " + valueYear);
             });
         },
         formatPrice: function formatPrice(value) {
@@ -19090,6 +19100,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Echo.channel('homepage').listen('PurchasesUpdated', function (e) {
 
                 _this2.purchases[0].total = parseFloat(_this2.purchases[0].total) + parseFloat(e.total);
+
+                var totalMonth = parseFloat($("#totalPurchasesMonth").text().replace(/[^\d.]/g, '')) + parseFloat(e.total);
+                var valueMonth = (totalMonth / 1).toFixed(2).replace(',', '.');
+                valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalPurchasesMonth").html("&#8369; " + valueMonth);
+
+                var totalYear = parseFloat($("#totalPurchasesYear").text().replace(/[^\d.]/g, '')) + parseFloat(e.total);
+                var valueYear = (totalYear / 1).toFixed(2).replace(',', '.');
+                valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalPurchasesYear").html("&#8369; " + valueYear);
             });
         },
         formatPrice: function formatPrice(value) {
@@ -19212,11 +19232,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Echo.channel('homepage').listen('BalanceUpdated', function (e) {
                 if (e.paymentamount) {
                     _this2.balance[0].amount = parseFloat(_this2.balance[0].amount) - parseFloat(e.paymentamount);
+                    var totalYear = parseFloat($("#totalBalanceYear").text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
+                    var totalMonth = parseFloat($("#totalBalanceMonth").text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
                 } else if (e.partial) {
                     _this2.balance[0].amount = parseFloat(_this2.balance[0].amount) - parseFloat(e.partial);
+                    var totalYear = parseFloat($("#totalBalanceYear").text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
+                    var totalMonth = parseFloat($("#totalBalanceMonth").text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
                 } else {
                     _this2.balance[0].amount = parseFloat(_this2.balance[0].amount) + parseFloat(e.amount);
+                    var totalYear = parseFloat($("#totalBalanceYear").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                    var totalMonth = parseFloat($("#totalBalanceMonth").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
                 }
+
+                var valueMonth = (totalMonth / 1).toFixed(2).replace(',', '.');
+                valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalBalanceMonth").html("&#8369; " + valueMonth);
+
+                var valueYear = (totalYear / 1).toFixed(2).replace(',', '.');
+                valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalBalanceYear").html("&#8369; " + valueYear);
             });
         },
         formatPrice: function formatPrice(value) {
@@ -19339,6 +19373,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Echo.channel('homepage').listen('ExpensesUpdated', function (e) {
 
                 _this2.expenses[0].amount = parseFloat(_this2.expenses[0].amount) + parseFloat(e.amount);
+
+                var totalMonth = parseFloat($("#totalExpensesMonth").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                var valueMonth = (totalMonth / 1).toFixed(2).replace(',', '.');
+                valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalExpensesMonth").html("&#8369; " + valueMonth);
+
+                var totalYear = parseFloat($("#totalExpensesYear").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                var valueYear = (totalYear / 1).toFixed(2).replace(',', '.');
+                valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#totalExpensesYear").html("&#8369; " + valueYear);
             });
         },
         formatPrice: function formatPrice(value) {
