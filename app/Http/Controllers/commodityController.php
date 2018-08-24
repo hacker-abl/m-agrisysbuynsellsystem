@@ -71,6 +71,12 @@ class commodityController extends Controller
             return '<button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>
             <button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
         })
+        ->editColumn('price', function ($data) {
+            return '₱'.number_format($data->price, 2, '.', ',');
+        })
+        ->editColumn('suki_price', function ($data) {
+            return '₱'.number_format($data->suki_price, 2, '.', ',');
+        })
         ->make(true);
     }
 
