@@ -266,6 +266,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                    
                         url: "{{ route('refresh_expense') }}",
@@ -313,6 +320,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                    
                         url: "{{ route('refresh_expense') }}",
@@ -352,6 +366,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                    
                         url: "{{ route('refresh_expense') }}",
@@ -399,6 +420,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                    
                         url: "{{ route('refresh_expense') }}",
@@ -442,6 +470,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                    
                         url: "{{ route('refresh_expense') }}",
@@ -479,6 +514,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                    
                         url: "{{ route('trip_expense_view') }}",
@@ -527,6 +569,7 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                
                 ajax:{
                    
                         url: "{{ route('trip_expense_view') }}",
