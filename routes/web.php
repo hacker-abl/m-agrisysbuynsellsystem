@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Input as input;
-use App\User;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
