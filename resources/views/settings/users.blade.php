@@ -164,7 +164,10 @@
         });
 
         $(document).ready(function() {
-
+            $('#emp_id').select2({
+            dropdownParent: $('#user_modal'),
+            placeholder: 'Select an option'
+        });
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -353,9 +356,6 @@
             });
         });
         
-        $('#emp_id').select2({
-            dropdownParent: $('#user_modal'),
-            placeholder: 'Select an option'
-        });
+      
     </script>
 @endsection
