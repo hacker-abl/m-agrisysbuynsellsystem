@@ -40,7 +40,7 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
 </head>
-<body class="theme-grey">
+<body  id="b"  class="theme-grey">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -77,7 +77,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a href="javascript:void(0)" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-                <a href="javascript:void(0)" class="bars"></a>
+                <a href="javascript:void(0)" class="bars" id="l" ></a>
                 <a class="navbar-brand" href="{{ route('home') }}"><span> <img src="{{ asset('assets/images/logo.png') }}" width="50" height="50" class="logo"/></span> <span class="title">M-Agri Buy & Sell System</span></a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -239,7 +239,7 @@
 
     <!-- Select Plugin Js -->
     <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
-    
+
     <!-- Slimscroll Plugin Js -->
     <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
 
@@ -289,7 +289,7 @@
 
     <!-- Demo Js -->
     <script src="{{ asset('assets/js/demo.js') }}"></script>
-    
+
     <!-- Jquery-ui Js -->
     <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <script>
