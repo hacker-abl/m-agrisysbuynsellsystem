@@ -44,7 +44,7 @@
                             <div class="col-lg-5 col-md-4 col-sm-5 col-xs-7">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="" class="form-control" placeholder="{{ $user->name }}" readonly>
+                                        <input type="" class="form-control" placeholder="{!! getName()->fname !!}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                             <div class="col-lg-5 col-md-4 col-sm-5 col-xs-7">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="" class="form-control" placeholder="{{ $user->name }}" readonly>
+                                        <input type="" class="form-control" placeholder="{!! getName()->mname !!}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                             <div class="col-lg-5 col-md-4 col-sm-5 col-xs-7">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="" class="form-control" placeholder="{{ $user->name }}" readonly>
+                                        <input type="" class="form-control" placeholder="{!! getName()->lname !!}" readonly>
                                     </div>
                                 </div>
                             </div>

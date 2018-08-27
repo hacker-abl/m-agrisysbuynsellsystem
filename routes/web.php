@@ -21,11 +21,11 @@ Route::group(['middleware'=>['auth', 'user:notification']], function() {
     Route::get('/notification/get', 'NotificationController@get');
 });
 
+Route::get('/profile', 'profileController@index')->name('profile');
+Route::post('/oldpass', 'profileController@oldpass')->name('oldpass');
+Route::post('/newpass', 'profileController@newpass')->name('newpass');
 Route::group(['middleware' => ['auth', 'admin']], function() {
     //profile
-    Route::get('/profile', 'profileController@index')->name('profile');
-    Route::post('/oldpass', 'profileController@oldpass')->name('oldpass');
-    Route::post('/newpass', 'profileController@newpass')->name('newpass');
 
     //settings
     Route::get('/company', 'companyController@index')->name('company');
@@ -80,6 +80,7 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
     Route::post('/add_expense', 'expenseController@store')->name('add_expense');
     Route::post('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
     Route::post('/release_update_normal', 'expenseController@release_update_normal')->name('release_update_normal');
+    Route::post('/check_balance', 'expenseController@check_balance')->name('check_balance');
     Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
     Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
 

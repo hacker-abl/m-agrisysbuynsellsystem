@@ -13,10 +13,12 @@ class User extends Authenticatable
     protected $table = 'users';
 
     protected $fillable = array(
+        'cashOnHand', 
         'name', 
         'username',  
         'email',
-        'access_id'
+        'access_id',
+        'emp_id',
     );
     public $timestamps = true;
     /**
@@ -42,5 +44,9 @@ class User extends Authenticatable
 
     public function userpermission() {
         return $this->hasMany('App\UserPermission', 'user_id');
+    }
+
+    public function emp_name() {
+        return $this->belongsTo('App\Employee', 'emp_id');
     }
 }

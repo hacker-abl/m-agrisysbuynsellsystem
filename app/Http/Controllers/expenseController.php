@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Expense;
+use App\User;
 use App\Employee;
 use Auth;
 class expenseController extends Controller
@@ -33,7 +34,6 @@ class expenseController extends Controller
 
     public function store(Request $request)
     {
-
         $expense = new Expense;
         $expense->description = $request->expense;
         $expense->type = $request->type;
@@ -42,14 +42,32 @@ class expenseController extends Controller
         $expense->released_by = '';
         $expense->save();
     }
-     public function release_update_normal(Request $request){
+
+    public function release_update_normal(Request $request){
         $logged_id = Auth::user()->name;
-         
-        $released=expense::find($request->id);
+        $user = User::find(Auth::user()->id);
+
+        $released = expense::find($request->id);
         $released->status = "Released";
         $released->released_by = $logged_id;
         $released->save();
-        echo json_encode("released");
+
+        $user->cashOnHand -= $released->amount;
+        $user->save();
+
+        return $user->cashOnHand;
+    }
+
+    public function check_balance(Request $request){
+        $user = User::find(Auth::user()->id);
+        $expense = Expense::find($request->id);
+
+        if($user->cashOnHand < $expense->amount){
+            return 0;
+        }
+        else{
+            return 1;
+        }
     }
 
     public function refresh(Request $request){  
@@ -68,7 +86,7 @@ class expenseController extends Controller
        return \DataTables::of($expense)
        ->addColumn('action', function($expense){
             if($expense->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'" data-toggle="modal" data-target="#release_modal_normal"><i class="material-icons">eject</i></button>';
+                 return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>';
             }else{
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$expense->id.'"><i class="material-icons">done_all</i></button>';
             }

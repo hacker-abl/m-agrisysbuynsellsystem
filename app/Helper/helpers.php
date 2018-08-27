@@ -58,6 +58,13 @@ function isAdmin() {
     return ($user->name === 'admin' ? true : false);
 }
 
+function getName(){
+    $id = Auth::user()->emp_id;
+    $employee = \App\Employee::find($id);
+
+    return $employee;
+}
+
 function userpermission() {
     $id = Auth::id();
     return \App\UserPermission::with('permission')->where('user_id', $id)->orderBy('permission_id')->get();
