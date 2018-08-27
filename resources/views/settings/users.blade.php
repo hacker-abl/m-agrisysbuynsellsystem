@@ -212,6 +212,7 @@
 
             //Open User Modal
             $(document).on('click','.open_user_modal', function(){
+                $("#emp_id").val('').trigger('change');
                 $('.open_user_modal .modal_title').text('Add User');
                 $('#button_action').val('add');
                 //Generate input for password when adding User
