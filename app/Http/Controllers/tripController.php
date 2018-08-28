@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Query\Builder;
 use App\trips;
+use App\User;
 use App\employee;
 use App\trucks;
 use App\Commodity;
@@ -88,12 +89,17 @@ class tripController extends Controller
     }
      public function release_update(Request $request){
         $logged_id = Auth::user()->name;
+        $cashOnHand = User::find(Auth::user()->id);
          
         $released=trip_expense::find($request->id);
         $released->status = "Released";
         $released->released_by = $logged_id;
         $released->save();
-        echo json_encode("released");
+
+        $cashOnHand->cashOnHand -= $released->amount;
+        $cashOnHand->save();
+
+        return $cashOnHand->cashOnHand;
     }
     public function refresh(Request $request){
         $from = $request->date_from;

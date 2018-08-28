@@ -31,10 +31,16 @@
     <!-- Custom Css -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
+    <!-- Sweet Alert Css -->
+    <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+
+    <!-- Select2 Css -->
+    <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
 </head>
-<body class="theme-grey">
+<body  id="b"  class="theme-grey">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -71,7 +77,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a href="javascript:void(0)" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-                <a href="javascript:void(0)" class="bars"></a>
+                <a href="javascript:void(0)" class="bars" id="l" ></a>
                 <a class="navbar-brand" href="{{ route('home') }}"><span> <img src="{{ asset('assets/images/logo.png') }}" width="50" height="50" class="logo"/></span> <span class="title">M-Agri Buy & Sell System</span></a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -99,12 +105,12 @@
                     <img src="{{ asset('assets/images/user1.png') }}" width="50" height="50" alt="User" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{!! getName()->fname !!} &nbsp; &nbsp;₱<span id="curCashOnHand">{{ Auth::user()->cashOnHand }}</span></div>
                     <div class="email">{{ Auth::user()->username }}</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                            <li><a href="{{ route('profile') }}"><i class="material-icons">person</i>Profile</a></li>
                             <li>
 							    <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
@@ -233,7 +239,7 @@
 
     <!-- Select Plugin Js -->
     <script src="{{ asset('assets/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
-    
+
     <!-- Slimscroll Plugin Js -->
     <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
 
@@ -283,7 +289,7 @@
 
     <!-- Demo Js -->
     <script src="{{ asset('assets/js/demo.js') }}"></script>
-    
+
     <!-- Jquery-ui Js -->
     <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <script>

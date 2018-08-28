@@ -20,13 +20,15 @@
                             
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="name">User</label>
+                                    <label for="type">Employee</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter user's name"  required>
-                                        </div>
+                                        <select id="emp_id" name="emp_id" class="form-control" placeholder="Enter employee" required style="width:100%;">
+                                            @foreach($employee as $emp)
+                                            <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -52,6 +54,19 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="password" id="password" name="password" class="form-control" placeholder="Enter user password"  required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="password">Cash</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="number" id="cashOnHand" name="cashOnHand" class="form-control" placeholder="Enter user Cash on Hand"  required>
                                         </div>
                                     </div>
                                 </div>
@@ -129,6 +144,7 @@
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Access Level</th>
+                                    <th>Cash On Hand</th>
                                     <th width="100">Action</th>
                                 </tr>
                             </thead>
@@ -148,7 +164,10 @@
         });
 
         $(document).ready(function() {
-
+            $('#emp_id').select2({
+            dropdownParent: $('#user_modal'),
+            placeholder: 'Select an option'
+        });
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -174,15 +193,15 @@
   				{
     			  	"targets": "_all", // your case first column
      				"className": "text-center",
-      				
  				}
 				],
                 serverSide: true,
                 ajax: "{{ route('refresh_user') }}",
                 columns: [
-                    {data: 'name', name: 'name'},
+                    {data: 'emp_id', name: 'emp_id'},
                     {data: 'username', name: 'username'},
                     {data: 'access_id', name: 'access_id'},
+                    {data: 'cashOnHand', name: 'cashOnHand'},
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
@@ -193,6 +212,7 @@
 
             //Open User Modal
             $(document).on('click','.open_user_modal', function(){
+                $("#emp_id").val('').trigger('change');
                 $('.open_user_modal .modal_title').text('Add User');
                 $('#button_action').val('add');
                 //Generate input for password when adding User
@@ -252,8 +272,9 @@
                         $('#id').val(id);
                         $('#name').val(data.name);
                         $('#username').val(data.username);
-                        $('#user_modal').modal('show');
+                        $('#cashOnHand').val(data.cashOnHand);
                         $('.update_user .modal_title').text('Update User');
+                        $('#user_modal').modal('show');
                         refresh_user_table();
                     }
                 })
@@ -335,5 +356,7 @@
                 }
             });
         });
+        
+      
     </script>
 @endsection

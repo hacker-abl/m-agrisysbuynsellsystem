@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Hash;
 use App\User;
+use App\Roles;
+use App\Employee;
 use App\access_levels;
 use App\Permission;
 use App\UserPermission;
@@ -30,8 +32,10 @@ class usersController extends Controller
     public function index()
     {
         $permissions = Permission::all();
+        $roles = Roles::where('role', 'cashier')->first();
+        $employee = Employee::where('role_id', $roles->id)->get();
 
-        return view('settings.users')->with(['permissions' => $permissions]);
+        return view('settings.users', compact('employee'), ['permissions' => $permissions]);
     }
 
     /**
@@ -61,17 +65,19 @@ class usersController extends Controller
     {
         if($request->get('button_action') == 'add'){
             $user = new User;
-            $user->name = $request->name;
+            $user->emp_id = $request->emp_id;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
+            $user->cashOnHand = $request->cashOnHand;
             $user->access_id = 2;
             $user->save();
         }
 
         if($request->get('button_action') == 'update'){
             $user = User::find($request->get('id'));
-            $user->name = $request->name;
+            $user->emp_id = $request->emp_id;
             $user->username = $request->username;
+            $user->cashOnHand = $request->cashOnHand;
             $user->save();
         }
     }
@@ -105,6 +111,14 @@ class usersController extends Controller
 
             return $access_name;
         })
+        ->editColumn('emp_id', function ($data){
+            $employee = Employee::all();
+            foreach($employee as $emp){
+                if($emp->id == $data->emp_id)
+                    $emp_name = $emp->lname.", ".$emp->fname." ".$emp->mname;
+            }
+            return $emp_name;
+        })   
         ->make(true);
     }
 
@@ -114,6 +128,7 @@ class usersController extends Controller
         $output = array(
             'name' => $user->name,
             'username' => $user->username,
+            'cashOnHand' => $user->cashOnHand,
         );
         echo json_encode($output);
     }
