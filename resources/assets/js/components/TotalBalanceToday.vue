@@ -27,11 +27,25 @@
                 .listen('BalanceUpdated', (e) => {
                     if(e.paymentamount){
                         this.balance[0].amount = parseFloat(this.balance[0].amount) - parseFloat(e.paymentamount);
+                        var totalYear = parseFloat($( "#totalBalanceYear" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
+                        var totalMonth = parseFloat($( "#totalBalanceMonth" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
                     }else if(e.partial){
                         this.balance[0].amount = parseFloat(this.balance[0].amount) - parseFloat(e.partial);
+                        var totalYear = parseFloat($( "#totalBalanceYear" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
+                        var totalMonth = parseFloat($( "#totalBalanceMonth" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
                     }else{
                         this.balance[0].amount = parseFloat(this.balance[0].amount) + parseFloat(e.amount);
+                        var totalYear = parseFloat($( "#totalBalanceYear" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
+                        var totalMonth = parseFloat($( "#totalBalanceMonth" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
                     }
+
+                    var valueMonth = (totalMonth/1).toFixed(2).replace(',', '.');
+                    valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    $( "#totalBalanceMonth" ).html("&#8369; "+valueMonth);
+
+                    var valueYear = (totalYear/1).toFixed(2).replace(',', '.');
+                    valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    $( "#totalBalanceYear" ).html("&#8369; "+valueYear);
 
                 })
             },

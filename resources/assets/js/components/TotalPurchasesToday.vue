@@ -27,6 +27,16 @@
                 .listen('PurchasesUpdated', (e) => {
                     
                     this.purchases[0].total = parseFloat(this.purchases[0].total) + parseFloat(e.total);
+
+                    var totalMonth = parseFloat($( "#totalPurchasesMonth" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.total);
+                    var valueMonth = (totalMonth/1).toFixed(2).replace(',', '.');
+                    valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    $( "#totalPurchasesMonth" ).html("&#8369; "+valueMonth);
+
+                    var totalYear = parseFloat($( "#totalPurchasesYear" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.total);
+                    var valueYear = (totalYear/1).toFixed(2).replace(',', '.');
+                    valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    $( "#totalPurchasesYear" ).html("&#8369; "+valueYear);
                 })
             },
             formatPrice(value) {
