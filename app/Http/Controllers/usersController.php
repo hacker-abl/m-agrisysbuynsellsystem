@@ -11,7 +11,7 @@ use App\Employee;
 use App\access_levels;
 use App\Permission;
 use App\UserPermission;
-
+use DB;
 class usersController extends Controller
 {
     /**
@@ -178,10 +178,8 @@ class usersController extends Controller
             ]);
             $authorized = ($request->permission)?$request->permission:array();
             $permission = array();
-
+            $permissions = Permission::select('id')->whereNotIn('id', $authorized)->get();
             if($authorized) {
-                $permissions = Permission::select('id')->whereNotIn('id', $authorized)->get();
-
                 foreach ($authorized as $key => $value) {
                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id], ['permit' => 1]);
                 }
@@ -189,10 +187,9 @@ class usersController extends Controller
 
             if($permissions) {
                 foreach ($permissions as $key => $value) {
-                    UserPermission::updateOrCreate(['permission_id'=>$value->id, 'user_id'=>$request->id], ['permit' => 0]);
+                UserPermission::updateOrCreate(['permission_id'=>$value->id, 'user_id'=>$request->id], ['permit' => 0]);
                 }
             }
-
             return 'true';
         }
     }

@@ -349,6 +349,7 @@
                 success: function(data) {
                     if(data) {
                         swal("Success!", "Permission has been updated!", "success");
+                        $('#user-permission').modal('hide');
                     }
                 },
                 error: function(err) {
