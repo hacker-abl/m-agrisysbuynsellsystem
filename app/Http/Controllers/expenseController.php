@@ -8,6 +8,9 @@ use App\Expense;
 use App\User;
 use App\Employee;
 use Auth;
+use App\Events\ExpensesUpdated;
+use DB;
+
 class expenseController extends Controller
 {
     /**
@@ -41,6 +44,9 @@ class expenseController extends Controller
         $expense->status = "On-Hand";
         $expense->released_by = '';
         $expense->save();
+
+        
+        event(new ExpensesUpdated($expense));
     }
 
     public function release_update_normal(Request $request){
@@ -75,12 +81,14 @@ class expenseController extends Controller
       $from = $request->date_from;
       $to = $request->date_to;    
         if($to==""){
-         $expense =Expense::all();
+         //$expense =Expense::all()
+                    //->latest();
+        $expense = DB::table('expenses')->latest();
         }else{
            
              $expense =Expense::where('created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
                 ->where('created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-                      ->get();
+                ->latest();
         }
           
        return \DataTables::of($expense)

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Customer;
 use App\balance;
 use App\paymentlogs;
+use App\Events\BalanceUpdated;
+
 class balanceController extends Controller
 {
 	public function __construct()
@@ -22,7 +24,8 @@ class balanceController extends Controller
 		//$user = User::all();
           $ultimatesickquery= DB::table('balance')
               ->join('customer', 'customer.id', '=', 'balance.customer_id')
-              ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname')
+			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname')
+			  ->where('balance.balance' ,'!=','0')
             //  ->orderBy('purchases.id', 'desc')
               ->get();
 		    return \DataTables::of($ultimatesickquery)
@@ -70,6 +73,8 @@ class balanceController extends Controller
 	    else{
 		    $balance = balance::where('customer_id', '=',$request->customer_id1)
 				->decrement('balance', $request->amount1);
-	    }
+			}
+			
+			event(new BalanceUpdated($paymentlogs));
 	}
 }

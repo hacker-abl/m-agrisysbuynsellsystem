@@ -8,6 +8,9 @@ use DB;
 use App\Commodity;
 use App\sales;
 use App\Company;
+use Carbon\Carbon;
+use App\Events\SalesUpdated;
+
 class salesController extends Controller
 {
    /**
@@ -60,6 +63,10 @@ class salesController extends Controller
           $sales->amount = $request->amount;
           $sales->save();
         }
+
+        //$totalSalesToday = sales::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_sales')]);
+        
+        event(new SalesUpdated($sales));
     }
 
     function updatedata(Request $request){

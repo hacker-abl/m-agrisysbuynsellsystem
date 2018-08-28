@@ -259,6 +259,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                     url: "{{ route('refresh_expense') }}",
                     // dataType: 'text',
@@ -299,6 +306,10 @@
                         paging: true,
                         pageLength: 10,
                         order:[],
+                        columnDefs: [{
+                            "targets": "_all", // your case first column
+                            "className": "text-center",
+      				    }],
                         ajax:{
                             url: "{{ route('refresh_expense') }}",
                             type: 'post',
@@ -308,7 +319,7 @@
                             data: {
                                 date_from: date_from,
                                 date_to: date_to,
-                            },
+                            }
                         },
                         processing: true,
                         serverSide: true,
@@ -332,6 +343,10 @@
                     paging: true,
                     pageLength: 10,
                     order:[],
+                    columnDefs: [{
+                        "targets": "_all", // your case first column
+                        "className": "text-center",
+ 				    }],
                     ajax:{
                         url: "{{ route('refresh_expense') }}",
                         type: 'post',
@@ -373,6 +388,10 @@
                         paging: true,
                         pageLength: 10,
                         order:[],
+                        columnDefs: [{
+                            "targets": "_all", // your case first column
+                            "className": "text-center",
+ 				        }],
                         ajax:{
                             url: "{{ route('refresh_expense') }}",
                             // dataType: 'text',
@@ -407,6 +426,10 @@
                     paging: true,
                     pageLength: 10,
                     order:[],
+                    columnDefs: [{
+                        "targets": "_all", // your case first column
+                        "className": "text-center",
+      				}],
                     ajax:{
                         url: "{{ route('refresh_expense') }}",
                         type: 'post',
@@ -441,6 +464,13 @@
                 paging: true,
                 pageLength: 10,
                 order:[],
+                columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
                 ajax:{
                     url: "{{ route('trip_expense_view') }}",
                     // dataType: 'text',

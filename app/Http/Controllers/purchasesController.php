@@ -10,6 +10,9 @@ use App\Customer;
 use App\ca;
 use App\balance;
 use App\purchases;
+use App\Events\PurchasesUpdated;
+use App\Events\BalanceUpdated;
+
 class purchasesController extends Controller
 {
     /**
@@ -136,9 +139,10 @@ class purchasesController extends Controller
                $purchases->save();
 
 
-                 }
+            }
 
-
+            event(new PurchasesUpdated($purchases));
+            event(new BalanceUpdated($purchases));
     }
 
     function updateId(){

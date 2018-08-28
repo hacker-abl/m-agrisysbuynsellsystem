@@ -12,6 +12,7 @@ use App\Customer;
 use App\balance;
 use App\Notification;
 use Auth;
+use App\Events\BalanceUpdated;
 
 class caController extends Controller
 {
@@ -69,6 +70,9 @@ class caController extends Controller
 
         $balance = balance::where('customer_id', '=',$request->customer_id)
                  ->increment('balance',  $request->amount);
+
+
+        event(new BalanceUpdated($ca));
     }
 
     public function refresh(){

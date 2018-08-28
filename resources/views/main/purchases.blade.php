@@ -581,6 +581,13 @@
               processing: true,
               serverSide: true,
               order:[],
+              columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
               ajax:{
                  
                       url: "{{ route('refresh_purchases') }}",
@@ -640,6 +647,13 @@
               processing: true,
               serverSide: true,
               order:[],
+              columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
               ajax:{
                  
                       url: "{{ route('refresh_purchases') }}",

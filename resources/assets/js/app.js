@@ -19,6 +19,15 @@ Vue.component('notification-counter', require('./components/NotificationCounter.
 Vue.component('notification-content', require('./components/NotificationContent.vue'));
 Vue.component('notification-list', require('./components/NotificationList.vue')); 
 
+Vue.component('total-sales-today', require('./components/TotalSalesToday.vue'));
+Vue.component('total-purchases-today', require('./components/TotalPurchasesToday.vue'));
+Vue.component('total-balance-today', require('./components/TotalBalanceToday.vue'));
+Vue.component('total-expenses-today', require('./components/TotalExpensesToday.vue'));
+
+const update = new Vue({
+    el: '#update'
+});
+
 const request = new Vue({
     el: '#request',
     data: {
