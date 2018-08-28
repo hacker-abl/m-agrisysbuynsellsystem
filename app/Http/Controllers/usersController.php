@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Hash;
 use App\User;
+use App\Roles;
 use App\Employee;
 use App\access_levels;
 use App\Permission;
@@ -31,7 +32,8 @@ class usersController extends Controller
     public function index()
     {
         $permissions = Permission::all();
-        $employee = Employee::all();
+        $roles = Roles::where('role', 'cashier')->first();
+        $employee = Employee::where('role_id', $roles->id)->get();
 
         return view('settings.users', compact('employee'), ['permissions' => $permissions]);
     }
