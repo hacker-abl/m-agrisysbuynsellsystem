@@ -53,6 +53,9 @@ class RolesController extends Controller
           return '<button class="btn btn-xs btn-warning update_role waves-effect" id="'.$roles->id.'"><i class="material-icons">mode_edit</i></button>
           <button class="btn btn-xs btn-danger delete_role waves-effect" id="'.$roles->id.'"><i class="material-icons">delete</i></button>';
       })
+      ->editColumn('rate', function ($data) {
+            return '₱'.number_format($data->rate, 2, '.', ',');
+        })
       ->make(true);
   }
   function updatedata(Request $request){
