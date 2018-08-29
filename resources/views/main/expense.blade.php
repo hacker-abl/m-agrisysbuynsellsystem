@@ -13,7 +13,7 @@
             <h2>DTR Expenses Dashboard</h2>
         </div></a></li> -->
       </ul>
-</div>
+</div> 
 
 <div class="tab-content">
     <div id="expense_tab" class="tab-pane fade in active">

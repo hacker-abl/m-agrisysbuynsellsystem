@@ -27,7 +27,7 @@ class tripController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }
+    } 
 
     /**
      * Show the application dashboard.
@@ -60,19 +60,19 @@ class tripController extends Controller
         $trip->num_liters = $request->num_liters;
         $trip->save();
         $lastInsertedId = $trip->id;
-        $dtr = new trip_expense;
-        $dtr->trip_id = $lastInsertedId;
-        $dtr->description = $request->destination;
-        $dtr->type ="TRIP EXPENSE";
-        $dtr->amount = $request->expense;
-        $dtr->status = "On-Hand";
-        $dtr->released_by = '';
-        $dtr->save();
+        $trip_expenses = new trip_expense;
+        $trip_expenses->trip_id = $lastInsertedId;
+        $trip_expenses->description = $request->destination;
+        $trip_expenses->type ="TRIP EXPENSE";
+        $trip_expenses->amount = $request->expense;
+        $trip_expenses->status = "On-Hand";
+        $trip_expenses->released_by = '';
+        $trip_expenses->save();
         $details =  DB::table('trips')->orderBy('trip_ticket', 'desc')->first();
 
         echo json_encode($details);
 
-        event(new ExpensesUpdated($dtr));
+        event(new ExpensesUpdated($trip_expenses));
     }
 
     public function update_trip(Request $request){

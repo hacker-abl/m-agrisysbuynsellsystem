@@ -138,6 +138,7 @@ Route::group(['middleware'=>['auth', 'user:purchases']], function() {
     Route::post('/add_purchases', 'purchasesController@store')->name('add_purchases');
     Route::post('/refresh_purchases', 'purchasesController@refresh')->name('refresh_purchases');
     Route::post('/print_purchase', 'pdfController@purchases')->name('print_purchase');
+    Route::post('/release_purchase', 'purchasesController@release_purchase')->name('release_purchase');
 });
 
 Route::group(['middleware'=>['auth', 'user:dtr']], function() {

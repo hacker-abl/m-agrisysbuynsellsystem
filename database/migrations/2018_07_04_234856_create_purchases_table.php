@@ -39,6 +39,8 @@ class CreatePurchasesTable extends Migration
             $table->decimal('total', 10);
             $table->decimal('amtpay', 10);
             $table->string('remarks');
+            $table->string('status');
+            $table->string('released_by');     
             $table->timestamps();
         });
     }
