@@ -176,8 +176,10 @@
 					<h2>Daily Time Records as of {{ date('Y-m-d ') }}</h2>
 						<ul class="header-dropdown m-r--5">
 							<li class="dropdown">
+                                @if(isAdmin())
 								<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_dtr_modal"><i class="material-icons">library_add</i></button>
-							</li>
+                                @endif
+                            </li>
 						</ul>
 					</div>
 					<div class="body">

@@ -71,9 +71,6 @@ class expenseController extends Controller
             $user->cashOnHand -= $released->amount;
             $user->save();
         }
-        
-
-       
 
         return $user->cashOnHand;
     }

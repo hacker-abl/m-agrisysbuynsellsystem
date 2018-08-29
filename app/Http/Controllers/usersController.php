@@ -32,8 +32,7 @@ class usersController extends Controller
     public function index()
     {
         $permissions = Permission::all();
-        $roles = Roles::where('role', 'cashier')->first();
-        $employee = Employee::where('role_id', $roles->id)->get();
+        $employee = Employee::with('cashier')->get();
 
         return view('settings.users', compact('employee'), ['permissions' => $permissions]);
     }
@@ -126,6 +125,7 @@ class usersController extends Controller
         $id = $request->input('id');
         $user = User::find($id);
         $output = array(
+            'emp_id' => $user->emp_id,
             'name' => $user->name,
             'username' => $user->username,
             'cashOnHand' => $user->cashOnHand,

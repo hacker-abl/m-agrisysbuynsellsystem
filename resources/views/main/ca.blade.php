@@ -297,8 +297,10 @@
 					<h2>List of cash advances as of {{ date('Y-m-d ') }}</h2>
 						<ul class="header-dropdown m-r--5">
 							<li class="dropdown">
-								<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_modal"><i class="material-icons">library_add</i></button>
-							</li>
+								@if(isAdmin())
+                                <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_modal"><i class="material-icons">library_add</i></button>
+                                @endif()
+                            </li>
 						</ul>
 					</div>
 					<div class="body">

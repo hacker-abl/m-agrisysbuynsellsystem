@@ -26,7 +26,9 @@
                                     <div class="form-group">
                                         <select id="emp_id" name="emp_id" class="form-control" placeholder="Enter employee" required style="width:100%;">
                                             @foreach($employee as $emp)
-                                            <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
+                                                @if($employee[$emp->id-1]->cashier->role == 'cashier')
+                                                <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -270,12 +272,14 @@
                         }
                         $('#button_action').val('update');
                         $('#id').val(id);
-                        $('#name').val(data.name);
+                        $('#emp_id').val(data.emp_id);
+                        $("#emp_id").change();
                         $('#username').val(data.username);
                         $('#cashOnHand').val(data.cashOnHand);
                         $('.update_user .modal_title').text('Update User');
                         $('#user_modal').modal('show');
                         refresh_user_table();
+                        console.log($('#user_form').serialize());
                     }
                 })
             });
@@ -357,7 +361,5 @@
                 }
             });
         });
-        
-      
     </script>
 @endsection
