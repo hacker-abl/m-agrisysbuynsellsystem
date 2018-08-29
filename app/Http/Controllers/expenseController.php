@@ -50,16 +50,30 @@ class expenseController extends Controller
     }
 
     public function release_update_normal(Request $request){
-        $logged_id = Auth::user()->name;
-        $user = User::find(Auth::user()->id);
+        $check_admin =Auth::user()->access_id;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+            $user->cashOnHand -= $released->amount;
+            $user->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);
+            $user = User::find(Auth::user()->id);
+            $released = expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $released->save();
+            $user->cashOnHand -= $released->amount;
+            $user->save();
+        }
+        
 
-        $released = expense::find($request->id);
-        $released->status = "Released";
-        $released->released_by = $logged_id;
-        $released->save();
-
-        $user->cashOnHand -= $released->amount;
-        $user->save();
+       
 
         return $user->cashOnHand;
     }

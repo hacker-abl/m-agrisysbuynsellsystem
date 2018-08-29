@@ -88,16 +88,31 @@ class tripController extends Controller
         echo json_encode("update");
     }
      public function release_update(Request $request){
-        $logged_id = Auth::user()->name;
-        $cashOnHand = User::find(Auth::user()->id);
-         
-        $released=trip_expense::find($request->id);
-        $released->status = "Released";
-        $released->released_by = $logged_id;
-        $released->save();
+         $check_admin =Auth::user()->access_id;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = trip_expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+            $cashOnHand = User::find(Auth::user()->id);
+            $cashOnHand->cashOnHand -= $released->amount;
+            $cashOnHand->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);             
+            $released=trip_expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
+            $released->save();
+            $cashOnHand = User::find(Auth::user()->id);
+            $cashOnHand->cashOnHand -= $released->amount;
+            $cashOnHand->save();
+        }
 
-        $cashOnHand->cashOnHand -= $released->amount;
-        $cashOnHand->save();
+       
+
 
         return $cashOnHand->cashOnHand;
     }

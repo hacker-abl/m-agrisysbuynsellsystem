@@ -152,18 +152,30 @@ class purchasesController extends Controller
     }
 
     public function release_purchase(Request $request){
-        $logged_id = Auth::user()->name;
-        //$user = User::find(Auth::user()->id);
+       $check_admin =Auth::user()->access_id;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = purchases::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);
+            //$user = User::find(Auth::user()->id);
 
-        $released = purchases::find($request->id);
-        $released->status = "Released";
-        $released->released_by = $logged_id;
-        $released->save();
+            $released = purchases::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $released->save();
+        }
+        
 
-        //$user->cashOnHand -= $released->amount;
-        //$user->save();
-        return json_encode("maoni");
-        //return $user->cashOnHand;
+        // $user->cashOnHand -= $released->amount;
+        // $user->save();
+         
+        // return $user->cashOnHand;
     }
 
     function updateId(){
