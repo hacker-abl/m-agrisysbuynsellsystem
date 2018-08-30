@@ -12,6 +12,8 @@ use App\Customer;
 use App\balance;
 use App\Notification;
 use Auth;
+use App\User;
+use App\Employee;   
 use App\Events\BalanceUpdated;
 
 class caController extends Controller
@@ -43,6 +45,8 @@ class caController extends Controller
         $ca->reason = $request->reason;
         $ca->amount = $request->amount;
         $ca->balance = $request->balance + $request->amount;
+        $ca->status = "On-Hand";
+        $ca->released_by = '';
         $ca->save();
 
         if($ca) {
@@ -75,6 +79,32 @@ class caController extends Controller
         event(new BalanceUpdated($ca));
     }
 
+    public function release_update(Request $request){
+        $check_admin =Auth::user()->access_id;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = ca::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+            $user->cashOnHand -= $released->amount;
+            $user->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);
+            $user = User::find(Auth::user()->id);
+            $released = ca::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $released->save();
+            $user->cashOnHand -= $released->amount;
+            $user->save();
+        }
+
+        return $user->cashOnHand;
+    }
+
     public function refresh(){
         $join = DB::table('cash_advance')
             ->select(DB::raw('max(created_at) as maxdate'), 'customer_id')
@@ -101,6 +131,9 @@ class caController extends Controller
         ->editColumn('amount', function ($data) {
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
+         ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
+        })
         ->make(true);
     }
 
@@ -108,16 +141,36 @@ class caController extends Controller
         $id = $request->input('id');
         $cash_advance = DB::table('cash_advance')
             ->join('customer', 'customer.id', '=', 'cash_advance.customer_id')
-            ->select('cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at', 'cash_advance.balance')
+            ->select('cash_advance.id','cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at','cash_advance.balance','cash_advance.status','cash_advance.released_by')
             ->where('cash_advance.customer_id', $id)
             ->latest();
         return \DataTables::of($cash_advance)
+         ->addColumn('action', function($cash_advance){
+            if($cash_advance->status=="On-Hand"){
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
+            }else{
+                 return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>';
+            }
+           
+        })
+         ->editColumn('released_by', function ($data) {
+            if($data->released_by==""){
+                return 'None';
+            }else{
+                return $data->released_by;
+            }
+            
+        })
         ->editColumn('balance', function ($data) {
            return '₱'.number_format($data->balance, 2, '.', ',');
         })
-        ->editColumn('amount', function ($data) {
+        ->editColumn('amount', function ($data) { 
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
+         ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
+        })
+
         ->make(true);
 
         echo json_encode($cash_advance);

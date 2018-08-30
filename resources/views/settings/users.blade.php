@@ -26,7 +26,7 @@
                                     <div class="form-group">
                                         <select id="emp_id" name="emp_id" class="form-control" placeholder="Enter employee" required style="width:100%;">
                                             @foreach($employee as $emp)
-                                                @if($employee[$emp->id-1]->cashier->role == 'cashier')
+                                                @if($employee[$emp->id-1]->cashier->role == 'cashier'||$employee[$emp->id-1]->cashier->role == 'CASHIER')
                                                 <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
                                                 @endif
                                             @endforeach

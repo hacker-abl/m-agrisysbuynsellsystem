@@ -1,5 +1,5 @@
 <?php
-
+ 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -126,6 +126,7 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
     Route::post('/add_payment', 'balanceController@store')->name('add_payment');
     Route::post('/print_ca', 'pdfController@ca')->name('print_ca');
     Route::post('/print_balance_payment', 'pdfController@balance_payment')->name('print_balance_payment');
+    Route::post('/release_ca', 'caController@release_update')->name('release_ca');
 });
 
 Route::group(['middleware'=>['auth', 'user:purchases']], function() {
