@@ -71,6 +71,18 @@ class purchasesController extends Controller
          echo json_encode($output);
     }
 
+    public function check_balance3(Request $request){
+        $user = User::find(Auth::user()->id);
+        $expense = purchases::find($request->id);
+
+        if($user->cashOnHand < $expense->amtpay){
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+
 
     public function store(Request $request)
     {
@@ -163,7 +175,7 @@ class purchasesController extends Controller
         }else{
             $logged_id = Auth::user()->emp_id;
             $name= Employee::find($logged_id);
-            //$user = User::find(Auth::user()->id);
+            $user = User::find(Auth::user()->id);
 
             $released = purchases::find($request->id);
             $released->status = "Released";
@@ -172,10 +184,10 @@ class purchasesController extends Controller
         }
         
 
-        // $user->cashOnHand -= $released->amount;
-        // $user->save();
+        $user->cashOnHand -= $released->amtpay;
+        $user->save();
          
-        // return $user->cashOnHand;
+        return $user->cashOnHand;
     }
 
     function updateId(){

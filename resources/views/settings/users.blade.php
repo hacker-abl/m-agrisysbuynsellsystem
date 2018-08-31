@@ -86,6 +86,42 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="admin_cash_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2 class="modal_title">Add Admin Cash</h2>
+                    </div>
+                    <div class="body">
+                        <form class="form-horizontal " id="admin_cash_form">
+                            <input type="hidden" name="id" id="id" value="">
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="fund">Cash</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="add_admin_cash" id="add_admin_cash" name="add_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="modal-footer">
+                                    <button type="submit" id="add_cash" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="user-permission" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -134,7 +170,8 @@
                     <h2>List of users as of {{ date('Y-m-d ') }}</h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
-                                <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_user_modal" data-toggle="modal" data-target="#user_modal"><i class="material-icons">library_add</i></button>
+                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_admin_modal" data-toggle="modal" data-target="#admin_cash_modal"><i class="material-icons">account_balance_wallet</i></button>
+                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_user_modal" data-toggle="modal" data-target="#user_modal"><i class="material-icons">library_add</i></button>
                         </li>
                     </ul>
                 </div>
@@ -233,6 +270,47 @@
                     '</div>'
                     ).insertAfter(".in_password");
                 }
+            });
+
+            //Open Admin Cash Modal
+            $(document).on('click', '.open_admin_modal', function(event){
+                event.preventDefault();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('get_balance') }}",
+                    method: 'POST',
+                    dataType:'text',
+                    success:function(data){
+                        $('#add_admin_cash').val(data);
+                    },
+                    error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    }
+                })
+            });
+
+            //Add Admin Cash Modal
+            $(document).on('click', '#add_cash', function(event){
+                event.preventDefault();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('add_cash') }}",
+                    method: 'POST',
+                    dataType:'text',
+                    data: $('#admin_cash_form').serialize(),
+                    success:function(data){
+                        swal("Cash Added!", "Remaining Balance: ₱"+parseFloat(data).toFixed(2), "success")
+                        $('#admin_cash_modal').modal('hide');
+                        $('#curCashOnHand').html(parseFloat(data).toFixed(2));
+                    },
+                    error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    }
+                })
             });
 
             //Add User

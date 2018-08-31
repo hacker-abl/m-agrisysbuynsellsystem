@@ -1213,7 +1213,7 @@ window.Pusher = __webpack_require__(33);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
-  key: "b9b550394a26b7bb3f20",
+  key: "7f37ca92ef6b42373a24",
   cluster: "ap1",
   encrypted: true
 });

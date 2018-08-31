@@ -11,6 +11,7 @@ use App\Employee;
 use App\access_levels;
 use App\Permission;
 use App\UserPermission;
+use Auth;
 use DB;
 class usersController extends Controller
 {
@@ -35,6 +36,20 @@ class usersController extends Controller
         $employee = Employee::with('cashier')->get();
 
         return view('settings.users', compact('employee'), ['permissions' => $permissions]);
+    }
+
+    public function getBalance(){
+        $user = User::find(Auth::user()->id);
+
+        return $user->cashOnHand;
+    }
+
+    public function addCash(Request $request){
+        $user = User::find(Auth::user()->id);
+        $user->cashOnHand = $request->add_admin_cash;
+        $user->save();
+
+        return $user->cashOnHand;
     }
 
     /**

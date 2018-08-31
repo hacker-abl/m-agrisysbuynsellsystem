@@ -105,6 +105,18 @@ class caController extends Controller
         return $user->cashOnHand;
     }
 
+    public function check_balance4(Request $request){
+        $user = User::find(Auth::user()->id);
+        $expense = ca::find($request->id);
+
+        if($user->cashOnHand < $expense->amount){
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+
     public function refresh(){
         $join = DB::table('cash_advance')
             ->select(DB::raw('max(created_at) as maxdate'), 'customer_id')

@@ -671,66 +671,84 @@
 
             $(document).on('click', '.release_ca', function(event){
                 event.preventDefault();
-                 id = $(this).attr("id");
-                  $.ajax({
-                      url:"{{ route('release_ca') }}",
-                      method: 'POST',
-                      headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                      },
-                      data:{id:id},
-                      dataType:'json',
-                      success:function(data){
+                id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('check_balance4') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        console.log(data);
+                        if(data == 0){
+                            swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else{
                             $.ajax({
-                              url: "{{ route('refresh_view_dtr') }}",
-                              method: 'get',
-                              data:{id:id},
-                              dataType: 'json',
-                              success:function(data){
-                                  $('#view_cash_advancetable').DataTable().destroy();
-                                  $.ajax({
-                                    url: "{{ route('refresh_view_cashadvance') }}",
-                                    method: 'get',
-                                    data:{id:person_id},
-                                    dataType: 'json',
-                                    success:function(data){
-                                     
-                                        $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+                                url:"{{ route('release_ca') }}",
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                data:{id:id},
+                                dataType:'json',
+                                success:function(data){
+                                    $.ajax({
+                                        url: "{{ route('refresh_view_dtr') }}",
+                                        method: 'get',
+                                        data:{id:id},
+                                        dataType: 'json',
+                                        success:function(data){
+                                            $('#view_cash_advancetable').DataTable().destroy();
+                                            $.ajax({
+                                                url: "{{ route('refresh_view_cashadvance') }}",
+                                                method: 'get',
+                                                data:{id:person_id},
+                                                dataType: 'json',
+                                                success:function(data){
+                                                
+                                                    $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
-                                            cash_advance_release =  $('#view_cash_advancetable').DataTable({
-                                            dom: 'Bfrtip',
-                                              order: [[ 2, "desc" ]],
-                                            bDestroy: true,
+                                                    cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                                        dom: 'Bfrtip',
+                                                            order: [[ 2, "desc" ]],
+                                                        bDestroy: true,
 
-                                            buttons: [
-                                            ],
-                                            columnDefs: [
-                                              {
-                                                  "targets": "_all", // your case first column
-                                                "className": "text-left",
-                                                  
-                                            }
-                                            ],
-                                            data: data.data,
-                                            columns:[
-                                                {data: 'reason', name: 'reason'},
-                                                {data: 'amount', name: 'amount'},
-                                                {data: 'created_at', name: 'created_at'},
-                                                {data: 'balance', name: 'balance'},
-                                                {data: 'status', name: 'status'},
-                                                {data: 'released_by', name: 'released_by'},
-                                                {data: "action", orderable:false,searchable:false}
-                                            ]
-                                                }); 
-                                        
-                                            }
-                                      });
-                                     
-                                    }
-                            });
-                                   
+                                                        buttons: [
+                                                        ],
+                                                        columnDefs: [
+                                                            {
+                                                                "targets": "_all", // your case first column
+                                                            "className": "text-left",
+                                                                
+                                                        }
+                                                        ],
+                                                        data: data.data,
+                                                        columns:[
+                                                            {data: 'reason', name: 'reason'},
+                                                            {data: 'amount', name: 'amount'},
+                                                            {data: 'created_at', name: 'created_at'},
+                                                            {data: 'balance', name: 'balance'},
+                                                            {data: 'status', name: 'status'},
+                                                            {data: 'released_by', name: 'released_by'},
+                                                            {data: "action", orderable:false,searchable:false}
+                                                        ]
+                                                    }); 
+                                                }
+                                            });    
+                                        }
+                                    });
+                                    swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success");
+                                    $('#curCashOnHand').html(data.toFixed(2));
                                 }
-                        })
+                            })
+                        }
+                    }
+                })
+                
             });
 
             $('#customer_id').select2({

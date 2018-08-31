@@ -200,7 +200,7 @@ class tripController extends Controller
         return \DataTables::of($trip_expense)
         ->addColumn('action', function($trip_expense){
             if($trip_expense->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_expense waves-effect" id="'.$trip_expense->id.'" data-toggle="modal" data-target="#release_modal"><i class="material-icons">eject</i></button>';
+                 return '<button class="btn btn-xs btn-success release_expense waves-effect" id="'.$trip_expense->id.'"><i class="material-icons">eject</i></button>';
             }else{
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$trip_expense->id.'"><i class="material-icons">done_all</i></button>';
             }

@@ -753,23 +753,23 @@
                         refresh_purchase_table();
                         $("#sacks").val("");
                         $("#kilo").val("");
-                         $("#price").val("");
-                         $("#sacks1").val("");
-                         $("#kilo1").val("");
-                          $("#price1").val("");
-                          $("#fname").val("");
-                          $("#mname").val("");
-                           $("#lname").val("");
-                            $("#amount1").val("");
-                             $("#total").val("");
-                              $("#amount").val("");
-                               $("#ca").val("");
-                                $("#balance").val("");
+                        $("#price").val("");
+                        $("#sacks1").val("");
+                        $("#kilo1").val("");
+                        $("#price1").val("");
+                        $("#fname").val("");
+                        $("#mname").val("");
+                        $("#lname").val("");
+                        $("#amount1").val("");
+                        $("#total").val("");
+                        $("#amount").val("");
+                        $("#ca").val("");
+                        $("#balance").val("");
 
-                          $("#partial").val("0");
-                          $("#commodity").val('').trigger('change');
-                          $("#commodity1").val('').trigger('change');
-                          $("#customer").val('').trigger('change');
+                        $("#partial").val("0");
+                        $("#commodity").val('').trigger('change');
+                        $("#commodity1").val('').trigger('change');
+                        $("#customer").val('').trigger('change');
                         //refresh_delivery_table();
                    },
                    error: function(data){
@@ -781,24 +781,24 @@
                 event.preventDefault();
                 id = $(this).attr("id");
                 console.log(id);
-                // $.ajax({
-                //     url:"{{ route('check_balance') }}",
-                //     method: 'POST',
-                //     headers: {
-                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                //     },
-                //     data:{id:id},
-                //     dataType:'json',
-                //     success:function(data){
-                //         if(data == 0){
-                //             swal("Insufficient Balance!", "Contact Boss", "warning")
-                //             return;
-                //         }
-                //         else{
+                $.ajax({
+                    url:"{{ route('check_balance3') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        if(data == 0){
+                            swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else{
                             $('#release_purchase_modal').modal('show');
-                //         }
-                //     }
-                // })
+                        }
+                    }
+                })
             });
 
          $(document).on('click', '#release_purchase_normal', function(){
@@ -811,12 +811,12 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                      console.log(data);
-                        // swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                        console.log(data);
+                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
                         $('#release_purchase_modal').modal('hide');
-                        // $('#curCashOnHand').html(data.toFixed(2));
+                        $('#curCashOnHand').html(data.toFixed(2));
 
-                       refresh_purchase_table();
+                        refresh_purchase_table();
                     }
                 })
             });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Expense;
 use App\User;
 use App\Employee;
+use App\trip_expense;
 use Auth;
 use App\Events\ExpensesUpdated;
 use DB;
@@ -78,6 +79,18 @@ class expenseController extends Controller
     public function check_balance(Request $request){
         $user = User::find(Auth::user()->id);
         $expense = Expense::find($request->id);
+
+        if($user->cashOnHand < $expense->amount){
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+
+    public function check_balance2(Request $request){
+        $user = User::find(Auth::user()->id);
+        $expense = trip_expense::find($request->id);
 
         if($user->cashOnHand < $expense->amount){
             return 0;
