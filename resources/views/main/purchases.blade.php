@@ -437,6 +437,26 @@
               </div>
          </div>
     </div>
+    <div class="modal fade" id="release_purchase_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Are You Sure?</h2>
+                    </div>
+                    <div class="body">                      
+                            <div class="row clearfix">
+                                <div class="modal-footer">
+                                    <button type="button" id="release_purchase_normal" class="btn btn-success waves-effect">CONTINUE</button>
+                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                </div>
+                            </div>
+          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="row clearfix">
@@ -473,7 +493,10 @@
                                                  <th width="100" style="text-align:center;">Total</th>
                                                  <th width="100" style="text-align:center;">Deducted</th>
                                                  <th width="100" style="text-align:center;">Date</th>
+                                                 <th width="100" style="text-align:center;">Status</th>
+                                                 <th width="100" style="text-align:center;">Released By</th>
                                                  <th width="100" style="text-align:center;">Remarks</th>
+                                                 <th width="100" style="text-align:center;">Releasing</th>
                                             </tr>
                                        </thead>
                                   </table>
@@ -490,6 +513,7 @@
     var purchasestable;
     var purchase_date_from;
     var purchase_date_to;
+    var id;
     $(document).ready(function () {
 
          $("#homeclick").on('click', function() {
@@ -558,7 +582,10 @@
                    {data: 'total'},
                    {data: 'amtpay'},
                    {data:'created_at'},
+                   {data:'status'},
+                   {data:'released_by'},
                    {data: 'remarks'},
+                   {data: "action", orderable:false,searchable:false}
 
               ]
          });
@@ -620,7 +647,10 @@
                    {data: 'total'},
                    {data: 'amtpay'},
                    {data:'created_at'},
+                   {data:'status'},
+                   {data:'released_by'},
                    {data: 'remarks'},
+                   {data: "action", orderable:false,searchable:false}
 
               ]
          });
@@ -686,7 +716,10 @@
                    {data: 'total'},
                    {data: 'amtpay'},
                    {data:'created_at'},
+                   {data:'status'},
+                   {data:'released_by'},
                    {data: 'remarks'},
+                   {data: "action", orderable:false,searchable:false}
 
               ]
          });
@@ -720,23 +753,23 @@
                         refresh_purchase_table();
                         $("#sacks").val("");
                         $("#kilo").val("");
-                         $("#price").val("");
-                         $("#sacks1").val("");
-                         $("#kilo1").val("");
-                          $("#price1").val("");
-                          $("#fname").val("");
-                          $("#mname").val("");
-                           $("#lname").val("");
-                            $("#amount1").val("");
-                             $("#total").val("");
-                              $("#amount").val("");
-                               $("#ca").val("");
-                                $("#balance").val("");
+                        $("#price").val("");
+                        $("#sacks1").val("");
+                        $("#kilo1").val("");
+                        $("#price1").val("");
+                        $("#fname").val("");
+                        $("#mname").val("");
+                        $("#lname").val("");
+                        $("#amount1").val("");
+                        $("#total").val("");
+                        $("#amount").val("");
+                        $("#ca").val("");
+                        $("#balance").val("");
 
-                          $("#partial").val("0");
-                          $("#commodity").val('').trigger('change');
-                          $("#commodity1").val('').trigger('change');
-                          $("#customer").val('').trigger('change');
+                        $("#partial").val("0");
+                        $("#commodity").val('').trigger('change');
+                        $("#commodity1").val('').trigger('change');
+                        $("#customer").val('').trigger('change');
                         //refresh_delivery_table();
                    },
                    error: function(data){
@@ -744,6 +777,49 @@
                    }
               })
          });
+         $(document).on('click', '.release_purchase', function(event){
+                event.preventDefault();
+                id = $(this).attr("id");
+                console.log(id);
+                $.ajax({
+                    url:"{{ route('check_balance3') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        if(data == 0){
+                            swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else{
+                            $('#release_purchase_modal').modal('show');
+                        }
+                    }
+                })
+            });
+
+         $(document).on('click', '#release_purchase_normal', function(){
+                $.ajax({
+                    url:"{{ route('release_purchase') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        console.log(data);
+                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                        $('#release_purchase_modal').modal('hide');
+                        $('#curCashOnHand').html(data.toFixed(2));
+
+                        refresh_purchase_table();
+                    }
+                })
+            });
 
 
         $("#print_purchase").click(function(event) {

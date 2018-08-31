@@ -54,7 +54,7 @@ class dtrController extends Controller
         $dtr = new dtr_expense;
         $dtr->dtr_id = $request->id;
         $dtr->description = "description";
-        $dtr->type ="DTR EXPENSE";
+        $dtr->type ="DTR EXPENSE"; 
         $dtr->amount = $request->salary;
         $dtr->status = "On-Hand";
         $dtr->released_by = '';
@@ -65,12 +65,27 @@ class dtrController extends Controller
         echo json_encode($details);
     }
      public function release_update_dtr(Request $request){
-        $logged_id = Auth::user()->name;         
-        $released=dtr::find($request->id);
-        $released->status = "Released";
-        $released->released_by = $logged_id;
-        $released->save();
-        echo json_encode("released");
+        $check_admin =Auth::user()->access_id;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+            //$user->cashOnHand -= $released->amount;
+            //$user->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);
+            $released=dtr::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $released->save();
+            echo json_encode("released");
+
+        }         
+        
     }
 
     public function refresh(){
@@ -92,11 +107,8 @@ class dtrController extends Controller
         ->addColumn('action', function($dtr){
             return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
         })
-        ->editColumn('overtime', function ($data) {
-            return '₱'.number_format($data->overtime, 2, '.', ',');
-        })
         ->editColumn('salary', function ($data) {
-            return '₱'.number_format($data->salary, 2, '.', ',');
+            return '₱ '.number_format($data->salary, 2, '.', ',');
         })
         ->make(true);
     }

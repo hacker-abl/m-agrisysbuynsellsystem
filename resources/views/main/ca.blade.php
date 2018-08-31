@@ -215,9 +215,8 @@
 
 <div class="modal fade" id="ca_view_modal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
-        <div class="row">
-            <form class="form-horizontal " id="ca_view_form">
-               <div class="card">
+        <div class="row">            
+              <div class="card">
                    <div class="header">
                        <h2> Cash Advance - <span class="modal_title_ca"></span> as of {{ date('Y-m-d ') }}</h2>
                    </div>
@@ -230,6 +229,9 @@
                                         <th>Amount</th>
                                         <th>Date/Time</th>
                                         <th>Balance</th>
+                                        <th>Status</th>
+                                        <th>Released By</th>
+                                        <th>Releasing</th>
                                     </tr>
                                </thead>
                             </table>
@@ -239,7 +241,6 @@
                        </div>
                    </div>
                </div>
-            </form>
         </div>
       </div>
  </div>
@@ -297,8 +298,10 @@
 					<h2>List of cash advances as of {{ date('Y-m-d ') }}</h2>
 						<ul class="header-dropdown m-r--5">
 							<li class="dropdown">
-								<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_modal"><i class="material-icons">library_add</i></button>
-							</li>
+								@if(isAdmin())
+                                <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_modal"><i class="material-icons">library_add</i></button>
+                                @endif()
+                            </li>
 						</ul>
 					</div>
 					<div class="body">
@@ -415,12 +418,12 @@
                        processing: true,
                        serverSide: true,
                        columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
+                  				{
+                    			  	"targets": "_all", // your case first column
+                     				"className": "text-center",
+                      				
+                 				}
+                				],
                        ajax: "{{ route('refresh_balancedt') }}",
                        columns: [
                             {data:'fname',
@@ -626,20 +629,23 @@
                    }
                });
            });
-
+            var person_id;
+            var id;
+            var cash_advance_release;
             $(document).on('click', '.view_cash_advance', function(){
-                var id = $(this).attr("id");
+                 person_id = $(this).attr("id");
 
                 //Datatable for each person
                 $.ajax({
                     url: "{{ route('refresh_view_cashadvance') }}",
                     method: 'get',
-                    data:{id:id},
+                    data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
+                      console.log(data);
                         $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
-                        $('#view_cash_advancetable').DataTable({
+                       cash_advance_release =  $('#view_cash_advancetable').DataTable({
                             dom: 'Bfrtip',
                               order: [[ 2, "desc" ]],
                             bDestroy: true,
@@ -652,13 +658,98 @@
                                 {data: 'amount', name: 'amount'},
                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'balance', name: 'balance'},
+                                {data: 'status', name: 'status'},
+                                {data: 'released_by', name: 'released_by'},
+                                {data: "action", orderable:false,searchable:false}
                             ]
-                        });
+                        }); 
                         $('#ca_view_modal').modal('show');
                     }
                 });
             });
             //CASH ADVANCE datatable ends here
+
+            $(document).on('click', '.release_ca', function(event){
+                event.preventDefault();
+                id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('check_balance4') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        console.log(data);
+                        if(data == 0){
+                            swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else{
+                            $.ajax({
+                                url:"{{ route('release_ca') }}",
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                data:{id:id},
+                                dataType:'json',
+                                success:function(data){
+                                    $.ajax({
+                                        url: "{{ route('refresh_view_dtr') }}",
+                                        method: 'get',
+                                        data:{id:id},
+                                        dataType: 'json',
+                                        success:function(data){
+                                            $('#view_cash_advancetable').DataTable().destroy();
+                                            $.ajax({
+                                                url: "{{ route('refresh_view_cashadvance') }}",
+                                                method: 'get',
+                                                data:{id:person_id},
+                                                dataType: 'json',
+                                                success:function(data){
+                                                
+                                                    $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+
+                                                    cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                                        dom: 'Bfrtip',
+                                                            order: [[ 2, "desc" ]],
+                                                        bDestroy: true,
+
+                                                        buttons: [
+                                                        ],
+                                                        columnDefs: [
+                                                            {
+                                                                "targets": "_all", // your case first column
+                                                            "className": "text-left",
+                                                                
+                                                        }
+                                                        ],
+                                                        data: data.data,
+                                                        columns:[
+                                                            {data: 'reason', name: 'reason'},
+                                                            {data: 'amount', name: 'amount'},
+                                                            {data: 'created_at', name: 'created_at'},
+                                                            {data: 'balance', name: 'balance'},
+                                                            {data: 'status', name: 'status'},
+                                                            {data: 'released_by', name: 'released_by'},
+                                                            {data: "action", orderable:false,searchable:false}
+                                                        ]
+                                                    }); 
+                                                }
+                                            });    
+                                        }
+                                    });
+                                    swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success");
+                                    $('#curCashOnHand').html(data.toFixed(2));
+                                }
+                            })
+                        }
+                    }
+                })
+                
+            });
 
             $('#customer_id').select2({
                dropdownParent: $('#ca_modal'),

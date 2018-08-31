@@ -16,4 +16,8 @@ class Employee extends Model
     );
 
     public $timestamps = true;
+
+    public function cashier(){
+        return $this->hasOne('App\Roles', 'id', 'role_id');
+    }
 }

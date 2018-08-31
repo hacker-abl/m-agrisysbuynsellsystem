@@ -27,7 +27,7 @@ class tripController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }
+    } 
 
     /**
      * Show the application dashboard.
@@ -60,19 +60,19 @@ class tripController extends Controller
         $trip->num_liters = $request->num_liters;
         $trip->save();
         $lastInsertedId = $trip->id;
-        $dtr = new trip_expense;
-        $dtr->trip_id = $lastInsertedId;
-        $dtr->description = $request->destination;
-        $dtr->type ="TRIP EXPENSE";
-        $dtr->amount = $request->expense;
-        $dtr->status = "On-Hand";
-        $dtr->released_by = '';
-        $dtr->save();
+        $trip_expenses = new trip_expense;
+        $trip_expenses->trip_id = $lastInsertedId;
+        $trip_expenses->description = $request->destination;
+        $trip_expenses->type ="TRIP EXPENSE";
+        $trip_expenses->amount = $request->expense;
+        $trip_expenses->status = "On-Hand";
+        $trip_expenses->released_by = '';
+        $trip_expenses->save();
         $details =  DB::table('trips')->orderBy('trip_ticket', 'desc')->first();
 
         echo json_encode($details);
 
-        event(new ExpensesUpdated($dtr));
+        event(new ExpensesUpdated($trip_expenses));
     }
 
     public function update_trip(Request $request){
@@ -88,16 +88,31 @@ class tripController extends Controller
         echo json_encode("update");
     }
      public function release_update(Request $request){
-        $logged_id = Auth::user()->name;
-        $cashOnHand = User::find(Auth::user()->id);
-         
-        $released=trip_expense::find($request->id);
-        $released->status = "Released";
-        $released->released_by = $logged_id;
-        $released->save();
+         $check_admin =Auth::user()->access_id;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = trip_expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+            $cashOnHand = User::find(Auth::user()->id);
+            $cashOnHand->cashOnHand -= $released->amount;
+            $cashOnHand->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);             
+            $released=trip_expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
+            $released->save();
+            $cashOnHand = User::find(Auth::user()->id);
+            $cashOnHand->cashOnHand -= $released->amount;
+            $cashOnHand->save();
+        }
 
-        $cashOnHand->cashOnHand -= $released->amount;
-        $cashOnHand->save();
+       
+
 
         return $cashOnHand->cashOnHand;
     }
@@ -185,7 +200,7 @@ class tripController extends Controller
         return \DataTables::of($trip_expense)
         ->addColumn('action', function($trip_expense){
             if($trip_expense->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_expense waves-effect" id="'.$trip_expense->id.'" data-toggle="modal" data-target="#release_modal"><i class="material-icons">eject</i></button>';
+                 return '<button class="btn btn-xs btn-success release_expense waves-effect" id="'.$trip_expense->id.'"><i class="material-icons">eject</i></button>';
             }else{
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$trip_expense->id.'"><i class="material-icons">done_all</i></button>';
             }

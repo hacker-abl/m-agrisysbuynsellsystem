@@ -13,7 +13,7 @@
             <h2>DTR Expenses Dashboard</h2>
         </div></a></li> -->
       </ul>
-</div>
+</div> 
 
 <div class="tab-content">
     <div id="expense_tab" class="tab-pane fade in active">
@@ -623,6 +623,30 @@
                         }
                         else{
                             $('#release_modal_normal').modal('show');
+                        }
+                    }
+                })
+            });
+
+            $(document).on('click', '.release_expense', function(event){
+                event.preventDefault();
+                id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('check_balance2') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        console.log(data);
+                        if(data == 0){
+                            swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else{
+                            $('#release_modal').modal('show');
                         }
                     }
                 })

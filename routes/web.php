@@ -1,5 +1,5 @@
 <?php
-
+ 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,12 +18,12 @@ Route::group(['middleware'=>['auth', 'user:notification']], function() {
     Route::get('/notification/get', 'NotificationController@get');
 });
 
+//profile
 Route::get('/profile', 'profileController@index')->name('profile');
 Route::post('/oldpass', 'profileController@oldpass')->name('oldpass');
 Route::post('/newpass', 'profileController@newpass')->name('newpass');
-Route::group(['middleware' => ['auth', 'admin']], function() {
-    //profile
 
+Route::group(['middleware' => ['auth', 'admin']], function() {
     //settings
     Route::get('/company', 'companyController@index')->name('company');
     Route::post('/add_company', 'companyController@store')->name('add_company');
@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/refresh_user', 'usersController@refresh')->name('refresh_user');
     Route::get('/update_user', 'usersController@updatedata')->name('update_user');
     Route::get('/delete_user', 'usersController@deletedata')->name('delete_user');
+    Route::post('/get_balance', 'usersController@getBalance')->name('get_balance');
+    Route::post('/add_cash', 'usersController@addCash')->name('add_cash');
     Route::get('/get/{option}', 'usersController@get');
     Route::post('/permission/{option}', 'usersController@permission')->name('permission');
 
@@ -69,6 +71,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/refresh_roles', 'RolesController@refresh')->name('refresh_roles');
     Route::get('/update_role', 'RolesController@updatedata')->name('update_role');
     Route::get('/delete_role', 'RolesController@deletedata')->name('delete_role');
+
 });
 
 Route::group(['middleware'=>['auth', 'user:expenses']], function() {
@@ -78,6 +81,7 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
     Route::post('/refresh_expense', 'expenseController@refresh')->name('refresh_expense');
     Route::post('/release_update_normal', 'expenseController@release_update_normal')->name('release_update_normal');
     Route::post('/check_balance', 'expenseController@check_balance')->name('check_balance');
+    Route::post('/check_balance2', 'expenseController@check_balance2')->name('check_balance2');
     Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
     Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
 
@@ -126,6 +130,8 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
     Route::post('/add_payment', 'balanceController@store')->name('add_payment');
     Route::post('/print_ca', 'pdfController@ca')->name('print_ca');
     Route::post('/print_balance_payment', 'pdfController@balance_payment')->name('print_balance_payment');
+    Route::post('/release_ca', 'caController@release_update')->name('release_ca');
+    Route::post('/check_balance4', 'caController@check_balance4')->name('check_balance4');
 });
 
 Route::group(['middleware'=>['auth', 'user:purchases']], function() {
@@ -138,6 +144,8 @@ Route::group(['middleware'=>['auth', 'user:purchases']], function() {
     Route::post('/add_purchases', 'purchasesController@store')->name('add_purchases');
     Route::post('/refresh_purchases', 'purchasesController@refresh')->name('refresh_purchases');
     Route::post('/print_purchase', 'pdfController@purchases')->name('print_purchase');
+    Route::post('/release_purchase', 'purchasesController@release_purchase')->name('release_purchase');
+    Route::post('/check_balance3', 'purchasesController@check_balance3')->name('check_balance3');
 });
 
 Route::group(['middleware'=>['auth', 'user:dtr']], function() {

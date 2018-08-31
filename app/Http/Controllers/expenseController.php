@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Expense;
 use App\User;
 use App\Employee;
+use App\trip_expense;
 use Auth;
 use App\Events\ExpensesUpdated;
 use DB;
@@ -50,16 +51,27 @@ class expenseController extends Controller
     }
 
     public function release_update_normal(Request $request){
-        $logged_id = Auth::user()->name;
-        $user = User::find(Auth::user()->id);
-
-        $released = expense::find($request->id);
-        $released->status = "Released";
-        $released->released_by = $logged_id;
-        $released->save();
-
-        $user->cashOnHand -= $released->amount;
-        $user->save();
+        $check_admin =Auth::user()->access_id;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+            $user->cashOnHand -= $released->amount;
+            $user->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);
+            $user = User::find(Auth::user()->id);
+            $released = expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $released->save();
+            $user->cashOnHand -= $released->amount;
+            $user->save();
+        }
 
         return $user->cashOnHand;
     }
@@ -67,6 +79,18 @@ class expenseController extends Controller
     public function check_balance(Request $request){
         $user = User::find(Auth::user()->id);
         $expense = Expense::find($request->id);
+
+        if($user->cashOnHand < $expense->amount){
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+
+    public function check_balance2(Request $request){
+        $user = User::find(Auth::user()->id);
+        $expense = trip_expense::find($request->id);
 
         if($user->cashOnHand < $expense->amount){
             return 0;

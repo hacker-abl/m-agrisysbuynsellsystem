@@ -15,4 +15,7 @@ class Roles extends Model
 
     public $timestamps = true;
 
+    public function cashier_role(){
+        return $this->belongsTo('App\Employee');
+    }
 }

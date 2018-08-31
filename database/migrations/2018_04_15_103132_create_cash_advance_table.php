@@ -23,10 +23,12 @@ class CreateCashAdvanceTable extends Migration
             $table->string('reason');
             $table->decimal('amount', 10,2);
             $table->decimal('balance', 10,2);
+            $table->string('status');
+            $table->string('released_by');
             $table->timestamps();
         });
     }
-
+ 
     /**
      * Reverse the migrations.
      *
