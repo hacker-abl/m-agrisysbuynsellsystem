@@ -179,6 +179,7 @@
                             <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="od_datepicker_from" />
                             <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="od_datepicker_to" />
                         </p>
+						<br>
 							<table id="deliverytable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
@@ -213,7 +214,10 @@
         });
 
         $(document).ready(function() {
-			$($.fn.dataTable.tables( true ) ).css('width', '100%');
+
+		document.title = "M-Agri - Outbound Deliveries";
+
+		$($.fn.dataTable.tables( true ) ).css('width', '100%');
         $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
 
             $.extend( $.fn.dataTable.defaults, {
@@ -234,9 +238,9 @@
 			})
                     
 			deliveriestable = $('#deliverytable').DataTable({
-				 dom: 'Bfrtip',
-                    buttons: [
-
+				dom: 'Bfrtip',
+				buttons: [
+                	'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -282,14 +286,14 @@
                 buttonImageOnly: false,
                 "onSelect": function(date) {
                    
-                  minDateFilter = new Date(date).getTime();
-                  var df= new Date(date);
-                  od_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
-                  $('#deliverytable').dataTable().fnDestroy();
-                  deliveriestable = $('#deliverytable').DataTable({
-				 dom: 'Bfrtip',
-                    buttons: [
-
+				minDateFilter = new Date(date).getTime();
+				var df= new Date(date);
+				od_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+				$('#deliverytable').dataTable().fnDestroy();
+				deliveriestable = $('#deliverytable').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+                	'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -333,10 +337,10 @@
               }).keyup(function() {
               	od_datepicker_from="";
                 $('#deliverytable').dataTable().fnDestroy();
-                  deliveriestable = $('#deliverytable').DataTable({
-				 dom: 'Bfrtip',
-                    buttons: [
-
+				deliveriestable = $('#deliverytable').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+                	'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -382,15 +386,15 @@
                 buttonImage: 'assets/images/calendar2.png',
                 buttonImageOnly: false,
                 "onSelect": function(date) {
-                  maxDateFilter = new Date(date).getTime();
-                  //oTable.fnDraw();
-                 var dt= new Date(date);
-                   od_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-                  $('#deliverytable').dataTable().fnDestroy();
-                 deliveriestable = $('#deliverytable').DataTable({
-				 dom: 'Bfrtip',
-                    buttons: [
-
+				maxDateFilter = new Date(date).getTime();
+				//oTable.fnDraw();
+				var dt= new Date(date);
+				od_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+				$('#deliverytable').dataTable().fnDestroy();
+				deliveriestable = $('#deliverytable').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+                	'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -434,10 +438,10 @@
               	od_date_to="";
               	console.log(od_date_to);
                 $('#deliverytable').dataTable().fnDestroy();
-                  deliveriestable = $('#deliverytable').DataTable({
-				 dom: 'Bfrtip',
-                    buttons: [
-
+				deliveriestable = $('#deliverytable').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+                	'print'
                 ],
                 paging: true,
                 pageLength: 10,

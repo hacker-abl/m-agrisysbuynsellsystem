@@ -116,6 +116,7 @@
                                 <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="sales_datepicker_from" />
                                 <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="sales_datepicker_to" />
                             </p>
+							<br>
 							<table id="salestable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
@@ -147,6 +148,8 @@
 
         $(document).ready(function() {
 
+			document.title = "M-Agri - Sales";
+
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -167,6 +170,7 @@
 		 salestable = $('#salestable').DataTable({
 				dom: 'Bfrtip',
 				buttons: [
+					'print'
 				],
 				processing: true,
 				serverSide: true,
@@ -216,6 +220,7 @@
                   salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
+						'print'
 					],
 					processing: true,
 					serverSide: true,
@@ -252,6 +257,7 @@
                  salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
+						'print'
 					],
 					processing: true,
 					serverSide: true,
@@ -296,6 +302,7 @@
                  salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
+						'print'
 					],
 					processing: true,
 					serverSide: true,
@@ -332,6 +339,7 @@
                  salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
+						'print'
 					],
 					processing: true,
 					serverSide: true,

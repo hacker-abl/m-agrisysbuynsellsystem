@@ -144,6 +144,7 @@
                         </div>
                         <div class="body">
                             <div class="table-responsive">
+                            <br>
                                 <table id="view_dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
                                     <thead>
                                         <tr>
@@ -184,6 +185,7 @@
 					</div>
 					<div class="body">
 						<div class="table-responsive">
+                        <br>
 							<table id="dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
 								<thead>
 									<tr>
@@ -238,6 +240,8 @@
 
         $(document).ready(function() {
 
+            document.title = "M-Agri - Daily Time Record";
+
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -258,7 +262,8 @@
             var dtr = $('#dtr_table').DataTable({
 				dom: 'Bfrtip',
 				buttons: [
-				],
+                    'print'
+                ],
 				processing: true,
                 columnDefs: [
   				{
@@ -349,6 +354,7 @@
                             dom: 'Bfrtip',
                             bDestroy: true,
                             buttons: [
+                                'print'
                             ],
                             data: data.data,
                             columns:[
@@ -437,6 +443,7 @@
                             dom: 'Bfrtip',
                             bDestroy: true,
                             buttons: [
+                                'print'
                             ],
                             data: data.data,
                             columns:[
