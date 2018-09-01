@@ -340,7 +340,7 @@ ul {
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2018 <a href="javascript:void(0);">SacroSanct Web Systems</a>.
+                    &copy; 2018 <a href="javascript:void(0);">ScriptedScript Web Systems</a>.
                 </div>
 
             </div>
