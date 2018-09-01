@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Query\Builder;
 use App\dtr;
 use App\dtr_expense;
+use App\expense;
 use App\employee;
+use App\User;
 use Auth;
 class dtrController extends Controller
 {
@@ -54,7 +56,7 @@ class dtrController extends Controller
         $dtr = new dtr_expense;
         $dtr->dtr_id = $request->id;
         $dtr->description = "description";
-        $dtr->type ="DTR EXPENSE"; 
+        $dtr->type ="DTR EXPENSE";
         $dtr->amount = $request->salary;
         $dtr->status = "On-Hand";
         $dtr->released_by = '';
@@ -84,8 +86,8 @@ class dtrController extends Controller
             $released->save();
             echo json_encode("released");
 
-        }         
-        
+        }
+
     }
 
     public function refresh(){
@@ -127,7 +129,7 @@ class dtrController extends Controller
             }else{
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>';
             }
-           
+
         })
          ->editColumn('released_by', function ($data) {
             if($data->released_by==""){
@@ -135,7 +137,7 @@ class dtrController extends Controller
             }else{
                 return $data->released_by;
             }
-            
+
         })
         ->make(true);
         echo json_encode($dtr_view);
