@@ -198,6 +198,7 @@
                             <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="trip_datepicker_from" />
                             <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="trip_datepicker_to" />
                         </p>
+                        <br>
                         <table id="triptable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
@@ -246,6 +247,8 @@
             var trip_date_from;
             var trip_date_to;
 
+            document.title = "M-Agri - Trips";
+
             //Date Range Filter
             $("#trip_datepicker_from").datepicker({
                 showOn: "button",
@@ -253,14 +256,14 @@
                 buttonImageOnly: false,
                 "onSelect": function(date) {
                    
-                  minDateFilter = new Date(date).getTime();
-                  var df= new Date(date);
-                  trip_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
-                  $('#triptable').dataTable().fnDestroy();
-                  pickuptable = $('#triptable').DataTable({
+                minDateFilter = new Date(date).getTime();
+                var df= new Date(date);
+                trip_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                $('#triptable').dataTable().fnDestroy();
+                pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
-                    buttons: [
-
+                buttons: [
+                    'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -302,10 +305,10 @@
               }).keyup(function() {
                 trip_date_from="";
                 $('#triptable').dataTable().fnDestroy();
-                  pickuptable = $('#triptable').DataTable({
+                pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
-                    buttons: [
-
+                buttons: [
+                    'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -349,15 +352,15 @@
                 buttonImage: 'assets/images/calendar2.png',
                 buttonImageOnly: false,
                 "onSelect": function(date) {
-                  maxDateFilter = new Date(date).getTime();
-                  //oTable.fnDraw();
-                 var dt= new Date(date);
-                   trip_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-                  $('#triptable').dataTable().fnDestroy();
-                  pickuptable = $('#triptable').DataTable({
+                maxDateFilter = new Date(date).getTime();
+                //oTable.fnDraw();
+                var dt= new Date(date);
+                trip_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                $('#triptable').dataTable().fnDestroy();
+                pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
-                    buttons: [
-
+                buttons: [
+                    'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -397,11 +400,11 @@
                 }
               }).keyup(function() {
                 trip_date_to="";
-               $('#triptable').dataTable().fnDestroy();
-                  pickuptable = $('#triptable').DataTable({
+                $('#triptable').dataTable().fnDestroy();
+                pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
-                    buttons: [
-
+                buttons: [
+                    'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -791,8 +794,8 @@
 
              pickuptable = $('#triptable').DataTable({
                 dom: 'Bfrtip',
-                    buttons: [
-
+                buttons: [
+                    'print'
                 ],
                 paging: true,
                 columnDefs: [

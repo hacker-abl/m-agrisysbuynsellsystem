@@ -109,6 +109,7 @@
                             <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
                             <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="datepicker_to" />
                         </p>
+                        <br>
                         <table id ="expensetable" class="table table-bordered table-striped table-hover  ">
                             <thead>
                                 <tr>
@@ -145,6 +146,7 @@
                             <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="trip_expense_datepicker_from" />
                             <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="trip_expense_datepicker_to" />
                         </p>
+                        <br>
                         <table id="trip_expensetable" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
@@ -226,6 +228,8 @@
         var date_to_trip;
         var trip_expensetable;
 
+        document.title = "M-Agri - Expenses";
+
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -255,7 +259,9 @@
 
             expensetable = $('#expensetable').DataTable({
                 dom: 'Bfrtip',
-                buttons: [],
+                buttons: [
+                    'print'
+                ],
                 paging: true,
                 pageLength: 10,
                 order:[],
@@ -302,7 +308,9 @@
                     $('#expensetable').dataTable().fnDestroy();
                     expensetable = $('#expensetable').DataTable({
                         dom: 'Bfrtip',
-                        buttons: [],
+                        buttons: [
+                            'print'
+                        ],
                         paging: true,
                         pageLength: 10,
                         order:[],
@@ -339,7 +347,9 @@
                 $('#expensetable').dataTable().fnDestroy();
                 expensetable = $('#expensetable').DataTable({
                     dom: 'Bfrtip',
-                    buttons: [],
+                    buttons: [
+                        'print'
+                    ],
                     paging: true,
                     pageLength: 10,
                     order:[],
@@ -384,7 +394,9 @@
                     $('#expensetable').dataTable().fnDestroy();
                     expensetable = $('#expensetable').DataTable({
                         dom: 'Bfrtip',
-                        buttons: [],
+                        buttons: [
+                            'print'
+                        ],
                         paging: true,
                         pageLength: 10,
                         order:[],
@@ -422,7 +434,9 @@
                 $('#expensetable').dataTable().fnDestroy();
                 expensetable = $('#expensetable').DataTable({
                     dom: 'Bfrtip',
-                    buttons: [],
+                    buttons: [
+                        'print'
+                    ],
                     paging: true,
                     pageLength: 10,
                     order:[],
@@ -458,8 +472,8 @@
             //TRIP EXPENSE TABLE
             trip_expensetable = $('#trip_expensetable').DataTable({
                 dom: 'Bfrtip',
-                    buttons: [
-
+                buttons: [
+                    'print'
                 ],
                 paging: true,
                 pageLength: 10,
@@ -508,7 +522,9 @@
                     $('#trip_expensetable').dataTable().fnDestroy();
                     trip_expensetable = $('#trip_expensetable').DataTable({
                         dom: 'Bfrtip',
-                            buttons: [],
+                        buttons: [
+                            'print'
+                        ],
                         paging: true,
                         pageLength: 10,
                         order:[],
@@ -557,7 +573,9 @@
                     $('#trip_expensetable').dataTable().fnDestroy();
                     trip_expensetable = $('#trip_expensetable').DataTable({
                         dom: 'Bfrtip',
-                        buttons: [],
+                        buttons: [
+                            'print'
+                        ],
                         paging: true,
                         columnDefs: [{
                             "targets": "_all", // your case first column

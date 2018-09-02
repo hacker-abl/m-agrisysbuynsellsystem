@@ -222,6 +222,7 @@
                    </div>
                    <div class="body">
                        <div class="table-responsive">
+                       <br>
                             <table id="view_cash_advancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
                                <thead>
                                     <tr>
@@ -255,6 +256,7 @@
                     </div>
                     <div class="body">
                         <div class="table-responsive">
+                        <br>
                              <table id="view_balancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
                                 <thead>
                                      <tr>
@@ -306,6 +308,7 @@
 					</div>
 					<div class="body">
 						<div class="table-responsive">
+                        <br>
 							<table id="cash_advancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
 								<thead>
 									<tr>
@@ -340,6 +343,7 @@
                         </div>
                         <div class="body">
                              <div class="table-responsive">
+                             <br>
                                   <table id="balancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
                                        <thead>
                                             <tr>
@@ -367,7 +371,7 @@
 
         $(document).ready(function() {
 
-
+        document.title = "M-Agri - Cash Advance";
 
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
@@ -389,6 +393,7 @@
             var cash_advancetable = $('#cash_advancetable').DataTable({
 				dom: 'Bfrtip',
 				buttons: [
+                    'print'
 				],
 				processing: true,
 				serverSide: true,
@@ -414,6 +419,7 @@
                var balancetable = $('#balancetable').DataTable({
                        dom: 'Bfrtip',
                        buttons: [
+                            'print'
                        ],
                        processing: true,
                        serverSide: true,
@@ -616,6 +622,7 @@
                            order: [[ 0, "desc" ]],
                            bDestroy: true,
                            buttons: [
+                                'print'
                            ],
                            data: data.data,
                            columns:[
@@ -649,8 +656,8 @@
                             dom: 'Bfrtip',
                               order: [[ 2, "desc" ]],
                             bDestroy: true,
-
                             buttons: [
+                                'print'
                             ],
                             data: data.data,
                             columns:[
@@ -718,6 +725,7 @@
                                                         bDestroy: true,
 
                                                         buttons: [
+                                                            'print'
                                                         ],
                                                         columnDefs: [
                                                             {
