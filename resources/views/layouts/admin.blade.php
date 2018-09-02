@@ -191,7 +191,7 @@ ul {
                     </li>
                     <!-- #END# Notifications -->
                     <!-- Tasks -->
-               
+
                     <!-- #END# Tasks -->
                      </ul>
             </div>
@@ -340,7 +340,7 @@ ul {
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2018 <a href="javascript:void(0);">OrbWeaver Web and Mobile Apps Development</a>.
+                    &copy; 2018 <a href="javascript:void(0);">ScriptedScript Web Systems</a>.
                 </div>
 
             </div>
@@ -588,7 +588,7 @@ ul {
         <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         @endif
     @endif
-        
+
         <!-- App Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
 </body>

@@ -1,5 +1,5 @@
 <?php
- 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -154,10 +154,12 @@ Route::group(['middleware'=>['auth', 'user:dtr']], function() {
     Route::get('/dtr_details', 'dtrController@dtr_details')->name('dtr_details');
     Route::get('/refresh_dtr', 'dtrController@refresh')->name('refresh_dtr');
     Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
+	Route::get('/refresh_view_total', 'dtrController@refresh_total')->name('refresh_view_total');
     Route::post('/add_dtr', 'dtrController@store')->name('add_dtr');
     Route::post('/add_dtr_expense', 'dtrController@add_dtr_expense')->name('add_dtr_expense');
     Route::get('/dtr', 'dtrController@index')->name('dtr');
     Route::post('/print_dtr', 'pdfController@dtr')->name('print_dtr');
+    Route::post('/check_balance5', 'dtrController@check_balance5')->name('check_balance5');
 });
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {

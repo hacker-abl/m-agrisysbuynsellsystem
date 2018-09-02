@@ -59,8 +59,6 @@ class expenseController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
-            $user->cashOnHand -= $released->amount;
-            $user->save();
         }else{
             $logged_id = Auth::user()->emp_id;
             $name= Employee::find($logged_id);
@@ -69,10 +67,11 @@ class expenseController extends Controller
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
-            $user->cashOnHand -= $released->amount;
-            $user->save();
         }
 
+        $user->cashOnHand -= $released->amount;
+        $user->save();
+        
         return $user->cashOnHand;
     }
 

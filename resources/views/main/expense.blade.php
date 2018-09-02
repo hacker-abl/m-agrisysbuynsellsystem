@@ -680,7 +680,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success");
                         $('#release_modal').modal('hide');
                         $('#curCashOnHand').html(data.toFixed(2));
 
