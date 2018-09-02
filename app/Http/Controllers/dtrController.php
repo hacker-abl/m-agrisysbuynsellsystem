@@ -75,20 +75,32 @@ class dtrController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
-            //$user->cashOnHand -= $released->amount;
-            //$user->save();
         }else{
             $logged_id = Auth::user()->emp_id;
+            $user = User::find(Auth::user()->id);
             $name= Employee::find($logged_id);
             $released=dtr::find($request->id);
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
-
-
         }
-		            echo json_encode("released");
 
+        $user->cashOnHand -= $released->salary;
+        $user->save();
+
+        return $user->cashOnHand;
+    }
+
+    public function check_balance5(Request $request){
+        $user = User::find(Auth::user()->id);
+        $expense = dtr::find($request->id);
+
+        if($user->cashOnHand < $expense->salary){
+            return 0;
+        }
+        else{
+            return 1;
+        }
     }
 
     public function refresh(){

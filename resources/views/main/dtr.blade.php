@@ -147,14 +147,13 @@
                                 <table id="view_dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
                                     <thead>
                                         <tr>
-                                        <th>Overtime</th>
-                                        <th>Number of Hours</th>
-                                        <th>Date/Time</th>
-                                        <th>Salary</th>
-                                        <th>Status</th>
-                                         <th>Released By</th>
-                                          <th>Releasing</th>
-
+                                            <th>Overtime</th>
+                                            <th>Number of Hours</th>
+                                            <th>Date/Time</th>
+                                            <th>Salary</th>
+                                            <th>Status</th>
+                                            <th>Released By</th>
+                                            <th>Releasing</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -211,12 +210,12 @@
                         <h2>Are You Sure?</h2>
                     </div>
                     <div class="body">
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="release_money_dtr" class="btn btn-success waves-effect">CONTINUE</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
+                        <div class="row clearfix">
+                            <div class="modal-footer">
+                                <button type="button" id="release_money_dtr" class="btn btn-success waves-effect">CONTINUE</button>
+                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -329,18 +328,33 @@
                 overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
 
                  $('#salary').val(overtime*salary);
-            })
+            });
+            
             $('#num_hours').change(function(){
 
                 overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
 
                 $('#salary').val(overtime*salary);
-            })
+            });
 
-             $(document).on('click', '.release_expense_dtr', function(event){
+            $(document).on('click', '.release_expense_dtr', function(event){
                 event.preventDefault();
-                 id = $(this).attr("id");
-                  $.ajax({
+                id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('check_balance5') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        if(data == 0){
+                            swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else{
+                            $.ajax({
                                 url:"{{ route('release_update_dtr') }}",
                                 method: 'POST',
                                 headers: {
@@ -349,61 +363,64 @@
                                 data:{id:id},
                                 dataType:'json',
                                 success:function(data){
-                                   console.log(data);
-								   var total="";
-				   				$.ajax({
-				   					url: "/refresh_view_total",
-				   					method: 'get',
-				   					data:{id:idmain},
-				   					dataType: 'json',
-				   					success:function(data){
-				   						console.log(data)
-				   						total = addCommas(data);
-										$('.modal_title_dtr').text(fname + " " + mname + " " + lname + " ("+role + ") Pending Salary: ₱"+total);
+                                    var total="";
+                                    $.ajax({
+                                        url: "/refresh_view_total",
+                                        method: 'get',
+                                        data:{id:idmain},
+                                        dataType: 'json',
+                                        success:function(data){
+                                            total = addCommas(data);
+                                            $('.modal_title_dtr').text(fname + " " + mname + " " + lname + " ("+role + ") Pending Salary: ₱"+total);
 
-				   					}
-				   				});
-                               $.ajax({
-                    url: "{{ route('refresh_view_dtr') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                    dtr_info= $('#view_dtr_table').DataTable({
-                            dom: 'Bfrtip',
-                            bDestroy: true,
-                            buttons: [
-                            ],
-							columnDefs: [
-						   {
-							   "targets": "_all", // your case first column
-							   "className": "text-center",
+                                        }
+                                    });
+                                    $.ajax({
+                                        url: "{{ route('refresh_view_dtr') }}",
+                                        method: 'get',
+                                        data:{id:person_id},
+                                        dataType: 'json',
+                                        success:function(data){
+                                        dtr_info= $('#view_dtr_table').DataTable({
+                                                dom: 'Bfrtip',
+                                                bDestroy: true,
+                                                buttons: [
+                                                ],
+                                                columnDefs: [
+                                            {
+                                                "targets": "_all", // your case first column
+                                                "className": "text-center",
 
-						   }
-						   ],
-                            data: data.data,
-                            columns:[
-                                {data: 'overtime', name: 'overtime'},
-                                {data: 'num_hours', name: 'num_hours'},
-								{data: 'created_at', name: 'created_at',
-							   type: "date",
-								 render:function (value) {
-									   var ts = new Date(value);
+                                            }
+                                            ],
+                                                data: data.data,
+                                                columns:[
+                                                    {data: 'overtime', name: 'overtime'},
+                                                    {data: 'num_hours', name: 'num_hours'},
+                                                    {data: 'created_at', name: 'created_at',
+                                                type: "date",
+                                                    render:function (value) {
+                                                        var ts = new Date(value);
 
-									  return ts.toDateString()+" "+ts.toLocaleTimeString()}
-								},
-                                {data: 'salary', name: 'salary'},
-                                {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
-                            ]
-                        });
-                         dtr.ajax.reload();
-                    }
-                });
-
+                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
+                                                    },
+                                                    {data: 'salary', name: 'salary'},
+                                                    {data: 'status', name: 'status'},
+                                                    {data: 'released_by', name: 'released_by'},
+                                                    {data: "action", orderable:false,searchable:false}
+                                                ]
+                                            });
+                                            dtr.ajax.reload();
+                                        }
+                                    });
+                                    swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                                    $('#curCashOnHand').html(data.toFixed(2));
                                 }
-                            })
+                            });
+                        }
+                    }
+                })
+                
             });
             $("#add_dtr").click(function(event){
                 event.preventDefault();
@@ -481,9 +498,7 @@
 					data:{id:id},
 					dataType: 'json',
 					success:function(data){
-						console.log(data)
-					total =	addCommas(data);
-
+					    total =	addCommas(data);
 					}
 				});
                 $.ajax({
