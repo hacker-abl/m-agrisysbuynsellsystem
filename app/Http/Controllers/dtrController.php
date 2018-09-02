@@ -71,23 +71,36 @@ class dtrController extends Controller
         if($check_admin==1){
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);
-            $released = expense::find($request->id);
+            $released = dtr::find($request->id);
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
-            //$user->cashOnHand -= $released->amount;
-            //$user->save();
         }else{
             $logged_id = Auth::user()->emp_id;
+            $user = User::find(Auth::user()->id);
             $name= Employee::find($logged_id);
             $released=dtr::find($request->id);
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
-            echo json_encode("released");
-
         }
 
+        $user->cashOnHand -= $released->salary;
+        $user->save();
+
+        return $user->cashOnHand;
+    }
+
+    public function check_balance5(Request $request){
+        $user = User::find(Auth::user()->id);
+        $expense = dtr::find($request->id);
+
+        if($user->cashOnHand < $expense->salary){
+            return 0;
+        }
+        else{
+            return 1;
+        }
     }
 
     public function refresh(){
@@ -121,7 +134,7 @@ class dtrController extends Controller
             ->join('employee', 'employee.id', '=', 'dtr.employee_id')
             ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname')
             ->where('dtr.employee_id', $id)
-            ->get();
+            ->latest();
         return \DataTables::of($dtr_view)
         ->addColumn('action', function($dtr_view){
             if($dtr_view->status=="On-Hand"){
@@ -130,6 +143,9 @@ class dtrController extends Controller
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>';
             }
 
+        })
+		->editColumn('salary', function ($data) {
+            return '₱ '.number_format($data->salary, 2, '.', ',');
         })
          ->editColumn('released_by', function ($data) {
             if($data->released_by==""){
@@ -140,7 +156,7 @@ class dtrController extends Controller
 
         })
         ->make(true);
-        echo json_encode($dtr_view);
+       // echo json_encode($dtr_view);
     }
 
     public function check_employee(Request $request){
@@ -151,5 +167,14 @@ class dtrController extends Controller
         ->where('employee.id', $request->id)
         ->get();
         echo json_encode($employee_details);
+    }
+
+	public function refresh_total(Request $request){
+		 $total = DB::table('dtr')
+		 ->where('employee_id', '=', $request->id)
+		 ->where('status',"=", "On-Hand")
+		 ->sum('salary');
+
+        echo json_encode($total);
     }
 }

@@ -182,7 +182,6 @@ class purchasesController extends Controller
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
         }
-        
 
         $user->cashOnHand -= $released->amtpay;
         $user->save();

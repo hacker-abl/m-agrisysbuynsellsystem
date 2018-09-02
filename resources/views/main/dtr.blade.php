@@ -147,14 +147,13 @@
                                 <table id="view_dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
                                     <thead>
                                         <tr>
-                                        <th>Overtime</th>
-                                        <th>Number of Hours</th>
-                                        <th>Date/Time</th>
-                                        <th>Salary</th>
-                                        <th>Status</th>
-                                         <th>Released By</th>
-                                          <th>Releasing</th>
-
+                                            <th>Overtime</th>
+                                            <th>Number of Hours</th>
+                                            <th>Date/Time</th>
+                                            <th>Salary</th>
+                                            <th>Status</th>
+                                            <th>Released By</th>
+                                            <th>Releasing</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -168,7 +167,7 @@
             </div>
 		</div>
 	</div>
- 
+
     <div class="row clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="card">
@@ -211,12 +210,12 @@
                         <h2>Are You Sure?</h2>
                     </div>
                     <div class="body">
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="release_money_dtr" class="btn btn-success waves-effect">CONTINUE</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
+                        <div class="row clearfix">
+                            <div class="modal-footer">
+                                <button type="button" id="release_money_dtr" class="btn btn-success waves-effect">CONTINUE</button>
+                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -232,6 +231,12 @@
     var id;
     var dtr_info;
     var person_id;
+	var fname;
+	var lname;
+	var mname;
+	var idmain
+	var total;
+	var role;
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -264,7 +269,7 @@
   				{
     			  	"targets": "_all", // your case first column
      				"className": "text-center",
-      				
+
  				}
 				],
 				serverSide: true,
@@ -276,7 +281,13 @@
 					{data: 'role', name: 'role'},
                     {data: 'overtime', name: 'overtime'},
                     {data: 'num_hours', name: 'num_hours'},
-					{data: 'created_at', name: 'created_at'},
+					{data: 'created_at', name: 'created_at',
+				   type: "date",
+					 render:function (value) {
+						   var ts = new Date(value);
+
+						  return ts.toDateString()+" "+ts.toLocaleTimeString()}
+					},
 					{data: 'salary', name: 'salary'},
                     {data: 'status', name: 'status'},
 					{data: "action", orderable:false,searchable:false}
@@ -306,7 +317,7 @@
                     success:function(data){
                         $('#role').val(data[0].role);
                         $('#rate').val(data[0].rate);
-                        
+
                         salary=data[0].rate;
                         $('#salary').val(overtime*salary);
                     }
@@ -315,20 +326,35 @@
 
             $('#overtime').change(function(){
                 overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
-                    
+
                  $('#salary').val(overtime*salary);
-            })
+            });
+            
             $('#num_hours').change(function(){
-               
+
                 overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
 
                 $('#salary').val(overtime*salary);
-            })
+            });
 
-             $(document).on('click', '.release_expense_dtr', function(event){
+            $(document).on('click', '.release_expense_dtr', function(event){
                 event.preventDefault();
-                 id = $(this).attr("id");
-                  $.ajax({
+                id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('check_balance5') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        if(data == 0){
+                            swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else{
+                            $.ajax({
                                 url:"{{ route('release_update_dtr') }}",
                                 method: 'POST',
                                 headers: {
@@ -337,36 +363,64 @@
                                 data:{id:id},
                                 dataType:'json',
                                 success:function(data){
-                                   console.log(data);
-                                
-                               $.ajax({
-                    url: "{{ route('refresh_view_dtr') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                    dtr_info= $('#view_dtr_table').DataTable({
-                            dom: 'Bfrtip',
-                            bDestroy: true,
-                            buttons: [
-                            ],
-                            data: data.data,
-                            columns:[
-                                {data: 'overtime', name: 'overtime'},
-                                {data: 'num_hours', name: 'num_hours'},
-                                {data: 'created_at', name: 'created_at'},
-                                {data: 'salary', name: 'salary'},
-                                {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
-                            ]
-                        });
-                         dtr.ajax.reload();
-                    }
-                });
-                                   
+                                    var total="";
+                                    $.ajax({
+                                        url: "/refresh_view_total",
+                                        method: 'get',
+                                        data:{id:idmain},
+                                        dataType: 'json',
+                                        success:function(data){
+                                            total = addCommas(data);
+                                            $('.modal_title_dtr').text(fname + " " + mname + " " + lname + " ("+role + ") Pending Salary: ₱"+total);
+
+                                        }
+                                    });
+                                    $.ajax({
+                                        url: "{{ route('refresh_view_dtr') }}",
+                                        method: 'get',
+                                        data:{id:person_id},
+                                        dataType: 'json',
+                                        success:function(data){
+                                        dtr_info= $('#view_dtr_table').DataTable({
+                                                dom: 'Bfrtip',
+                                                bDestroy: true,
+                                                buttons: [
+                                                ],
+                                                columnDefs: [
+                                            {
+                                                "targets": "_all", // your case first column
+                                                "className": "text-center",
+
+                                            }
+                                            ],
+                                                data: data.data,
+                                                columns:[
+                                                    {data: 'overtime', name: 'overtime'},
+                                                    {data: 'num_hours', name: 'num_hours'},
+                                                    {data: 'created_at', name: 'created_at',
+                                                type: "date",
+                                                    render:function (value) {
+                                                        var ts = new Date(value);
+
+                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
+                                                    },
+                                                    {data: 'salary', name: 'salary'},
+                                                    {data: 'status', name: 'status'},
+                                                    {data: 'released_by', name: 'released_by'},
+                                                    {data: "action", orderable:false,searchable:false}
+                                                ]
+                                            });
+                                            dtr.ajax.reload();
+                                        }
+                                    });
+                                    swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                                    $('#curCashOnHand').html(data.toFixed(2));
                                 }
-                            })
+                            });
+                        }
+                    }
+                })
+                
             });
             $("#add_dtr").click(function(event){
                 event.preventDefault();
@@ -420,29 +474,68 @@
                 $("#num_hours_clone").val($("#num_hours").val());
                 $("#salary_clone").val($("#salary").val());
             });
+			function addCommas(nStr) {
+    		nStr += '';
+		    x = nStr.split('.');
+		    x1 = x[0];
+		    x2 = x.length > 1 ? '.' + x[1] : '';
+		    var rgx = /(\d+)(\d{3})/;
+    		while (rgx.test(x1)) {
+        	x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    		}
+		    return x1 + x2;
+			}
+
 
             $(document).on('click', '.view_dtr', function(){
                 var id = $(this).attr("id");
+				idmain = id;
                 person_id=id;
-                //Datatable for each person
+
+				$.ajax({
+					url: "/refresh_view_total",
+					method: 'get',
+					data:{id:id},
+					dataType: 'json',
+					success:function(data){
+					    total =	addCommas(data);
+					}
+				});
                 $.ajax({
                     url: "{{ route('refresh_view_dtr') }}",
                     method: 'get',
                     data:{id:id},
                     dataType: 'json',
                     success:function(data){
-                        $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")");
+						fname = data.data[0].fname;
+						mname = data.data[0].mname;
+						lname = data.data[0].lname;
+						role =  data.data[0].role;
+                        $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")  Pending Salary: ₱"+total);
 
                     dtr_info= $('#view_dtr_table').DataTable({
                             dom: 'Bfrtip',
                             bDestroy: true,
                             buttons: [
                             ],
+							columnDefs: [
+						   {
+							   "targets": "_all", // your case first column
+							   "className": "text-center",
+
+						   }
+						   ],
                             data: data.data,
                             columns:[
                                 {data: 'overtime', name: 'overtime'},
                                 {data: 'num_hours', name: 'num_hours'},
-                                {data: 'created_at', name: 'created_at'},
+								{data: 'created_at', name: 'created_at',
+							   type: "date",
+								 render:function (value) {
+									   var ts = new Date(value);
+
+									  return ts.toDateString()+" "+ts.toLocaleTimeString()}
+								},
                                 {data: 'salary', name: 'salary'},
                                 {data: 'status', name: 'status'},
                                 {data: 'released_by', name: 'released_by'},
