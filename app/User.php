@@ -47,6 +47,6 @@ class User extends Authenticatable
     }
 
     public function emp_name() {
-        return $this->belongsTo('App\Employee', 'emp_id');
+        return $this->belongsTo('App\Employee', 'emp_id', 'id');
     }
 }

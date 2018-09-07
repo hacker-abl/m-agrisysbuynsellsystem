@@ -10,6 +10,7 @@ use App\Employee;
 use App\trip_expense;
 use Auth;
 use App\Events\ExpensesUpdated;
+use App\Events\CashierCashUpdated;
 use DB;
 
 class expenseController extends Controller
@@ -45,7 +46,6 @@ class expenseController extends Controller
         $expense->status = "On-Hand";
         $expense->released_by = '';
         $expense->save();
-
         
         event(new ExpensesUpdated($expense));
     }
@@ -67,11 +67,13 @@ class expenseController extends Controller
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
+
         }
 
         $user->cashOnHand -= $released->amount;
         $user->save();
         
+        event(new CashierCashUpdated());
         return $user->cashOnHand;
     }
 

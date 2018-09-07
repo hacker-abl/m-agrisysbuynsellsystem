@@ -183,4 +183,5 @@ Route::group(['middleware'=>['auth']], function() {
     Route::get('/purchases_today', 'HomeController@purchases_today');
     Route::get('/balance_today', 'HomeController@balance_today');
     Route::get('/expenses_today', 'HomeController@expenses_today');
+    Route::get('/cash_on_hand', 'HomeController@cashOnHand');
 });

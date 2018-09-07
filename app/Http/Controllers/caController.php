@@ -15,6 +15,7 @@ use Auth;
 use App\User;
 use App\Employee;   
 use App\Events\BalanceUpdated;
+use App\Events\CashierCashUpdated;
 
 class caController extends Controller
 {
@@ -101,6 +102,7 @@ class caController extends Controller
         $user->cashOnHand -= $released->amount;
         $user->save();
         
+        event(new CashierCashUpdated());
         return $user->cashOnHand;
     }
 

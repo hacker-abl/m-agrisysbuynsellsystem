@@ -13,6 +13,8 @@ use App\expense;
 use App\employee;
 use App\User;
 use Auth;
+use App\Events\CashierCashUpdated;
+
 class dtrController extends Controller
 {
    /**
@@ -88,6 +90,7 @@ class dtrController extends Controller
         $user->cashOnHand -= $released->salary;
         $user->save();
 
+        event(new CashierCashUpdated());
         return $user->cashOnHand;
     }
 
