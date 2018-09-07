@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container-fluid" id="update">
+<div class="container-fluid" id="request">
     <div class="block-header">
         <h2>DASHBOARD</h2>
     </div>
@@ -126,22 +126,10 @@
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             <div class="card">
                 <div class="header">
-                    <h2>*EMPTY FIELD*</h2>
-                    <ul class="header-dropdown m-r--5">
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0);">Action</a></li>
-                                <li><a href="javascript:void(0);">Another action</a></li>
-                                <li><a href="javascript:void(0);">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <h2>CASHIER LIST</h2>
                 </div>
                 <div class="body">
-                    <div id="donut_chart" class="dashboard-donut-chart"></div>
+                    <cash-on-hand></cash-on-hand>
                 </div>
             </div>
         </div>

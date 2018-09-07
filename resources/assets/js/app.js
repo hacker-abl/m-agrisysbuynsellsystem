@@ -23,10 +23,7 @@ Vue.component('total-sales-today', require('./components/TotalSalesToday.vue'));
 Vue.component('total-purchases-today', require('./components/TotalPurchasesToday.vue'));
 Vue.component('total-balance-today', require('./components/TotalBalanceToday.vue'));
 Vue.component('total-expenses-today', require('./components/TotalExpensesToday.vue'));
-
-const update = new Vue({
-    el: '#update'
-});
+Vue.component('cash-on-hand', require('./components/CashOnHand.vue'));
 
 const request = new Vue({
     el: '#request',

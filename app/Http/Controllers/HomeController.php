@@ -153,5 +153,19 @@ class HomeController extends Controller
         ]);
     }
 
+    public function cashOnHand(){
+
+        $arr = [];
+        $users = User::whereNotNull('emp_id')->get();
+        foreach ($users as $user){
+            $username = $user->emp_name->fname . " " . $user->emp_name->lname;
+            array_push($arr, ['name' => $username, 'amount' => (float)$user->cashOnHand]);
+        }
+
+        return response()->json(
+            $arr
+        );
+    }
+
 
 }

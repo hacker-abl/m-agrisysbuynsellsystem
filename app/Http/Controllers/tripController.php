@@ -16,6 +16,7 @@ use App\Roles;
 use App\trip_expense;
 use Auth;
 use App\Events\ExpensesUpdated;
+use App\Events\CashierCashUpdated;
 
 class tripController extends Controller
 {
@@ -111,9 +112,7 @@ class tripController extends Controller
             $cashOnHand->save();
         }
 
-       
-
-
+        event(new CashierCashUpdated());
         return $cashOnHand->cashOnHand;
     }
     public function refresh(Request $request){

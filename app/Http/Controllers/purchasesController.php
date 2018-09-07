@@ -14,6 +14,7 @@ use Auth;
 use App\User;
 use App\Events\PurchasesUpdated;
 use App\Events\BalanceUpdated;
+use App\Events\CashierCashUpdated;
 
 class purchasesController extends Controller
 {
@@ -186,6 +187,7 @@ class purchasesController extends Controller
         $user->cashOnHand -= $released->amtpay;
         $user->save();
          
+        event(new CashierCashUpdated());
         return $user->cashOnHand;
     }
 
