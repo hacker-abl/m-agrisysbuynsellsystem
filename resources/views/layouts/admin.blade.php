@@ -11,7 +11,7 @@
     <!--<title>{{ config('app.name', 'Laravel') }}</title>-->
     <title>M-Agri</title>
     <!-- Favicon-->
-    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/images/logo.ico') }}" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -340,7 +340,7 @@ ul {
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2018 <a href="javascript:void(0);">ScriptedScript Web Systems</a>.
+                    &copy; 2018 <a href="javascript:void(0);">Solid Script Web Systems</a>.
                 </div>
 
             </div>

@@ -53,7 +53,7 @@
                             <a href="forgot-password.html">Forgot Password?</a>
                     </div>
                     <div>
-                        <small>Powered By: ScriptedScript </small>
+                        <small>Powered By: Solid Script </small>
                     </div>
                         </div>
 
