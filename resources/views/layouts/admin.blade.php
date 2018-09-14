@@ -151,7 +151,7 @@ ul {
                 <a href="javascript:void(0)"></a>
                 <a href="javascript:void(0)" class="bars" id="l"  ></a>
 
-                <a class="navbar-brand" href="{{ route('home') }}"><span> <img src="{{ asset('assets/images/logo.png') }}" width="50" height="50" class="logo"/></span> <span class="title">M-Agri Buy & Sell System</span></a>
+                <a class="navbar-brand" href="{{ route('home') }}"><span> <img src="{{ asset('assets/images/logo.png') }}" width="50" height="50" class="logo"/></span> <span class="title">M-Agri </span></a>
 
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
