@@ -56,18 +56,20 @@ class caController extends Controller
             $notification->message = "Cash Advance";
             $notification->status = "Pending";
             $notification->admin_id = Auth::id();
+            $notification->table_source = "cash_advance";
             $notification->cash_advance_id = $ca->id;
             $notification->save();
 
-            $datum = Notification::where('id', $notification->id)->with('admin', 'cash_advance')->get();
+            $datum = Notification::where('id', $notification->id)
+                ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                ->get()[0];
 
-            // return $datum;
             $notification = array();
 
             $notification = array(
-                'notifications' => $datum[0],
-                'customer' => $datum[0]->cash_advance->customer,
-                'time' => time_elapsed_string($datum[0]->updated_at),
+                'notifications' => $datum,
+                'customer' => $datum->cash_advance->customer,
+                'time' => time_elapsed_string($datum->updated_at),
             );
 
             event(new \App\Events\NewNotification($notification));
