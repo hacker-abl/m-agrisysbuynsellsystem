@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="body">
                 
-                            <img src="assets/images/herobanner.png" height="800" width="1500">
+                            <img src="assets/images/herobanner.png" height="70%" width="100%">
                  
                 </div>
             </div>

@@ -4,7 +4,7 @@
 
     <div class="login-box ">
         <div class="logo">
-            <a href="javascript:void(0);"><b>M-Agri Buy & Sell</b></a>
+            <a href="javascript:void(0);"><b>M-Agri </b></a>
             
         </div>
         <div class="card">
@@ -53,7 +53,7 @@
                             <a href="forgot-password.html">Forgot Password?</a>
                     </div>
                     <div>
-                        <small>Powered By: ScriptedScript </small>
+                        <small>Powered By: Solid Script </small>
                     </div>
                         </div>
 
