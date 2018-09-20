@@ -16,4 +16,8 @@ class trip_expense extends Model
         'status',
     );
     public $timestamps = true;
+
+    public function tripId() {
+        return $this->hasOne('App\trips', 'id', 'trip_id');
+    }
 }

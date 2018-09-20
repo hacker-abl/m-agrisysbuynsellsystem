@@ -87,7 +87,7 @@
                     <!-- #END# Call Search -->
                     <!-- Notifications -->
                     <li class="dropdown" id="request">
-                        <notification-counter :count="requests.length"></notification-counter>
+                        <notification-counter :count="count"></notification-counter>
                         <notification-list :requests="requests"></notification-list>
                     </li>
                     <!-- #END# Notifications -->
@@ -282,7 +282,6 @@
 
     <!-- Custom Js -->
     <script src="{{ asset('assets/js/admin.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/index.js') }}"></script>
     <script src="{{ asset('assets/js/pages/tables/jquery-datatable.js') }}"></script>
     <script src="{{ asset('assets/js/pages/ui/modals.js') }}"></script>
     <script src="{{ asset('assets/js/pages/forms/form-validation.js') }}"></script>

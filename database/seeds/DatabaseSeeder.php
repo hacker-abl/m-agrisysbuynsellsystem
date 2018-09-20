@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {        
         $this->call(access_levels::class);
+        $this->call(EmployeeTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
         $this->call(UserPermissionsTableSeeder::class); 

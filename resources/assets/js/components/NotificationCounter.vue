@@ -9,7 +9,7 @@
     export default {
         props: ['count'],
         created() {
-            console.log(this.count);
+            // console.log(this.count);
         }
     }
 </script>

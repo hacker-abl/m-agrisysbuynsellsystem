@@ -25,46 +25,51 @@ Vue.component('total-balance-today', require('./components/TotalBalanceToday.vue
 Vue.component('total-expenses-today', require('./components/TotalExpensesToday.vue'));
 Vue.component('cash-on-hand', require('./components/CashOnHand.vue'));
 
-const request = new Vue({
-    el: '#request',
-    data: {
-		requests: []
-    },
-    methods: {
-    	// requestApproved: function(notification){
-    	// 	axios.get('notification/approve', {params: {id: notification.id}}).then((response) => {
-	    		
-	    // 	});
-    	// },
-    	// requestCancelled: function(notification){
-        //     axios.get('notification/cancel', {params: {id: notification.id}}).then((response) => {
-                
-        //     });
-    	// },
-        // paginate: function(offset){
-        //     var id = offset.id;
-
-        //     axios.get('/notification/retrieve/request/more/'+id).then((response) => {
-        //         var data = response.data;
-        //         if(data) {
-        //             for (var i = 0; i < data.length; i++) {
-        //                 this.requests.push(data[i]);
-        //             };
-        //         }
-        //     });
-        // }
-    },
-    created() {
-    	// let user_id = document.head.querySelector('meta[name="user_id"]').content;
-
-    	axios.get('/notification/get').then((response) => {
-            this.requests = response.data;
-        });
-
-        window.Echo.channel('notifications.cashier')
-            .listen('NewNotification', e => {
-                this.requests.unshift(e.notification);
+if(document.getElementById('request')) {
+    const request = new Vue({
+        el: '#request',
+        data: {
+            requests: [],
+            count: 0
+        },
+        methods: {
+            // requestApproved: function(notification){
+            // 	axios.get('notification/approve', {params: {id: notification.id}}).then((response) => {
+                    
+            // 	});
+            // },
+            // requestCancelled: function(notification){
+            //     axios.get('notification/cancel', {params: {id: notification.id}}).then((response) => {
+                    
+            //     });
+            // },
+            // paginate: function(offset){
+            //     var id = offset.id;
+    
+            //     axios.get('/notification/retrieve/request/more/'+id).then((response) => {
+            //         var data = response.data;
+            //         if(data) {
+            //             for (var i = 0; i < data.length; i++) {
+            //                 this.requests.push(data[i]);
+            //             };
+            //         }
+            //     });
+            // }
+        },
+        created() {
+            // let user_id = document.head.querySelector('meta[name="user_id"]').content;
+    
+            axios.get('/notification/get').then((response) => {
+                this.requests = response.data.notification;
+                this.count = response.data.count;
             });
-
-    }
-});
+    
+            window.Echo.channel('notifications.cashier')
+                .listen('NewNotification', e => {
+                    // console.log(e);
+                    this.requests.unshift(e.notification);
+                });
+    
+        }
+    });
+}
