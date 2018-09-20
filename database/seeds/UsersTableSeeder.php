@@ -23,16 +23,6 @@ class UsersTableSeeder extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ),
-            array(
-                'username' => 'cashier',
-                'cashOnHand' => 0,
-                'emp_id' => null,
-                'name' => 'Cashier BFJAX',
-                'access_id' => 2,
-                'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ),
         );
 
         DB::table('users')->insert($data);
