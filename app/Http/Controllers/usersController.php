@@ -126,9 +126,13 @@ class usersController extends Controller
             return $access_name;
         })
         ->editColumn('emp_id', function ($data){
-            $employee = Employee::where('id', $data->emp_id);
-            
-            return $employee->lname.", ".$employee->fname." ".$employee->mname;
+            $employee = Employee::where('id', $data->emp_id)->get();            
+
+            foreach($employee as $emp){
+                $emp_name = $emp->fname." ".$emp->mname." ".$emp->lname;    
+            }
+
+            return $emp_name;
         })   
         ->make(true);
     }
