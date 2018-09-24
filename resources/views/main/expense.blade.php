@@ -2,18 +2,22 @@
 
 @section('content')
 <div class="container-fluid">
-     <ul class="nav nav-tabs">
-        <li class="active"><a href="#expense_tab" data-toggle="tab"><div class="block-header">
-            <h2>Expense Dashboard</h2>
-        </div></a></li>
-        <li><a href="#trip_expense_tab" data-toggle="tab" id="render"><div class="block-header">
-            <h2>Trip Expenses Dashboard</h2>
-        </div></a></li>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#expense_tab" data-toggle="tab">
+                <div class="block-header">
+                    <h2>Expense Dashboard</h2>
+                </div>
+            </a></li>
+        <li><a href="#trip_expense_tab" data-toggle="tab" id="render">
+                <div class="block-header">
+                    <h2>Trip Expenses Dashboard</h2>
+                </div>
+            </a></li>
         <!--  <li><a href="#DTR_expense"><div class="block-header">
             <h2>DTR Expenses Dashboard</h2>
         </div></a></li> -->
-      </ul>
-</div> 
+    </ul>
+</div>
 
 <div class="tab-content">
     <div id="expense_tab" class="tab-pane fade in active">
@@ -52,41 +56,44 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row clearfix">
-                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="type">Type</label>
-                                </div>
-                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" id="type" name="type" class="form-control" placeholder="Enter type of expense"  required>
+                                <div class="row clearfix">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                        <label for="type">Type</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" id="type" name="type" class="form-control"
+                                                    placeholder="Enter type of expense" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row clearfix">
-                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="amount">Amount</label>
-                                </div>
-                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="number" id="amount" name="amount" class="form-control" placeholder="Enter amount"  required>
+                                <div class="row clearfix">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                        <label for="amount">Amount</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="number" id="amount" name="amount" class="form-control"
+                                                    placeholder="Enter amount" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="add_expense" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                <div class="row clearfix">
+                                    <div class="modal-footer">
+                                        <button type="button" id="add_expense" class="btn btn-link waves-effect">SAVE
+                                            CHANGES</button>
+                                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,15 +136,14 @@
             </div>
         </div>
     </div>
-</div>
 
 
-<div id="trip_expense_tab" class="tab-pane fade">
-     <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>List of Trip Expenses as of {{ date('Y-m-d ') }}</h2>
+    <div id="trip_expense_tab" class="tab-pane fade">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>List of Trip Expenses as of {{ date('Y-m-d ') }}</h2>
 
                 </div>
                 <div class="body">
@@ -167,7 +173,6 @@
             </div>
         </div>
     </div>
-    </div>
 </div>
  <div class="modal fade" id="release_modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -180,14 +185,13 @@
                         <form action="#" class="form-horizontal " id="release_form">
 
 
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="release_money" class="btn btn-success waves-effect">CONTINUE</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
+                        <div class="row clearfix">
+                            <div class="modal-footer">
+                                <button type="button" id="release_money" class="btn btn-success waves-effect">CONTINUE</button>
+                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -203,62 +207,176 @@
                         <form action="#" class="form-horizontal " id="release">
 
 
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="release_money_normal" class="btn btn-success waves-effect">CONTINUE</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
+                        <div class="row clearfix">
+                            <div class="modal-footer">
+                                <button type="button" id="release_money_normal" class="btn btn-success waves-effect">CONTINUE</button>
+                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- #END# Exportable Table -->
+<!-- #END# Exportable Table -->
 @endsection
 
 @section('script')
-    <script>
-        var id;
-        var expensetable;
-        var date_from;
-        var date_to;
-        var date_from_trip;
-        var date_to_trip;
-        var trip_expensetable;
+<script>
+    var id;
+    var expensetable;
+    var date_from;
+    var date_to;
+    var date_from_trip;
+    var date_to_trip;
+    var trip_expensetable;
 
-        document.title = "M-Agri - Expenses";
+    document.title = "M-Agri - Expenses";
 
-        $(document).on("click","#link",function(){
-            $("#bod").toggleClass('overlay-open');
+    $(document).on("click", "#link", function () {
+        $("#bod").toggleClass('overlay-open');
+    });
+
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
         });
 
-        $(document).ready(function() {
-            $(".nav-tabs a").click(function(){
-                $(this).tab('show');
-            });
+        $.extend($.fn.dataTable.defaults, {
+            "language": {
+                processing: 'Loading.. Please wait'
+            }
+        });
 
-    
-            $.extend( $.fn.dataTable.defaults, {
-                "language": {
-                    processing: 'Loading.. Please wait'
-                }
-            });
-            
-
-            //EXPENSE Datatable starts here
-            $('#expense_modal').on('hidden.bs.modal', function (e) {
-                $(this)
+        //EXPENSE Datatable starts here
+        $('#expense_modal').on('hidden.bs.modal', function (e) {
+            $(this)
                 .find("input,textarea,select")
-                    .val('')
-                    .end()
+                .val('')
+                .end()
                 .find("input[type=checkbox], input[type=radio]")
-                    .prop("checked", "")
-                    .end();
-            });
+                .prop("checked", "")
+                .end();
+        });
 
+        expensetable = $('#expensetable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
+            paging: true,
+            pageLength: 10,
+            order: [],
+            columnDefs: [{
+                "targets": "_all", // your case first column
+                "className": "text-center",
+
+            }],
+            ajax: {
+                url: "{{ route('refresh_expense') }}",
+                // dataType: 'text',
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    date_from: date_from,
+                    date_to: date_to,
+                },
+            },
+            processing: true,
+            serverSide: true,
+            columns: [{
+                    data: 'description'
+                },
+                {
+                    data: 'type'
+                },
+                {
+                    data: 'amount'
+                },
+                {
+                    data: 'status'
+                },
+                {
+                    data: 'created_at'
+                },
+                {
+                    data: 'released_by'
+                },
+                {
+                    data: "action",
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+
+        $("#datepicker_from").datepicker({
+            showOn: "button",
+            buttonImage: 'assets/images/calendar2.png',
+            buttonImageOnly: false,
+            "onSelect": function (date) {
+                minDateFilter = new Date(date).getTime();
+                var df = new Date(date);
+                date_from = df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                $('#expensetable').dataTable().fnDestroy();
+                expensetable = $('#expensetable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'print'
+                    ],
+                    paging: true,
+                    pageLength: 10,
+                    order: [],
+                    columnDefs: [{
+                        "targets": "_all", // your case first column
+                        "className": "text-center",
+                    }],
+                    ajax: {
+                        url: "{{ route('refresh_expense') }}",
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            date_from: date_from,
+                            date_to: date_to,
+                        }
+                    },
+                    processing: true,
+                    serverSide: true,
+                    columns: [{
+                            data: 'description'
+                        },
+                        {
+                            data: 'type'
+                        },
+                        {
+                            data: 'amount'
+                        },
+                        {
+                            data: 'status'
+                        },
+                        {
+                            data: 'created_at'
+                        },
+                        {
+                            data: 'released_by'
+                        },
+                        {
+                            data: "action",
+                            orderable: false,
+                            searchable: false
+                        }
+                    ]
+                });
+            }
+        }).keyup(function () {
+            date_from = "";
+            $('#expensetable').dataTable().fnDestroy();
             expensetable = $('#expensetable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
@@ -266,21 +384,17 @@
                 ],
                 paging: true,
                 pageLength: 10,
-                order:[],
-                columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
-                ajax:{
+                order: [],
+                columnDefs: [{
+                    "targets": "_all", // your case first column
+                    "className": "text-center",
+                }],
+                ajax: {
                     url: "{{ route('refresh_expense') }}",
-                    // dataType: 'text',
                     type: 'post',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
+                    },
                     data: {
                         date_from: date_from,
                         date_to: date_to,
@@ -288,64 +402,42 @@
                 },
                 processing: true,
                 serverSide: true,
-                columns: [
-                    {data: 'description' },
-                    {data: 'type'},
-                    {data: 'amount' },
-                    {data: 'status'},
-                    {data: 'created_at' },
-                    {data: 'released_by'},
-                    {data: "action", orderable:false,searchable:false}
+                columns: [{
+                        data: 'description'
+                    },
+                    {
+                        data: 'type'
+                    },
+                    {
+                        data: 'amount'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: 'created_at'
+                    },
+                    {
+                        data: 'released_by'
+                    },
+                    {
+                        data: "action",
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
             });
+        });
 
-            $("#datepicker_from").datepicker({
-                showOn: "button",
-                buttonImage: 'assets/images/calendar2.png',
-                buttonImageOnly: false,
-                "onSelect": function(date) {
-                    minDateFilter = new Date(date).getTime();
-                    var df= new Date(date);
-                    date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
-                    $('#expensetable').dataTable().fnDestroy();
-                    expensetable = $('#expensetable').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'print'
-                        ],
-                        paging: true,
-                        pageLength: 10,
-                        order:[],
-                        columnDefs: [{
-                            "targets": "_all", // your case first column
-                            "className": "text-center",
-      				    }],
-                        ajax:{
-                            url: "{{ route('refresh_expense') }}",
-                            type: 'post',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                            data: {
-                                date_from: date_from,
-                                date_to: date_to,
-                            }
-                        },
-                        processing: true,
-                        serverSide: true,
-                        columns: [
-                            {data: 'description' },
-                            {data: 'type'},
-                            {data: 'amount' },
-                            {data: 'status'},
-                            {data: 'created_at' },
-                            {data: 'released_by'},
-                            {data: "action", orderable:false,searchable:false}
-                        ]
-                    });
-                }
-            }).keyup(function() {
-                date_from="";
+        $("#datepicker_to").datepicker({
+            showOn: "button",
+            buttonImage: 'assets/images/calendar2.png',
+            buttonImageOnly: false,
+            "onSelect": function (date) {
+                maxDateFilter = new Date(date).getTime();
+                //oTable.fnDraw();
+                var dt = new Date(date);
+                date_to = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
                 $('#expensetable').dataTable().fnDestroy();
                 expensetable = $('#expensetable').DataTable({
                     dom: 'Bfrtip',
@@ -354,13 +446,14 @@
                     ],
                     paging: true,
                     pageLength: 10,
-                    order:[],
+                    order: [],
                     columnDefs: [{
                         "targets": "_all", // your case first column
                         "className": "text-center",
- 				    }],
-                    ajax:{
+                    }],
+                    ajax: {
                         url: "{{ route('refresh_expense') }}",
+                        // dataType: 'text',
                         type: 'post',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -372,458 +465,523 @@
                     },
                     processing: true,
                     serverSide: true,
-                    columns: [
-                        {data: 'description' },
-                        {data: 'type'},
-                        {data: 'amount' },
-                        {data: 'status'},
-                        {data: 'created_at' },
-                        {data: 'released_by'},
-                        {data: "action", orderable:false,searchable:false}
+                    columns: [{
+                            data: 'description'
+                        },
+                        {
+                            data: 'type'
+                        },
+                        {
+                            data: 'amount'
+                        },
+                        {
+                            data: 'status'
+                        },
+                        {
+                            data: 'created_at'
+                        },
+                        {
+                            data: 'released_by'
+                        },
+                        {
+                            data: "action",
+                            orderable: false,
+                            searchable: false
+                        }
                     ]
                 });
-            });
-
-            $("#datepicker_to").datepicker({
-                showOn: "button",
-                buttonImage: 'assets/images/calendar2.png',
-                buttonImageOnly: false,
-                "onSelect": function(date) {
-                    maxDateFilter = new Date(date).getTime();
-                    //oTable.fnDraw();
-                    var dt= new Date(date);
-                    date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-                    $('#expensetable').dataTable().fnDestroy();
-                    expensetable = $('#expensetable').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'print'
-                        ],
-                        paging: true,
-                        pageLength: 10,
-                        order:[],
-                        columnDefs: [{
-                            "targets": "_all", // your case first column
-                            "className": "text-center",
- 				        }],
-                        ajax:{
-                            url: "{{ route('refresh_expense') }}",
-                            // dataType: 'text',
-                            type: 'post',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            data: {
-                                date_from: date_from,
-                                date_to: date_to,
-                            },
-                        },
-                        processing: true,
-                        serverSide: true,
-                        columns: [
-                            {data: 'description' },
-                            {data: 'type'},
-                            {data: 'amount' },
-                            {data: 'status'},
-                            {data: 'created_at' },
-                            {data: 'released_by'},
-                            {data: "action", orderable:false,searchable:false}
-                        ]
-                    });
-                }
-            }).keyup(function() {
-                date_to="";
-                $('#expensetable').dataTable().fnDestroy();
-                expensetable = $('#expensetable').DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'print'
-                    ],
-                    paging: true,
-                    pageLength: 10,
-                    order:[],
-                    columnDefs: [{
-                        "targets": "_all", // your case first column
-                        "className": "text-center",
-      				}],
-                    ajax:{
-                        url: "{{ route('refresh_expense') }}",
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            date_from: date_from,
-                            date_to: date_to,
-                        },
-                    },
-                    processing: true,
-                    serverSide: true,
-                    columns: [
-                        {data: 'description' },
-                        {data: 'type'},
-                        {data: 'amount' },
-                        {data: 'status'},
-                        {data: 'created_at' },
-                        {data: 'released_by'},
-                        {data: "action", orderable:false,searchable:false}
-                    ]
-                });
-            });
-
-            //TRIP EXPENSE TABLE
-            trip_expensetable = $('#trip_expensetable').DataTable({
+            }
+        }).keyup(function () {
+            date_to = "";
+            $('#expensetable').dataTable().fnDestroy();
+            expensetable = $('#expensetable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     'print'
                 ],
                 paging: true,
                 pageLength: 10,
-                order:[],
-                columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
-                ajax:{
-                    url: "{{ route('trip_expense_view') }}",
-                    // dataType: 'text',
+                order: [],
+                columnDefs: [{
+                    "targets": "_all", // your case first column
+                    "className": "text-center",
+                }],
+                ajax: {
+                    url: "{{ route('refresh_expense') }}",
                     type: 'post',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     data: {
-                        date_from: date_from_trip,
-                        date_to: date_to_trip,
+                        date_from: date_from,
+                        date_to: date_to,
                     },
                 },
                 processing: true,
                 serverSide: true,
-                columns: [
-                    {data: 'trip_id'},
-                    {data: 'description'},
-                    {data: 'type'},
-                    {data: 'amount'},
-                    {data: 'status'},
-                    {data: 'created_at'},
-                    {data: 'released_by'},
-                    {data: "action", orderable:false,searchable:false}
+                columns: [{
+                        data: 'description'
+                    },
+                    {
+                        data: 'type'
+                    },
+                    {
+                        data: 'amount'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: 'created_at'
+                    },
+                    {
+                        data: 'released_by'
+                    },
+                    {
+                        data: "action",
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
             });
+        });
 
-            $("#trip_expense_datepicker_from").datepicker({
-                showOn: "button",
-                buttonImage: 'assets/images/calendar2.png',
-                buttonImageOnly: false,
-                "onSelect": function(date) {
-                    minDateFilter = new Date(date).getTime();
-                    var df= new Date(date);
-                    date_from_trip= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
-                    $('#trip_expensetable').dataTable().fnDestroy();
-                    trip_expensetable = $('#trip_expensetable').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'print'
-                        ],
-                        paging: true,
-                        pageLength: 10,
-                        order:[],
-                        ajax:{
-                            url: "{{ route('trip_expense_view') }}",
-                            // dataType: 'text',
-                            type: 'post',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                            data: {
-                                date_from: date_from_trip,
-                                date_to: date_to_trip,
-                            },
-                        },
-                        processing: true,
-                        columnDefs: [{
-                            "targets": "_all", // your case first column
-                            "className": "text-center",
-                        }],
-                        serverSide: true,
-                        columns: [
-                            {data: 'trip_id'},
-                            {data: 'description'},
-                            {data: 'type'},
-                            {data: 'amount'},
-                            {data: 'status'},
-                            {data: 'created_at'},
-                            {data: 'released_by'},
-                            {data: "action", orderable:false,searchable:false}
-                        ]
-                    });
+        //TRIP EXPENSE TABLE
+        trip_expensetable = $('#trip_expensetable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
+            paging: true,
+            pageLength: 10,
+            order: [],
+            columnDefs: [{
+                "targets": "_all", // your case first column
+                "className": "text-center",
+
+            }],
+            ajax: {
+                url: "{{ route('trip_expense_view') }}",
+                // dataType: 'text',
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    date_from: date_from_trip,
+                    date_to: date_to_trip,
+                },
+            },
+            processing: true,
+            serverSide: true,
+            columns: [{
+                    data: 'trip_id'
+                },
+                {
+                    data: 'description'
+                },
+                {
+                    data: 'type'
+                },
+                {
+                    data: 'amount'
+                },
+                {
+                    data: 'status'
+                },
+                {
+                    data: 'created_at'
+                },
+                {
+                    data: 'released_by'
+                },
+                {
+                    data: "action",
+                    orderable: false,
+                    searchable: false
                 }
-            }).keyup(function() {
-                minDateFilter = new Date(this.value).getTime();
-            });
+            ]
+        });
 
-            $("#trip_expense_datepicker_to").datepicker({
-                showOn: "button",
-                buttonImage: 'assets/images/calendar2.png',
-                buttonImageOnly: false,
-                "onSelect": function(date) {
-                    maxDateFilter = new Date(date).getTime();
-                    var dt= new Date(date);
-                    date_to_trip =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-                    $('#trip_expensetable').dataTable().fnDestroy();
-                    trip_expensetable = $('#trip_expensetable').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'print'
-                        ],
-                        paging: true,
-                        columnDefs: [{
-                            "targets": "_all", // your case first column
-                            "className": "text-center",
-                        }],
-                        pageLength: 10,
-                        order:[],
-                        ajax:{
-                            url: "{{ route('trip_expense_view') }}",
-                            // dataType: 'text',
-                            type: 'post',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                            data: {
-                                date_from: date_from_trip,
-                                date_to: date_to_trip,
-                            },
+        $("#trip_expense_datepicker_from").datepicker({
+            showOn: "button",
+            buttonImage: 'assets/images/calendar2.png',
+            buttonImageOnly: false,
+            "onSelect": function (date) {
+                minDateFilter = new Date(date).getTime();
+                var df = new Date(date);
+                date_from_trip = df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                $('#trip_expensetable').dataTable().fnDestroy();
+                trip_expensetable = $('#trip_expensetable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'print'
+                    ],
+                    paging: true,
+                    pageLength: 10,
+                    order: [],
+                    ajax: {
+                        url: "{{ route('trip_expense_view') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        processing: true,
-                        serverSide: true,
-                        columns: [
-                            {data: 'trip_id'},
-                            {data: 'description'},
-                            {data: 'type'},
-                            {data: 'amount'},
-                            {data: 'status'},
-                            {data: 'created_at'},
-                            {data: 'released_by'},
-                            {data: "action", orderable:false,searchable:false}
-                        ]
-                    });
-                }
-            }).keyup(function() {
-                maxDateFilter = new Date(this.value).getTime();
-            });
-            
-            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-                $($.fn.dataTable.tables( true ) ).css('width', '100%');
-                $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
-            }); 
-            //-----------------------------------             //END OF TRIP EXPENSE
-
-            $(document).on('click', '.release_expense', function(){
-                id = $(this).attr("id");
-            });
-
-            $(document).on('click', '.release_expense_normal', function(event){
-                event.preventDefault();
-                id = $(this).attr("id");
-                $.ajax({
-                    url:"{{ route('check_balance') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        data: {
+                            date_from: date_from_trip,
+                            date_to: date_to_trip,
+                        },
                     },
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        if(data == 0){
-                            swal("Insufficient Balance!", "Contact Boss", "warning")
-                            return;
+                    processing: true,
+                    columnDefs: [{
+                        "targets": "_all", // your case first column
+                        "className": "text-center",
+                    }],
+                    serverSide: true,
+                    columns: [{
+                            data: 'trip_id'
+                        },
+                        {
+                            data: 'description'
+                        },
+                        {
+                            data: 'type'
+                        },
+                        {
+                            data: 'amount'
+                        },
+                        {
+                            data: 'status'
+                        },
+                        {
+                            data: 'created_at'
+                        },
+                        {
+                            data: 'released_by'
+                        },
+                        {
+                            data: "action",
+                            orderable: false,
+                            searchable: false
                         }
-                        else{
-                            $('#release_modal_normal').modal('show');
-                        }
-                    }
-                })
-            });
-
-            $(document).on('click', '.release_expense', function(event){
-                event.preventDefault();
-                id = $(this).attr("id");
-                $.ajax({
-                    url:"{{ route('check_balance2') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        console.log(data);
-                        if(data == 0){
-                            swal("Insufficient Balance!", "Contact Boss", "warning")
-                            return;
-                        }
-                        else{
-                            $('#release_modal').modal('show');
-                        }
-                    }
-                })
-            });
-
-            $(document).on('click', '#release_money', function(){
-                $.ajax({
-                    url:"{{ route('release_update') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success");
-                        $('#release_modal').modal('hide');
-                        $('#curCashOnHand').html(data.toFixed(2));
-
-                        trip_expensetable.ajax.reload(); //reload datatable ajax
-                    }
-                })
-            });
-
-            $(document).on('click', '#release_money_normal', function(){
-                $.ajax({
-                    url:"{{ route('release_update_normal') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
-                        $('#release_modal_normal').modal('hide');
-                        $('#curCashOnHand').html(data.toFixed(2));
-
-                        expensetable.ajax.reload(); //reload datatable ajax
-                    }
-                })
-            });
-
-            function refresh_expense_table(){
-                expensetable.ajax.reload(); //reload datatable ajax
+                    ]
+                });
             }
-            $('#expense_modal').on('hidden.bs.modal', function () {
-               $('.modal_title').text('Add Expense');
-            })
-            $("#add_expense").click(function(event) {
-                
-                var input = $(this);
-                var button =this;
-                button.disabled = true;
-                input.html('SAVING...');    
-                event.preventDefault();
-                $.ajax({
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }).keyup(function () {
+            minDateFilter = new Date(this.value).getTime();
+        });
+
+        $("#trip_expense_datepicker_to").datepicker({
+            showOn: "button",
+            buttonImage: 'assets/images/calendar2.png',
+            buttonImageOnly: false,
+            "onSelect": function (date) {
+                maxDateFilter = new Date(date).getTime();
+                var dt = new Date(date);
+                date_to_trip = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                $('#trip_expensetable').dataTable().fnDestroy();
+                trip_expensetable = $('#trip_expensetable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'print'
+                    ],
+                    paging: true,
+                    columnDefs: [{
+                        "targets": "_all", // your case first column
+                        "className": "text-center",
+                    }],
+                    pageLength: 10,
+                    order: [],
+                    ajax: {
+                        url: "{{ route('trip_expense_view') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            date_from: date_from_trip,
+                            date_to: date_to_trip,
+                        },
                     },
-                    url: "{{ route('add_expense')}}",
-                    dataType: "text",
-                    data: $('#expense_form').serialize(),
-                    success: function(data){
-                        swal("Success!", "Record has been added to database", "success")
-                        $('#expense_modal').modal('hide');
-                         button.disabled = false;
-                         input.html('SAVE CHANGES');
-                         $('.modal_title').text('Add Expense');
-                        refresh_expense_table();
-                    },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    processing: true,
+                    serverSide: true,
+                    columns: [{
+                            data: 'trip_id'
+                        },
+                        {
+                            data: 'description'
+                        },
+                        {
+                            data: 'type'
+                        },
+                        {
+                            data: 'amount'
+                        },
+                        {
+                            data: 'status'
+                        },
+                        {
+                            data: 'created_at'
+                        },
+                        {
+                            data: 'released_by'
+                        },
+                        {
+                            data: "action",
+                            orderable: false,
+                            searchable: false
+                        }
+                    ]
+                });
+            }
+        }).keyup(function () {
+            maxDateFilter = new Date(this.value).getTime();
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $($.fn.dataTable.tables(true)).css('width', '100%');
+            $($.fn.dataTable.tables(true)).DataTable().columns.adjust().draw();
+        });
+        //-----------------------------------             //END OF TRIP EXPENSE
+
+        $(document).on('click', '.release_expense', function () {
+            id = $(this).attr("id");
+        });
+
+        function refresh_expense_table(){
+            expensetable.ajax.reload(); //reload datatable ajax
+        }
+
+        $('#expense_modal').on('hidden.bs.modal', function () {
+            $('.modal_title').text('Add Expense');
+        })
+
+        $("#add_expense").click(function(event) {
+            var input = $(this);
+            var button =this;
+            button.disabled = true;
+            input.html('SAVING...');    
+            event.preventDefault();
+            $.ajax({
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('add_expense')}}",
+                dataType: "text",
+                data: $('#expense_form').serialize(),
+                success: function(data){
+                    swal("Success!", "Record has been added to database", "success")
+                    $('#expense_modal').modal('hide');
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $('.modal_title').text('Add Expense');
-                    }
-                });
-            });
-             $(document).on('click', '.update_expense', function(){
-                var id = $(this).attr("id");
-                $.ajax({
-                    url:"{{ route('update_expense') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                         
-                        $('#button_action').val('update');
-                        $('#id').val(id);
-                        $('#expense').val(data.description);
-                        $('#type').val(data.type);
-                        $('#amount').val(data.amount);
-                        $('#expense_modal').modal('show');
-                        $('.modal_title').text('Update Expense');
-                        refresh_expense_table();
-                    }
-                })
-            });
-
-            //Delete expense
-            $(document).on('click', '.delete_expense', function(){
-                var id = $(this).attr('id');
-                swal({
-                    title: "Are you sure?",
-                    text: "Delete this record?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
+                    refresh_expense_table();
                 },
-                function(){
-                    $.ajax({
-                        url:"{{ route('delete_expense') }}",
-                        method: "get",
-                        data:{id:id},
-                        success:function(data){
-                            refresh_expense_table();
-                             swal("Deleted!", "The record has been deleted.", "success");
-                        }
-                    })
-                   
-                });
-            });
-           
-
-            $("#print_expense").click(function(event) {
-                event.preventDefault();
-                $("#add_expense").trigger("click");
-                $("#print_form").trigger("click");
-            });
-
-            $("#print_form").click(function(event) {
-                $("#expense_clone").val($("#expense").val());
-                $("#type_clone").val($("#type").val());
-                $("#amount_clone").val($("#amount").val());
-            });
-            //EXPENSE Datatable ends here
-
-            src = "{{ route('autocomplete_name') }}";
-
-            $("#expense").autocomplete({
-                source: function(request, response) {
-                    $.ajax({
-                        url: src,
-                        dataType: "json",
-                        data: {
-                            term : request.term
-                        },
-                        success: function(data) {
-                            response(data);
-                        }
-                    });
-                },
+                error: function(data){
+                    swal("Oh no!", "Something went wrong, try again.", "error")
+                    button.disabled = false;
+                    input.html('SAVE CHANGES');
+                    $('.modal_title').text('Add Expense');
+                }
             });
         });
-    </script>
+             
+        $(document).on('click', '.update_expense', function(){
+            var id = $(this).attr("id");
+            $.ajax({
+                url:"{{ route('update_expense') }}",
+                method: 'get',
+                data:{id:id},
+                dataType:'json',
+                success:function(data){
+                        
+                    $('#button_action').val('update');
+                    $('#id').val(id);
+                    $('#expense').val(data.description);
+                    $('#type').val(data.type);
+                    $('#amount').val(data.amount);
+                    $('#expense_modal').modal('show');
+                    $('.modal_title').text('Update Expense');
+                    refresh_expense_table();
+                }
+            })
+        });
+
+        //Delete expense
+        $(document).on('click', '.delete_expense', function(){
+            var id = $(this).attr('id');
+            swal({
+                title: "Are you sure?",
+                text: "Delete this record?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function(){
+                $.ajax({
+                    url:"{{ route('delete_expense') }}",
+                    method: "get",
+                    data:{id:id},
+                    success:function(data){
+                        refresh_expense_table();
+                            swal("Deleted!", "The record has been deleted.", "success");
+                    }
+                })
+                
+            });
+        });
+           
+        $(document).on('click', '.release_expense_normal', function (event) {
+            event.preventDefault();
+            id = $(this).attr("id");
+            $.ajax({
+                url: "{{ route('check_balance') }}",
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data == 0) {
+                        swal("Insufficient Balance!", "Contact Boss", "warning")
+                        return;
+                    } else {
+                        $('#release_modal_normal').modal('show');
+                    }
+                }
+            })
+        });
+
+        $(document).on('click', '.release_expense', function (event) {
+            event.preventDefault();
+            id = $(this).attr("id");
+            $.ajax({
+                url: "{{ route('check_balance2') }}",
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data == 0) {
+                        swal("Insufficient Balance!", "Contact Boss", "warning")
+                        return;
+                    } else {
+                        $('#release_modal').modal('show');
+                    }
+                }
+            })
+        });
+
+        $(document).on('click', '#release_money', function () {
+            $.ajax({
+                url: "{{ route('release_update') }}",
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    swal("Cash Released!", "Remaining Balance: ₱" + data.toFixed(2),
+                        "success");
+                    $('#release_modal').modal('hide');
+                    $('#curCashOnHand').html(data.toFixed(2));
+
+                    trip_expensetable.ajax.reload(); //reload datatable ajax
+                }
+            })
+        });
+
+        $(document).on('click', '#release_money_normal', function () {
+            $.ajax({
+                url: "{{ route('release_update_normal') }}",
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    swal("Cash Released!", "Remaining Balance: ₱" + data.toFixed(2),
+                        "success")
+                    $('#release_modal_normal').modal('hide');
+                    $('#curCashOnHand').html(data.toFixed(2));
+
+                    expensetable.ajax.reload(); //reload datatable ajax
+                }
+            })
+        });
+
+        function refresh_expense_table() {
+            expensetable.ajax.reload(); //reload datatable ajax
+        }
+
+        $("#add_expense").click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('add_expense') }}",
+                dataType: "text",
+                data: $('#expense_form').serialize(),
+                success: function (data) {
+                    swal("Success!", "Record has been added to database", "success")
+                    $('#expense_modal').modal('hide');
+                    refresh_expense_table();
+                },
+                error: function (data) {
+                    swal("Oh no!", "Something went wrong, try again.", "error")
+                }
+            });
+        });
+
+        $("#print_expense").click(function (event) {
+            event.preventDefault();
+            $("#add_expense").trigger("click");
+            $("#print_form").trigger("click");
+        });
+
+        $("#print_form").click(function (event) {
+            $("#expense_clone").val($("#expense").val());
+            $("#type_clone").val($("#type").val());
+            $("#amount_clone").val($("#amount").val());
+        });
+        //EXPENSE Datatable ends here
+
+        src = "{{ route('autocomplete_name') }}";
+
+        $("#expense").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: src,
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+        });
+    });
+</script>
 @endsection

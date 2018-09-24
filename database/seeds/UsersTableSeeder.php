@@ -18,7 +18,6 @@ class UsersTableSeeder extends Seeder
                 'cashOnHand' => 0,
                 'emp_id' => null,
                 'name' => 'Admin BFJAX',
-                'username' => 'admin',
                 'access_id' => 1,
                 'password' => bcrypt('password'),
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

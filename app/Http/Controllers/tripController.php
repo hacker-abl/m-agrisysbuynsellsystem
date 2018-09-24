@@ -14,8 +14,10 @@ use App\trucks;
 use App\Commodity;
 use App\Roles;
 use App\trip_expense;
+use App\Notification;
 use Auth;
 use App\Events\ExpensesUpdated;
+use App\Events\CashierCashUpdated;
 
 class tripController extends Controller
 {
@@ -69,6 +71,33 @@ class tripController extends Controller
         $trip_expenses->released_by = '';
         $trip_expenses->save();
         $details =  DB::table('trips')->orderBy('trip_ticket', 'desc')->first();
+        
+        if($trip_expenses) {
+            $notification = new Notification;
+            $notification->notification_type = "Trips Expense";
+            $notification->message = "Trip Expense";
+            $notification->status = "Pending";
+            $notification->admin_id = Auth::id();
+            $notification->table_source = "trip_expense";
+            $notification->trip_expense_id = $trip_expenses->id;
+            $notification->save();
+            
+            $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->get()[0];
+
+            $notification = array();
+
+            if(!empty($datum)) {
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->trip->tripId->employee,
+                    'time' => time_elapsed_string($datum->updated_at), 
+                );
+            }
+
+            event(new \App\Events\NewNotification($notification));
+        }
 
         echo json_encode($details);
 
@@ -111,9 +140,7 @@ class tripController extends Controller
             $cashOnHand->save();
         }
 
-       
-
-
+        event(new CashierCashUpdated());
         return $cashOnHand->cashOnHand;
     }
     public function refresh(Request $request){

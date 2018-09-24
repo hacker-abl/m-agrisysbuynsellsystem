@@ -12,7 +12,10 @@ use App\dtr_expense;
 use App\expense;
 use App\employee;
 use App\User;
+use App\Notification;
 use Auth;
+use App\Events\CashierCashUpdated;
+
 class dtrController extends Controller
 {
    /**
@@ -76,6 +79,31 @@ class dtrController extends Controller
         $dtr->released_by = '';
         $dtr->save();
 
+        if($dtr) {
+            $notification = new Notification;
+            $notification->notification_type = "Daily Time Record";
+            $notification->message = "Daily Time Record Release";
+            $notification->status = "Pending";
+            $notification->admin_id = Auth::id();
+            $notification->table_source = "dtr_expense";
+            $notification->dtr_expense_id = $dtr->id;
+            $notification->save();
+
+            $datum = Notification::where('id', $notification->id)->with('admin', 'dtr.dtrId.employee')->get()[0];
+
+            $notification = array();
+
+            if(!empty($datum->dtr)) {
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->dtr->dtrId->employee,
+                    'time' => time_elapsed_string($datum->updated_at), 
+                );
+            }
+
+            event(new \App\Events\NewNotification($notification));
+        }
+
         $details = dtr_expense::all();
 
         echo json_encode($details);
@@ -102,6 +130,7 @@ class dtrController extends Controller
         $user->cashOnHand -= $released->salary;
         $user->save();
 
+        event(new CashierCashUpdated());
         return $user->cashOnHand;
     }
 

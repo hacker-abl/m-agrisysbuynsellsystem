@@ -126,11 +126,12 @@ class usersController extends Controller
             return $access_name;
         })
         ->editColumn('emp_id', function ($data){
-            $employee = Employee::all();
+            $employee = Employee::where('id', $data->emp_id)->get();            
+
             foreach($employee as $emp){
-                if($emp->id == $data->emp_id)
-                    $emp_name = $emp->lname.", ".$emp->fname." ".$emp->mname;
+                $emp_name = $emp->fname." ".$emp->mname." ".$emp->lname;    
             }
+
             return $emp_name;
         })   
         ->make(true);

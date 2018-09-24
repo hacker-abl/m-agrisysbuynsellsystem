@@ -1072,7 +1072,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);
-module.exports = __webpack_require__(58);
+module.exports = __webpack_require__(61);
 
 
 /***/ }),
@@ -1104,54 +1104,56 @@ Vue.component('total-sales-today', __webpack_require__(46));
 Vue.component('total-purchases-today', __webpack_require__(49));
 Vue.component('total-balance-today', __webpack_require__(52));
 Vue.component('total-expenses-today', __webpack_require__(55));
+Vue.component('cash-on-hand', __webpack_require__(58));
 
-var update = new Vue({
-    el: '#update'
-});
+if (document.getElementById('request')) {
+    var request = new Vue({
+        el: '#request',
+        data: {
+            requests: [],
+            count: 0
+        },
+        methods: {
+            // requestApproved: function(notification){
+            // 	axios.get('notification/approve', {params: {id: notification.id}}).then((response) => {
 
-var request = new Vue({
-    el: '#request',
-    data: {
-        requests: []
-    },
-    methods: {
-        // requestApproved: function(notification){
-        // 	axios.get('notification/approve', {params: {id: notification.id}}).then((response) => {
+            // 	});
+            // },
+            // requestCancelled: function(notification){
+            //     axios.get('notification/cancel', {params: {id: notification.id}}).then((response) => {
 
-        // 	});
-        // },
-        // requestCancelled: function(notification){
-        //     axios.get('notification/cancel', {params: {id: notification.id}}).then((response) => {
+            //     });
+            // },
+            // paginate: function(offset){
+            //     var id = offset.id;
 
-        //     });
-        // },
-        // paginate: function(offset){
-        //     var id = offset.id;
+            //     axios.get('/notification/retrieve/request/more/'+id).then((response) => {
+            //         var data = response.data;
+            //         if(data) {
+            //             for (var i = 0; i < data.length; i++) {
+            //                 this.requests.push(data[i]);
+            //             };
+            //         }
+            //     });
+            // }
+        },
+        created: function created() {
+            var _this = this;
 
-        //     axios.get('/notification/retrieve/request/more/'+id).then((response) => {
-        //         var data = response.data;
-        //         if(data) {
-        //             for (var i = 0; i < data.length; i++) {
-        //                 this.requests.push(data[i]);
-        //             };
-        //         }
-        //     });
-        // }
-    },
-    created: function created() {
-        var _this = this;
+            // let user_id = document.head.querySelector('meta[name="user_id"]').content;
 
-        // let user_id = document.head.querySelector('meta[name="user_id"]').content;
+            axios.get('/notification/get').then(function (response) {
+                _this.requests = response.data.notification;
+                _this.count = response.data.count;
+            });
 
-        axios.get('/notification/get').then(function (response) {
-            _this.requests = response.data;
-        });
-
-        window.Echo.channel('notifications.cashier').listen('NewNotification', function (e) {
-            _this.requests.unshift(e.notification);
-        });
-    }
-});
+            window.Echo.channel('notifications.cashier').listen('NewNotification', function (e) {
+                // console.log(e);
+                _this.requests.unshift(e.notification);
+            });
+        }
+    });
+}
 
 /***/ }),
 /* 12 */
@@ -18527,7 +18529,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['count'],
     created: function created() {
-        console.log(this.count);
+        // console.log(this.count);
     }
 });
 
@@ -18652,9 +18654,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	props: ['request']
+    props: ['request'],
+    methods: {
+        seen: function seen(id) {
+            axios.post('/notification/update/seen', {
+                notification: id
+            }).then(function (response) {
+                if (response) {
+                    window.location.href = response.data;
+                }
+            }).catch(function (error) {
+                alert(error);
+            });
+        }
+    },
+    created: function created() {
+        $('li.body a').on('click', function (event) {
+            event.stopPropagation();
+        });
+    }
 });
 
 /***/ }),
@@ -18665,64 +18707,200 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "li",
-    { attrs: { "data-notification-id": _vm.request.notifications.id } },
-    [
-      _c(
-        "a",
+  return _vm.request.notifications.status === "pending"
+    ? _c(
+        "li",
         {
-          staticClass: "waves-effect waves-block",
-          attrs: { href: "javascript:void(0);" }
+          staticStyle: { "background-color": "#ffe9e9" },
+          attrs: { "data-notification-id": _vm.request.notifications.id }
         },
         [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "menu-info" }, [
-            _c("h4", [
-              _vm._v(
-                _vm._s(
-                  _vm.request.customer.lname +
-                    ", " +
-                    _vm.request.customer.fname +
-                    " " +
-                    _vm.request.customer.mname
-                )
-              )
-            ]),
-            _vm._v(" "),
-            _c("p", [
-              _vm._v("\n\t\t\t\t\tCash Advance request\n                ")
-            ]),
-            _vm._v(" "),
-            _c("p", [
-              _c("i", { staticClass: "material-icons" }, [
-                _vm._v("access_time")
-              ]),
-              _vm._v(
-                " Served by " +
-                  _vm._s(_vm.request.notifications.admin.name) +
-                  " " +
-                  _vm._s(_vm.request.time) +
-                  "\n                "
-              )
-            ])
-          ])
+          _c(
+            "a",
+            {
+              staticClass: "waves-effect waves-block",
+              attrs: { href: "javascript:void(0);" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.seen(_vm.request.notifications.id)
+                }
+              }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "icon-circle bg-blue-grey",
+                  staticStyle: { position: "inherit", top: "-8px" }
+                },
+                [
+                  _vm.request.notifications.notification_type === "expense"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("credit_card")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.request.notifications.notification_type === "cash advance"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("attach_money")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.request.notifications.notification_type ===
+                  "daily time record"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("av_timer")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.request.notifications.notification_type ===
+                  "trips expense"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("directions_bus")
+                      ])
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "menu-info" }, [
+                _c("h4", [
+                  _vm._v(
+                    _vm._s(
+                      _vm.request.notifications.notification_type == "Expense"
+                        ? _vm.request.customer.lname +
+                          " " +
+                          _vm.request.customer.fname
+                        : _vm.request.customer.lname +
+                          ", " +
+                          _vm.request.customer.fname +
+                          " " +
+                          _vm.request.customer.mname
+                    )
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "\n\t\t\t\t\t" +
+                      _vm._s(_vm.request.notifications.notification_type) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _c("i", { staticClass: "material-icons" }, [
+                    _vm._v("access_time")
+                  ]),
+                  _vm._v(
+                    " Served by " +
+                      _vm._s(_vm.request.notifications.admin.name) +
+                      " " +
+                      _vm._s(_vm.request.time) +
+                      "\n                "
+                  )
+                ])
+              ])
+            ]
+          )
         ]
       )
-    ]
-  )
+    : _c(
+        "li",
+        { attrs: { "data-notification-id": _vm.request.notifications.id } },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "waves-effect waves-block",
+              attrs: { href: "javascript:void(0);" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.seen(_vm.request.notifications.id)
+                }
+              }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "icon-circle bg-blue-grey",
+                  staticStyle: { position: "inherit", top: "-8px" }
+                },
+                [
+                  _vm.request.notifications.notification_type === "expense"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("credit_card")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.request.notifications.notification_type === "cash advance"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("attach_money")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.request.notifications.notification_type ===
+                  "daily time record"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("av_timer")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.request.notifications.notification_type ===
+                  "trips expense"
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v("directions_bus")
+                      ])
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "menu-info" }, [
+                _c("h4", [
+                  _vm._v(
+                    _vm._s(
+                      _vm.request.notifications.notification_type == "Expense"
+                        ? _vm.request.customer.lname +
+                          " " +
+                          _vm.request.customer.fname
+                        : _vm.request.customer.lname +
+                          ", " +
+                          _vm.request.customer.fname +
+                          " " +
+                          _vm.request.customer.mname
+                    )
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "\n\t\t\t\t\t" +
+                      _vm._s(_vm.request.notifications.notification_type) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _c("i", { staticClass: "material-icons" }, [
+                    _vm._v("access_time")
+                  ]),
+                  _vm._v(
+                    " Served by " +
+                      _vm._s(_vm.request.notifications.admin.name) +
+                      " " +
+                      _vm._s(_vm.request.time) +
+                      "\n                "
+                  )
+                ])
+              ])
+            ]
+          )
+        ]
+      )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "icon-circle bg-blue-grey" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("comment")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -19421,6 +19599,164 @@ if (false) {
 
 /***/ }),
 /* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(59)
+/* template */
+var __vue_template__ = __webpack_require__(60)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\CashOnHand.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-723bf238", Component.options)
+  } else {
+    hotAPI.reload("data-v-723bf238", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['current'],
+    data: function data() {
+        return {
+            cashier: []
+        };
+    },
+    created: function created() {
+        this.fetchHomepageUpdate();
+        this.listenForChanges();
+    },
+
+    methods: {
+        fetchHomepageUpdate: function fetchHomepageUpdate() {
+            var _this = this;
+
+            axios.get('/cash_on_hand').then(function (response) {
+                _this.cashier = response.data;
+            });
+        },
+        listenForChanges: function listenForChanges() {
+            var _this2 = this;
+
+            Echo.channel('homepage').listen('CashierCashUpdated', function (e) {
+
+                axios.get('/cash_on_hand').then(function (response) {
+                    _this2.cashier = response.data;
+                });
+            });
+        },
+        formatPrice: function formatPrice(value) {
+            var val = (value / 1).toFixed(2).replace(',', '.');
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    }
+});
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("table", { staticClass: "table table-striped" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.cashier, function(user) {
+          return _c("tr", { key: user.amount }, [
+            _c("td", [_vm._v(_vm._s(user.name))]),
+            _vm._v(" "),
+            _c("td", [_vm._v("₱ " + _vm._s(_vm.formatPrice(user.amount)))])
+          ])
+        })
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cash")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-723bf238", module.exports)
+  }
+}
+
+/***/ }),
+/* 61 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

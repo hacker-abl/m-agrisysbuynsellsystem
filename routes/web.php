@@ -16,6 +16,7 @@ Auth::routes();
 Route::group(['middleware'=>['auth', 'user:notification']], function() {
     //Notifications
     Route::get('/notification/get', 'NotificationController@get');
+    Route::post('/notification/update/{option}', 'NotificationController@update');
 });
 
 //profile
@@ -190,4 +191,5 @@ Route::group(['middleware'=>['auth']], function() {
     Route::get('/purchases_today', 'HomeController@purchases_today');
     Route::get('/balance_today', 'HomeController@balance_today');
     Route::get('/expenses_today', 'HomeController@expenses_today');
+    Route::get('/cash_on_hand', 'HomeController@cashOnHand');
 });

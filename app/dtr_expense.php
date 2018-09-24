@@ -16,4 +16,8 @@ class dtr_expense extends Model
         'status',
     );
     public $timestamps = true;
+
+    public function dtrId() {
+        return $this->hasOne('App\dtr', 'id', 'dtr_id');
+    }
 }

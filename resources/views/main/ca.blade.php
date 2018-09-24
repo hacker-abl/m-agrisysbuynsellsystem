@@ -150,11 +150,11 @@
                                          <div class="form-group">
                                               <div id="c" class="form-line">
                                                    <select type="text" id="customer_id" name="customer_id" class="form-control" required style="width: 100%;">
-                                           @foreach($customer as $a)
-                                           <option></option>
-                                           <option value="{{ $a->id }}">{{ $a->lname.", ".$a->fname." ".$a->mname}}</option>
-                                           @endforeach
-                                        </select>
+                                                        @foreach($customer as $a)
+                                                        <option></option>
+                                                        <option value="{{ $a->id }}">{{ $a->lname.", ".$a->fname." ".$a->mname}}</option>
+                                                        @endforeach
+                                                    </select>
                                               </div>
                                          </div>
                                     </div>

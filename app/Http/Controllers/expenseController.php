@@ -8,8 +8,10 @@ use App\Expense;
 use App\User;
 use App\Employee;
 use App\trip_expense;
+use App\Notification;
 use Auth;
 use App\Events\ExpensesUpdated;
+use App\Events\CashierCashUpdated;
 use DB;
 
 class expenseController extends Controller 
@@ -62,6 +64,28 @@ class expenseController extends Controller
          event(new ExpensesUpdated($expense));      
         }
 
+        if($expense) {
+            $notification = new Notification;
+            $notification->notification_type = "Expense";
+            $notification->message = "Expense";
+            $notification->status = "Pending";
+            $notification->admin_id = Auth::id();
+            $notification->table_source = "expenses";
+            $notification->expense_id = $expense->id;
+            $notification->save();
+
+            $datum = Notification::where('id', $notification->id)->with('admin', 'cash_advance')->get()[0];
+
+            $notification = array();
+
+            $notification = array(
+                'notifications' => $datum,
+                'customer' => array('lname' => 'Misc.','fname' => 'Expense','mname' => ''),
+                'time' => time_elapsed_string($datum->updated_at),
+            );
+
+            event(new \App\Events\NewNotification($notification));
+        }
         
        
     }
@@ -83,11 +107,13 @@ class expenseController extends Controller
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
+
         }
 
         $user->cashOnHand -= $released->amount;
         $user->save();
         
+        event(new CashierCashUpdated());
         return $user->cashOnHand;
     }
 

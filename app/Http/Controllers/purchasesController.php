@@ -10,10 +10,12 @@ use App\Customer;
 use App\ca;
 use App\balance;
 use App\purchases;
+use App\employee;
 use Auth;
 use App\User;
 use App\Events\PurchasesUpdated;
 use App\Events\BalanceUpdated;
+use App\Events\CashierCashUpdated;
 
 class purchasesController extends Controller
 {
@@ -174,7 +176,7 @@ class purchasesController extends Controller
             $released->save();
         }else{
             $logged_id = Auth::user()->emp_id;
-            $name= Employee::find($logged_id);
+            $name= employee::find($logged_id);
             $user = User::find(Auth::user()->id);
 
             $released = purchases::find($request->id);
@@ -186,6 +188,7 @@ class purchasesController extends Controller
         $user->cashOnHand -= $released->amtpay;
         $user->save();
          
+        event(new CashierCashUpdated());
         return $user->cashOnHand;
     }
 

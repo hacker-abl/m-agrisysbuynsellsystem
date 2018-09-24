@@ -18,4 +18,8 @@ class trips extends Model
 		'num_liters',
     );
     public $timestamps = true;
+
+    public function employee() {
+        return $this->hasOne('App\employee', 'id', 'driver_id');
+    }
 }
