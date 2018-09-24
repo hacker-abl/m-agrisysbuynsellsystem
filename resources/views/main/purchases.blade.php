@@ -743,6 +743,10 @@
 
          $(document).on('click', '#add_purchase', function(event){
               event.preventDefault();
+              var input = $(this);
+              var button =this;
+              button.disabled = true;
+              input.html('SAVING...');
               $.ajax({
                    headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -752,6 +756,8 @@
                    dataType:'text',
                    data: $('#purchase_form').serialize(),
                    success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         $("#customer").val('').trigger('change');
                         $("#commodity").val('').trigger('change');
                         swal("Success!", "Record has been added to database", "success")
@@ -779,6 +785,8 @@
                         //refresh_delivery_table();
                    },
                    error: function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Oh no!", "Something went wrong, try again.", "error")
                    }
               })
@@ -870,6 +878,10 @@
 
 
                  $(document).on('click', '#add_purchase1', function(event){
+                    var input = $(this);
+                    var button =this;
+                    button.disabled = true;
+                    input.html('SAVING...'); 
                     event.preventDefault();
                     $.ajax({
                          headers: {
@@ -880,13 +892,15 @@
                          dataType:'text',
                          data: $('#purchase_form1').serialize(),
                          success:function(data){
+                              button.disabled = false;
+                              input.html('SAVE CHANGES');
                               $("#sacks1").val("");
                               $("#kilo1").val("");
-                               $("#price1").val("");
-                               $("#fname").val("");
-                               $("#mname").val("");
-                                $("#lname").val("");
-                                $("#amount1").val("");
+                              $("#price1").val("");
+                              $("#fname").val("");
+                              $("#mname").val("");
+                              $("#lname").val("");
+                              $("#amount1").val("");
                               $("#commodity1").val('').trigger('change');
                               swal("Success!", "Record has been added to database", "success")
                               $('#purchase_modal').modal('hide');
@@ -894,6 +908,8 @@
                               //refresh_delivery_table();
                          },
                          error: function(data){
+                              button.disabled = false;
+                              input.html('SAVE CHANGES');
                               swal("Oh no!", "Something went wrong, try again.", "error")
                          }
                     })

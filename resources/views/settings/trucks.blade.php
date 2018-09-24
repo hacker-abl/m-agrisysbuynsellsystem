@@ -143,6 +143,10 @@
 
             $(document).on('click', '#add_trucks', function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -152,24 +156,30 @@
                     dataType:'text',
                     data: $('#trucks_form').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Success!", "Record has been added to database", "success")
                         $('#trucks_modal').modal('hide');
                         refresh_trucks_table();
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 })
             });
 
             $(document).on('click', '.update_trucks', function(){
                 var id = $(this).attr("id");
+                 
                 $.ajax({
                     url:"{{ route('update_trucks') }}",
                     method: 'get',
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        
                         $('#button_action').val('update');
                         $('#id').val(id);
                         $('#name').val(data.name);

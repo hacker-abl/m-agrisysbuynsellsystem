@@ -80,7 +80,7 @@ class companyController extends Controller
         $output = array(
             'name' => $company->name
         );
-        echo json_encode($output);
+        echo json_encode($output); 
     }
 
     function deletedata(Request $request){

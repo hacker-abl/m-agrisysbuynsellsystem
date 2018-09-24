@@ -34,6 +34,9 @@ class caController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function isAdmin(){
+    return Auth::user()->access_id;
+    }
     public function index(){
         $customer = Customer::all();
 
@@ -41,6 +44,7 @@ class caController extends Controller
     }
 
     public function store(Request $request){
+        if($request->get('button_action_ca') == ''){
         $ca = new ca;
         $ca->customer_id = $request->customer_id;
         $ca->reason = $request->reason;
@@ -77,6 +81,24 @@ class caController extends Controller
 
         $balance = balance::where('customer_id', '=',$request->customer_id)
                  ->increment('balance',  $request->amount);
+        }
+        if($request->get('button_action_ca') == 'update'){
+        $ca = ca::find($request->get('id_ca'));
+        $cash_advance = DB::table('cash_advance')
+            ->join('customer', 'customer.id', '=', 'cash_advance.customer_id')
+            ->select('cash_advance.id','cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at','cash_advance.balance','cash_advance.status','cash_advance.released_by')
+            ->where('cash_advance.id', $request->get('id_ca'))
+            ->get();
+        $balance = balance::find($request->customer_id);
+        $balance->balance = ($balance->balance-$cash_advance[0]->amount);
+        $balance->save();
+        $ca->customer_id = $request->customer_id;
+        $ca->reason = $request->reason;
+        $ca->amount = $request->amount;
+        $ca->save();
+        $balance = balance::where('customer_id', '=',$request->customer_id)
+                 ->increment('balance',  $request->amount);    
+        }
 
 
         event(new BalanceUpdated($ca));
@@ -118,6 +140,34 @@ class caController extends Controller
         else{
             return 1;
         }
+    }
+    function updatedata(Request $request){
+        $id = $request->input('id');
+        $cash_advance = DB::table('cash_advance')
+            ->join('customer', 'customer.id', '=', 'cash_advance.customer_id')
+            ->select('cash_advance.id','cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at','cash_advance.balance','cash_advance.status','cash_advance.released_by')
+            ->where('cash_advance.id', $id)
+            ->get();
+            
+        $output = array(
+            'customer_id' => $cash_advance[0]->customer_id,
+            'reason' => $cash_advance[0]->reason,
+            'amount' => $cash_advance[0]->amount,
+            'balance' => $cash_advance[0]->balance
+        );
+        echo json_encode($output);
+    }
+
+    function deletedata(Request $request){
+        $ca = ca::find($request->input('id'));
+        $customer= $ca->customer_id; 
+        $amount= $ca->amount;
+        $balance = balance::find($customer);
+        $balance->balance = ($balance->balance-$amount);
+        $balance->save();
+        echo json_encode($balance->balance);
+        $ca->delete();
+        
     }
 
     public function refresh(){
@@ -161,9 +211,12 @@ class caController extends Controller
             ->latest();
         return \DataTables::of($cash_advance)
          ->addColumn('action', function($cash_advance){
-            if($cash_advance->status=="On-Hand"){
+            if($cash_advance->status=="On-Hand" && isAdmin()==1){
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
+            }else if($cash_advance->status=="On-Hand" && isAdmin()!=1){
                  return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
-            }else{
+            }
+            else{
                  return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>';
             }
            

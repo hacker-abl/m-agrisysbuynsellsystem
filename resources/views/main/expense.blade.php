@@ -21,41 +21,38 @@
 
 <div class="tab-content">
     <div id="expense_tab" class="tab-pane fade in active">
-        <div class="modal fade" id="expense_modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>Add Expense</h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20"
-                                        title="PRINT AND SAVE"><i class="material-icons">print</i></button>
-                                </li>
-                                <li class="dropdown">
-                                    <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_expense') }}">
-                                        <input type="hidden" id="expense_clone" name="expense_clone">
-                                        <input type="hidden" id="type_clone" name="type_clone">
-                                        <input type="hidden" id="amount_clone" name="amount_clone">
-                                        <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form"
-                                            id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <form action="#" class="form-horizontal " id="expense_form">
-
-                                <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                        <label for="expense">Name</label>
-                                    </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <input type="text" id="expense" name="expense" class="form-control"
-                                                    placeholder="Enter your expense description" required>
-                                            </div>
+    <div class="modal fade" id="expense_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2 class="modal_title">Add Expense</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" title="PRINT AND SAVE" ><i class="material-icons">print</i></button>
+                            </li>
+                            <li class="dropdown">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_expense') }}">
+                                <input type="hidden" id="expense_clone" name="expense_clone">
+                                <input type="hidden" id="type_clone" name="type_clone">
+                                <input type="hidden" id="amount_clone" name="amount_clone">
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <form action="#" class="form-horizontal " id="expense_form">
+                             <input type="hidden" name="id" id="id" value="">
+                            <input type="hidden" name="button_action" id="button_action" value="">    
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="expense">Name</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="expense" name="expense" class="form-control" placeholder="Enter your expense description"  required>
                                         </div>
                                     </div>
                                 </div>
@@ -101,42 +98,39 @@
                 </div>
             </div>
         </div>
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>List of expenses as of {{ date('Y-m-d ') }}</h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20" data-toggle="modal"
-                                    data-target="#expense_modal"><i class="material-icons">library_add</i></button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive">
-                            <p id="date_filter">
-                                <h5>Date Range Filter</h5>
-                                <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date"
-                                    type="text" id="datepicker_from" />
-                                <span id="date-label-to" class="date-label">To:<input class="date_range_filter date"
-                                        type="text" id="datepicker_to" />
-                            </p>
-                            <br>
-                            <table id="expensetable" class="table table-bordered table-striped table-hover  ">
-                                <thead>
-                                    <tr>
-                                        <th width="100" style="text-align:center;">Name</th>
-                                        <th width="100" style="text-align:center;">Type</th>
-                                        <th width="100" style="text-align:center;">Amount</th>
-                                        <th width="100" style="text-align:center;">Status</th>
-                                        <th width="100" style="text-align:center;">Date</th>
-                                        <th width="100" style="text-align:center;">Released By</th>
-                                        <th width="100" style="text-align:center;">Releasing</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>List of expenses as of {{ date('Y-m-d ') }}</h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20" data-toggle="modal" data-target="#expense_modal"><i class="material-icons">library_add</i></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <p id="date_filter">
+                            <h5>Date Range Filter</h5>
+                            <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
+                            <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="datepicker_to" />
+                        </p>
+                        <br>
+                        <table id ="expensetable" class="table table-bordered table-striped table-hover  ">
+                            <thead>
+                                <tr>
+                                    <th  width="100" style="text-align:center;">Name</th>
+                                    <th  width="100" style="text-align:center;">Type</th>
+                                    <th  width="100" style="text-align:center;">Amount</th>
+                                    <th  width="100" style="text-align:center;">Status</th>
+                                    <th  width="100" style="text-align:center;">Date</th>
+                                    <th  width="100" style="text-align:center;">Released By</th>
+                                    <th  width="100" style="text-align:center;">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -151,47 +145,44 @@
                     <div class="header">
                         <h2>List of Trip Expenses as of {{ date('Y-m-d ') }}</h2>
 
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive">
-                            <p id="trip_expense_date_filter">
-                                <h5>Date Range Filter</h5>
-                                <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date"
-                                    type="text" id="trip_expense_datepicker_from" />
-                                <span id="date-label-to" class="date-label">To:<input class="date_range_filter date"
-                                        type="text" id="trip_expense_datepicker_to" />
-                            </p>
-                            <br>
-                            <table id="trip_expensetable" class="table table-bordered table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th width="100" style="text-align:center;">Trip ID</th>
-                                        <th width="100" style="text-align:center;">Destination</th>
-                                        <th width="100" style="text-align:center;">Type</th>
-                                        <th width="100" style="text-align:center;">Amount</th>
-                                        <th width="100" style="text-align:center;">Status</th>
-                                        <th width="100" style="text-align:center;">Date</th>
-                                        <th width="100" style="text-align:center;">Released By</th>
-                                        <th width="100" style="text-align:center;">Releasing</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                         <p id="trip_expense_date_filter">
+                            <h5>Date Range Filter</h5>
+                            <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="trip_expense_datepicker_from" />
+                            <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="trip_expense_datepicker_to" />
+                        </p>
+                        <br>
+                        <table id="trip_expensetable" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th  width="100" style="text-align:center;">Trip ID</th>
+                                    <th  width="100" style="text-align:center;">Destination</th>
+                                    <th  width="100" style="text-align:center;">Type</th>
+                                    <th  width="100" style="text-align:center;">Amount</th>
+                                    <th  width="100" style="text-align:center;">Status</th>
+                                    <th  width="100" style="text-align:center;">Date</th>
+                                    <th  width="100" style="text-align:center;">Released By</th>
+                                    <th  width="100" style="text-align:center;">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="release_modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>Are You Sure?</h2>
-                </div>
-                <div class="body">
-                    <form action="#" class="form-horizontal " id="expense_form">
+ <div class="modal fade" id="release_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Are You Sure?</h2>
+                    </div>
+                    <div class="body">
+                        <form action="#" class="form-horizontal " id="release_form">
 
 
                         <div class="row clearfix">
@@ -205,16 +196,15 @@
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="release_modal_normal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>Are You Sure?</h2>
-                </div>
-                <div class="body">
-                    <form action="#" class="form-horizontal " id="expense_form">
+    <div class="modal fade" id="release_modal_normal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Are You Sure?</h2>
+                    </div>
+                    <div class="body">
+                        <form action="#" class="form-horizontal " id="release">
 
 
                         <div class="row clearfix">
@@ -253,7 +243,6 @@
         $(".nav-tabs a").click(function () {
             $(this).tab('show');
         });
-
 
         $.extend($.fn.dataTable.defaults, {
             "language": {
@@ -760,6 +749,92 @@
             id = $(this).attr("id");
         });
 
+        function refresh_expense_table(){
+            expensetable.ajax.reload(); //reload datatable ajax
+        }
+
+        $('#expense_modal').on('hidden.bs.modal', function () {
+            $('.modal_title').text('Add Expense');
+        })
+
+        $("#add_expense").click(function(event) {
+            var input = $(this);
+            var button =this;
+            button.disabled = true;
+            input.html('SAVING...');    
+            event.preventDefault();
+            $.ajax({
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('add_expense')}}",
+                dataType: "text",
+                data: $('#expense_form').serialize(),
+                success: function(data){
+                    swal("Success!", "Record has been added to database", "success")
+                    $('#expense_modal').modal('hide');
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        $('.modal_title').text('Add Expense');
+                    refresh_expense_table();
+                },
+                error: function(data){
+                    swal("Oh no!", "Something went wrong, try again.", "error")
+                    button.disabled = false;
+                    input.html('SAVE CHANGES');
+                    $('.modal_title').text('Add Expense');
+                }
+            });
+        });
+             
+        $(document).on('click', '.update_expense', function(){
+            var id = $(this).attr("id");
+            $.ajax({
+                url:"{{ route('update_expense') }}",
+                method: 'get',
+                data:{id:id},
+                dataType:'json',
+                success:function(data){
+                        
+                    $('#button_action').val('update');
+                    $('#id').val(id);
+                    $('#expense').val(data.description);
+                    $('#type').val(data.type);
+                    $('#amount').val(data.amount);
+                    $('#expense_modal').modal('show');
+                    $('.modal_title').text('Update Expense');
+                    refresh_expense_table();
+                }
+            })
+        });
+
+        //Delete expense
+        $(document).on('click', '.delete_expense', function(){
+            var id = $(this).attr('id');
+            swal({
+                title: "Are you sure?",
+                text: "Delete this record?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function(){
+                $.ajax({
+                    url:"{{ route('delete_expense') }}",
+                    method: "get",
+                    data:{id:id},
+                    success:function(data){
+                        refresh_expense_table();
+                            swal("Deleted!", "The record has been deleted.", "success");
+                    }
+                })
+                
+            });
+        });
+           
         $(document).on('click', '.release_expense_normal', function (event) {
             event.preventDefault();
             id = $(this).attr("id");

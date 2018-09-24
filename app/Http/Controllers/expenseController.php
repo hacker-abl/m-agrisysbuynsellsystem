@@ -14,8 +14,9 @@ use App\Events\ExpensesUpdated;
 use App\Events\CashierCashUpdated;
 use DB;
 
-class expenseController extends Controller
+class expenseController extends Controller 
 {
+   
     /**
      * Create a new controller instance.
      *
@@ -34,12 +35,17 @@ class expenseController extends Controller
     public function index()
     {
 
+        
         return view('main.expense');
 
     }
 
+    public function isAdmin(){
+    return Auth::user()->access_id;
+    }
     public function store(Request $request)
     {
+        if($request->get('button_action') == ''){
         $expense = new Expense;
         $expense->description = $request->expense;
         $expense->type = $request->type;
@@ -47,6 +53,16 @@ class expenseController extends Controller
         $expense->status = "On-Hand";
         $expense->released_by = '';
         $expense->save();
+         event(new ExpensesUpdated($expense));
+        }
+        if($request->get('button_action') == 'update'){
+        $expense = Expense::find($request->get('id'));  
+        $expense->description = $request->expense;
+        $expense->type = $request->type;
+        $expense->amount = $request->amount;
+        $expense->save();    
+         event(new ExpensesUpdated($expense));      
+        }
 
         if($expense) {
             $notification = new Notification;
@@ -71,7 +87,7 @@ class expenseController extends Controller
             event(new \App\Events\NewNotification($notification));
         }
         
-        event(new ExpensesUpdated($expense));
+       
     }
 
     public function release_update_normal(Request $request){
@@ -124,9 +140,24 @@ class expenseController extends Controller
             return 1;
         }
     }
+    function updatedata(Request $request){
+        $id = $request->input('id');
+        $expense = Expense::find($id);
+        $output = array(
+            'description' => $expense->description,
+            'type' => $expense->type,
+            'amount' => $expense->amount
+        );
+        echo json_encode($output);
+    }
+
+    function deletedata(Request $request){
+        $expense = Expense::find($request->input('id'));
+        $expense->delete();
+    }
 
     public function refresh(Request $request){  
-
+      
       $from = $request->date_from;
       $to = $request->date_to;    
         if($to==""){
@@ -135,20 +166,24 @@ class expenseController extends Controller
         $expense = DB::table('expenses')->latest();
         }else{
            
-             $expense =Expense::where('created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+             $expense = Expense::where('created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
                 ->where('created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
                 ->latest();
         }
           
        return \DataTables::of($expense)
        ->addColumn('action', function($expense){
-            if($expense->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>';
-            }else{
+            if($expense->status=="On-Hand" && isAdmin()==1 ){
+                 return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">delete</i></button>';
+            }else if($expense->status=="On-Hand" && isAdmin()!=1){
+                return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">mode_edit</i></button>';
+            }
+            else{
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$expense->id.'"><i class="material-icons">done_all</i></button>';
             }
            
         })
+
         ->editColumn('amount', function ($data) {
             return '₱'.number_format($data->amount, 2, '.', ',');
         })

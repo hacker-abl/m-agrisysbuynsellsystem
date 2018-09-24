@@ -164,6 +164,10 @@
             //Add Commodity
             $(document).on('click', '#add_commodity', function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -175,10 +179,14 @@
                     success:function(data){
                         swal("Success!", "Record has been added to database", "success")
                         $('#commodity_modal').modal('hide');
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         refresh_commodity_table();
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 })
             });
@@ -192,6 +200,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+
                         $('#button_action').val('update');
                         $('#id').val(id);
                         $('#name').val(data.name);

@@ -176,6 +176,10 @@
             //Add Employee
             $(document).on('click', '#add_employee', function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -185,12 +189,16 @@
                     dataType:'text',
                     data: $('#employee_form').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Success!", "Record has been added to database", "success")
                         $('#employee_modal').modal('hide');
                         refresh_employee_table();
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 })
             });
@@ -198,12 +206,14 @@
             //Update Employee
             $(document).on('click', '.update_employee', function(){
                 var id = $(this).attr("id");
+                 
                 $.ajax({
                     url:"{{ route('update_employee') }}",
                     method: 'get',
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        
                         $('#button_action').val('update');
                         $('#id').val(id);
                         $('#fname').val(data.fname);
