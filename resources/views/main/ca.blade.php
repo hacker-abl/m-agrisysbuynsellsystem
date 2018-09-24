@@ -524,7 +524,7 @@
                   $('#cn').removeClass('hidden');
               }
               else{
-                   $('#cn').val('');
+                   $('#checknumber').val('');
                     $('#cn').addClass('hidden');
               }
             });

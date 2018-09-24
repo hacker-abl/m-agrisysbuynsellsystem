@@ -10,8 +10,10 @@ class sales extends Model
      protected $table = 'sales';
      protected $fillable = array(
          'commodity_id',
+         'receiver_id',
          'company_id',
-	    'kilos',
+        'kilos',
+        'check_number',
 	    'amount'
      );
 
