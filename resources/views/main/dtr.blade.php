@@ -157,6 +157,17 @@
                                             <th>Releasing</th>
                                         </tr>
                                     </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                             <div class="modal-footer">
@@ -198,6 +209,18 @@
 										<th width="100" style="text-align:center;">Action</th>
 									</tr>
 								</thead>
+                                <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
 							</table>
 						</div>
 					</div>
@@ -264,10 +287,80 @@
 					.end();
 			})
 
+            function number_format(number, decimals, dec_point, thousands_sep) {
+                // Strip all characters but numerical ones.
+                number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+                var n = !isFinite(+number) ? 0 : +number,
+                    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                    s = '',
+                    toFixedFix = function (n, prec) {
+                        var k = Math.pow(10, prec);
+                        return '' + Math.round(n * k) / k;
+                    };
+                // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+                s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+                if (s[0].length > 3) {
+                    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+                }
+                if ((s[1] || '').length < prec) {
+                    s[1] = s[1] || '';
+                    s[1] += new Array(prec - s[1].length + 1).join('0');
+                }
+                return s.join(dec);
+            }
+
             var dtr = $('#dtr_table').DataTable({
+                "footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column( 5 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 5, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 5 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+                },
 				dom: 'Bfrtip',
 				buttons: [
-                    'print'
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    }
                 ],
 				processing: true,
                 columnDefs: [
@@ -386,29 +479,75 @@
                                         data:{id:person_id},
                                         dataType: 'json',
                                         success:function(data){
-                                        dtr_info= $('#view_dtr_table').DataTable({
+                                            dtr_info= $('#view_dtr_table').DataTable({
+                                                "footerCallback": function ( row, data, start, end, display ) {
+                                                    var api = this.api(), data;
+                                         
+                                                    // Remove the formatting to get integer data for summation
+                                                    var intVal = function ( i ) {
+                                                        return typeof i === 'string' ?
+                                                            i.replace(/[\₱,]/g, '')*1 :
+                                                            typeof i === 'number' ?
+                                                                i : 0;
+                                                    };
+                                         
+                                                    // Total over all pages
+                                                    total = api
+                                                        .column( 3 )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Total over this page
+                                                    pageTotal = api
+                                                        .column( 3, { page: 'current'} )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Update footer
+                                                    $( api.column( 3 ).footer() ).html(
+                                                        'Total: <br>₱' + number_format(pageTotal,2)
+                                                    );
+                                                },
                                                 dom: 'Bfrtip',
                                                 bDestroy: true,
                                                 buttons: [
-                                                    'print'
+                                                    {
+                                                        extend: 'print',
+                                                        exportOptions: {
+                                                            columns: [ 0, 1, 2, 3, 4, 5 ]
+                                                        },
+                                                        customize: function ( win ) {
+                                                            $(win.document.body)
+                                                                .css( 'font-size', '10pt' );
+                                         
+                                                            $(win.document.body).find( 'table' )
+                                                                .addClass( 'compact' )
+                                                                .css( 'font-size', 'inherit' );
+                                                        },
+                                                        footer: true
+                                                    }
                                                 ],
                                                 columnDefs: [
-                                            {
-                                                "targets": "_all", // your case first column
-                                                "className": "text-center",
+                                                {
+                                                    "targets": "_all", // your case first column
+                                                    "className": "text-center",
 
-                                            }
-                                            ],
+                                                }
+                                                ],
                                                 data: data.data,
                                                 columns:[
                                                     {data: 'overtime', name: 'overtime'},
                                                     {data: 'num_hours', name: 'num_hours'},
                                                     {data: 'created_at', name: 'created_at',
-                                                type: "date",
-                                                    render:function (value) {
-                                                        var ts = new Date(value);
+                                                        type: "date",
+                                                        render:function (value) {
+                                                            var ts = new Date(value);
 
-                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
+                                                            return ts.toDateString()+" "+ts.toLocaleTimeString()}
                                                     },
                                                     {data: 'salary', name: 'salary'},
                                                     {data: 'status', name: 'status'},
@@ -416,12 +555,13 @@
                                                     {data: "action", orderable:false,searchable:false}
                                                 ]
                                             });
+
                                             dtr.ajax.reload();
                                         }
-                                    });
+                                        });
                                     swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
                                     $('#curCashOnHand').html(data.toFixed(2));
-                                }
+                                    }
                             });
                         }
                     }
@@ -457,10 +597,56 @@
                                         dataType: 'json',
                                         success:function(data){
                                         dtr_info= $('#view_dtr_table').DataTable({
+                                                "footerCallback": function ( row, data, start, end, display ) {
+                                                    var api = this.api(), data;
+                                         
+                                                    // Remove the formatting to get integer data for summation
+                                                    var intVal = function ( i ) {
+                                                        return typeof i === 'string' ?
+                                                            i.replace(/[\₱,]/g, '')*1 :
+                                                            typeof i === 'number' ?
+                                                                i : 0;
+                                                    };
+                                         
+                                                    // Total over all pages
+                                                    total = api
+                                                        .column( 3 )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Total over this page
+                                                    pageTotal = api
+                                                        .column( 3, { page: 'current'} )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Update footer
+                                                    $( api.column( 3 ).footer() ).html(
+                                                        'Total: <br>₱' + number_format(pageTotal,2)
+                                                    );
+                                                },
                                                 dom: 'Bfrtip',
                                                 bDestroy: true,
                                                 buttons: [
-                                                    'print'
+                                                    {
+                                                        extend: 'print',
+                                                        exportOptions: {
+                                                            columns: [ 0, 1, 2, 3, 4, 5 ]
+                                                        },
+                                                        customize: function ( win ) {
+                                                            $(win.document.body)
+                                                                .css( 'font-size', '10pt' );
+                                         
+                                                            $(win.document.body).find( 'table' )
+                                                                .addClass( 'compact' )
+                                                                .css( 'font-size', 'inherit' );
+                                                        },
+                                                        footer: true
+                                                    }
                                                 ],
                                                 columnDefs: [
                                             {
@@ -553,10 +739,56 @@
                                         dataType: 'json',
                                         success:function(data){
                                         dtr_info= $('#view_dtr_table').DataTable({
+                                                "footerCallback": function ( row, data, start, end, display ) {
+                                                    var api = this.api(), data;
+                                         
+                                                    // Remove the formatting to get integer data for summation
+                                                    var intVal = function ( i ) {
+                                                        return typeof i === 'string' ?
+                                                            i.replace(/[\₱,]/g, '')*1 :
+                                                            typeof i === 'number' ?
+                                                                i : 0;
+                                                    };
+                                         
+                                                    // Total over all pages
+                                                    total = api
+                                                        .column( 3 )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Total over this page
+                                                    pageTotal = api
+                                                        .column( 3, { page: 'current'} )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Update footer
+                                                    $( api.column( 3 ).footer() ).html(
+                                                        'Total: <br>₱' + number_format(pageTotal,2)
+                                                    );
+                                                },
                                                 dom: 'Bfrtip',
                                                 bDestroy: true,
                                                 buttons: [
-                                                    'print'
+                                                    {
+                                                        extend: 'print',
+                                                        exportOptions: {
+                                                            columns: [ 0, 1, 2, 3, 4, 5 ]
+                                                        },
+                                                        customize: function ( win ) {
+                                                            $(win.document.body)
+                                                                .css( 'font-size', '10pt' );
+                                         
+                                                            $(win.document.body).find( 'table' )
+                                                                .addClass( 'compact' )
+                                                                .css( 'font-size', 'inherit' );
+                                                        },
+                                                        footer: true
+                                                    }
                                                 ],
                                                 columnDefs: [
                                             {
@@ -648,10 +880,56 @@
                         $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")  Pending Salary: ₱"+total);
 
                     dtr_info= $('#view_dtr_table').DataTable({
+                            "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                     
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i === 'string' ?
+                                        i.replace(/[\₱,]/g, '')*1 :
+                                        typeof i === 'number' ?
+                                            i : 0;
+                                };
+                     
+                                // Total over all pages
+                                total = api
+                                    .column( 3 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 3, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Update footer
+                                $( api.column( 3 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
+                            },
                             dom: 'Bfrtip',
                             bDestroy: true,
                             buttons: [
-                                'print'
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3, 4, 5 ]
+                                    },
+                                    customize: function ( win ) {
+                                        $(win.document.body)
+                                            .css( 'font-size', '10pt' );
+                     
+                                        $(win.document.body).find( 'table' )
+                                            .addClass( 'compact' )
+                                            .css( 'font-size', 'inherit' );
+                                    },
+                                    footer: true
+                                }
                             ],
 							columnDefs: [
 						   {
