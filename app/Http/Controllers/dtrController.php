@@ -54,6 +54,7 @@ class dtrController extends Controller
         $dtr->status = "On-Hand";
         $dtr->save();
         $details = dtr::where('employee_id', $request->employee_id)->orderBy('employee_id', 'desc')->latest()->get();
+        echo json_encode($details);
         }
         if($request->get('button_action') == 'update'){
         $dtr = dtr::find($request->get('id'));
@@ -63,10 +64,16 @@ class dtrController extends Controller
         $dtr->rate = $request->rate;
         $dtr->salary = $request->salary;   
         $dtr->save(); 
-        $details = dtr::where('employee_id', $request->employee_id)->orderBy('employee_id', 'desc')->latest()->get();  
+        $updated = array(
+            'updated' => "updated",
+            'details' => dtr::where('employee_id', $request->employee_id)->orderBy('employee_id', 'desc')->latest()->get()
+                        );  
+
+        return json_encode($updated);
         }
 
-        echo json_encode($details);
+
+        
     }
 
     public function add_dtr_expense(Request $request){

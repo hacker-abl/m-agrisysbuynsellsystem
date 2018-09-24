@@ -443,8 +443,12 @@
                     dataType: 'text',
                     data: $('#dtr_form').serialize(),
                     success:function(data){
+                        console.log(data);                                                               
                         dataparsed = $.parseJSON(data);
-                        $("#id").val(dataparsed[0].id);
+                         if(dataparsed.updated=="updated"){
+                                        $('#dtr_view_modal').modal('show');
+                                    }
+                        $("#id").val(dataparsed.details[0].id);
                         $('#dtr_modal').modal('hide');
                         $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
@@ -485,27 +489,8 @@
                                             dtr.ajax.reload();
                                         }
                                     });
-                                refresh_dtr_table();
-                        $('#dtr_view_modal').modal('show'); 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: "{{ route('add_dtr_expense') }}",
-                    method: 'POST',
-                    dataType: 'text',
-                    data: $('#dtr_form').serialize(),
-                    success:function(data){
-                       $('#dtr_modal').modal('hide');
-                       button.disabled = false;
-                       input.html('SAVE CHANGES');
-                    },
-                    error: function(data){
-						swal("Oh no!", "Something went wrong on dtr expense, try again.", "error");
-                        button.disabled = false;
-					}
-                });
-
+                               
+                                  
                         swal("Success!", "Record has been added to database", "success");
                         button.disabled = false;
 						refresh_dtr_table();
