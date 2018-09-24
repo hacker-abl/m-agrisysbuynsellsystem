@@ -138,6 +138,8 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
 Route::group(['middleware'=>['auth', 'user:purchases']], function() {
     //PURCHASES
     Route::get('/purchases', 'purchasesController@index')->name('purchases');
+    Route::get('/update_purchases', 'purchasesController@updatedata')->name('update_purchases');
+    Route::get('/delete_purchases', 'purchasesController@deletedata')->name('delete_purchases');
     Route::get('/find_amt', 'purchasesController@findAmount')->name('find_amt');
     Route::get('/refresh_trans', 'purchasesController@updateId')->name('refresh_trans');
     Route::get('/findCustomer', 'purchasesController@updatecustomerId')->name('findCustomer');

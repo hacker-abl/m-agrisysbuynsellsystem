@@ -88,6 +88,7 @@ class purchasesController extends Controller
 
     public function store(Request $request)
     {
+        if($request->get('button_action1') == 'add'){
           if($request->get('stat1') == 'old'){
             $purchases= new Purchases;
             $purchases->trans_no = $request->ticket;
@@ -106,8 +107,7 @@ class purchasesController extends Controller
             $purchases->released_by='';
             $purchases->save();
 
-          $balance = balance::where('customer_id', '=',$request->customer)
-                   ->decrement('balance', $request->balance1 - $request->balance);
+       
               }
 
               if($request->get('stat') == 'new'){
@@ -163,6 +163,25 @@ class purchasesController extends Controller
 
             event(new PurchasesUpdated($purchases));
             event(new BalanceUpdated($purchases));
+        }
+        if($request->get('button_action1') == 'update'){
+            $purchases=  Purchases::find($request->get('id'));;
+            $purchases->trans_no = $request->ticket;
+            $purchases->customer_id = $request->customerID;
+            $purchases->commodity_id= $request->commodityID;
+            $purchases->sacks = $request->sacks;
+            $purchases->ca_id = $request->caID;
+            $purchases->balance_id = $request->balance;
+            $purchases->partial = $request->partial;
+            $purchases->kilo = $request->kilo;
+            $purchases->price = $request->price;
+            $purchases->total = $request->total;
+            $purchases->amtpay= $request->amount;
+            $purchases->remarks= $request->remarks;
+            $purchases->status = "On-Hand";
+            $purchases->released_by='';
+            $purchases->save();
+        }
     }
 
     public function release_purchase(Request $request){
@@ -174,6 +193,9 @@ class purchasesController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
+
+            $balance = balance::where('customer_id', '=',$request->customer)
+            ->decrement('balance', $request->balance1 - $request->balance);
         }else{
             $logged_id = Auth::user()->emp_id;
             $name= employee::find($logged_id);
@@ -183,6 +205,9 @@ class purchasesController extends Controller
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
+
+            $balance = balance::where('customer_id', '=',$request->customer)
+            ->decrement('balance', $request->balance1 - $request->balance);
         }
 
         $user->cashOnHand -= $released->amtpay;
@@ -235,12 +260,12 @@ class purchasesController extends Controller
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function($ultimatesickquery){
             if($ultimatesickquery->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>';
+                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button><button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button><button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }else{
-                 return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>';
+                 return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button><button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button><button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }
-           
         })
+       
         ->editColumn('released_by', function ($data) {
             if($data->released_by==""){
                 return "None";
@@ -275,8 +300,35 @@ class purchasesController extends Controller
         ->editColumn('created_at', function ($data) {
             return date('F d, Y g:i a', strtotime($data->created_at));
         })
-
+ 
         ->make(true);
+    }
+
+    function deletedata(Request $request){
+        $purchases = Purchases::find($request->input('id'));
+        $purchases->delete();
+    }
+
+    function updatedata(Request $request){
+        $id = $request->input('id');
+        $commodity = Purchases::find($id);
+        $output = array(
+            'customer_id' => $commodity->customer_id,
+            'trans_no' => $commodity->trans_no,
+            'commodity_id' => $commodity->commodity_id,
+            'sacks' => $commodity->sacks,
+            'ca_id' => $commodity->ca_id,
+            'balance_id' => $commodity->balance_id,
+            'partial' => $commodity->partial,
+            'kilo' => $commodity->kilo,
+            'price' => $commodity->price,
+            'total' => $commodity->total,
+            'amtpay' => $commodity->amtpay,
+            'remarks' => $commodity->remarks,
+            'status' => $commodity->status,
+           // 'released_by' => $commodity->suki_price,
+        );
+        echo json_encode($output);
     }
 
 }

@@ -19,6 +19,7 @@
                             </li>
                             <li class="dropdown">
                                 <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_purchase') }}">
+                                <input type="hidden" name="button_action" id="button_action" value="">
                                 <input type="hidden" id="ticket_clone" name="ticket_clone">
                                 <input type="hidden" id="customer_clone" name="customer_clone">
                                 <input type="hidden" id="commodity_clone" name="commodity_clone">
@@ -53,8 +54,10 @@
                                   <input type="hidden" name="last" id="last" value="">
                                   <input type="hidden" name="pr" id="pr" value="">
                                   <input type="hidden" name="suki" id="suki" value="">
-
-                                  <input type="hidden" name="button_action" id="button_action" value="">
+                                  <input type="hidden" name="customerID" id="customerID" value="">
+                                  <input type="hidden" name="commodityID" id="commodityID" value="">
+                                  <input type="hidden" name="caID" id="caID" value="">
+                                  <input type="hidden" name="button_action1" id="button_action1" value="">
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Transaction Number</label>
@@ -238,6 +241,7 @@
                         </div>
                            <div id="home1" class="tab-pane fade in ">
                                 <form class="form-horizontal " id="purchase_form1">
+                                
                                      <input type="hidden" name="stat" id="stat" value="new">
                                      <input type="hidden" name="id1" id="id1" value="">
                                      <input type="hidden" name="balance2" id="balance2" value="">
@@ -497,7 +501,7 @@
                                                  <th width="100" style="text-align:center;">Status</th>
                                                  <th width="100" style="text-align:center;">Released By</th>
                                                  <th width="100" style="text-align:center;">Remarks</th>
-                                                 <th width="100" style="text-align:center;">Releasing</th>
+                                                 <th width="150" style="text-align:center;">Releasing</th>
                                             </tr>
                                        </thead>
                                   </table>
@@ -518,6 +522,77 @@
     $(document).ready(function () {
 
         document.title = "M-Agri - Purchases";
+        
+
+          //Delete Purchases
+          $(document).on('click', '.delete_purchase', function(){
+                var id = $(this).attr('id');
+                swal({
+                    title: "Are you sure?",
+                    text: "Delete this record?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false
+                },
+				function(){
+				    $.ajax({
+                        url:"{{ route('delete_purchases') }}",
+                        method: "get",
+                        data:{id:id},
+                        success:function(data){
+                            refresh_purchases_table();
+                        }
+                    })
+
+				    swal("Deleted!", "The record has been deleted.", "success");
+			    });
+            });
+
+               $(document).on('click', '.edit_purchase', function(){
+                var id = $(this).attr('id');
+              
+                $('.modal_title').text('Update Purchases');
+                 $.ajax({
+                    url:"{{ route('update_purchases') }}",
+                    method: 'get',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        $('#button_action1').val('update');
+                        $('#id').val(id);
+                        $('#customer').select2('enable',false);
+
+                        $("#customer").val(data.customer_id).trigger('change');
+                        $('#customerID').val(data.customer_id);
+                        $('#commodityID').val(data.commodity_id);
+                        $('#caID').val(data.ca_id);
+                        $('#ticket').val(data.trans_no);
+                        $("#commodity").val(data.commodity_id).trigger('change');
+                        $('#sacks').val(data.sacks);
+                        $('#kilo').val(data.kilo);
+                        $('#price').val(data.price);
+                        $('#total').val(data.total);
+                        $('#amount').val(data.amtpay);
+                        $("#remarks").val(data.remarks).trigger('change');
+                        var a = data.customer_id;
+            $.ajax({
+             url: "{{ route('find_amt') }}",
+             data: { id : a },
+             dataType:'json',
+             success: function(data) {
+                  $('#ca').val(data.balance)
+                  $('#balance').val(data.balance)
+                  $('#balance1').val(data.balance)
+                  $('#last').val(data.suki_type)
+               }
+            });
+                    $('#purchase_modal').modal('show');
+                       
+                    }
+                })
+            });
 
          $("#homeclick").on('click', function() {
                $('#stat').val("old");
@@ -546,6 +621,7 @@
               ],
               processing: true,
               serverSide: true,
+              scrollX: true,
               order:[],
               columnDefs: [
   				{
@@ -610,6 +686,7 @@
               buttons: [
                   'print'
               ],
+              scrollX: true,
               processing: true,
               serverSide: true,
               order:[],
@@ -680,6 +757,7 @@
               buttons: [
                   'print'
               ],
+              scrollX: true,
               processing: true,
               serverSide: true,
               order:[],
@@ -742,6 +820,9 @@
          }
 
          $(document).on('click', '#add_purchase', function(event){
+            $('.modal_title').text('Add Purchase');
+                $('#button_action').val('add');
+               
               event.preventDefault();
               $.ajax({
                    headers: {
@@ -1302,6 +1383,32 @@
         $(document).on('click','.open_purchase_modal', function(){
              $('.modal_title').text('Add Purchase');
               $('#button_action').val('add');
+              $('#button_action1').val('add');
+              $('#customer').select2('enable');
+              $("#customer").val('').trigger('change');
+              $("#commodity").val('').trigger('change');
+                       
+            $('#purchase_modal').modal('hide');
+                    
+            $("#sacks").val("");
+            $("#kilo").val("");
+            $("#price").val("");
+            $("#sacks1").val("");
+            $("#kilo1").val("");
+            $("#price1").val("");
+            $("#fname").val("");
+            $("#mname").val("");
+            $("#lname").val("");
+            $("#amount1").val("");
+            $("#total").val("");
+            $("#amount").val("");
+            $("#ca").val("");
+            $("#balance").val("");
+
+            $("#partial").val("0");
+            $("#commodity").val('').trigger('change');
+            $("#commodity1").val('').trigger('change');
+            $("#customer").val('').trigger('change');
              $.ajax({
                   url:"{{ route('refresh_trans') }}",
                   method: 'get',
@@ -1466,7 +1573,9 @@
         });
 
         $('#commodity').on('select2:select', function (e) {
-
+            if($('#button_action1').val()=="update"){
+                $('#commodityID').val($(e.currentTarget).val());
+            }
              var id = $(e.currentTarget).val()
              $.ajax({
              url: "{{ route('find_comm') }}",
@@ -1499,7 +1608,7 @@
                         if ($('#partial').val() != "" ){
                             t= parseFloat($('#partial').val());
                         }
-                             e = b * (d*50);
+                             e = b * d;
                              var y = e + (b*x);
                              var z = e + (b*x)+t;
                              //alert(e);
@@ -1531,7 +1640,7 @@
                       if ($('#partial').val() != "" ){
                           t= parseFloat($('#partial').val());
                       }
-                           e = c * (d*50);
+                           e = c * (d);
                            var y = e + (c*x);
                             var z = e + (c*x)+t;
                            //alert(e);
@@ -1582,7 +1691,7 @@
                         if ($('#partial1').val() != "" ){
                             t= parseFloat($('#partial1').val());
                         }
-                             e = b * (d*50);
+                             e = b * (d);
                              var y = e + (b*x);
                              var z = e + (b*x)+t;
                              //alert(e);
@@ -1614,7 +1723,7 @@
                      if ($('#partial1').val() != "" ){
                           t= parseFloat($('#partial1').val());
                      }
-                          e = c * (d*50);
+                          e = c * (d);
                           var y = e + (c*x);
                             var z = e + (c*x)+t;
                           //alert(e);
