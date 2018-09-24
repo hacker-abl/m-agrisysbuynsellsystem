@@ -139,8 +139,8 @@
                      </div>
                      <div class="body">
                           <form class="form-horizontal " id="ca_form">
-                               <input type="hidden" name="id" id="id" value="">
-                               <input type="hidden" name="button_action" id="button_action" value="">
+                               <input type="hidden"  name="id_ca" id="id_ca" value="">
+                               <input type="hidden"  name="button_action_ca" id="button_action_ca" value="">
 
                                <div class="row clearfix">
                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -229,7 +229,6 @@
                                         <th>Reason</th>
                                         <th>Amount</th>
                                         <th>Date/Time</th>
-                                        <th>Balance</th>
                                         <th>Status</th>
                                         <th>Released By</th>
                                         <th>Releasing</th>
@@ -485,7 +484,6 @@
                        data:{id:id},
                        dataType:'json',
                        success:function(data){
-                           console.log(data);
                            if(!$.trim(data)){
                               $('#balance2').val(0.00);
                            }
@@ -507,7 +505,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
                         if(!$.trim(data)){
                             $('#balance').val(0.00);
                         }
@@ -530,6 +527,10 @@
             });
             $("#add_cash_advance").click(function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');   
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -539,22 +540,58 @@
                     dataType: 'text',
                     data: $('#ca_form').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         $("#customer_id").val('').trigger('change');
                         $("#reason").val('').trigger('change');
                         $("#amount").val('').trigger('change');
                         $("#balance").val('').trigger('change');
                         swal("Success!", "Record has been added to database", "success");
-						$('#ca_modal').modal('hide');
-						refresh_cash_advance_table();
+            						$('#ca_modal').modal('hide');
+            						refresh_cash_advance_table();
+                       $.ajax({
+                          url: "{{ route('refresh_view_cashadvance') }}",
+                          method: 'get',
+                          data:{id:person_id},
+                          dataType: 'json',
+                          success:function(data){
+                              $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+
+                             cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                  dom: 'Bfrtip',
+                                    order: [[ 2, "desc" ]],
+                                  bDestroy: true,
+                                  buttons: [
+                                      'print'
+                                  ],
+                                  data: data.data,
+                                  columns:[
+                                      {data: 'reason', name: 'reason'},
+                                      {data: 'amount', name: 'amount'},
+                                      {data: 'created_at', name: 'created_at'},
+                                      {data: 'status', name: 'status'},
+                                      {data: 'released_by', name: 'released_by'},
+                                      {data: "action", orderable:false,searchable:false}
+                                  ]
+                              }); 
+                              $('#ca_view_modal').modal('show');
+                          }
+                      });
                     },
                     error: function(data){
 						swal("Oh no!", "Something went wrong, try again.", "error");
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
 					}
                 });
             });
 
             $("#add_balance").click(function(event){
                event.preventDefault();
+               var input = $(this);
+               var button =this;
+               button.disabled = true;
+               input.html('SAVING...');  
                $.ajax({
                    headers: {
                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -564,6 +601,8 @@
                    dataType: 'text',
                    data: $('#balanceform').serialize(),
                    success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                        $("#customer_id1").val('').trigger('change');
                         $("#paymentmethod").val('').trigger('change');
                        $("#amount1").val('');
@@ -575,6 +614,8 @@
                    },
                    error: function(data){
                             swal("Oh no!", "Something went wrong, try again.", "error");
+                            button.disabled = false;
+                            input.html('SAVE CHANGES');
                        }
                });
            });
@@ -649,7 +690,6 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-                      console.log(data);
                         $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
                        cash_advance_release =  $('#view_cash_advancetable').DataTable({
@@ -664,7 +704,6 @@
                                 {data: 'reason', name: 'reason'},
                                 {data: 'amount', name: 'amount'},
                                 {data: 'created_at', name: 'created_at'},
-                                {data: 'balance', name: 'balance'},
                                 {data: 'status', name: 'status'},
                                 {data: 'released_by', name: 'released_by'},
                                 {data: "action", orderable:false,searchable:false}
@@ -675,6 +714,92 @@
                 });
             });
             //CASH ADVANCE datatable ends here
+
+            $(document).on('click', '.update_ca', function(event){
+                $('#ca_view_modal').modal('hide');
+                event.preventDefault();
+                var id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('update_ca') }}",
+                    method: 'get',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        $("#button_action_ca").val('update');
+                        $("#id_ca").val(id);
+                        $("#customer_id").val(data.customer_id).trigger('change');
+                        $("#reason").val(data.reason).trigger('change');
+                        $("#amount").val(data.amount).trigger('change');
+                        $("#balance").val(data.balance).trigger('change');
+                        $('#ca_modal').modal('show');
+                        $('.modal_title').text('Update Cash Advance');
+                    }
+                })
+            });
+
+            $(document).on('click', '.delete_ca', function(event){
+                event.preventDefault();
+                var id = $(this).attr('id');
+                swal({
+                    title: "Are you sure?",
+                    text: "Delete this record?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false
+                },
+                function(){
+                    $.ajax({
+                        url:"{{ route('delete_ca') }}",
+                        method: "get",
+                        data:{id:id},
+                        success:function(data){                            
+                                  $('#view_cash_advancetable').DataTable().destroy();
+                                  $.ajax({
+                                      url: "{{ route('refresh_view_cashadvance') }}",
+                                      method: 'get',
+                                      data:{id:person_id},
+                                      dataType: 'json',
+                                      success:function(data){
+                                      
+                                          $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+
+                                          cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                              dom: 'Bfrtip',
+                                                  order: [[ 2, "desc" ]],
+                                              bDestroy: true,
+
+                                              buttons: [
+                                                  'print'
+                                              ],
+                                              columnDefs: [
+                                                  {
+                                                      "targets": "_all", // your case first column
+                                                  "className": "text-left",
+                                                      
+                                              }
+                                              ],
+                                              data: data.data,
+                                              columns:[
+                                                  {data: 'reason', name: 'reason'},
+                                                  {data: 'amount', name: 'amount'},
+                                                  {data: 'created_at', name: 'created_at'},
+                                                  {data: 'status', name: 'status'},
+                                                  {data: 'released_by', name: 'released_by'},
+                                                  {data: "action", orderable:false,searchable:false}
+                                              ]
+                                          }); 
+                                      }
+                                  });    
+                            
+                      refresh_cash_advance_table();
+                      swal("Deleted!", "The record has been deleted.", "success");
+                        }
+                    })
+                   
+                });
+            });
 
             $(document).on('click', '.release_ca', function(event){
                 event.preventDefault();
@@ -688,7 +813,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
                         if(data == 0){
                             swal("Insufficient Balance!", "Contact Boss", "warning")
                             return;
@@ -739,7 +863,6 @@
                                                             {data: 'reason', name: 'reason'},
                                                             {data: 'amount', name: 'amount'},
                                                             {data: 'created_at', name: 'created_at'},
-                                                            {data: 'balance', name: 'balance'},
                                                             {data: 'status', name: 'status'},
                                                             {data: 'released_by', name: 'released_by'},
                                                             {data: "action", orderable:false,searchable:false}

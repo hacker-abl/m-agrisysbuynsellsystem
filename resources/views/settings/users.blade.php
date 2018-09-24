@@ -294,6 +294,10 @@
             //Add Admin Cash Modal
             $(document).on('click', '#add_cash', function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -303,12 +307,16 @@
                     dataType:'text',
                     data: $('#admin_cash_form').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Cash Added!", "Remaining Balance: ₱"+parseFloat(data).toFixed(2), "success")
                         $('#admin_cash_modal').modal('hide');
                         $('#curCashOnHand').html(parseFloat(data).toFixed(2));
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 })
             });
@@ -316,6 +324,10 @@
             //Add User
             $(document).on('click', '#add_user', function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -325,12 +337,16 @@
                     dataType:'text',
                     data: $('#user_form').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Success!", "Record has been added to database", "success")
                         $('#user_modal').modal('hide');
                         refresh_user_table();
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 })
             });
@@ -344,6 +360,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        
                         //Remove password input when updating User
                         if($(".password_input")[0]){
                             $(".password_input").remove();

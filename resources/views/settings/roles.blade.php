@@ -147,6 +147,10 @@
             //Add Role
             $(document).on('click', '#add_role', function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -156,19 +160,23 @@
                     dataType:'text',
                     data: $('#role_form').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Success!", "Record has been added to database", "success")
                         $('#role_modal').modal('hide');
                         refresh_role_table();
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 })
             });
 
             //Update Role
             $(document).on('click', '.update_role', function(){
-                var id = $(this).attr("id");
+                var id = $(this).attr("id");                 
                 $.ajax({
                     url:"{{ route('update_role') }}",
                     method: 'get',

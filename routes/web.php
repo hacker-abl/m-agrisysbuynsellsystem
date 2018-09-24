@@ -84,6 +84,9 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
     Route::post('/check_balance2', 'expenseController@check_balance2')->name('check_balance2');
     Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
     Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
+    Route::get('/update_expense', 'expenseController@updatedata')->name('update_expense');
+    Route::get('/delete_expense', 'expenseController@deletedata')->name('delete_expense');
+
 
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
@@ -132,6 +135,8 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
     Route::post('/print_balance_payment', 'pdfController@balance_payment')->name('print_balance_payment');
     Route::post('/release_ca', 'caController@release_update')->name('release_ca');
     Route::post('/check_balance4', 'caController@check_balance4')->name('check_balance4');
+    Route::get('/update_ca', 'caController@updatedata')->name('update_ca');
+    Route::get('/delete_ca', 'caController@deletedata')->name('delete_ca');
 });
 
 Route::group(['middleware'=>['auth', 'user:purchases']], function() {
@@ -160,6 +165,8 @@ Route::group(['middleware'=>['auth', 'user:dtr']], function() {
     Route::get('/dtr', 'dtrController@index')->name('dtr');
     Route::post('/print_dtr', 'pdfController@dtr')->name('print_dtr');
     Route::post('/check_balance5', 'dtrController@check_balance5')->name('check_balance5');
+    Route::get('/update_dtr', 'dtrController@updatedata')->name('update_dtr');
+    Route::get('/delete_dtr', 'dtrController@deletedata')->name('delete_dtr');
 });
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {

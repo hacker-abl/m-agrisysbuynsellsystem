@@ -667,6 +667,10 @@
             //Clicked Update Button
             $("#update_trip").click(function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -676,12 +680,16 @@
                     dataType:'text',
                     data: $('#trip_form_update').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Success!", "Update Success", "success")
 
                         $('#pickup_modal_update').modal('hide');
                        refresh_pickup();
                     },
                     error: function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         console.log($('#trip_form_update').serialize())
                         swal("Oh no!", "Something went wrong, try again.", "error")
                     }
@@ -713,6 +721,10 @@
             });
 
             $("#add_trip").click(function(){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');
                 var  datasend="";
                 var count_length = $('.trip_form').length;
                 $('.trip_form').each(function(){
@@ -733,7 +745,8 @@
 
 
                             $("#id").val(dataparsed.driver_id);
-
+                            button.disabled = false;
+                            input.html('SAVE CHANGES');
                             swal("Success!", "Record has been added to database", "success")
                             $('#pickup_modal').modal('hide');
                             refresh_pickup();
@@ -742,6 +755,8 @@
                         },
                         error: function(data){
                             swal("Oh no!", "Something went wrong, try again.", "error")
+                            button.disabled = false;
+                            input.html('SAVE CHANGES');
                         }
 
                     })

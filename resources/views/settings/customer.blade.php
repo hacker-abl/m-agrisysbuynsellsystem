@@ -230,6 +230,10 @@
             //Add Customer
             $("#add_customer").click(function(event) {
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -239,6 +243,8 @@
                     dataType: "text",
                     data: $('#customer_form').serialize(),
                     success: function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         $(".suki_type_input").hide();
                         swal("Success!", "Record has been added to database", "success")
                         $('#customer_modal').modal('hide');
@@ -246,6 +252,8 @@
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 });
             });
@@ -253,12 +261,14 @@
             //Update Customer
             $(document).on('click', '.update_customer', function(){
                 var id = $(this).attr("id");
+
                 $.ajax({
                     url:"{{ route('update_customer') }}",
                     method: 'get',
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        
                         $('#button_action').val('update');
                         $('.modal_title').text('Update Customer');
                         $('#customer_modal').modal('show');

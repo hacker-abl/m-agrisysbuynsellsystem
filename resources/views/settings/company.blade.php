@@ -130,6 +130,10 @@
             //Add Company
             $(document).on('click', '#add_company', function(event){
                 event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -139,12 +143,16 @@
                     dataType:'text',
                     data: $('#company_form').serialize(),
                     success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                         swal("Success!", "Record has been added to database", "success")
                         $('#company_modal').modal('hide');
                         refresh_company_table();
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
                     }
                 })
             });

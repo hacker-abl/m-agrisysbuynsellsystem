@@ -137,7 +137,7 @@
     <div class="modal fade" id="dtr_view_modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg" role="document">
             <div class="row">
-                <form class="form-horizontal " id="dtr_view_form">
+                 
                     <div class="card">
                         <div class="header">
                             <h2> Daily Time Records History - <span class="modal_title_dtr"></span></h2>
@@ -164,7 +164,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+             
             </div>
 		</div>
 	</div>
@@ -429,6 +429,10 @@
                 
             });
             $("#add_dtr").click(function(event){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');    
                 event.preventDefault();
                 $.ajax({
                     headers: {
@@ -441,6 +445,48 @@
                     success:function(data){
                         dataparsed = $.parseJSON(data);
                         $("#id").val(dataparsed[0].id);
+                        $('#dtr_modal').modal('hide');
+                        $.ajax({
+                                        url: "{{ route('refresh_view_dtr') }}",
+                                        method: 'get',
+                                        data:{id:person_id},
+                                        dataType: 'json',
+                                        success:function(data){
+                                        dtr_info= $('#view_dtr_table').DataTable({
+                                                dom: 'Bfrtip',
+                                                bDestroy: true,
+                                                buttons: [
+                                                    'print'
+                                                ],
+                                                columnDefs: [
+                                            {
+                                                "targets": "_all", // your case first column
+                                                "className": "text-center",
+
+                                            }
+                                            ],
+                                                data: data.data,
+                                                columns:[
+                                                    {data: 'overtime', name: 'overtime'},
+                                                    {data: 'num_hours', name: 'num_hours'},
+                                                    {data: 'created_at', name: 'created_at',
+                                                type: "date",
+                                                    render:function (value) {
+                                                        var ts = new Date(value);
+
+                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
+                                                    },
+                                                    {data: 'salary', name: 'salary'},
+                                                    {data: 'status', name: 'status'},
+                                                    {data: 'released_by', name: 'released_by'},
+                                                    {data: "action", orderable:false,searchable:false}
+                                                ]
+                                            });
+                                            dtr.ajax.reload();
+                                        }
+                                    });
+                                refresh_dtr_table();
+                        $('#dtr_view_modal').modal('show'); 
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -451,18 +497,114 @@
                     data: $('#dtr_form').serialize(),
                     success:function(data){
                        $('#dtr_modal').modal('hide');
+                       button.disabled = false;
+                       input.html('SAVE CHANGES');
                     },
                     error: function(data){
 						swal("Oh no!", "Something went wrong on dtr expense, try again.", "error");
+                        button.disabled = false;
 					}
                 });
 
                         swal("Success!", "Record has been added to database", "success");
+                        button.disabled = false;
 						refresh_dtr_table();
                     },
                     error: function(data){
 						swal("Oh no!", "Something went wrong, try again.", "error");
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
 					}
+                });
+            });
+
+            $(document).on('click', '.update_dtr', function(event){
+                 $('#dtr_view_modal').modal('hide'); 
+                event.preventDefault();
+                var id = $(this).attr("id");
+                $.ajax({
+                    url:"{{ route('update_dtr') }}",
+                    method: 'get',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
+                        console.log(data);
+                        $('#button_action').val('update');
+                        $('#id').val(id);
+                        $("#employee_id").val(data.employee_id).trigger('change');
+                        $("#role").val(data.role).trigger('change');
+                        $("#overtime").val(data.overtime).trigger('change');
+                        $("#num_hours").val(data.num_hours).trigger('change');
+                        $('#salary').val(data.salary).trigger('change');
+                        $('#dtr_modal').modal('show');
+                        $('.modal_title').text('Update DTR');
+                        //refresh_expense_table();
+                    }
+                })
+            });
+
+            $(document).on('click', '.delete_dtr', function(event){
+                event.preventDefault();
+                var id = $(this).attr('id');
+                swal({
+                    title: "Are you sure?",
+                    text: "Delete this record?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false
+                },
+                function(){
+                    $.ajax({
+                        url:"{{ route('delete_dtr') }}",
+                        method: "get",
+                        data:{id:id},
+                        success:function(data){
+                             $.ajax({
+                                        url: "{{ route('refresh_view_dtr') }}",
+                                        method: 'get',
+                                        data:{id:person_id},
+                                        dataType: 'json',
+                                        success:function(data){
+                                        dtr_info= $('#view_dtr_table').DataTable({
+                                                dom: 'Bfrtip',
+                                                bDestroy: true,
+                                                buttons: [
+                                                    'print'
+                                                ],
+                                                columnDefs: [
+                                            {
+                                                "targets": "_all", // your case first column
+                                                "className": "text-center",
+
+                                            }
+                                            ],
+                                                data: data.data,
+                                                columns:[
+                                                    {data: 'overtime', name: 'overtime'},
+                                                    {data: 'num_hours', name: 'num_hours'},
+                                                    {data: 'created_at', name: 'created_at',
+                                                type: "date",
+                                                    render:function (value) {
+                                                        var ts = new Date(value);
+
+                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
+                                                    },
+                                                    {data: 'salary', name: 'salary'},
+                                                    {data: 'status', name: 'status'},
+                                                    {data: 'released_by', name: 'released_by'},
+                                                    {data: "action", orderable:false,searchable:false}
+                                                ]
+                                            });
+                                            dtr.ajax.reload();
+                                        }
+                                    });
+                                refresh_dtr_table();
+                                swal("Deleted!", "The record has been deleted.", "success");
+                        }
+                    })
+                   
                 });
             });
 
@@ -493,7 +635,8 @@
 			}
 
 
-            $(document).on('click', '.view_dtr', function(){
+            $(document).on('click', '.view_dtr', function(event){
+                event.preventDefault(); 
                 var id = $(this).attr("id");
 				idmain = id;
                 person_id=id;

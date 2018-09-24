@@ -516,6 +516,10 @@
 			});
 
 			$(document).on('click', '#add_delivery', function(event){
+				var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');   
 				event.preventDefault();
 				$.ajax({
 					headers: {
@@ -526,6 +530,8 @@
 					dataType:'text',
 					data: $('#od_form').serialize(),
 					success:function(data){
+						button.disabled = false;
+                        input.html('SAVE CHANGES');
 						$("#driver_id").val('').trigger('change');
 						$("#company").val('').trigger('change');
 						$("#commodity").val('').trigger('change');
@@ -534,6 +540,8 @@
 						refresh_delivery_table();
 					},
 					error: function(data){
+						button.disabled = false;
+                        input.html('SAVE CHANGES');
 						swal("Oh no!", "Something went wrong, try again.", "error")
 					}
 				})
@@ -565,6 +573,7 @@
 					data:{id:id},
 					dataType:'json',
 					success:function(data){
+
 						$('#button_action').val('update');
 						$('#id').val(id);
 						$('#ticket').val(data.outboundTicket);
@@ -576,7 +585,7 @@
 						$('#liter').val(data.fuel_liters);
 						$('#allowance').val(data.allowance);
 						$('#od_modal').modal('show');
-						$('.modal_title').text('Update Role');
+						$('.modal_title').text('Update Delivery');
 						refresh_delivery_table();
 					}
 				})

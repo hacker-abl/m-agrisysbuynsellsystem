@@ -387,6 +387,10 @@
 
 			$(document).on('click', '#add_sales', function(event){
 				event.preventDefault();
+				var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');  
 				$.ajax({
 					headers: {
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -396,6 +400,8 @@
 					dataType:'text',
 					data: $('#sales_form').serialize(),
 					success:function(data){
+						button.disabled = false;
+                        input.html('SAVE CHANGES');
 						$("#company").val('').trigger('change');
 						$("#commodity").val('').trigger('change');
 						swal("Success!", "Record has been added to database", "success")
@@ -404,6 +410,8 @@
 					},
 					error: function(data){
 						swal("Oh no!", "Something went wrong, try again.", "error")
+						button.disabled = false;
+                        input.html('SAVE CHANGES');
 					}
 				})
 			});

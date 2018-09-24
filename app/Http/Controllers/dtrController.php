@@ -30,6 +30,9 @@ class dtrController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function isAdmin(){
+    return Auth::user()->access_id;
+    }
     public function index(){
         $employee = employee::all();
 
@@ -37,6 +40,7 @@ class dtrController extends Controller
     }
 
     public function store(Request $request){
+        if($request->get('button_action') == ''){
         $dtr = new dtr;
         $dtr->employee_id = $request->employee_id;
         $dtr->role = $request->role;
@@ -46,8 +50,18 @@ class dtrController extends Controller
         $dtr->salary = $request->salary;
         $dtr->status = "On-Hand";
         $dtr->save();
-
         $details = dtr::where('employee_id', $request->employee_id)->orderBy('employee_id', 'desc')->latest()->get();
+        }
+        if($request->get('button_action') == 'update'){
+        $dtr = dtr::find($request->get('id'));
+        $dtr->role = $request->role;
+        $dtr->overtime = $request->overtime;
+        $dtr->num_hours = $request->num_hours;
+        $dtr->rate = $request->rate;
+        $dtr->salary = $request->salary;   
+        $dtr->save(); 
+        $details = dtr::where('employee_id', $request->employee_id)->orderBy('employee_id', 'desc')->latest()->get();  
+        }
 
         echo json_encode($details);
     }
@@ -102,7 +116,29 @@ class dtrController extends Controller
             return 1;
         }
     }
+    function updatedata(Request $request){
+         $id = $request->input('id');
+        $dtr_view = DB::table('dtr')
+            ->join('employee', 'employee.id', '=', 'dtr.employee_id')
+            ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname')
+            ->where('dtr.id', $id)
+            ->get();
+            
+        $output = array(
+            'employee_id' => $dtr_view[0]->employee_id,
+            'role' => $dtr_view[0]->role,
+            'overtime' => $dtr_view[0]->overtime,
+            'rate' => $dtr_view[0]->rate,
+            'num_hours' => $dtr_view[0]->num_hours,
+            'salary' => $dtr_view[0]->overtime,
+        );
+        echo json_encode($output);
+    }
 
+    function deletedata(Request $request){
+        $expense = dtr::find($request->input('id'));
+        $expense->delete();
+    }
     public function refresh(){
         $join = DB::table('dtr')
             ->select(DB::raw('max(created_at) as maxdate'), 'employee_id')
@@ -137,9 +173,11 @@ class dtrController extends Controller
             ->latest();
         return \DataTables::of($dtr_view)
         ->addColumn('action', function($dtr_view){
-            if($dtr_view->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>';
-            }else{
+            if($dtr_view->status=="On-Hand" && isAdmin()==1){
+                 return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';
+            }else if($dtr_view->status=="On-Hand" && isAdmin()!=1)
+                return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>';    
+            else{
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>';
             }
 
