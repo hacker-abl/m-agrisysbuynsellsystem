@@ -488,6 +488,8 @@
                                                  <th width="100" style="text-align:center;">ID</th>
 
                                                  <th width="100" style="text-align:center;">Customer</th>
+                                                 <th width="100" style="text-align:center;">mname</th>
+                                                 <th width="100" style="text-align:center;">lname</th>
                                                  <th width="100" style="text-align:center;">Commodity</th>
                                                  <th width="100" style="text-align:center;">No. of Sacks</th>
                                                  <th width="100" style="text-align:center;">Cash Advance</th>
@@ -799,7 +801,7 @@
     			  	"targets": "_all", // your case first column
      				"className": "text-center",
       				
- 				}
+ 				},
 				],
               ajax:{
                  
@@ -818,14 +820,12 @@
               },
               columns: [
                    {data: 'trans_no'},
-                   {data:'fname',
-                        render: function(data, type, full, meta){
-                             return full.fname +" "+ full.mname+" "+full.lname;
-                        }
-                   },
-                   {data: 'commodity_name'},
+                   {data:'wholename', name: 'customer.fname'  },
+                   {data:'mname', name: 'customer.mname',visible:false  },
+                   {data:'lname', name: 'customer.lname',visible:false  },
+                   {data: 'commname', name: 'commodity.name'},
                    {data: 'sacks'},
-                   {data: 'balance'},
+                   {data: 'balance', name: 'balance.balance'},
                    {data: 'balance_id'},
                    {data: 'partial'},
                    {data: 'kilo'},
@@ -1011,14 +1011,12 @@
               },
               columns: [
                    {data: 'trans_no'},
-                   {data:'fname',
-                        render: function(data, type, full, meta){
-                             return full.fname +" "+ full.mname+" "+full.lname;
-                        }
-                   },
-                   {data: 'commodity_name'},
+                   {data:'wholename', name: 'customer.fname' },
+                   {data:'mname', name: 'customer.mname',visible:false  },
+                   {data:'lname', name: 'customer.lname',visible:false  },
+                   {data: 'commname', name: 'commodity.name'},
                    {data: 'sacks'},
-                   {data: 'balance'},
+                   {data: 'balance', name: 'balance.balance'},
                    {data: 'balance_id'},
                    {data: 'partial'},
                    {data: 'kilo'},
@@ -1208,14 +1206,12 @@
               },
               columns: [
                    {data: 'trans_no'},
-                   {data:'fname',
-                        render: function(data, type, full, meta){
-                             return full.fname +" "+ full.mname+" "+full.lname;
-                        }
-                   },
-                   {data: 'commodity_name'},
+                   {data:'wholename', name: 'customer.fname' },
+                   {data:'mname', name: 'customer.mname',visible:false  },
+                   {data:'lname', name: 'customer.lname',visible:false  },
+                   {data: 'commname', name: 'commodity.name'},
                    {data: 'sacks'},
-                   {data: 'balance'},
+                   {data: 'balance', name:'balance.balance'},
                    {data: 'balance_id'},
                    {data: 'partial'},
                    {data: 'kilo'},

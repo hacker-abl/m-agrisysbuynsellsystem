@@ -194,6 +194,9 @@ class dtrController extends Controller
         ->addColumn('action', function($dtr){
             return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
         })
+        ->addColumn('wholename', function ($data){
+            return $data->fname." ".$data->mname." ".$data->lname;
+        })
         ->editColumn('salary', function ($data) {
             return '₱ '.number_format($data->salary, 2, '.', ',');
         })

@@ -200,6 +200,8 @@
 								<thead>
 									<tr>
 										<th width="100" style="text-align:center;">Name</th>
+                                        <th width="100" style="text-align:center;">mname</th>
+                                        <th width="100" style="text-align:center;">lname</th>
 										<th width="100" style="text-align:center;">Role</th>
 										<th width="100" style="text-align:center;">Overtime</th>
 										<th width="100" style="text-align:center;">No. of Hours</th>
@@ -211,6 +213,8 @@
 								</thead>
                                 <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -325,7 +329,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 5 )
+                        .column( 7 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -333,14 +337,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 5, { page: 'current'} )
+                        .column( 7, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 5 ).footer() ).html(
+                    $( api.column( 7 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -373,9 +377,9 @@
 				serverSide: true,
 				ajax: "{{ route('refresh_dtr') }}",
 				columns: [
-					{render: function(data, type, full, meta){
-                        return full.fname +" "+full.mname+" "+full.lname;
-                    }},
+					{data:'wholename' name: 'employee.fname',},
+                    {data:'mname', name: 'employee.mname',visible:false  },
+                    {data:'lname', name: 'employee.lname',visible:false  },
 					{data: 'role', name: 'role'},
                     {data: 'overtime', name: 'overtime'},
                     {data: 'num_hours', name: 'num_hours'},

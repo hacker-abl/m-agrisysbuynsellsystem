@@ -330,6 +330,8 @@
 								<thead>
 									<tr>
                     <th>Name</th>
+                    <th>mname</th>
+                    <th>lname</th>
                     <th>Recent Amount</th>
                     <th>Latest Date/Time</th>
                     <th>Total Balance</th>
@@ -509,9 +511,9 @@
       				],
       				ajax: "{{ route('refresh_cashadvance') }}",
       				columns: [
-      					{render: function(data, type, full, meta){
-                              return full.fname +" "+full.mname+" "+full.lname;
-                          }},
+                        {data:'wholename'},
+                        {data:'mname', name: 'customer.mname',visible:false  },
+                        {data:'lname', name: 'customer.lname',visible:false  },
       					{data: 'amount', name: 'amount'},
       					{data: 'created_at', name: 'created_at'},
       					{data: 'balance', name: 'balance'},

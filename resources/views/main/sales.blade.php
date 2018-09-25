@@ -168,6 +168,8 @@
 	                                    <th></th>
 	                                    <th></th>
 	                                    <th></th>
+										<th></th>
+										<th></th>
 	                                </tr>
 	                            </tfoot>
 							</table>
@@ -247,7 +249,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 4 )
+                        .column( 6 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -255,14 +257,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 4, { page: 'current'} )
+                        .column( 6, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 4 ).footer() ).html(
+                    $( api.column( 6 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -271,7 +273,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -311,9 +313,9 @@
                 },
 				columns: [
 					{data: 'created_at'},
-					{data: 'uname'},
-					{data: 'commodity_name'},
-					{data: 'name'},
+					{data: 'uname',name:'users.name'},
+					{data: 'commodity_name',name:'commodity.name'},
+					{data: 'name',name:'company.name'},
 					{data: 'kilos'},
 					{data: 'check_number'},
 					{data: 'amount'},
