@@ -10,7 +10,7 @@ use App\sales;
 use App\Company;
 use Carbon\Carbon;
 use App\Events\SalesUpdated;
-
+use Auth;
 class salesController extends Controller
 {
    /**
@@ -51,6 +51,13 @@ class salesController extends Controller
             $sales->company_id = $request->company;
             $sales->kilos = $request->kilos;
             $sales->amount = $request->amount;
+            $sales->receiver_id = Auth::user()->id;
+            if( $request->checknumber!=""){
+                $sales->check_number = $request->checknumber;
+            }
+            else{
+                $sales->check_number = "Not Specified";
+            }
             $sales->save();
           }
 
@@ -61,6 +68,13 @@ class salesController extends Controller
           $sales->company_id = $request->company;
           $sales->kilos = $request->kilos;
           $sales->amount = $request->amount;
+          $sales->receiver_id = Auth::user()->id;
+            if( $request->checknumber!=""){
+                $sales->check_number = $request->checknumber;
+            }
+            if( $request->checknumber==""){
+                $sales->check_number = "Not Specified";
+            }
           $sales->save();
         }
 
@@ -77,6 +91,7 @@ class salesController extends Controller
             'company_id' => $sales->company_id,
             'kilos' => $sales->kilos,
             'amount' => $sales->amount,
+            'check_number' => $sales->check_number ,
         );
         echo json_encode($output);
     }
@@ -95,13 +110,15 @@ class salesController extends Controller
          $ultimatesickquery= DB::table('sales')
             ->join('commodity', 'commodity.id', '=', 'sales.commodity_id')
             ->join('company', 'company.id', '=', 'sales.company_id')
-            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name')
+            ->join('users', 'users.id', '=', 'sales.receiver_id')
+            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name','users.name as uname','sales.check_number')
             ->latest();
         }else{
            $ultimatesickquery= DB::table('sales')
             ->join('commodity', 'commodity.id', '=', 'sales.commodity_id')
             ->join('company', 'company.id', '=', 'sales.company_id')
-            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name')
+            ->join('users', 'users.id', '=', 'sales.receiver_id')
+            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name','users.name as uname','sales.check_number')
             ->where('sales.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('sales.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->latest();

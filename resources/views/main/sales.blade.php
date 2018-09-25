@@ -72,6 +72,36 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                     <label for="name">Payment Method</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                     <div class="form-group">
+                                          <div id="pm" class="form-line">
+                                               <select type="text" id="paymentmethod" name="paymentmethod" class="form-control" required style="width: 100%;">
+
+                                          <option value="Cash">Cash</option>
+                                           <option value="Check">Check</option>
+                                       </select>
+                                          </div>
+                                     </div>
+                                </div>
+                          </div>
+						  <div id="cn" class="row clearfix hidden">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                         <label for="name">Check Number</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                         <div class="form-group">
+                                              <div class="form-line">
+                                                   <input type="text" id="checknumber"  name="checknumber" class="form-control" >
+                                              </div>
+                                         </div>
+                                    </div>
+                              </div>
+
 							<div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 									<label for="name">Amount</label>
@@ -121,9 +151,11 @@
 								<thead>
 									<tr>
 										<th width="100" style="text-align:center;">Date</th>
+										<th width="100" style="text-align:center;">Received By</th>
 										<th width="100" style="text-align:center;">Commodity</th>
 										<th width="100" style="text-align:center;">Company</th>
 										<th width="100" style="text-align:center;">No. Of Kilos</th>
+										<th width="100" style="text-align:center;">Check Number</th>
 										<th width="100" style="text-align:center;">Amount</th>
 										<th width="100" style="text-align:center;">Action</th>
 									</tr>
@@ -278,10 +310,12 @@
                 
                 },
 				columns: [
-                    {data: 'created_at'},
+					{data: 'created_at'},
+					{data: 'uname'},
 					{data: 'commodity_name'},
 					{data: 'name'},
-                    {data: 'kilos'},
+					{data: 'kilos'},
+					{data: 'check_number'},
 					{data: 'amount'},
 					{data: "action", orderable:false,searchable:false}
 				]
@@ -321,12 +355,14 @@
 	                
 	                },
 					columns: [
-	                    {data: 'created_at'},
-						{data: 'commodity_name'},
-						{data: 'name'},
-	                    {data: 'kilos'},
-						{data: 'amount'},
-						{data: "action", orderable:false,searchable:false}
+					{data: 'created_at'},
+					{data: 'uname'},
+					{data: 'commodity_name'},
+					{data: 'name'},
+					{data: 'kilos'},
+					{data: 'check_number'},
+					{data: 'amount'},
+					{data: "action", orderable:false,searchable:false}
 					]
 				});
 
@@ -358,12 +394,14 @@
 	                
 	                },
 					columns: [
-	                    {data: 'created_at'},
-						{data: 'commodity_name'},
-						{data: 'name'},
-	                    {data: 'kilos'},
-						{data: 'amount'},
-						{data: "action", orderable:false,searchable:false}
+	                {data: 'created_at'},
+					{data: 'uname'},
+					{data: 'commodity_name'},
+					{data: 'name'},
+					{data: 'kilos'},
+					{data: 'check_number'},
+					{data: 'amount'},
+					{data: "action", orderable:false,searchable:false}
 					]
 				});
 
@@ -403,12 +441,14 @@
 	                
 	                },
 					columns: [
-	                    {data: 'created_at'},
-						{data: 'commodity_name'},
-						{data: 'name'},
-	                    {data: 'kilos'},
-						{data: 'amount'},
-						{data: "action", orderable:false,searchable:false}
+	                {data: 'created_at'},
+					{data: 'uname'},
+					{data: 'commodity_name'},
+					{data: 'name'},
+					{data: 'kilos'},
+					{data: 'check_number'},
+					{data: 'amount'},
+					{data: "action", orderable:false,searchable:false}
 					]
 				});
 
@@ -440,19 +480,30 @@
 	                
 	                },
 					columns: [
-	                    {data: 'created_at'},
-						{data: 'commodity_name'},
-						{data: 'name'},
-	                    {data: 'kilos'},
-						{data: 'amount'},
-						{data: "action", orderable:false,searchable:false}
+					{data: 'created_at'},
+					{data: 'uname'},
+					{data: 'commodity_name'},
+					{data: 'name'},
+					{data: 'kilos'},
+					{data: 'check_number'},
+					{data: 'amount'},
+					{data: "action", orderable:false,searchable:false}
 					]
 				});
 
               });		 	
 		 	//End of Date Range Filter
-
-
+			 var x ;
+            $('#paymentmethod').change(function(){
+              x = $("#paymentmethod").val();
+              if(x=="Check"){
+                  $('#cn').removeClass('hidden');
+              }
+              else{
+                   $('#checknumber').val('');
+                    $('#cn').addClass('hidden');
+              }
+			});
 			function refresh_sales_table(){
 				salestable.ajax.reload(); //reload datatable ajax
 			}
@@ -461,7 +512,8 @@
 				$('.modal_title').text('Add Sales');
 				$('#button_action').val('add');
                     $("#company").val('').trigger('change');
-                    $("#commodity").val('').trigger('change');
+					$("#commodity").val('').trigger('change');
+					$("#paymentmethod").val('').trigger('change');
                     $('#sales_modal').modal('show');
 			});
 
@@ -484,6 +536,7 @@
                         input.html('SAVE CHANGES');
 						$("#company").val('').trigger('change');
 						$("#commodity").val('').trigger('change');
+						$("#paymentmethod").val('').trigger('change');
 						swal("Success!", "Record has been added to database", "success")
 						$('#sales_modal').modal('hide');
 						refresh_sales_table();
@@ -522,7 +575,19 @@
 						$("#company").val(data.company_id).trigger('change');
 						$("#commodity").val(data.commodity_id).trigger('change');
 						$('#kilos').val(data.kilos);
-                              $('#amount').val(data.amount);
+						$('#amount').val(data.amount);
+						if(data.check_number != "Not Specified"){
+							$('#checknumber').val(data.check_number);
+							$('#cn').removeClass('hidden');
+							
+							//$("#paymentmethod").val(0).trigger('change');
+							$("#paymentmethod").val("Check").trigger('change');
+						}
+						else{
+							$('#checknumber').val('');
+							$('#cn').addClass('hidden');
+							$("#paymentmethod").val("Cash").trigger('change');
+						}
 						$('#sales_modal').modal('show');
 						$('.modal_title').text('Update Sales');
 						refresh_sales_table();
@@ -557,7 +622,10 @@
 
 
 
-
+			 $('#paymentmethod').select2({
+         	 dropdownParent: $('#sales_modal'),
+         	 placeholder: 'Select a type of payment'
+       		});
             $('#commodity').select2({
                 dropdownParent: $('#sales_modal'),
                  placeholder: 'Select an item'

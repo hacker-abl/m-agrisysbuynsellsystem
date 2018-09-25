@@ -25,6 +25,12 @@ class CreateSalesTable extends Migration
                     ->references('id')
                     ->on('company')
                     ->onDelete('cascade');
+            $table->integer('receiver_id')->unsigned();
+            $table->foreign('receiver_id')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('cascade');
+            $table->string('check_number');
             $table->integer('kilos');
             $table->decimal('amount');
             $table->timestamps();
