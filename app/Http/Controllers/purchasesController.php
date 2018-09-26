@@ -87,8 +87,10 @@ class purchasesController extends Controller
 
 
     public function store(Request $request){
-        if($request->get('button_action1') == 'add'){
-            if($request->get('stat1') == 'old'){
+
+        
+        if($request->get('button_action1') == 'add' && $request->get('stat1') == 'old'){
+            
                 $purchases= new Purchases;
                 $purchases->trans_no = $request->ticket;
                 $purchases->customer_id = $request->customer;
@@ -105,8 +107,13 @@ class purchasesController extends Controller
                 $purchases->status = "On-Hand";
                 $purchases->released_by='';
                 $purchases->save();
-            }
-            if($request->get('stat') == 'new'){
+            
+       
+            event(new PurchasesUpdated($purchases));
+            event(new BalanceUpdated($purchases));
+        }
+
+        else{
                 $customer = new Customer;
                 $customer->fname = $request->fname;
                 $customer->mname = $request->mname;
@@ -150,7 +157,7 @@ class purchasesController extends Controller
                 $purchases->status = "On-Hand";
                 $purchases->released_by='';
                 $purchases->save();
-            }
+            
 
             event(new PurchasesUpdated($purchases));
             event(new BalanceUpdated($purchases));
