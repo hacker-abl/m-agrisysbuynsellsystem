@@ -101,6 +101,8 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>mname</th>
+                                    <th>lname</th>
                                     <th>Type</th>
                                     <th width="100">Action</th>
                                 </tr>
@@ -155,9 +157,9 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_employee') }}",
                 columns: [
-                    {render:function(data, type, full, meta){
-                        return full.fname + " " + full.mname + " " + full.lname;
-                    }},
+                    {data:'wholename', name: 'employee.fname' },
+                    {data:'mname', name: 'employee.mname',visible:false  },
+                    {data:'lname', name: 'employee.lname',visible:false  },
                     {data: 'role_id', name: 'role_id'},
                     {data: "action", orderable:false,searchable:false}
                 ]

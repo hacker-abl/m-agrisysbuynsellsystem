@@ -190,6 +190,9 @@ class caController extends Controller
         ->addColumn('action', function($cash_advance){
             return '<button class="btn btn-xs btn-info waves-effect view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
         })
+        ->addColumn('wholename', function ($data){
+            return $data->fname." ".$data->mname." ".$data->lname;
+        })
         ->editColumn('balance', function ($data) {
             return '₱'.number_format($data->balance, 2, '.', ',');
         })

@@ -265,6 +265,15 @@ class purchasesController extends Controller
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button><button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button><button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }
         })
+        ->addColumn('wholename', function ($data){
+            return $data->fname." ".$data->mname." ".$data->lname;
+        })
+        ->addColumn('commname', function ($data){
+            return $data->commodity_name;
+        })
+        ->addColumn('balance', function ($data){
+            return $data->balance;
+        })
        
         ->editColumn('released_by', function ($data) {
             if($data->released_by==""){

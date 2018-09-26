@@ -127,6 +127,8 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>mname</th>
+                                    <th>lname</th>
                                     <th>Address</th>
                                     <th>Contact Number</th>
                                     <th>Suki</th>
@@ -184,15 +186,15 @@
                 serverSide: true,
                 ajax: "{{ route('refresh_customer') }}",
                 columns: [
-                    {render:function(data, type, full, meta){
-                        return full.fname + " " + full.mname + " " + full.lname;
-                    }},
-                    {data: 'address', name: 'address'},
-                    {data: 'contacts', name: 'contacts'},
-                    {render:function(data, type, row){
+                {data:'wholename', name: 'customer.fname' },
+                {data:'mname', name: 'customer.mname',visible:false  },
+                {data:'lname', name: 'customer.lname',visible:false  },
+                {data: 'address', name: 'address'},
+                {data: 'contacts', name: 'contacts'},
+                {render:function(data, type, row){
                         return row.suki_type == 1 ? 'YES' : 'NO'
-                    }},
-                    {data: "action", orderable:false,searchable:false}
+                }},
+                {data: "action", orderable:false,searchable:false}
                 ]
             });
 
