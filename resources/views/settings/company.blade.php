@@ -109,7 +109,7 @@
       				
  				}
 				],
-                serverSide: true,
+             
                 ajax: "{{ route('refresh_company') }}",
                 columns: [
                     {data: 'name', name: 'name'},

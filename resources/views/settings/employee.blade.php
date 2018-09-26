@@ -154,7 +154,6 @@
       				
  				}
 				],
-                serverSide: true,
                 ajax: "{{ route('refresh_employee') }}",
                 columns: [
                     {data:'wholename', name: 'employee.fname' },

@@ -380,7 +380,6 @@
                     },
                 },
                 processing: true,
-                serverSide: true,
                 columns: [
                     {data: 'description' },
                     {data: 'type'},

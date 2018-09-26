@@ -183,7 +183,7 @@
       				
  				}
 				],
-                serverSide: true,
+     
                 ajax: "{{ route('refresh_customer') }}",
                 columns: [
                 {data:'wholename', name: 'customer.fname' },

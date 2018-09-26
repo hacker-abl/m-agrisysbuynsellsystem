@@ -234,7 +234,6 @@
      				"className": "text-center",
  				}
 				],
-                serverSide: true,
                 ajax: "{{ route('refresh_user') }}",
                 columns: [
                     {data: 'emp_id', name: 'emp_id'},

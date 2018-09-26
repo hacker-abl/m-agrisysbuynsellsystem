@@ -374,10 +374,10 @@
 
  				}
 				],
-				serverSide: true,
+			
 				ajax: "{{ route('refresh_dtr') }}",
 				columns: [
-					{data:'wholename' name: 'employee.fname',},
+					{data:'wholename', name: 'employee.fname'},
                     {data:'mname', name: 'employee.mname',visible:false  },
                     {data:'lname', name: 'employee.lname',visible:false  },
 					{data: 'role', name: 'role'},

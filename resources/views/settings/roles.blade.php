@@ -125,7 +125,6 @@
       				
  				}
 				],
-                serverSide: true,
                 ajax: "{{ route('refresh_roles') }}",
                 columns: [
                     {data: 'role', name: 'role'},

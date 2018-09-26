@@ -781,8 +781,7 @@
                     },
                     footer: true
                 }],
-                processing: true,
-                serverSide: true,
+              
                 scrollX: true,
                 order:[],
                 columnDefs: [{
@@ -962,7 +961,7 @@
                         }],
                         scrollX: true,
                         processing: true,
-                        serverSide: true,
+          
                         order:[],
                         columnDefs: [{
                             "targets": "_all", // your case first column
@@ -1144,7 +1143,7 @@
                         }],
                         scrollX: true,
                         processing: true,
-                        serverSide: true,
+               
                         order:[],
                         columnDefs: [{
                             "targets": "_all", // your case first column

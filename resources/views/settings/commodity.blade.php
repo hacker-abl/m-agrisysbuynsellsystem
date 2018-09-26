@@ -141,7 +141,7 @@
       				
  				}
 				],
-                serverSide: true,
+        
                 ajax: "{{ route('refresh_commodity') }}",
                 columns: [
                     {data: 'name', name: 'name'},
