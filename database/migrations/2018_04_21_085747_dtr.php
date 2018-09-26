@@ -23,7 +23,7 @@ class Dtr extends Migration
             $table->string('role');
             $table->decimal('overtime');
             $table->decimal('num_hours');
-            $table->decimal('rate', 10,2);
+            $table->decimal('rate', 14,2);
             $table->decimal('salary');
             $table->string('status');
             $table->string('released_by');

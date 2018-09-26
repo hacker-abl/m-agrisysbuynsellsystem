@@ -21,8 +21,8 @@ class CreateCashAdvanceTable extends Migration
                     ->on('customer')
                     ->onDelete('cascade');
             $table->string('reason');
-            $table->decimal('amount', 10,2);
-            $table->decimal('balance', 10,2);
+            $table->decimal('amount', 14,2);
+            $table->decimal('balance', 14,2);
             $table->string('status');
             $table->string('released_by');
             $table->timestamps();

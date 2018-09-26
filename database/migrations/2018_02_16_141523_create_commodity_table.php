@@ -16,8 +16,8 @@ class CreateCommodityTable extends Migration
         Schema::create('commodity', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100);
-            $table->decimal('price', 8,2);
-            $table->decimal('suki_price', 8,2);
+            $table->decimal('price', 14,2);
+            $table->decimal('suki_price', 14,2);
             $table->timestamps();
         });
     }
