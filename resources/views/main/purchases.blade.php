@@ -543,41 +543,36 @@
     var purchase_date_to;
     var id;
     $(document).ready(function () {
-
         document.title = "M-Agri - Purchases";
-        
-
-          //Delete Purchases
-          $(document).on('click', '.delete_purchase', function(){
-                var id = $(this).attr('id');
-                swal({
-                    title: "Are you sure?",
-                    text: "Delete this record?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-				function(){
-				    $.ajax({
-                        url:"{{ route('delete_purchases') }}",
-                        method: "get",
-                        data:{id:id},
-                        success:function(data){
-                            refresh_purchases_table();
-                        }
-                    })
-
-				    swal("Deleted!", "The record has been deleted.", "success");
-			    });
+        //Delete Purchases
+        $(document).on('click', '.delete_purchase', function(){
+            var id = $(this).attr('id');
+            swal({
+                title: "Are you sure?",
+                text: "Delete this record?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function(){
+                $.ajax({
+                    url:"{{ route('delete_purchases') }}",
+                    method: "get",
+                    data:{id:id},
+                    success:function(data){
+                        refresh_purchases_table();
+                    }
+                })
+                swal("Deleted!", "The record has been deleted.", "success");
             });
+        });
 
-               $(document).on('click', '.edit_purchase', function(){
-                var id = $(this).attr('id');
-              
-                $('.modal_title').text('Update Purchases');
-                 $.ajax({
+        $(document).on('click', '.edit_purchase', function(){
+            var id = $(this).attr('id');
+            $('.modal_title').text('Update Purchases');
+                $.ajax({
                     url:"{{ route('update_purchases') }}",
                     method: 'get',
                     data:{id:id},
@@ -600,166 +595,163 @@
                         $('#amount').val(data.amtpay);
                         $("#remarks").val(data.remarks).trigger('change');
                         var a = data.customer_id;
-            $.ajax({
-             url: "{{ route('find_amt') }}",
-             data: { id : a },
-             dataType:'json',
-             success: function(data) {
-                  $('#ca').val(data.balance)
-                  $('#balance').val(data.balance)
-                  $('#balance1').val(data.balance)
-                  $('#last').val(data.suki_type)
-               }
-            });
-                    $('#purchase_modal').modal('show');
-                       
+                        $.ajax({
+                            url: "{{ route('find_amt') }}",
+                            data: { id : a },
+                            dataType:'json',
+                            success: function(data) {
+                                $('#ca').val(data.balance)
+                                $('#balance').val(data.balance)
+                                $('#balance1').val(data.balance)
+                                $('#last').val(data.suki_type)
+                            }
+                        });
+                        $('#purchase_modal').modal('show');
                     }
                 })
             });
 
-         $("#homeclick").on('click', function() {
-               $('#stat').val("old");
-               $('#stat1').val("old");
-         });
+            $("#homeclick").on('click', function() {
+                $('#stat').val("old");
+                $('#stat1').val("old");
+            });
 
-         $("#homeclick1").on('click', function() {
-              $('#stat').val("new");
-              $('#stat1').val("new");
-        });
+            $("#homeclick1").on('click', function() {
+                $('#stat').val("new");
+                $('#stat1').val("new");
+            });
 
-         $('#last').val(1);
-         $('#balance').val("0");
-         $('#ca1').val("0");
-         $('#partial').val("0");
-         $.extend( $.fn.dataTable.defaults, {
-             "language": {
-                 processing: 'Loading.. Please wait'
-             }
-         });
+            $('#last').val(1);
+            $('#balance').val("0");
+            $('#ca1').val("0");
+            $('#partial').val("0");
+            $.extend( $.fn.dataTable.defaults, {
+                "language": {
+                    processing: 'Loading.. Please wait'
+                }
+            });
 
-         function number_format(number, decimals, dec_point, thousands_sep) {
-              // Strip all characters but numerical ones.
-              number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
-              var n = !isFinite(+number) ? 0 : +number,
-                  prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-                  sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-                  dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-                  s = '',
-                  toFixedFix = function (n, prec) {
-                      var k = Math.pow(10, prec);
-                      return '' + Math.round(n * k) / k;
-                  };
-              // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-              s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-              if (s[0].length > 3) {
-                  s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-              }
-              if ((s[1] || '').length < prec) {
-                  s[1] = s[1] || '';
-                  s[1] += new Array(prec - s[1].length + 1).join('0');
-              }
-              return s.join(dec);
-          }
+            function number_format(number, decimals, dec_point, thousands_sep) {
+                // Strip all characters but numerical ones.
+                number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+                var n = !isFinite(+number) ? 0 : +number,
+                    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                    s = '',
+                    toFixedFix = function (n, prec) {
+                        var k = Math.pow(10, prec);
+                        return '' + Math.round(n * k) / k;
+                    };
+                // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+                s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+                if (s[0].length > 3) {
+                    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+                }
+                if ((s[1] || '').length < prec) {
+                    s[1] = s[1] || '';
+                    s[1] += new Array(prec - s[1].length + 1).join('0');
+                }
+                return s.join(dec);
+            }
 
-          purchasestable = $('#purchasetable').DataTable({
-              "footerCallback": function ( row, data, start, end, display ) {
-                  var api = this.api(), data;
+            purchasestable = $('#purchasetable').DataTable({
+                "footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
        
-                  // Remove the formatting to get integer data for summation
-                  var intVal = function ( i ) {
-                      return typeof i === 'string' ?
-                          i.replace(/[\₱,]/g, '')*1 :
-                          typeof i === 'number' ?
-                              i : 0;
-                  };
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
        
-                  // Total over this page
-                  pageTotal1 = api
-                      .column( 4, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
+                    // Total over this page
+                    pageTotal1 = api
+                        .column( 4, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
        
-                  // Update footer
-                  $( api.column( 4 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal1,2)
-                  );
+                    // Update footer
+                    $( api.column( 4 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
 
-                  // Total over this page
-                  pageTotal2 = api
-                      .column( 5, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
+                    // Total over this page
+                    pageTotal2 = api
+                        .column( 5, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
        
-                  // Update footer
-                  $( api.column( 5 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal2,2)
-                  );
+                    // Update footer
+                    $( api.column( 5 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    );
 
-                  // Total over this page
-                  pageTotal3 = api
-                      .column( 6, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
+                    // Total over this page
+                    pageTotal3 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
        
-                  // Update footer
-                  $( api.column( 6 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal3,2)
-                  );
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
 
-                  // Total over this page
-                  pageTotal4 = api
-                      .column( 8, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
        
-                  // Update footer
-                  $( api.column( 8 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal4,2)
-                  );
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
 
-                  // Total over this page
-                  pageTotal5 = api
-                      .column( 9, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 9, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
        
-                  // Update footer
-                  $( api.column( 9 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal5,2)
-                  );
+                    // Update footer
+                    $( api.column( 9 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
 
-                  // Total over this page
-                  pageTotal6 = api
-                      .column( 10, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
+                    // Total over this page
+                    pageTotal6 = api
+                        .column( 10, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
        
-                  // Update footer
-                  $( api.column( 10 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal6,2)
-                  );
-
-              },
-              dom: 'Bfrtip',
-              buttons: [
-                  {
-                      extend: 'print',
-                      exportOptions: {
-                          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
-                      },
-                      customize: function ( win ) {
+                    // Update footer
+                    $( api.column( 10 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal6,2)
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                    },
+                    customize: function ( win ) {
                         var last = null;
                         var current = null;
                         var bod = [];
@@ -771,491 +763,456 @@
                         style.type = 'text/css';
                         style.media = 'print';
          
-                        if (style.styleSheet)
-                        {
+                        if (style.styleSheet){
                           style.styleSheet.cssText = css;
                         }
-                        else
-                        {
+                        else{
                           style.appendChild(win.document.createTextNode(css));
                         }
          
                         head.appendChild(style);
 
-                          $(win.document.body)
-                              .css( 'font-size', '10pt' );
+                        $(win.document.body)
+                            .css( 'font-size', '10pt' );
        
-                          $(win.document.body).find( 'table' )
-                              .addClass( 'compact' )
-                              .css( 'font-size', 'inherit' );
-                      },
-                      footer: true
-                  }
-              ],
-              processing: true,
-              serverSide: true,
-              scrollX: true,
-              order:[],
-              columnDefs: [
-  				{
+                        $(win.document.body).find( 'table' )
+                            .addClass( 'compact' )
+                            .css( 'font-size', 'inherit' );
+                    },
+                    footer: true
+                }],
+                processing: true,
+                serverSide: true,
+                scrollX: true,
+                order:[],
+                columnDefs: [{
     			  	"targets": "_all", // your case first column
      				"className": "text-center",
-      				
  				},
 				],
-              ajax:{
-                 
-                      url: "{{ route('refresh_purchases') }}",
-                      // dataType: 'text',
-                      type: 'post',
-                      headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                      data: {
-                          date_from: purchase_date_from,
-                          date_to: purchase_date_to,
-                      },
-                     
-                
-              },
-              columns: [
-                   {data: 'trans_no'},
-                   {data:'wholename', name: 'customer.fname'  },
-                   {data:'mname', name: 'customer.mname',visible:false  },
-                   {data:'lname', name: 'customer.lname',visible:false  },
-                   {data: 'commname', name: 'commodity.name'},
-                   {data: 'sacks'},
-                   {data: 'balance', name: 'balance.balance'},
-                   {data: 'balance_id'},
-                   {data: 'partial'},
-                   {data: 'kilo'},
-                   {data: 'price'},
-                   {data: 'total'},
-                   {data: 'amtpay'},
-                   {data:'created_at'},
-                   {data:'status'},
-                   {data:'released_by'},
-                   {data: 'remarks'},
-                   {data: "action", orderable:false,searchable:false}
+                ajax:{
+                    url: "{{ route('refresh_purchases') }}",
+                    // dataType: 'text',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        date_from: purchase_date_from,
+                        date_to: purchase_date_to,
+                    },
+                },
+                columns: [
+                    {data: 'trans_no'},
+                    {data:'wholename', name: 'customer.fname'  },
+                    {data:'mname', name: 'customer.mname',visible:false  },
+                    {data:'lname', name: 'customer.lname',visible:false  },
+                    {data: 'commname', name: 'commodity.name'},
+                    {data: 'sacks'},
+                    {data: 'balance', name: 'balance.balance'},
+                    {data: 'balance_id'},
+                    {data: 'partial'},
+                    {data: 'kilo'},
+                    {data: 'price'},
+                    {data: 'total'},
+                    {data: 'amtpay'},
+                    {data:'created_at'},
+                    {data:'status'},
+                    {data:'released_by'},
+                    {data: 'remarks'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
 
-              ]
-         });
-
-          //Start of Date Range Filter
-          $("#purchase_datepicker_from").datepicker({
+            //Start of Date Range Filter
+            $("#purchase_datepicker_from").datepicker({
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
                 buttonImageOnly: false,
                 "onSelect": function(date) {
-                   
-                  minDateFilter = new Date(date).getTime();
-                  var df= new Date(date);
-                  purchase_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
-                  $('#purchasetable').dataTable().fnDestroy();
-                  purchasestable = $('#purchasetable').DataTable({
-              "footerCallback": function ( row, data, start, end, display ) {
-                  var api = this.api(), data;
-       
-                  // Remove the formatting to get integer data for summation
-                  var intVal = function ( i ) {
-                      return typeof i === 'string' ?
-                          i.replace(/[\₱,]/g, '')*1 :
-                          typeof i === 'number' ?
-                              i : 0;
-                  };
-       
-                  // Total over this page
-                  pageTotal1 = api
-                      .column( 4, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 4 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal1,2)
-                  );
+                    minDateFilter = new Date(date).getTime();
+                    var df= new Date(date);
+                    purchase_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+                    $('#purchasetable').dataTable().fnDestroy();
+                    purchasestable = $('#purchasetable').DataTable({
+                        "footerCallback": function ( row, data, start, end, display ) {
+                            var api = this.api(), data;
+            
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\₱,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+        
+                            // Total over this page
+                            pageTotal1 = api
+                                .column( 4, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 4 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal1,2)
+                            );
 
-                  // Total over this page
-                  pageTotal2 = api
-                      .column( 5, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 5 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal2,2)
-                  );
+                            // Total over this page
+                            pageTotal2 = api
+                                .column( 5, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 5 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal2,2)
+                            );
 
-                  // Total over this page
-                  pageTotal3 = api
-                      .column( 6, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 6 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal3,2)
-                  );
+                            // Total over this page
+                            pageTotal3 = api
+                                .column( 6, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 6 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal3,2)
+                            );
 
-                  // Total over this page
-                  pageTotal4 = api
-                      .column( 8, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 8 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal4,2)
-                  );
+                            // Total over this page
+                            pageTotal4 = api
+                                .column( 8, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 8 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal4,2)
+                            );
 
-                  // Total over this page
-                  pageTotal5 = api
-                      .column( 9, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 9 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal5,2)
-                  );
-
-                  // Total over this page
-                  pageTotal6 = api
-                      .column( 10, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 10 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal6,2)
-                  );
-
-              },
-              dom: 'Bfrtip',
-              buttons: [
-                  {
-                      extend: 'print',
-                      exportOptions: {
-                          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
-                      },
-                      customize: function ( win ) {
-                        var last = null;
-                        var current = null;
-                        var bod = [];
-         
-                        var css = '@page { size: landscape; }',
-                            head = win.document.head || win.document.getElementsByTagName('head')[0],
-                            style = win.document.createElement('style');
-         
-                        style.type = 'text/css';
-                        style.media = 'print';
-         
-                        if (style.styleSheet)
-                        {
-                          style.styleSheet.cssText = css;
-                        }
-                        else
-                        {
-                          style.appendChild(win.document.createTextNode(css));
-                        }
-         
-                        head.appendChild(style);
-
-                          $(win.document.body)
-                              .css( 'font-size', '10pt' );
-       
-                          $(win.document.body).find( 'table' )
-                              .addClass( 'compact' )
-                              .css( 'font-size', 'inherit' );
-                      },
-                      footer: true
-                  }
-              ],
-              scrollX: true,
-              processing: true,
-              serverSide: true,
-              order:[],
-              columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
-              ajax:{
-                 
-                      url: "{{ route('refresh_purchases') }}",
-                      // dataType: 'text',
-                      type: 'post',
-                      headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                      data: {
-                          date_from: purchase_date_from,
-                          date_to: purchase_date_to,
-                      },
-                     
+                            // Total over this page
+                            pageTotal5 = api
+                                .column( 9, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
                 
-              },
-              columns: [
-                   {data: 'trans_no'},
-                   {data:'wholename', name: 'customer.fname' },
-                   {data:'mname', name: 'customer.mname',visible:false  },
-                   {data:'lname', name: 'customer.lname',visible:false  },
-                   {data: 'commname', name: 'commodity.name'},
-                   {data: 'sacks'},
-                   {data: 'balance', name: 'balance.balance'},
-                   {data: 'balance_id'},
-                   {data: 'partial'},
-                   {data: 'kilo'},
-                   {data: 'price'},
-                   {data: 'total'},
-                   {data: 'amtpay'},
-                   {data:'created_at'},
-                   {data:'status'},
-                   {data:'released_by'},
-                   {data: 'remarks'},
-                   {data: "action", orderable:false,searchable:false}
+                            // Update footer
+                            $( api.column( 9 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal5,2)
+                            );
 
-              ]
-         });
+                            // Total over this page
+                            pageTotal6 = api
+                                .column( 10, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 10 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal6,2)
+                            );
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [{
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                            },
+                            customize: function ( win ) {
+                                var last = null;
+                                var current = null;
+                                var bod = [];
+                
+                                var css = '@page { size: landscape; }',
+                                    head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                    style = win.document.createElement('style');
+                
+                                style.type = 'text/css';
+                                style.media = 'print';
+                
+                                if (style.styleSheet){
+                                style.styleSheet.cssText = css;
+                                }
+                                else{
+                                style.appendChild(win.document.createTextNode(css));
+                                }
+                
+                                head.appendChild(style);
 
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+            
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
+                            },
+                            footer: true
+                        }],
+                        scrollX: true,
+                        processing: true,
+                        serverSide: true,
+                        order:[],
+                        columnDefs: [{
+                            "targets": "_all", // your case first column
+                            "className": "text-center",
+                        }],
+                        ajax:{
+                            url: "{{ route('refresh_purchases') }}",
+                            // dataType: 'text',
+                            type: 'post',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                date_from: purchase_date_from,
+                                date_to: purchase_date_to,
+                            },
+                        },
+                        columns: [
+                            {data: 'trans_no'},
+                            {data:'wholename', name: 'customer.fname' },
+                            {data:'mname', name: 'customer.mname',visible:false  },
+                            {data:'lname', name: 'customer.lname',visible:false  },
+                            {data: 'commname', name: 'commodity.name'},
+                            {data: 'sacks'},
+                            {data: 'balance', name: 'balance.balance'},
+                            {data: 'balance_id'},
+                            {data: 'partial'},
+                            {data: 'kilo'},
+                            {data: 'price'},
+                            {data: 'total'},
+                            {data: 'amtpay'},
+                            {data:'created_at'},
+                            {data:'status'},
+                            {data:'released_by'},
+                            {data: 'remarks'},
+                            {data: "action", orderable:false,searchable:false}
+                        ]
+                    });
                 }
-              }).keyup(function() {
+            }).keyup(function() {
                 minDateFilter = new Date(this.value).getTime();
-              });
+            });
 
-              $("#purchase_datepicker_to").datepicker({
+            $("#purchase_datepicker_to").datepicker({
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
                 buttonImageOnly: false,
                 "onSelect": function(date) {
-                  maxDateFilter = new Date(date).getTime();
-                  //oTable.fnDraw();
-                 var dt= new Date(date);
-                   purchase_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-                  $('#purchasetable').dataTable().fnDestroy();
-                 purchasestable = $('#purchasetable').DataTable({
-              "footerCallback": function ( row, data, start, end, display ) {
-                  var api = this.api(), data;
-       
-                  // Remove the formatting to get integer data for summation
-                  var intVal = function ( i ) {
-                      return typeof i === 'string' ?
-                          i.replace(/[\₱,]/g, '')*1 :
-                          typeof i === 'number' ?
-                              i : 0;
-                  };
-       
-                  // Total over this page
-                  pageTotal1 = api
-                      .column( 4, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 4 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal1,2)
-                  );
-
-                  // Total over this page
-                  pageTotal2 = api
-                      .column( 5, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 5 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal2,2)
-                  );
-
-                  // Total over this page
-                  pageTotal3 = api
-                      .column( 6, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 6 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal3,2)
-                  );
-
-                  // Total over this page
-                  pageTotal4 = api
-                      .column( 8, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 8 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal4,2)
-                  );
-
-                  // Total over this page
-                  pageTotal5 = api
-                      .column( 9, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 9 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal5,2)
-                  );
-
-                  // Total over this page
-                  pageTotal6 = api
-                      .column( 10, { page: 'current'} )
-                      .data()
-                      .reduce( function (a, b) {
-                          return intVal(a) + intVal(b);
-                      }, 0 );
-       
-                  // Update footer
-                  $( api.column( 10 ).footer() ).html(
-                      'Total: <br>₱' + number_format(pageTotal6,2)
-                  );
-
-              },
-              dom: 'Bfrtip',
-              buttons: [
-                  {
-                      extend: 'print',
-                      exportOptions: {
-                          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
-                      },
-                      customize: function ( win ) {
-                        var last = null;
-                        var current = null;
-                        var bod = [];
-         
-                        var css = '@page { size: landscape; }',
-                            head = win.document.head || win.document.getElementsByTagName('head')[0],
-                            style = win.document.createElement('style');
-         
-                        style.type = 'text/css';
-                        style.media = 'print';
-         
-                        if (style.styleSheet)
-                        {
-                          style.styleSheet.cssText = css;
-                        }
-                        else
-                        {
-                          style.appendChild(win.document.createTextNode(css));
-                        }
-         
-                        head.appendChild(style);
-
-                          $(win.document.body)
-                              .css( 'font-size', '10pt' );
-       
-                          $(win.document.body).find( 'table' )
-                              .addClass( 'compact' )
-                              .css( 'font-size', 'inherit' );
-                      },
-                      footer: true
-                  }
-              ],
-              scrollX: true,
-              processing: true,
-              serverSide: true,
-              order:[],
-              columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
-              ajax:{
-                 
-                      url: "{{ route('refresh_purchases') }}",
-                      // dataType: 'text',
-                      type: 'post',
-                      headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                      data: {
-                          date_from: purchase_date_from,
-                          date_to: purchase_date_to,
-                      },
-                     
+                    maxDateFilter = new Date(date).getTime();
+                    //oTable.fnDraw();
+                    var dt= new Date(date);
+                    purchase_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                    $('#purchasetable').dataTable().fnDestroy();
+                    purchasestable = $('#purchasetable').DataTable({
+                        "footerCallback": function ( row, data, start, end, display ) {
+                            var api = this.api(), data;
                 
-              },
-              columns: [
-                   {data: 'trans_no'},
-                   {data:'wholename', name: 'customer.fname' },
-                   {data:'mname', name: 'customer.mname',visible:false  },
-                   {data:'lname', name: 'customer.lname',visible:false  },
-                   {data: 'commname', name: 'commodity.name'},
-                   {data: 'sacks'},
-                   {data: 'balance', name:'balance.balance'},
-                   {data: 'balance_id'},
-                   {data: 'partial'},
-                   {data: 'kilo'},
-                   {data: 'price'},
-                   {data: 'total'},
-                   {data: 'amtpay'},
-                   {data:'created_at'},
-                   {data:'status'},
-                   {data:'released_by'},
-                   {data: 'remarks'},
-                   {data: "action", orderable:false,searchable:false}
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\₱,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+        
+                            // Total over this page
+                            pageTotal1 = api
+                                .column( 4, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+        
+                            // Update footer
+                            $( api.column( 4 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal1,2)
+                            );
 
-              ]
-         });
+                            // Total over this page
+                            pageTotal2 = api
+                                .column( 5, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+        
+                            // Update footer
+                            $( api.column( 5 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal2,2)
+                            );
+
+                            // Total over this page
+                            pageTotal3 = api
+                                .column( 6, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+        
+                            // Update footer
+                            $( api.column( 6 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal3,2)
+                            );
+
+                            // Total over this page
+                            pageTotal4 = api
+                                .column( 8, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+        
+                            // Update footer
+                            $( api.column( 8 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal4,2)
+                            );
+
+                            // Total over this page
+                            pageTotal5 = api
+                                .column( 9, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+        
+                            // Update footer
+                            $( api.column( 9 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal5,2)
+                            );
+
+                            // Total over this page
+                            pageTotal6 = api
+                                .column( 10, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+        
+                            // Update footer
+                            $( api.column( 10 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal6,2)
+                            );
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [{
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                            },
+                            customize: function ( win ) {
+                                var last = null;
+                                var current = null;
+                                var bod = [];
+                
+                                var css = '@page { size: landscape; }',
+                                    head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                    style = win.document.createElement('style');
+                
+                                style.type = 'text/css';
+                                style.media = 'print';
+            
+                                if (style.styleSheet){
+                                style.styleSheet.cssText = css;
+                                }
+                                else{
+                                style.appendChild(win.document.createTextNode(css));
+                                }
+            
+                                head.appendChild(style);
+
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+            
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
+                            },
+                            footer: true
+                        }],
+                        scrollX: true,
+                        processing: true,
+                        serverSide: true,
+                        order:[],
+                        columnDefs: [{
+                            "targets": "_all", // your case first column
+                            "className": "text-center",
+                        }],
+                        ajax:{
+                            url: "{{ route('refresh_purchases') }}",
+                            // dataType: 'text',
+                            type: 'post',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                            data: {
+                                date_from: purchase_date_from,
+                                date_to: purchase_date_to,
+                            },
+                        },
+                        columns: [
+                            {data: 'trans_no'},
+                            {data:'wholename', name: 'customer.fname' },
+                            {data:'mname', name: 'customer.mname',visible:false  },
+                            {data:'lname', name: 'customer.lname',visible:false  },
+                            {data: 'commname', name: 'commodity.name'},
+                            {data: 'sacks'},
+                            {data: 'balance', name:'balance.balance'},
+                            {data: 'balance_id'},
+                            {data: 'partial'},
+                            {data: 'kilo'},
+                            {data: 'price'},
+                            {data: 'total'},
+                            {data: 'amtpay'},
+                            {data:'created_at'},
+                            {data:'status'},
+                            {data:'released_by'},
+                            {data: 'remarks'},
+                            {data: "action", orderable:false,searchable:false}
+                        ]
+                    });
 
                 }
-              }).keyup(function() {
+            }).keyup(function() {
                 maxDateFilter = new Date(this.value).getTime();
                 //oTable.fnDraw();
-              });
-          //End of Date Range Filter
+            });
+            //End of Date Range Filter
 
-         function refresh_purchase_table(){
-             purchasestable.ajax.reload(); //reload datatable ajax
-         }
+            function refresh_purchase_table(){
+                purchasestable.ajax.reload(); //reload datatable ajax
+            }
 
-         $(document).on('click', '#add_purchase', function(event){
-            $('.modal_title').text('Add Purchase');
+            $(document).on('click', '#add_purchase', function(event){
+                $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
                
-              event.preventDefault();
-              var input = $(this);
-              var button =this;
-              button.disabled = true;
-              input.html('SAVING...');
-              $.ajax({
-                   headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                   },
-                   url:"{{ route('add_purchases') }}",
-                   method: 'POST',
-                   dataType:'text',
-                   data: $('#purchase_form').serialize(),
-                   success:function(data){
+                event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');
+                $.ajax({
+                    headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('add_purchases') }}",
+                    method: 'POST',
+                    dataType:'text',
+                    data: $('#purchase_form').serialize(),
+                    success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#customer").val('').trigger('change');
@@ -1283,15 +1240,15 @@
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
                         //refresh_delivery_table();
-                   },
-                   error: function(data){
+                    },
+                    error: function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         swal("Oh no!", "Something went wrong, try again.", "error")
-                   }
-              })
-         });
-         $(document).on('click', '.release_purchase', function(event){
+                    }
+                })
+            });
+            $(document).on('click', '.release_purchase', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
                 console.log(id);
@@ -1315,7 +1272,7 @@
                 })
             });
 
-         $(document).on('click', '#release_purchase_normal', function(){
+            $(document).on('click', '#release_purchase_normal', function(){
                 $.ajax({
                     url:"{{ route('release_purchase') }}",
                     method: 'POST',
@@ -1336,373 +1293,346 @@
             });
 
 
-        $("#print_purchase").click(function(event) {
-          event.preventDefault();
-            if($('#stat1').val()=="old"){
-              $("#add_purchase").trigger("click");
-            }else if($('#stat').val()=="new"){
-              $("#add_purchase1").trigger("click");
-            }
-          $("#print_form").trigger("click");
-        });
+            $("#print_purchase").click(function(event) {
+                event.preventDefault();
+                if($('#stat1').val()=="old"){
+                    $("#add_purchase").trigger("click");
+                }else if($('#stat').val()=="new"){
+                    $("#add_purchase1").trigger("click");
+                }
+                $("#print_form").trigger("click");
+            });
 
-        $("#print_form").click(function(event) {
-          if($('#stat1').val()=="old"){
-            $("#ticket_clone").val($("#ticket").val());
-            $("#customer_clone").val($("#customer option:selected").text());
-            $("#commodity_clone").val($("#commodity option:selected").text());
-            $("#sacks_clone").val($("#sacks").val());
-            $("#ca_clone").val($("#ca").val());
-            $("#balance_clone").val($("#balance").val());
-            $("#partial_clone").val($("#partial").val());
-            $("#kilos_clone").val($("#kilo").val());
-            $("#price_clone").val($("#price").val());
-            $("#total_clone").val($("#total").val());
-            $("#amount_clone").val($("#amount").val());
-            $("#remarks_clone").val($("#remarks").val());
-          }else if($('#stat').val()=="new"){
-            $("#ticket_clone").val($("#ticket1").val());
-            $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
-            $("#commodity_clone").val($("#commodity1 option:selected").text());
-            $("#sacks_clone").val($("#sacks1").val());
-            $("#ca_clone").val("0");
-            $("#balance_clone").val("0");
-            $("#partial_clone").val("0");
-            $("#kilos_clone").val($("#kilo1").val());
-            $("#price_clone").val($("#price1").val());
-            $("#total_clone").val($("#amount1").val());
-            $("#amount_clone").val($("#amount1").val());
-            $("#remarks_clone").val($("#remarks1").val());
-          }
-        });
+            $("#print_form").click(function(event) {
+                if($('#stat1').val()=="old"){
+                    $("#ticket_clone").val($("#ticket").val());
+                    $("#customer_clone").val($("#customer option:selected").text());
+                    $("#commodity_clone").val($("#commodity option:selected").text());
+                    $("#sacks_clone").val($("#sacks").val());
+                    $("#ca_clone").val($("#ca").val());
+                    $("#balance_clone").val($("#balance").val());
+                    $("#partial_clone").val($("#partial").val());
+                    $("#kilos_clone").val($("#kilo").val());
+                    $("#price_clone").val($("#price").val());
+                    $("#total_clone").val($("#total").val());
+                    $("#amount_clone").val($("#amount").val());
+                    $("#remarks_clone").val($("#remarks").val());
+                }else if($('#stat').val()=="new"){
+                    $("#ticket_clone").val($("#ticket1").val());
+                    $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
+                    $("#commodity_clone").val($("#commodity1 option:selected").text());
+                    $("#sacks_clone").val($("#sacks1").val());
+                    $("#ca_clone").val("0");
+                    $("#balance_clone").val("0");
+                    $("#partial_clone").val("0");
+                    $("#kilos_clone").val($("#kilo1").val());
+                    $("#price_clone").val($("#price1").val());
+                    $("#total_clone").val($("#amount1").val());
+                    $("#amount_clone").val($("#amount1").val());
+                    $("#remarks_clone").val($("#remarks1").val());
+                }
+            });
 
-
-                 $(document).on('click', '#add_purchase1', function(event){
-                    var input = $(this);
-                    var button =this;
-                    button.disabled = true;
-                    input.html('SAVING...'); 
-                    event.preventDefault();
-                    $.ajax({
-                         headers: {
-                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                         },
-                         url:"{{ route('add_purchases') }}",
-                         method: 'POST',
-                         dataType:'text',
-                         data: $('#purchase_form1').serialize(),
-                         success:function(data){
-                              button.disabled = false;
-                              input.html('SAVE CHANGES');
-                              $("#sacks1").val("");
-                              $("#kilo1").val("");
-                              $("#price1").val("");
-                              $("#fname").val("");
-                              $("#mname").val("");
-                              $("#lname").val("");
-                              $("#amount1").val("");
-                              $("#commodity1").val('').trigger('change');
-                              swal("Success!", "Record has been added to database", "success")
-                              $('#purchase_modal').modal('hide');
-                              refresh_purchase_table();
-                              //refresh_delivery_table();
-                         },
-                         error: function(data){
-                              button.disabled = false;
-                              input.html('SAVE CHANGES');
-                              swal("Oh no!", "Something went wrong, try again.", "error")
-                         }
-                    })
-                });
-
-         $('#partial').on('keyup keydown', function (e) {
-           if (e.which == 8) {
-
-             if($('#balance').val()!=""){
-         	    var a = 0;
-         	    var b = parseFloat($('#balance').val());
-         	    var d = parseFloat($('#ca').val());
-         	    var c = 0;
-         	    var e =0;
-         		  if($('#partial').val()!=""){
-         			  a = parseFloat($('#partial').val());
-
-         			 if($('#total').val()!=""){
-         				 e = parseFloat($('#total').val());
-         			 }
-         			 x = a+e;
-         			$('#amount').val(x)
-         		  }
-
-
-         		   c = d-a;
-         		    if(c <= d){
-         		  $('#balance').val(c);
-
-         		  if($('#total').val()!=""){
-         			  e = parseFloat($('#total').val());
-         		  }
-
-         		  x = e-a;
-
-         		  if($('#total').val()=="" && $('#partial').val()=="")
-         		  {
-         			  $('#amount').val('');
-                      $('#total').val('');
-         		  }
-         		  else{
-         			 $('#amount').val(x)
-         		  }
-
-
-
-         	  }
-
-
-             }
-             else if ($('#balance').val()==""){
-         	     var d = parseFloat($('#ca').val());
-         	     $('#balance').val(d);
-             }
-
-
-           }
-
-         	});
-     //<----");" AND ANOTHA ONE *DJ KHALED'S VOICE*
-
-
-     });
-
-     function sacks1(value) {
-               var a = 0;
-               var b = parseFloat($('#price').val());
-               var d = 0;
-               var c = 0;
-               var e = 0;
-               var r = 0;
-               var x = 0;
-               var t = 0;
-               var z = 0;
-               if($('#price').val()!=""){
-                   a = 0;
-                   d = a*50;
-                   if($('#sacks').val()==""){
-
-                          $('#total').val("");
-                          if($('#partial').val()!="" || $('#total').val()!=""){
-                               if($('#partial').val()!=""){
-                                       r = parseFloat($('#partial').val());
-                                  }
-                               if($('#total').val()!=""){
-                                          t = parseFloat($('#total').val());
-                                     }
-                               var temp2 = t+r;
-                               $('#amount').val(temp2);
-                               console.log(temp2);
-                          }
-                          else{
-                               $('#amount').val("");
-                          }
+            $(document).on('click', '#add_purchase1', function(event){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...'); 
+                event.preventDefault();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('add_purchases') }}",
+                    method: 'POST',
+                    dataType:'text',
+                    data: $('#purchase_form1').serialize(),
+                    success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        $("#sacks1").val("");
+                        $("#kilo1").val("");
+                        $("#price1").val("");
+                        $("#fname").val("");
+                        $("#mname").val("");
+                        $("#lname").val("");
+                        $("#amount1").val("");
+                        $("#commodity1").val('').trigger('change');
+                        swal("Success!", "Record has been added to database", "success")
+                        $('#purchase_modal').modal('hide');
+                        refresh_purchase_table();
+                        //refresh_delivery_table();
+                    },
+                    error: function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        swal("Oh no!", "Something went wrong, try again.", "error")
                     }
-               else{
+                })
+            });
+            
+            $('#partial').on('keyup keydown', function (e) {
+                if (e.which == 8) {
+
+                    if($('#balance').val()!=""){
+                        var a = 0;
+                        var b = parseFloat($('#balance').val());
+                        var d = parseFloat($('#ca').val());
+                        var c = 0;
+                        var e =0;
+         		        if($('#partial').val()!=""){
+         			        a = parseFloat($('#partial').val());
+
+         			        if($('#total').val()!=""){
+         				        e = parseFloat($('#total').val());
+         			        }
+         			        x = a+e;
+         			        $('#amount').val(x)
+         		        }
+                        c = d-a;
+
+                        if(c <= d){
+         		            $('#balance').val(c);
+
+         		            if($('#total').val()!=""){
+         			             e = parseFloat($('#total').val());
+         		            }
+         		            x = e-a;
+
+         		            if($('#total').val()=="" && $('#partial').val()==""){
+                                $('#amount').val('');
+                                $('#total').val('');
+         		            }
+         		            else{
+         			            $('#amount').val(x)
+         		            }
+         	            }
+                    }
+                    else if ($('#balance').val()==""){
+                        var d = parseFloat($('#ca').val());
+                        $('#balance').val(d);
+                    }
+                }
+         	});
+        });
+
+        function sacks1(value) {
+            var a = 0;
+            var b = parseFloat($('#price').val());
+            var d = 0;
+            var c = 0;
+            var e = 0;
+            var r = 0;
+            var x = 0;
+            var t = 0;
+            var z = 0;
+            if($('#price').val()!=""){
+                a = 0;
+                d = a*50;
+                if($('#sacks').val()==""){
+                    $('#total').val("");
+                    if($('#partial').val()!="" || $('#total').val()!=""){
+                        if($('#partial').val()!=""){
+                            r = parseFloat($('#partial').val());
+                        }
+                        if($('#total').val()!=""){
+                            t = parseFloat($('#total').val());
+                        }
+                        var temp2 = t+r;
+                        $('#amount').val(temp2);
+                        console.log(temp2);
+                    }
+                    else{
+                        $('#amount').val("");
+                    }
+                }
+                else{
                     c = d*b;
                     var temp = c + r;
                     $('#total').val(c);
                     $('#amount').val(temp);
-                    //console.log(c+r);
                     if($('#partial').val()!=""){
-                            r = parseFloat($('#partial').val());
-                             temp = c + r;
-                            $('#amount').val(temp);
-
-                       }
+                        r = parseFloat($('#partial').val());
+                        temp = c + r;
+                        $('#amount').val(temp);
+                    }
                     if($('#total').val()!=""){
-                               t = parseFloat($('#total').val());
-                               temp = c + r;
-                               $('#amount').val(temp);
-                          }
+                        t = parseFloat($('#total').val());
+                        temp = c + r;
+                        $('#amount').val(temp);
+                    }
 
                     if($('#kilo').val()== ""){
-                         temp = c + r;
-                          $('#amount').val(temp);
+                        temp = c + r;
+                        $('#amount').val(temp);
                     }
-               }
-             if($('#kilo').val()!=""){
-                  e = parseFloat($('#kilo').val());
-                  x = b*e;
-                  z = x+c;
-                  var temp1 = z + r;
+                }
+                if($('#kilo').val()!=""){
+                    e = parseFloat($('#kilo').val());
+                    x = b*e;
+                    z = x+c;
+                    var temp1 = z + r;
 
-                  $('#total').val(z);
-                 $('#amount').val(temp1);
+                    $('#total').val(z);
+                    $('#amount').val(temp1);
+                }
+            }
+        }
 
-          }
-
-}
-   }
-   function kilos1(value) {
-             var a = 0;
-             var b = parseFloat($('#price').val());
-             var c = 0;
-             var d = 0 ;
-             var i = 0;
-             var e = 0;
-             var x = 0;
-             var z = 0;
-             var r = 0;
-             var t = 0;
-               if($('#price').val()!=""){
-                    a = parseFloat($('#kilo').val());
-               if($('#kilo').val()==""){
+        function kilos1(value) {
+            var a = 0;
+            var b = parseFloat($('#price').val());
+            var c = 0;
+            var d = 0 ;
+            var i = 0;
+            var e = 0;
+            var x = 0;
+            var z = 0;
+            var r = 0;
+            var t = 0;
+            if($('#price').val()!=""){
+                a = parseFloat($('#kilo').val());
+                if($('#kilo').val()==""){
                     $('#total').val("");
                     if($('#partial').val()!="" || $('#total').val()!=""){
-                         if($('#partial').val()!=""){
-                                 r = parseFloat($('#partial').val());
-                            }
-                         if($('#total').val()!=""){
-                                    t = parseFloat($('#total').val());
-                               }
-                         var temp2 = t+r;
-                         $('#amount').val(temp2);
+                        if($('#partial').val()!=""){
+                            r = parseFloat($('#partial').val());
+                        }
+                        if($('#total').val()!=""){
+                            t = parseFloat($('#total').val());
+                        }
+                        var temp2 = t+r;
+                        $('#amount').val(temp2);
                     }
                     else{
                          $('#amount').val("");
                     }
-
-           }
-               else{
-               c = a*b;
-               var temp = c + r;
-               $('#total').val(c);
-               $('#amount').val(temp);
-               if($('#partial').val()!=""){
-                    r = parseFloat($('#partial').val());
-                    temp = c + r;
+                }
+                else{
+                    c = a*b;
+                    var temp = c + r;
+                    $('#total').val(c);
                     $('#amount').val(temp);
-               }
-                   if($('#total').val()!=""){
-                        t = parseFloat($('#total').val());
-                        temp = c + r;
-                       $('#amount').val(temp);
-                   }
-
-                   if($('#sacks').val()=="")
-                   {
+                    if($('#partial').val()!=""){
+                        r = parseFloat($('#partial').val());
                         temp = c + r;
                         $('#amount').val(temp);
-                   }
-          }
-              if($('#sacks').val()!=""){
-                   e = 0;
-                  x = b*(e*50);
-                   z = x+c ;
-                   i = x+c+r ;
-                   $('#total').val(z);
-                   $('#amount').val(i);
+                    }
+                    if($('#total').val()!=""){
+                        t = parseFloat($('#total').val());
+                        temp = c + r;
+                        $('#amount').val(temp);
+                    }
+                    if($('#sacks').val()==""){
+                        temp = c + r;
+                        $('#amount').val(temp);
+                    }
+                }
+                if($('#sacks').val()!=""){
+                    e = 0;
+                    x = b*(e*50);
+                    z = x+c ;
+                    i = x+c+r ;
+                    $('#total').val(z);
+                    $('#amount').val(i);
+                }
+            }
+        }
 
-           }
+        function partial1(value) {
+            if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
+                if($('#balance').val()!=""){
+                    var a = 0;
+                    var b = parseFloat($('#balance').val());
+                    var d = parseFloat($('#ca').val());
+                    var c = 0;
+                    var e =0;
+                    if($('#partial').val()!=""){
+                        a = parseFloat($('#partial').val());
 
-      }
-}
-
-    function partial1(value) {
-         if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
-       if($('#balance').val()!=""){
-            var a = 0;
-            var b = parseFloat($('#balance').val());
-            var d = parseFloat($('#ca').val());
-            var c = 0;
-            var e =0;
-               if($('#partial').val()!=""){
-                    a = parseFloat($('#partial').val());
-
+                        if($('#total').val()!=""){
+                            e = parseFloat($('#total').val());
+                        }
+                        x = a+e;
+                        $('#amount').val(x)
+                    }
+                    c = d-a;
+                    $('#balance').val(c);
+               
                     if($('#total').val()!=""){
                         e = parseFloat($('#total').val());
-                   }
-                   x = a+e;
-                  $('#amount').val(x)
-               }
+                    }
+                    x = e-a;
+                    $('#amount').val(x)
+                }
+            }
+        }
 
-                c = d-a;
-               $('#balance').val(c);
-               if($('#total').val()!=""){
-                   e = parseFloat($('#total').val());
-              }
-              x = e-a;
-             $('#amount').val(x)
-       }
-       }
-    }
-
-    function sacks2(value) {
-              var a = 0;
-              var b = parseFloat($('#price1').val());
-              var d = 0;
-              var c = 0;
-              var e = 0;
-              var r = 0;
-              var x = 0;
-              var t = 0;
-              var z = 0;
-              if($('#price1').val()!=""){
-                  a = 0;
-                  d = a*50;
-                  if($('#sacks1').val()==""){
-
-                        $('#total1').val("");
-                        if($('#partial1').val()!="" || $('#total1').val()!=""){
-                             if($('#partial1').val()!=""){
-                                     r = parseFloat($('#partial1').val());
-                                 }
-                             if($('#total1').val()!=""){
-                                         t = parseFloat($('#total1').val());
-                                    }
-                             var temp2 = t+r;
-                             $('#amount1').val(temp2);
-                             console.log(temp2);
+        function sacks2(value) {
+            var a = 0;
+            var b = parseFloat($('#price1').val());
+            var d = 0;
+            var c = 0;
+            var e = 0;
+            var r = 0;
+            var x = 0;
+            var t = 0;
+            var z = 0;
+            if($('#price1').val()!=""){
+                a = 0;
+                d = a*50;
+                if($('#sacks1').val()==""){
+                    $('#total1').val("");
+                    if($('#partial1').val()!="" || $('#total1').val()!=""){
+                        if($('#partial1').val()!=""){
+                            r = parseFloat($('#partial1').val());
                         }
-                        else{
-                             $('#amount1').val("");
+                        if($('#total1').val()!=""){
+                            t = parseFloat($('#total1').val());
                         }
-                   }
-              else{
-                   c = d*b;
-                   var temp = c + r;
-                   $('#total1').val(c);
-                   $('#amount1').val(temp);
-                   //console.log(c+r);
-                   if($('#partial1').val()!=""){
-                           r = parseFloat($('#partial1').val());
-                            temp = c + r;
-                           $('#amount1').val(temp);
-
-                      }
-                   if($('#total1').val()!=""){
-                             t = parseFloat($('#total1').val());
-                             temp = c + r;
-                             $('#amount1').val(temp);
-                        }
-
-                   if($('#kilo1').val()== ""){
+                        var temp2 = t+r;
+                        $('#amount1').val(temp2);
+                        console.log(temp2);
+                    }
+                    else{
+                        $('#amount1').val("");
+                    }
+                }
+                else{
+                    c = d*b;
+                    var temp = c + r;
+                    $('#total1').val(c);
+                    $('#amount1').val(temp);
+                    //console.log(c+r);
+                    if($('#partial1').val()!=""){
+                        r = parseFloat($('#partial1').val());
                         temp = c + r;
                         $('#amount1').val(temp);
-                   }
-              }
-            if($('#kilo1').val()!=""){
-                 e = parseFloat($('#kilo1').val());
-                 x = b*e;
-                 z = x+c;
-                 var temp1 = z + r;
+                    }
+                    if($('#total1').val()!=""){
+                        t = parseFloat($('#total1').val());
+                        temp = c + r;
+                        $('#amount1').val(temp);
+                    }
 
-                 $('#total1').val(z);
-                $('#amount1').val(temp1);
+                    if($('#kilo1').val()== ""){
+                        temp = c + r;
+                        $('#amount1').val(temp);
+                    }
+                }
+                if($('#kilo1').val()!=""){
+                    e = parseFloat($('#kilo1').val());
+                    x = b*e;
+                    z = x+c;
+                    var temp1 = z + r;
 
-         }
+                    $('#total1').val(z);
+                    $('#amount1').val(temp1);
+                }
+            }
+        }
 
-}
-  }
-  function kilos2(value) {
+        function kilos2(value) {
             var a = 0;
             var b = parseFloat($('#price1').val());
             var c = 0;
@@ -1713,472 +1643,438 @@
             var z = 0;
             var r = 0;
             var t = 0;
-              if($('#price1').val()!=""){
-                   a = parseFloat($('#kilo1').val());
-              if($('#kilo1').val()==""){
-                   $('#total1').val("");
-                   if($('#partial1').val()!="" || $('#total1').val()!=""){
+            if($('#price1').val()!=""){
+                a = parseFloat($('#kilo1').val());
+                if($('#kilo1').val()==""){
+                    $('#total1').val("");
+                    if($('#partial1').val()!="" || $('#total1').val()!=""){
                         if($('#partial1').val()!=""){
-                                r = parseFloat($('#partial1').val());
-                           }
+                            r = parseFloat($('#partial1').val());
+                        }
                         if($('#total1').val()!=""){
-                                   t = parseFloat($('#total1').val());
-                             }
+                            t = parseFloat($('#total1').val());
+                        }
                         var temp2 = t+r;
                         $('#amount1').val(temp2);
-                   }
-                   else{
+                    }
+                    else{
                         $('#amount1').val("");
-                   }
+                    }
+                }
+                else{
+                    c = a*b;
+                    var temp = c + r;
+                    $('#total1').val(c);
+                    $('#amount1').val(temp);
+                    if($('#partial1').val()!=""){
+                        r = parseFloat($('#partial1').val());
+                        temp = c + r;
+                        $('#amount1').val(temp);
+                    }
+                    if($('#total1').val()!=""){
+                        t = parseFloat($('#total1').val());
+                        temp = c + r;
+                        $('#amount1').val(temp);
+                    }
+                    if($('#sacks1').val()=="")
+                    {
+                        temp = c + r;
+                        $('#amount1').val(temp);
+                    }
+                }
+                if($('#sacks1').val()!=""){
+                    e =0;
+                    x = b*(e*50);
+                    z = x+c ;
+                    i = x+c+r ;
+                    $('#total1').val(z);
+                    $('#amount1').val(i);
+                }
+            }
+        }
 
-          }
-              else{
-              c = a*b;
-              var temp = c + r;
-              $('#total1').val(c);
-              $('#amount1').val(temp);
-              if($('#partial1').val()!=""){
-                   r = parseFloat($('#partial1').val());
-                   temp = c + r;
-                   $('#amount1').val(temp);
-              }
-                  if($('#total1').val()!=""){
-                       t = parseFloat($('#total1').val());
-                       temp = c + r;
-                      $('#amount1').val(temp);
-                  }
+        function partial2(value) {
+            if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
+                if($('#balance1').val()!=""){
+                    var a = 0;
+                    var b = parseFloat($('#balance1').val());
+                    var d = 0;
+                    var c = 0;
+                    var e =0;
+                    if($('#partial').val()!=""){
+                        a = parseFloat($('#partial1').val());
+                        if($('#total1').val()!=""){
+                            e = parseFloat($('#total1').val());
+                        }
+                        x = a+e;
+                        $('#amount1').val(x)
+                    }
 
-                  if($('#sacks1').val()=="")
-                  {
-                       temp = c + r;
-                       $('#amount1').val(temp);
-                  }
-         }
-             if($('#sacks1').val()!=""){
-                  e =0;
-                 x = b*(e*50);
-                  z = x+c ;
-                  i = x+c+r ;
-                  $('#total1').val(z);
-                  $('#amount1').val(i);
-
-          }
-
-     }
-}
-
-   function partial2(value) {
-        if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
-      if($('#balance1').val()!=""){
-          var a = 0;
-          var b = parseFloat($('#balance1').val());
-          var d = 0;
-          var c = 0;
-          var e =0;
-              if($('#partial').val()!=""){
-                   a = parseFloat($('#partial1').val());
-
-                   if($('#total1').val()!=""){
-                       e = parseFloat($('#total1').val());
-                  }
-                  x = a+e;
-                 $('#amount1').val(x)
-              }
-
-               c = d-a;
-              $('#balance1').val(c);
-              if($('#total1').val()!=""){
-                  e = parseFloat($('#total1').val());
-             }
-             x = a+e;
-            $('#amount1').val(x)
-      }
-      }
-   }
-
-
+                    c = d-a;
+                    $('#balance1').val(c);
+                    if($('#total1').val()!=""){
+                        e = parseFloat($('#total1').val());
+                    }
+                    x = a+e;
+                    $('#amount1').val(x)
+                }
+            }
+        }
 
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
 
-
         $(document).ready(function() {
-
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
                 }
             });
 
-
-
-
-
-        $(document).on('click','.open_purchase_modal', function(){
-             $('.modal_title').text('Add Purchase');
-              $('#button_action').val('add');
-              $('#button_action1').val('add');
-              $('#customer').select2('enable');
-              $("#customer").val('').trigger('change');
-              $("#commodity").val('').trigger('change');
+            $(document).on('click','.open_purchase_modal', function(){
+                $('.modal_title').text('Add Purchase');
+                $('#button_action').val('add');
+                $('#button_action1').val('add');
+                $('#customer').select2('enable');
+                $("#customer").val('').trigger('change');
+                $("#commodity").val('').trigger('change');
                        
-            $('#purchase_modal').modal('hide');
+                $('#purchase_modal').modal('hide');
                     
-            $("#sacks").val("");
-            $("#kilo").val("");
-            $("#price").val("");
-            $("#sacks1").val("");
-            $("#kilo1").val("");
-            $("#price1").val("");
-            $("#fname").val("");
-            $("#mname").val("");
-            $("#lname").val("");
-            $("#amount1").val("");
-            $("#total").val("");
-            $("#amount").val("");
-            $("#ca").val("");
-            $("#balance").val("");
+                $("#sacks").val("");
+                $("#kilo").val("");
+                $("#price").val("");
+                $("#sacks1").val("");
+                $("#kilo1").val("");
+                $("#price1").val("");
+                $("#fname").val("");
+                $("#mname").val("");
+                $("#lname").val("");
+                $("#amount1").val("");
+                $("#total").val("");
+                $("#amount").val("");
+                $("#ca").val("");
+                $("#balance").val("");
 
-            $("#partial").val("0");
-            $("#commodity").val('').trigger('change');
-            $("#commodity1").val('').trigger('change');
-            $("#customer").val('').trigger('change');
-             $.ajax({
-                  url:"{{ route('refresh_trans') }}",
-                  method: 'get',
-                  data: { temp: 'temp' },
-                  dataType:'json',
-                  success:function(data){
-                       var t=0;
-                       if(data[0].temp!=null){
-                            t = data[0].temp;
-                       }
-                       var a = parseFloat(t);
-                       var b = a + 1;
+                $("#partial").val("0");
+                $("#commodity").val('').trigger('change');
+                $("#commodity1").val('').trigger('change');
+                $("#customer").val('').trigger('change');
+                $.ajax({
+                    url:"{{ route('refresh_trans') }}",
+                    method: 'get',
+                    data: { temp: 'temp' },
+                    dataType:'json',
+                    success:function(data){
+                        var t=0;
+                        if(data[0].temp!=null){
+                                t = data[0].temp;
+                        }
+                        var a = parseFloat(t);
+                        var b = a + 1;
                         $('#id1').val(b);
-                       var c = new Date();
-                       var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
-                       var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
-                       $('#ticket').val(currentDate+b);
+                        var c = new Date();
+                        var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                        var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
+                        $('#ticket').val(currentDate+b);
                         $('#ticket1').val(currentDate+b);
-                       console.log( $('#ticket').val());
+                        console.log( $('#ticket').val());
 
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
                         $('#purchase_modal').modal('show');
-                  }
-             })
+                    }
+                })
 
-             $.ajax({
-                  url:"{{ route('findCustomer') }}",
-                  method: 'get',
-                  data: { temp: 'temp' },
-                  dataType:'json',
-                  success:function(data){
-                       var t=0;
-                       if(data[0].temp!=null){
+                $.ajax({
+                    url:"{{ route('findCustomer') }}",
+                    method: 'get',
+                    data: { temp: 'temp' },
+                    dataType:'json',
+                    success:function(data){
+                        var t=0;
+                        if(data[0].temp!=null){
                             t = data[0].temp;
-                       }
-                       var a = parseFloat(t);
-                       var b = a + 1;
-                      $('#customerid').val(b);
-                       console.log( b);
+                        }
+                        var a = parseFloat(t);
+                        var b = a + 1;
+                        $('#customerid').val(b);
+                        console.log( b);
+                    }
+                })
+            });
 
-                  }
-             })
-        });
+            $('#commodity').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select an item'
+            });
 
-        $('#commodity').select2({
-            dropdownParent: $('#purchase_modal'),
-             placeholder: 'Select an item'
-        });
+            $('#commodity1').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select an item'
+            });
 
-        $('#commodity1').select2({
-            dropdownParent: $('#purchase_modal'),
-            placeholder: 'Select an item'
-        });
-        $('#customer').select2({
-            dropdownParent: $('#purchase_modal'),
-             placeholder: 'Select a company'
-        });
+            $('#customer').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select a company'
+            });
 
-        $('#remarks').select2({
-            dropdownParent: $('#purchase_modal'),
-            placeholder: 'Select a company'
-        });
+            $('#remarks').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select a company'
+            });
 
-        $('#remarks1').select2({
-            dropdownParent: $('#purchase_modal'),
-            placeholder: 'Select a company'
-        });
+            $('#remarks1').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select a company'
+            });
 
-        $('#customer').on('select2:select', function (e) {
+            $('#customer').on('select2:select', function (e) {
+                var id = $(e.currentTarget).val()
+                $.ajax({
+                url: "{{ route('find_amt') }}",
+                data: { id : id },
+                dataType:'json',
+                success: function(data) {
+                    $('#ca').val(data.balance)
+                    $('#balance').val(data.balance)
+                    $('#balance1').val(data.balance)
+                    $('#last').val(data.suki_type)
+                    if($('#partial').val()!=""){
+                        var a = 0;
+                        var b = parseFloat($('#balance').val());
+                        var d = parseFloat($('#ca').val());
+                        var c = 0;
+                        a = parseFloat($('#partial').val());
+                        c = b-a;
+                        $('#balance').val(c);
+                    }
 
-             var id = $(e.currentTarget).val()
-             $.ajax({
-             url: "{{ route('find_amt') }}",
-             data: { id : id },
-             dataType:'json',
-             success: function(data) {
-                  $('#ca').val(data.balance)
-                  $('#balance').val(data.balance)
-                  $('#balance1').val(data.balance)
-                  $('#last').val(data.suki_type)
-                 if($('#partial').val()!=""){
-                      var a = 0;
-                      var b = parseFloat($('#balance').val());
-                      var d = parseFloat($('#ca').val());
-                      var c = 0;
-                      a = parseFloat($('#partial').val());
-                      c = b-a;
-                      $('#balance').val(c);
+                    if($('#price').val()!=""){
+                        var a = parseFloat($('#last').val());
+                        var b = parseFloat($('#suki').val());
+                        var c = parseFloat($('#pr').val());
+                        var d = 0;
+                        var e = 0;
+                        var t = 0;
+                        if(a==1){
+                            $('#price').val(b);
+                            if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                                var x = 0;
 
-                }
-
-                if($('#price').val()!=""){
-                     var a = parseFloat($('#last').val());
-                     var b = parseFloat($('#suki').val());
-                     var c = parseFloat($('#pr').val());
-                     var d = 0;
-                     var e = 0;
-                     var t = 0;
-                     if(a==1){
-                          $('#price').val(b);
-
-
-                          if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                              var x = 0;
-
-                              if ($('#kilo').val()!=""){
-                                   var x = parseFloat($('#kilo').val());
-                              }
-                             if ($('#sacks').val() == "" ){
-                                  d = 0;
-                             }
-                             else{
-                               d =  parseFloat($('#sacks').val());
-                          }
-
-                          if ($('#partial').val() != "" ){
-                              t= parseFloat($('#partial').val());
-                          }
-                               e = b * (d*50);
-                               var y = e + (b*x);
-                                var z = e + (b*x)+t;
-                               //alert(e);
-                               $('#total').val(y);
-                               $('#amount').val(z);
-                          }
-                     }
-                     else{
-                          $('#price').val(c);
-
-                          if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                               var x = 0;
-
-                               if ($('#kilo').val()!=""){
+                                if ($('#kilo').val()!=""){
                                     var x = parseFloat($('#kilo').val());
-                               }
-                               if ($('#sacks').val() == "" ){
+                                }
+                                if ($('#sacks').val() == "" ){
                                     d = 0;
-                               }
-                               else{
-                                d =  parseFloat($('#sacks').val());
-                           }
+                                }
+                                else{
+                                    d =  parseFloat($('#sacks').val());
+                                }
 
-                           if ($('#partial').val() != "" ){
-                              t =  parseFloat($('#partial').val());
-                           }
-                                e = c * (d*50);
-                                var y = e + (c*x);
-                                 var z = e + (c*x)+t;
+                                if ($('#partial').val() != "" ){
+                                    t= parseFloat($('#partial').val());
+                                }
+                                e = b * (d*50);
+                                var y = e + (b*x);
+                                var z = e + (b*x)+t;
                                 //alert(e);
                                 $('#total').val(y);
                                 $('#amount').val(z);
-                           }
-                     }
+                            }
+                        }
+                        else{
+                            $('#price').val(c);
 
-               }
-            console.log(data.amount);
-               }
-          });
+                            if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                                var x = 0;
 
+                                if ($('#kilo').val()!=""){
+                                    var x = parseFloat($('#kilo').val());
+                                }
+                                if ($('#sacks').val() == "" ){
+                                    d = 0;
+                                }
+                                else{
+                                    d =  parseFloat($('#sacks').val());
+                                }
+
+                                if ($('#partial').val() != "" ){
+                                    t =  parseFloat($('#partial').val());
+                                }
+                                e = c * (d*50);
+                                var y = e + (c*x);
+                                var z = e + (c*x)+t;
+                                //alert(e);
+                                $('#total').val(y);
+                                $('#amount').val(z);
+                            }
+                        }
+                    }
+                    console.log(data.amount);
+                }
+            });
         });
 
         $('#commodity').on('select2:select', function (e) {
             if($('#button_action1').val()=="update"){
                 $('#commodityID').val($(e.currentTarget).val());
             }
-             var id = $(e.currentTarget).val()
-             $.ajax({
-             url: "{{ route('find_comm') }}",
-             data: { id : id },
-             dataType:'json',
-             success: function(data) {
-                  $('#pr').val(data.price);
-                  $('#suki').val(data.suki_price);
-                  var a = parseFloat($('#last').val());
-                  if(a==1){
-                       $('#price').val(data.suki_price);
-                       var d = 0;
-                       var e = 0;
-                       var b = parseFloat($('#suki').val());
-                       var c = parseFloat($('#pr').val());
-                       var t = 0;
-                       if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+            var id = $(e.currentTarget).val()
+            $.ajax({
+                url: "{{ route('find_comm') }}",
+                data: { id : id },
+                dataType:'json',
+                success: function(data) {
+                    $('#pr').val(data.price);
+                    $('#suki').val(data.suki_price);
+                    var a = parseFloat($('#last').val());
+                    if(a==1){
+                        $('#price').val(data.suki_price);
+                        var d = 0;
+                        var e = 0;
+                        var b = parseFloat($('#suki').val());
+                        var c = parseFloat($('#pr').val());
+                        var t = 0;
+                        if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                             var x = 0;
 
                             if ($('#kilo').val()!=""){
-                                 var x = parseFloat($('#kilo').val());
+                                var x = parseFloat($('#kilo').val());
                             }
-                           if ($('#sacks').val() == "" ){
+                            if ($('#sacks').val() == "" ){
                                 d = 0;
-                           }
-                           else{
-                             d =  parseFloat($('#sacks').val());
+                            }
+                            else{
+                                d =  parseFloat($('#sacks').val());
+                            }
+
+                            if ($('#partial').val() != "" ){
+                                t= parseFloat($('#partial').val());
+                            }
+                            e = b * d;
+                            var y = e + (b*x);
+                            var z = e + (b*x)+t;
+                            //alert(e);
+                            $('#total').val(y);
+                            $('#amount').val(z);
                         }
+                    }
+                    else{
+                        $('#price').val(data.price);
+                        var d = 0;
+                        var e = 0;
+                        var b = parseFloat($('#suki').val());
+                        var c = parseFloat($('#pr').val());
+                        var t = 0;
+                        if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                            var x = 0;
 
-                        if ($('#partial').val() != "" ){
-                            t= parseFloat($('#partial').val());
+                            if ($('#kilo').val()!=""){
+                                var x = parseFloat($('#kilo').val());
+                            }
+                            if ($('#sacks').val() == "" ){
+                                d = 0;
+                            }
+                            else{
+                                d =  parseFloat($('#sacks').val());
+                            }
+
+                            if ($('#partial').val() != "" ){
+                                t= parseFloat($('#partial').val());
+                            }
+                            e = c * (d);
+                            var y = e + (c*x);
+                                var z = e + (c*x)+t;
+                            //alert(e);
+                            $('#total').val(y);
+                            $('#amount').val(z);
                         }
-                             e = b * d;
-                             var y = e + (b*x);
-                             var z = e + (b*x)+t;
-                             //alert(e);
-                             $('#total').val(y);
-                             $('#amount').val(z);
-                        }
-                  }
-                  else{
-
-                     $('#price').val(data.price);
-                     var d = 0;
-                     var e = 0;
-                     var b = parseFloat($('#suki').val());
-                     var c = parseFloat($('#pr').val());
-                     var t = 0;
-                     if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                          var x = 0;
-
-                          if ($('#kilo').val()!=""){
-                               var x = parseFloat($('#kilo').val());
-                          }
-                          if ($('#sacks').val() == "" ){
-                               d = 0;
-                          }
-                          else{
-                           d =  parseFloat($('#sacks').val());
-                      }
-
-                      if ($('#partial').val() != "" ){
-                          t= parseFloat($('#partial').val());
-                      }
-                           e = c * (d);
-                           var y = e + (c*x);
-                            var z = e + (c*x)+t;
-                           //alert(e);
-                           $('#total').val(y);
-                           $('#amount').val(z);
-                      }
-
-                  }
-
-            console.log(data.suki_price);
-              }
-          });
-
+                    }
+                    console.log(data.suki_price);
+                }
+            });
         });
 
         $('#commodity1').on('select2:select', function (e) {
-
             var id = $(e.currentTarget).val()
             $.ajax({
-            url: "{{ route('find_comm') }}",
-            data: { id : id },
-            dataType:'json',
-            success: function(data) {
-                  $('#pr1').val(data.price);
-                  $('#suki1').val(data.suki_price);
+                url: "{{ route('find_comm') }}",
+                data: { id : id },
+                dataType:'json',
+                success: function(data) {
+                    $('#pr1').val(data.price);
+                    $('#suki1').val(data.suki_price);
 
-                  var a = parseFloat($('#last1').val());
-                  if(a==1){
-                       $('#price1').val(data.suki_price);
-                       var d = 0;
-                       var e = 0;
-                       var b = parseFloat($('#suki').val());
-                       var c = parseFloat($('#pr').val());
-                       var t = 0;
-                       if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                    var a = parseFloat($('#last1').val());
+                    if(a==1){
+                        $('#price1').val(data.suki_price);
+                        var d = 0;
+                        var e = 0;
+                        var b = parseFloat($('#suki').val());
+                        var c = parseFloat($('#pr').val());
+                        var t = 0;
+                        if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
                             var x = 0;
 
                             if ($('#kilo1').val()!=""){
-                                 var x = parseFloat($('#kilo').val());
+                                var x = parseFloat($('#kilo').val());
                             }
-                          if ($('#sacks1').val() == "" ){
+                            if ($('#sacks1').val() == "" ){
                                d = 0;
-                          }
-                          else{
-                             d =  parseFloat($('#sacks1').val());
+                            }
+                            else{
+                                d =  parseFloat($('#sacks1').val());
+                            }
+
+                            if ($('#partial1').val() != "" ){
+                                t= parseFloat($('#partial1').val());
+                            }
+                            e = b * (d);
+                            var y = e + (b*x);
+                            var z = e + (b*x)+t;
+                            //alert(e);
+                            $('#total1').val(y);
+                            $('#amount1').val(z);
                         }
+                    }
+                    else{
+                        $('#price1').val(data.price);
+                        var d = 0;
+                        var e = 0;
+                        var b = parseFloat($('#suki1').val());
+                        var c = parseFloat($('#pr1').val());
+                        var t = 0;
+                        if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                            var x = 0;
 
-                        if ($('#partial1').val() != "" ){
-                            t= parseFloat($('#partial1').val());
-                        }
-                             e = b * (d);
-                             var y = e + (b*x);
-                             var z = e + (b*x)+t;
-                             //alert(e);
-                             $('#total1').val(y);
-                             $('#amount1').val(z);
-                        }
-                  }
-                  else{
+                            if ($('#kilo1').val()!=""){
+                                var x = parseFloat($('#kilo1').val());
+                            }
+                            if ($('#sacks1').val() == "" ){
+                                d = 0;
+                            }
+                            else{
+                                d =  parseFloat($('#sacks1').val());
+                            }
 
-                     $('#price1').val(data.price);
-                     var d = 0;
-                     var e = 0;
-                     var b = parseFloat($('#suki1').val());
-                     var c = parseFloat($('#pr1').val());
-                     var t = 0;
-                     if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
-                          var x = 0;
-
-                          if ($('#kilo1').val()!=""){
-                               var x = parseFloat($('#kilo1').val());
-                          }
-                          if ($('#sacks1').val() == "" ){
-                               d = 0;
-                          }
-                          else{
-                          d =  parseFloat($('#sacks1').val());
-                     }
-
-                     if ($('#partial1').val() != "" ){
-                          t= parseFloat($('#partial1').val());
-                     }
-                          e = c * (d);
-                          var y = e + (c*x);
+                            if ($('#partial1').val() != "" ){
+                                t= parseFloat($('#partial1').val());
+                            }
+                            e = c * (d);
+                            var y = e + (c*x);
                             var z = e + (c*x)+t;
-                          //alert(e);
-                          $('#total1').val(y);
-                          $('#amount1').val(z);
-                     }
-
-                  }
-
-            console.log(data.suki_price);
-              }
-          });
-
+                            //alert(e);
+                            $('#total1').val(y);
+                            $('#amount1').val(z);
+                        }
+                    }
+                    console.log(data.suki_price);
+                }
+            });
         });
-
-
-
-           });
-
-
-
+    });
     </script>
 @endsection
