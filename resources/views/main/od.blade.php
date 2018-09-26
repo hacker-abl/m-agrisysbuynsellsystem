@@ -346,7 +346,6 @@
                   
                 },
                 processing:true,
-                serverSide:true,
 				columns: [
 					{data: 'outboundTicket'},
 					{data: 'commodity_name'},
@@ -445,7 +444,6 @@
                   
                 },
                 processing:true,
-                serverSide:true,
 				columns: [
 					{data: 'outboundTicket'},
 					{data: 'commodity_name'},
@@ -538,7 +536,7 @@
                   
                 },
                 processing:true,
-                serverSide:true,
+       
 				columns: [
 					{data: 'outboundTicket'},
 					{data: 'commodity_name'},
@@ -638,7 +636,6 @@
                   
                 },
                 processing:true,
-                serverSide:true,
 				columns: [
 					{data: 'outboundTicket'},
 					{data: 'commodity_name'},
@@ -731,7 +728,6 @@
                   
                 },
                 processing:true,
-                serverSide:true,
 				columns: [
 					{data: 'outboundTicket'},
 					{data: 'commodity_name'},

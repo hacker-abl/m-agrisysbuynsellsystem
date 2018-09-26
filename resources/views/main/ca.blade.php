@@ -501,7 +501,7 @@
                     }
                 ],
       				processing: true,
-      				serverSide: true,
+      		
                       columnDefs: [
         				{
           			  	"targets": "_all", // your case first column
@@ -573,7 +573,7 @@
                           }
                       ],
                        processing: true,
-                       serverSide: true,
+
                        columnDefs: [
                   				{
                     			  	"targets": "_all", // your case first column

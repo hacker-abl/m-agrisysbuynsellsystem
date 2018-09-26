@@ -123,7 +123,6 @@
       				
  				}
 				],
-                serverSide: true,
                 ajax: "{{ route('refresh_trucks') }}",
                 columns: [
                     {data: 'name', name: 'name'},

@@ -287,7 +287,7 @@
                     }
                 ],
 				processing: true,
-				serverSide: true,
+				
 				columnDefs: [
   				{
     			  	"targets": "_all", // your case first column
@@ -339,7 +339,7 @@
 						'print'
 					],
 					processing: true,
-					serverSide: true,
+				
 					order:[],
 	                ajax:{
 	                 
@@ -378,7 +378,7 @@
 						'print'
 					],
 					processing: true,
-					serverSide: true,
+			
 					order:[],
 	                ajax:{
 	                 
@@ -425,7 +425,7 @@
 						'print'
 					],
 					processing: true,
-					serverSide: true,
+	
 					order:[],
 	                ajax:{
 	                 
@@ -464,7 +464,7 @@
 						'print'
 					],
 					processing: true,
-					serverSide: true,
+				
 					order:[],
 	                ajax:{
 	                 
