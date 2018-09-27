@@ -32,7 +32,7 @@ class CreateSalesTable extends Migration
                     ->onDelete('cascade');
             $table->string('check_number');
             $table->integer('kilos');
-            $table->decimal('amount');
+            $table->decimal('amount', 14,2);
             $table->timestamps();
         });
     }

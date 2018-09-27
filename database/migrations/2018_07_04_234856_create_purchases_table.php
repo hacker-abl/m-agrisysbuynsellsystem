@@ -32,12 +32,12 @@ class CreatePurchasesTable extends Migration
                 ->references('customer_id')
                 ->on('balance')
                 ->onDelete('cascade');
-            $table->decimal('balance_id');
-            $table->decimal('partial');
+            $table->decimal('balance_id', 14, 2);
+            $table->decimal('partial', 14, 2);
             $table->integer('kilo');
-            $table->decimal('price');
-            $table->decimal('total', 10);
-            $table->decimal('amtpay', 10);
+            $table->decimal('price', 14, 2);
+            $table->decimal('total', 14, 2);
+            $table->decimal('amtpay', 14, 2);
             $table->string('remarks');
             $table->string('status');
             $table->string('released_by');     

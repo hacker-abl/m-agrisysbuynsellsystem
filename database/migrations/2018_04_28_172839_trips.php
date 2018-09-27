@@ -16,7 +16,7 @@ class Trips extends Migration
         Schema::create('trips', function (Blueprint $table) {
             $table->increments('id');
             $table->string('trip_ticket');
-            $table->decimal('expense');
+            $table->decimal('expense', 14,2);
             $table->integer('commodity_id')->unsigned();
             $table->foreign('commodity_id')
                     ->references('id')
@@ -33,7 +33,7 @@ class Trips extends Migration
                     ->on('employee')
                     ->onDelete('cascade');
             $table->string('destination');
-            $table->decimal('num_liters');
+            $table->decimal('num_liters', 14,2);
             $table->timestamps();
         });
     }

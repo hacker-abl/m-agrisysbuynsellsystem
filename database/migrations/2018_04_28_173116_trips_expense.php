@@ -22,7 +22,7 @@ class TripsExpense extends Migration
                     ->onDelete('cascade');
             $table->string('description');
             $table->string('type');
-            $table->decimal('amount');
+            $table->decimal('amount', 14,2);
             $table->string('status');
             $table->string('released_by');          
             $table->timestamps();
