@@ -24,39 +24,49 @@ Route::get('/profile', 'profileController@index')->name('profile');
 Route::post('/oldpass', 'profileController@oldpass')->name('oldpass');
 Route::post('/newpass', 'profileController@newpass')->name('newpass');
 
-Route::group(['middleware' => ['auth', 'admin']], function() {
+Route::group(['middleware' => ['auth', 'user:manage_company']], function() {
     //settings
     Route::get('/company', 'companyController@index')->name('company');
     Route::post('/add_company', 'companyController@store')->name('add_company');
     Route::get('/refresh_company', 'companyController@refresh')->name('refresh_company');
     Route::get('/update_company', 'companyController@updatedata')->name('update_company');
     Route::get('/delete_company', 'companyController@deletedata')->name('delete_company');
+});
 
+Route::group(['middleware' => ['auth', 'user:manage_employee']], function() {
     Route::get('/employee', 'employeeController@index')->name('employee');
     Route::post('/add_employee', 'employeeController@store')->name('add_employee');
     Route::get('/refresh_employee', 'employeeController@refresh')->name('refresh_employee');
     Route::get('/update_employee', 'employeeController@updatedata')->name('update_employee');
     Route::get('/delete_employee', 'employeeController@deletedata')->name('delete_employee');
+});
 
+Route::group(['middleware' => ['auth', 'user:manage_customer']], function() {
     Route::get('/customer', 'customerController@index')->name('customer');
     Route::post('/add_customer', 'customerController@store')->name('add_customer');
     Route::get('/refresh_customer', 'customerController@refresh')->name('refresh_customer');
     Route::get('/update_customer', 'customerController@updatedata')->name('update_customer');
     Route::get('/delete_customer', 'customerController@deletedata')->name('delete_customer');
     Route::get('/refresh_balance', 'customerController@updateId')->name('refresh_balance');
+});
 
+Route::group(['middleware' => ['auth', 'user:manage_trucks']], function() {
     Route::get('/trucks', 'trucksController@index')->name('trucks');
     Route::post('/add_trucks', 'trucksController@store')->name('add_trucks');
     Route::get('/refresh_trucks', 'trucksController@refresh')->name('refresh_trucks');
     Route::get('/update_trucks', 'trucksController@updatedata')->name('update_trucks');
     Route::get('/delete_trucks', 'trucksController@deletedata')->name('delete_trucks');
+});
 
+Route::group(['middleware' => ['auth', 'user:manage_commodity']], function() {
     Route::get('/commodity', 'commodityController@index')->name('commodity');
     Route::post('/add_commodity', 'commodityController@store')->name('add_commodity');
     Route::get('/refresh_commodity', 'commodityController@refresh')->name('refresh_commodity');
     Route::get('/update_commodity', 'commodityController@updatedata')->name('update_commodity');
     Route::get('/delete_commodity', 'commodityController@deletedata')->name('delete_commodity');
+});
 
+Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/users', 'usersController@index')->name('users');
     Route::post('/add_user', 'usersController@store')->name('add_user');
     Route::get('/refresh_user', 'usersController@refresh')->name('refresh_user');
