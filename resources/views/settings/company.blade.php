@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(isAdmin() ? 'layouts.admin' : 'layouts.user')
 
 @section('content')
     <div class="container-fluid">

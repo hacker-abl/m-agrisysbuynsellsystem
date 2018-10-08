@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(isAdmin() ? 'layouts.admin' : 'layouts.user')
 
 @section('content')
     <div class="container-fluid">
@@ -26,7 +26,7 @@
                                     <div class="form-group">
                                         <select id="emp_id" name="emp_id" class="form-control" placeholder="Enter employee" required style="width:100%;">
                                             @foreach($employee as $emp)
-                                                @if($employee[$emp->id-1]->cashier->role == 'cashier'||$employee[$emp->id-1]->cashier->role == 'CASHIER')
+                                                @if(strcasecmp($employee[$emp->id-1]->cashier->role, 'cashier') == 0)
                                                 <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
                                                 @endif
                                             @endforeach
@@ -147,10 +147,28 @@
                             </div>
                             <div class="demo-checkbox hidden">
                                 @if($permissions)
-                                    @foreach($permissions as $key=>$permission)
-                                    <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
-                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
-                                    @endforeach
+                                    <div class="row">Default</div>
+                                    <div class="row">
+                                        <div class="col-md-12">             
+                                            @foreach($permissions as $key=>$permission)
+                                                @if (strpos($permission->middleware, 'manage') === false)
+                                                    <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
+                                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                @endif
+                                            @endforeach
+                                        </div>     
+                                    </div>
+                                    <div class="row">Manage</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @foreach($permissions as $key=>$permission)
+                                                @if (strpos($permission->middleware, 'manage') !== false)
+                                                    <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
+                                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
                         </div>

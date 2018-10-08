@@ -103,6 +103,18 @@
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="{{ route('profile') }}"><i class="material-icons">person</i>Profile</a></li>
+                            @if($permissions = userpermission())
+                            @foreach($permissions as $key => $permission)
+                                @if(strpos($permissions[$key]->permission->middleware, 'manage') !== false && $permission->permit === 1)
+                                    {{$routeName = '/'.str_replace('manage_', '', $permissions[$key]->permission->middleware)}};
+                                    <li role="seperator" class="divider"></li>
+                                    <li><a href="{{ route('home') }}"><i class="material-icons">group</i>Main Navigation</a></li>
+                                    <li><a href="{{ $routeName }}"><i class="material-icons">group</i>Manage</a></li>
+                                    <li role="seperator" class="divider"></li>
+                                    @break
+                                @endif
+                            @endforeach
+                            @endif
                             <li>
 							    <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
@@ -122,72 +134,136 @@
             @auth
             <div class="menu">
                 <ul class="list">
-                    <li class="header">MAIN NAVIGATION</li>
-                    <li class="{{ (Request::path() === 'home') ? 'active' : '' }}">
-                        <a href="{{ route('home') }}">
-                        <i class="material-icons">home</i>
-                        <span>Home</span>
-                        </a>
-                    </li>
-                    @if($permissions = userpermission())
-                    @foreach($permissions as $key => $permission)
-                        @if($permissions[$key]->permission->middleware === "expenses" && $permission->permit === 1 || Auth::user()->access_id === 1)
-                        <li class="{{ (Request::path() === 'expense') ? 'active' : '' }}">
-                            <a href="{{ route('expense') }}">
-                                <i class="material-icons">show_chart</i>
-                                <span>Expenses</span>
+                    @if(Request::path() === 'company' || Request::path() === 'employee' || Request::path() === 'customer' || Request::path() === 'trucks' || Request::path() === 'commodity')
+                        <li class="header">Manage Settings</li>
+                        @if($permissions = userpermission())
+                            @foreach($permissions as $key => $permission)
+                                @if($permissions[$key]->permission->middleware === "manage_company" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'company') ? 'active' : '' }}">
+                                    <a href="{{ route('company') }}">
+                                        <i class="material-icons">business</i>
+                                        <span>Company</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "manage_employee" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'employee') ? 'active' : '' }}">
+                                    <a href="{{ route('employee') }}">
+                                        <i class="material-icons">supervisor_account</i>
+                                        <span>Employee</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "manage_customer" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'customer') ? 'active' : '' }}">
+                                    <a href="{{ route('customer') }}">
+                                        <i class="material-icons">tag_faces</i>
+                                        <span>Customer</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "manage_trucks" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'trucks') ? 'active' : '' }}">
+                                    <a href="{{ route('trucks') }}">
+                                        <i class="material-icons">local_shipping</i>
+                                        <span>Trucks</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "manage_commodity" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'commodity') ? 'active' : '' }}">
+                                    <a href="{{ route('commodity') }}">
+                                        <i class="material-icons">receipt</i>
+                                        <span>Commodity</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "purchases" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'purchases') ? 'active' : '' }}">
+                                    <a href="{{ route('purchases') }}">
+                                        <i class="material-icons">bookmark_border</i>
+                                        <span>Purchases</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "sales" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'sales') ? 'active' : '' }}">
+                                    <a href="{{ route('sales') }}">
+                                        <i class="material-icons">shopping_cart</i>
+                                        <span>Sales</span>
+                                    </a>
+                                </li>
+                                @endif
+                            @endforeach
+                        @endif
+                    @else
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li class="{{ (Request::path() === 'home') ? 'active' : '' }}">
+                            <a href="{{ route('home') }}">
+                            <i class="material-icons">home</i>
+                            <span>Home</span>
                             </a>
                         </li>
+                        @if($permissions = userpermission())
+                            @foreach($permissions as $key => $permission)
+                                @if($permissions[$key]->permission->middleware === "expenses" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'expense') ? 'active' : '' }}">
+                                    <a href="{{ route('expense') }}">
+                                        <i class="material-icons">show_chart</i>
+                                        <span>Expenses</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "trips" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'trips') ? 'active' : '' }}">
+                                    <a href="{{ route('trips') }}">
+                                        <i class="material-icons">directions_bus</i>
+                                        <span>Trips</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "dtr" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'dtr') ? 'active' : '' }}">
+                                    <a href="{{ route('dtr') }}">
+                                        <i class="material-icons">access_time</i>
+                                        <span>Daily Time Record</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "od" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'outbound') ? 'active' : '' }}">
+                                    <a href="{{ route('od') }}">
+                                        <i class="material-icons">arrow_upward</i>
+                                        <span>Outbound Deliveries</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "ca" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'cashadvance') ? 'active' : '' }}">
+                                    <a href="{{ route('ca') }}">
+                                        <i class="material-icons">monetization_on</i>
+                                        <span>Cash Advance</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "purchases" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'purchases') ? 'active' : '' }}">
+                                    <a href="{{ route('purchases') }}">
+                                        <i class="material-icons">bookmark_border</i>
+                                        <span>Purchases</span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if($permissions[$key]->permission->middleware === "sales" && $permission->permit === 1 || Auth::user()->access_id === 1)
+                                <li class="{{ (Request::path() === 'sales') ? 'active' : '' }}">
+                                    <a href="{{ route('sales') }}">
+                                        <i class="material-icons">shopping_cart</i>
+                                        <span>Sales</span>
+                                    </a>
+                                </li>
+                                @endif
+                            @endforeach
                         @endif
-                        @if($permissions[$key]->permission->middleware === "trips" && $permission->permit === 1 || Auth::user()->access_id === 1)
-                        <li class="{{ (Request::path() === 'trips') ? 'active' : '' }}">
-                            <a href="{{ route('trips') }}">
-                                <i class="material-icons">directions_bus</i>
-                                <span>Trips</span>
-                            </a>
-                        </li>
-                        @endif
-                        @if($permissions[$key]->permission->middleware === "dtr" && $permission->permit === 1 || Auth::user()->access_id === 1)
-                        <li class="{{ (Request::path() === 'dtr') ? 'active' : '' }}">
-                            <a href="{{ route('dtr') }}">
-                                <i class="material-icons">access_time</i>
-                                <span>Daily Time Record</span>
-                            </a>
-                        </li>
-                        @endif
-                        @if($permissions[$key]->permission->middleware === "od" && $permission->permit === 1 || Auth::user()->access_id === 1)
-                        <li class="{{ (Request::path() === 'outbound') ? 'active' : '' }}">
-                            <a href="{{ route('od') }}">
-                                <i class="material-icons">arrow_upward</i>
-                                <span>Outbound Deliveries</span>
-                            </a>
-                        </li>
-                        @endif
-                        @if($permissions[$key]->permission->middleware === "ca" && $permission->permit === 1 || Auth::user()->access_id === 1)
-                        <li class="{{ (Request::path() === 'cashadvance') ? 'active' : '' }}">
-                            <a href="{{ route('ca') }}">
-                                <i class="material-icons">monetization_on</i>
-                                <span>Cash Advance</span>
-                            </a>
-                        </li>
-                        @endif
-                        @if($permissions[$key]->permission->middleware === "purchases" && $permission->permit === 1 || Auth::user()->access_id === 1)
-                        <li class="{{ (Request::path() === 'purchases') ? 'active' : '' }}">
-                            <a href="{{ route('purchases') }}">
-                                <i class="material-icons">bookmark_border</i>
-                                <span>Purchases</span>
-                            </a>
-                        </li>
-                        @endif
-                        @if($permissions[$key]->permission->middleware === "sales" && $permission->permit === 1 || Auth::user()->access_id === 1)
-                        <li class="{{ (Request::path() === 'sales') ? 'active' : '' }}">
-                            <a href="{{ route('sales') }}">
-                                <i class="material-icons">shopping_cart</i>
-                                <span>Sales</span>
-                            </a>
-                        </li>
-                        @endif
-                    @endforeach
                     @endif
                 </ul>
             </div>
