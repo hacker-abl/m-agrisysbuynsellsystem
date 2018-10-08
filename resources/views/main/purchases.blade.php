@@ -1385,8 +1385,9 @@
          			        if($('#total').val()!=""){
          				        e = parseFloat($('#total').val());
          			        }
-         			        x = a+e;
-         			        $('#amount').val(x)
+                             x = a+e;
+                             var temp3 =  parseFloat(x).toFixed(2);
+         			        $('#amount').val(temp3)
          		        }
                         c = d-a;
 
@@ -1397,13 +1398,13 @@
          			             e = parseFloat($('#total').val());
          		            }
          		            x = e-a;
-
+                             var temp3 =  parseFloat(x).toFixed(2);
          		            if($('#total').val()=="" && $('#partial').val()==""){
                                 $('#amount').val('');
                                 $('#total').val('');
          		            }
          		            else{
-         			            $('#amount').val(x)
+         			            $('#amount').val(temp3);
          		            }
          	            }
                     }
@@ -1438,7 +1439,8 @@
                             t = parseFloat($('#total').val());
                         }
                         var temp2 = t+r;
-                        $('#amount').val(temp2);
+                      var temp3 =  parseFloat(temp2).toFixed(2);
+                        $('#amount').val(temp3);
                         console.log(temp2);
                     }
                     else{
@@ -1448,22 +1450,27 @@
                 else{
                     c = d*b;
                     var temp = c + r;
-                    $('#total').val(c);
-                    $('#amount').val(temp);
+                    var temporary =  parseFloat(c).toFixed(2);
+                    $('#total').val(temporary);
+                    var temp3 =  parseFloat(temp).toFixed(2);
+                    $('#amount').val(temp3);
                     if($('#partial').val()!=""){
                         r = parseFloat($('#partial').val());
                         temp = c + r;
-                        $('#amount').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount').val(temp3);
                     }
                     if($('#total').val()!=""){
                         t = parseFloat($('#total').val());
                         temp = c + r;
-                        $('#amount').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount').val(temp3);
                     }
 
                     if($('#kilo').val()== ""){
                         temp = c + r;
-                        $('#amount').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount').val(temp3);
                     }
                 }
                 if($('#kilo').val()!=""){
@@ -1471,9 +1478,10 @@
                     x = b*e;
                     z = x+c;
                     var temp1 = z + r;
-
-                    $('#total').val(z);
-                    $('#amount').val(temp1);
+                    var temporary =  parseFloat(z).toFixed(2);
+                    $('#total').val(temporary);
+                    var temp3 =  parseFloat(temp1).toFixed(2);
+                    $('#amount').val(temp3);
                 }
             }
         }
@@ -1501,7 +1509,8 @@
                             t = parseFloat($('#total').val());
                         }
                         var temp2 = t+r;
-                        $('#amount').val(temp2);
+                        var temp3 =  parseFloat(temp2).toFixed(2);
+                        $('#amount').val(temp3);
                     }
                     else{
                          $('#amount').val("");
@@ -1510,21 +1519,26 @@
                 else{
                     c = a*b;
                     var temp = c + r;
-                    $('#total').val(c);
-                    $('#amount').val(temp);
+                    var temporary =  parseFloat(c).toFixed(2);
+                    $('#total').val(temporary);
+                    var temp3 =  parseFloat(temp).toFixed(2);
+                    $('#amount').val(temp3);
                     if($('#partial').val()!=""){
                         r = parseFloat($('#partial').val());
                         temp = c + r;
-                        $('#amount').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount').val(temp3);
                     }
                     if($('#total').val()!=""){
                         t = parseFloat($('#total').val());
                         temp = c + r;
-                        $('#amount').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount').val(temp3);
                     }
                     if($('#sacks').val()==""){
                         temp = c + r;
-                        $('#amount').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount').val(temp3);
                     }
                 }
                 if($('#sacks').val()!=""){
@@ -1532,8 +1546,10 @@
                     x = b*(e*50);
                     z = x+c ;
                     i = x+c+r ;
-                    $('#total').val(z);
-                    $('#amount').val(i);
+                    var temp3 =  parseFloat(i).toFixed(2);
+                    var temporary =  parseFloat(z).toFixed(2);
+                    $('#total').val(temporary);
+                    $('#amount').val(temp3);
                 }
             }
         }
@@ -1553,7 +1569,8 @@
                             e = parseFloat($('#total').val());
                         }
                         x = a+e;
-                        $('#amount').val(x)
+                        var temp3 =  parseFloat(x).toFixed(2);
+                        $('#amount').val(temp3)
                     }
                     c = d-a;
                     $('#balance').val(c);
@@ -1562,7 +1579,8 @@
                         e = parseFloat($('#total').val());
                     }
                     x = e-a;
-                    $('#amount').val(x)
+                    var temp3 =  parseFloat(x).toFixed(2);
+                    $('#amount').val(temp3)
                 }
             }
         }
@@ -1590,7 +1608,8 @@
                             t = parseFloat($('#total1').val());
                         }
                         var temp2 = t+r;
-                        $('#amount1').val(temp2);
+                        var temp3 =  parseFloat(temp2).toFixed(2);
+                        $('#amount1').val(temp3);
                         console.log(temp2);
                     }
                     else{
@@ -1606,17 +1625,20 @@
                     if($('#partial1').val()!=""){
                         r = parseFloat($('#partial1').val());
                         temp = c + r;
-                        $('#amount1').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount1').val(temp3);
                     }
                     if($('#total1').val()!=""){
                         t = parseFloat($('#total1').val());
                         temp = c + r;
-                        $('#amount1').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount1').val(temp3);
                     }
 
                     if($('#kilo1').val()== ""){
                         temp = c + r;
-                        $('#amount1').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount1').val(temp3);
                     }
                 }
                 if($('#kilo1').val()!=""){
@@ -1624,9 +1646,10 @@
                     x = b*e;
                     z = x+c;
                     var temp1 = z + r;
-
-                    $('#total1').val(z);
-                    $('#amount1').val(temp1);
+                    var tempo =  parseFloat(z).toFixed(2);
+                    $('#total1').val(tempo);
+                    var temp3 =  parseFloat(temp1).toFixed(2);
+                    $('#amount1').val(temp3);
                 }
             }
         }
@@ -1654,7 +1677,8 @@
                             t = parseFloat($('#total1').val());
                         }
                         var temp2 = t+r;
-                        $('#amount1').val(temp2);
+                        var temp3 =  parseFloat(temp2).toFixed(2);
+                        $('#amount1').val(temp3);
                     }
                     else{
                         $('#amount1').val("");
@@ -1663,22 +1687,27 @@
                 else{
                     c = a*b;
                     var temp = c + r;
-                    $('#total1').val(c);
-                    $('#amount1').val(temp);
+                    var tempo =  parseFloat(c).toFixed(2);
+                    $('#total1').val(tempo);
+                    var temp3 =  parseFloat(temp).toFixed(2);
+                    $('#amount1').val(temp3);
                     if($('#partial1').val()!=""){
                         r = parseFloat($('#partial1').val());
                         temp = c + r;
-                        $('#amount1').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount1').val(temp3);
                     }
                     if($('#total1').val()!=""){
                         t = parseFloat($('#total1').val());
                         temp = c + r;
-                        $('#amount1').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount1').val(temp3);
                     }
                     if($('#sacks1').val()=="")
                     {
                         temp = c + r;
-                        $('#amount1').val(temp);
+                        var temp3 =  parseFloat(temp).toFixed(2);
+                        $('#amount1').val(temp3);
                     }
                 }
                 if($('#sacks1').val()!=""){
@@ -1686,8 +1715,10 @@
                     x = b*(e*50);
                     z = x+c ;
                     i = x+c+r ;
-                    $('#total1').val(z);
-                    $('#amount1').val(i);
+                    var tempo =  parseFloat(z).toFixed(2);
+                    $('#total1').val(tempo);
+                    var temp3 =  parseFloat(i).toFixed(2);
+                    $('#amount1').val(temp3);
                 }
             }
         }
@@ -1706,7 +1737,8 @@
                             e = parseFloat($('#total1').val());
                         }
                         x = a+e;
-                        $('#amount1').val(x)
+                        var temp3 =  parseFloat(x).toFixed(2);
+                        $('#amount1').val(temp3)
                     }
 
                     c = d-a;
@@ -1715,7 +1747,8 @@
                         e = parseFloat($('#total1').val());
                     }
                     x = a+e;
-                    $('#amount1').val(x)
+                    var temp3 =  parseFloat(x).toFixed(2);
+                    $('#amount1').val(temp3)
                 }
             }
         }
@@ -1725,6 +1758,8 @@
         });
 
         $(document).ready(function() {
+
+      
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -1804,7 +1839,7 @@
                     }
                 })
             });
-
+ 
             $('#commodity').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
@@ -1880,8 +1915,10 @@
                                 var y = e + (b*x);
                                 var z = e + (b*x)+t;
                                 //alert(e);
-                                $('#total').val(y);
-                                $('#amount').val(z);
+                                var tempo =  parseFloat(y).toFixed(2);
+                                $('#total').val(tempo);
+                                var temp3 =  parseFloat(z).toFixed(2);
+                                $('#amount').val(temp3);
                             }
                         }
                         else{
@@ -1907,8 +1944,10 @@
                                 var y = e + (c*x);
                                 var z = e + (c*x)+t;
                                 //alert(e);
-                                $('#total').val(y);
-                                $('#amount').val(z);
+                                var tempo =  parseFloat(y).toFixed(2);
+                                $('#total').val(tempo);
+                                var temp3 =  parseFloat(z).toFixed(2);
+                                $('#amount').val(temp3);
                             }
                         }
                     }
@@ -1957,8 +1996,10 @@
                             var y = e + (b*x);
                             var z = e + (b*x)+t;
                             //alert(e);
-                            $('#total').val(y);
-                            $('#amount').val(z);
+                            var tempo =  parseFloat(y).toFixed(2);
+                            $('#total').val(tempo);
+                            var temp3 =  parseFloat(z).toFixed(2);
+                            $('#amount').val(temp3);
                         }
                     }
                     else{
@@ -1988,8 +2029,10 @@
                             var y = e + (c*x);
                                 var z = e + (c*x)+t;
                             //alert(e);
-                            $('#total').val(y);
-                            $('#amount').val(z);
+                            var tempo =  parseFloat(y).toFixed(2);
+                            $('#total').val(tempo);
+                            var temp3 =  parseFloat(z).toFixed(2);
+                            $('#amount').val(temp3);
                         }
                     }
                     console.log(data.suki_price);
@@ -2035,8 +2078,10 @@
                             var y = e + (b*x);
                             var z = e + (b*x)+t;
                             //alert(e);
-                            $('#total1').val(y);
-                            $('#amount1').val(z);
+                            var tempo =  parseFloat(y).toFixed(2);
+                            $('#total1').val(tempo);
+                            var temp3 =  parseFloat(z).toFixed(2);
+                            $('#amount1').val(temp3);
                         }
                     }
                     else{
@@ -2066,8 +2111,10 @@
                             var y = e + (c*x);
                             var z = e + (c*x)+t;
                             //alert(e);
-                            $('#total1').val(y);
-                            $('#amount1').val(z);
+                            var tempo =  parseFloat(y).toFixed(2);
+                            $('#total1').val(tempo);
+                            var temp3 =  parseFloat(z).toFixed(2);
+                            $('#amount1').val(temp3);
                         }
                     }
                     console.log(data.suki_price);
