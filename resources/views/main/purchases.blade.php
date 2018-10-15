@@ -121,7 +121,7 @@
                                             </div>
                                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                  <div class="form-group">
-                                                      <label for="name">Kilograms</label>
+                                                      <label for="name">Gross KG.</label>
                                                       <div class="form-line">
                                                            <input type="number" id="kilo" name="kilo" onkeyup="kilos1(this)" class="form-control"   required>
                                                       </div>
@@ -143,8 +143,8 @@
                                    </div>
                                        </div>
 
-
-                                  <div class="row clearfix">
+                                    <div class="row clearfix">
+                                    <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Cash Advance</label>
                                        </div>
@@ -157,7 +157,7 @@
                                        </div>
                                   </div>
 
-                                  <div class="row clearfix">
+                                  <div class="col-md-4">
                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                            <label for="name">Partial Payment</label>
                                       </div>
@@ -169,8 +169,65 @@
                                            </div>
                                       </div>
                                  </div>
+                                 </div>
+                                 <div class="row clearfix">
+                                 <div class="col-md-4">
+                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="type1">Type</label>
+                                       </div>
+                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                 <select type="text" id="tc" name="tc" class="form-control" placeholder="Select item" required style="width:100%;">
+                                                    <option value="Wet">Wet</option>
+                                                    <option value="Dry">Dry</option>
+                                                   
+                                                 </select>
+                                            </div>
+                                       </div>
+                                  </div>
+                                 
+                                  <div class="col-md-4">
+                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                           <label for="name">Moisture (%)</label>
+                                      </div>
+                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                           <div class="form-group">
+                                                <div class="form-line">
+                                                     <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
+                                                </div>
+                                           </div>
+                                      </div>
+                                 </div>
 
+                                 <div class="col-md-4">
+                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                           <label for="name">Tare (kg)</label>
+                                      </div>
+                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                           <div class="form-group">
+                                                <div class="form-line">
+                                                     <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
+                                                </div>
+                                           </div>
+                                      </div>
+                                 </div>
+
+                                </div>
+                                 
+                                <div class="row clearfix">
+                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="name">Net Kilos</label>
+                                       </div>
+                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                 <div class="form-line">
+                                                      <input type="text" id="balance" name="balance" readonly="readonly" value="" class="form-control" required>
+                                                 </div>
+                                            </div>
+                                       </div>
+                                  </div>
                                   <div class="row clearfix">
+                                  <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Balance</label>
                                        </div>
@@ -182,12 +239,7 @@
                                             </div>
                                        </div>
                                   </div>
-
-
-
-
-
-                                  <div class="row clearfix">
+                                   <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Total</label>
                                        </div>
@@ -200,9 +252,9 @@
                                        </div>
                                   </div>
 
-                                  <div class="row clearfix">
+                                  <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Amount to Pay</label>
+                                            <label for="name">Amount</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -212,7 +264,7 @@
                                             </div>
                                        </div>
                                   </div>
-
+                                </div>
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="type">Remarks</label>
@@ -525,6 +577,8 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                   </table>
@@ -669,19 +723,6 @@
        
                     // Total over this page
                     pageTotal1 = api
-                        .column( 4, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 4 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal1,2)
-                    );
-
-                    // Total over this page
-                    pageTotal2 = api
                         .column( 5, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -689,12 +730,12 @@
                         }, 0 );
        
                     // Update footer
-                    $( api.column( 5 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    $( api.column(5 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
                     );
 
                     // Total over this page
-                    pageTotal3 = api
+                    pageTotal2 = api
                         .column( 6, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -703,24 +744,24 @@
        
                     // Update footer
                     $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    );
+
+                    // Total over this page
+                    pageTotal3 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(7) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal3,2)
                     );
 
                     // Total over this page
                     pageTotal4 = api
-                        .column( 8, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal4,2)
-                    );
-
-                    // Total over this page
-                    pageTotal5 = api
                         .column( 9, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -729,11 +770,11 @@
        
                     // Update footer
                     $( api.column( 9 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal5,2)
+                        'Total: <br>₱' + number_format(pageTotal4,2)
                     );
 
                     // Total over this page
-                    pageTotal6 = api
+                    pageTotal5 = api
                         .column( 10, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -742,6 +783,19 @@
        
                     // Update footer
                     $( api.column( 10 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+
+                    // Total over this page
+                    pageTotal6 = api
+                        .column( 11, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 11 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal6,2)
                     );
                 },
@@ -749,7 +803,7 @@
                 buttons: [{
                     extend: 'print',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16 ]
                     },
                     customize: function ( win ) {
                         var last = null;
@@ -1841,6 +1895,10 @@
             });
  
             $('#commodity').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select an item'
+            });
+            $('#tc').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
