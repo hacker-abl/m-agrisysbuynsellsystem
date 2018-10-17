@@ -101,6 +101,20 @@
                                        </div>
                                   </div>
 
+                                   <div class="row clearfix">
+                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="type">Type</label>
+                                       </div>
+                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                            <select  id="type1" name="type1" class="form-control" placeholder="Select item" required style="width:100%;">
+                                                      <option value="Wet">"Wet</option>
+                                                      <option value="Dry">Dry</option>
+                                                        </select>
+                                            </div>
+                                       </div>
+                                  </div>
+
                                   <div class="row clearfix">
                                        <div class="col-md-4">
                                        <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
@@ -142,6 +156,50 @@
                                         </div>
                                    </div>
                                        </div>
+
+                                    <div class="row clearfix">
+                                    <div class="col-md-4">
+                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                             <div class="form-group">
+                                                  <label for="name">Tare (KG)</label>
+                                                  <div class="form-line">
+                                                       <input type="text" id="tare" name="tare"  onkeyup="tare1(this)"  value="" class="form-control" required>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+
+                                         <div class="col-md-4">
+                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                             <div class="form-group">
+                                                  <label for="name">Moisture (%)</label>
+                                                  <div class="form-line">
+                                                       <input type="text" id="moist" name="moist" onkeyup="moist1(this)" value="" class="form-control" required>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+
+                                   <div class="col-md-4">
+                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                             <div class="form-group">
+                                                  <label for="name">Net KG</label>
+                                                  <div class="form-line">
+                                                       <input type="text" id="net" name="net" readonly="readonly" value="" class="form-control" required>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                                       </div>   
 
 
                                   <div class="row clearfix">
@@ -542,8 +600,103 @@
     var purchase_date_from;
     var purchase_date_to;
     var id;
+    //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
+    function tare1(value) {
+
+            if($('#total').val() !=""  && $('#moist').val() == "" ){
+               
+                var t = parseFloat($('#total').val());
+                var kilo = parseFloat($('#kilo').val());
+                var amount = parseFloat($('#amount').val());
+                var tare = parseFloat($('#tare').val());
+                var price = parseFloat($('#price').val());
+                var temp = amount - (tare*price)  ;
+                var temp1 =total - (tare*price) ;
+                var temp3 =kilo - tare ;
+                var x = parseFloat(temp).toFixed(2);
+                var y = parseFloat(temp1).toFixed(2);
+                var z = parseFloat(temp1).toFixed(2);
+                $('#amount').val(x);
+                $('#total').val(x);
+                $('#net').val(temp3);
+            }
+
+             if($('#total').val() !=""  && $('#moist').val() != "" ){
+               
+               var t = parseFloat($('#total').val());
+               var kilo = parseFloat($('#kilo').val());
+               var amount = parseFloat($('#amount').val());
+               var moist =  parseFloat($('#moist').val());
+               var tare = parseFloat($('#tare').val());
+               var price = parseFloat($('#price').val());
+               var temp4 = moist/100 * kilo;
+                var temp5 = temp4*price;
+                var x2 = parseFloat(temp5).toFixed(2);
+                var x1 = parseFloat(temp4).toFixed(2);
+               var temp = amount - (tare*price)  - temp5;
+               var temp1 =total - (tare*price) - temp5 ;
+               var temp3 =kilo - tare - temp4;
+              
+               var x = parseFloat(temp).toFixed(2);
+               var y = parseFloat(temp1).toFixed(2);
+               var z = parseFloat(temp1).toFixed(2);
+               $('#amount').val(x);
+               $('#total').val(x);
+               $('#net').val(temp3);
+           }
+        
+        }
+        function moist1(value) {
+            if($('#total').val() !="" && $('#tare').val() == ""  ){
+               
+                var total = parseFloat($('#total').val());
+                var moist = parseFloat($('#moist').val());
+                var kilo = parseFloat($('#kilo').val());
+                var amount = parseFloat($('#amount').val());
+                var tare = parseFloat($('#tare').val());
+                var price = parseFloat($('#price').val());
+               
+                var temp4 = moist/100 * kilo;
+                var temp5 = temp4*price;
+                var temp6 = total - temp5;
+                var temp7 = amount-temp5 ;
+                var temp8 = kilo - temp4;
+                var x5 = parseFloat(temp8).toFixed(2);
+                var x4 = parseFloat(temp7).toFixed(2);
+                var x3 = parseFloat(temp6).toFixed(2);
+                var x2 = parseFloat(temp5).toFixed(2);
+                var x1 = parseFloat(temp4).toFixed(2);
+                $('#amount').val(x4);
+                $('#total').val(x3);
+                $('#net').val(x5);
+            }
+            if($('#total').val() !="" && $('#tare').val() != ""  ){
+               
+               var total = parseFloat($('#total').val());
+               var moist = parseFloat($('#moist').val());
+               var kilo = parseFloat($('#kilo').val());
+               var amount = parseFloat($('#amount').val());
+               var tare = parseFloat($('#tare').val());
+               var price = parseFloat($('#price').val());
+              
+               var temp4 = moist/100 * kilo ;
+               var temp5 = temp4*price;
+               var temp6 = total - temp5 - (tare*price);
+               var temp7 = amount-temp5 - (tare*price);
+               var temp8 = kilo - temp4 -tare;
+               var x5 = parseFloat(temp8).toFixed(2);
+               var x4 = parseFloat(temp7).toFixed(2);
+               var x3 = parseFloat(temp6).toFixed(2);
+               var x2 = parseFloat(temp5).toFixed(2);
+               var x1 = parseFloat(temp4).toFixed(2);
+               $('#amount').val(x4);
+               $('#total').val(x3);
+               $('#net').val(x5);
+           }
+        }
     $(document).ready(function () {
         document.title = "M-Agri - Purchases";
+        
         //Delete Purchases
         $(document).on('click', '.delete_purchase', function(){
             var id = $(this).attr('id');
@@ -1849,6 +2002,7 @@
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
+    
 
             $('#customer').select2({
                 dropdownParent: $('#purchase_modal'),
@@ -1864,6 +2018,11 @@
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select a company'
             });
+            $('#type1').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select a company'
+            });
+            
 
             $('#customer').on('select2:select', function (e) {
                 var id = $(e.currentTarget).val()

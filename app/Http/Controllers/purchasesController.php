@@ -101,6 +101,10 @@ class purchasesController extends Controller
                 $purchases->partial = $request->partial;
                 $purchases->kilo = $request->kilo;
                 $purchases->price = $request->price;
+                $purchases->type = $request->type1;
+                $purchases->tare = $request->tare;
+                $purchases->moist = $request->moist;
+                $purchases->net = $request->net;
                 $purchases->total = $request->total;
                 $purchases->amtpay= $request->amount;
                 $purchases->remarks= $request->remarks;
@@ -112,8 +116,30 @@ class purchasesController extends Controller
             event(new PurchasesUpdated($purchases));
             event(new BalanceUpdated($purchases));
         }
+        if($request->get('button_action1') == 'update'){
+            $purchases=  Purchases::find($request->get('id'));;
+            $purchases->trans_no = $request->ticket;
+            $purchases->customer_id = $request->customerID;
+            $purchases->commodity_id= $request->commodityID;
+            $purchases->sacks = $request->sacks;
+            $purchases->ca_id = $request->caID;
+            $purchases->balance_id = $request->balance;
+            $purchases->partial = $request->partial;
+            $purchases->kilo = $request->kilo;
+            $purchases->type = $request->type1;
+            $purchases->tare = $request->tare;
+            $purchases->moist = $request->moist;
+            $purchases->net = $request->net;
+            $purchases->price = $request->price;
+            $purchases->total = $request->total;
+            $purchases->amtpay= $request->amount;
+            $purchases->remarks= $request->remarks;
+            $purchases->status = "On-Hand";
+            $purchases->released_by='';
+            $purchases->save();
+        }
 
-        else{
+        if( $request->get('stat') == 'new'){
                 $customer = new Customer;
                 $customer->fname = $request->fname;
                 $customer->mname = $request->mname;
@@ -162,24 +188,7 @@ class purchasesController extends Controller
             event(new PurchasesUpdated($purchases));
             event(new BalanceUpdated($purchases));
         }
-        if($request->get('button_action1') == 'update'){
-            $purchases=  Purchases::find($request->get('id'));;
-            $purchases->trans_no = $request->ticket;
-            $purchases->customer_id = $request->customerID;
-            $purchases->commodity_id= $request->commodityID;
-            $purchases->sacks = $request->sacks;
-            $purchases->ca_id = $request->caID;
-            $purchases->balance_id = $request->balance;
-            $purchases->partial = $request->partial;
-            $purchases->kilo = $request->kilo;
-            $purchases->price = $request->price;
-            $purchases->total = $request->total;
-            $purchases->amtpay= $request->amount;
-            $purchases->remarks= $request->remarks;
-            $purchases->status = "On-Hand";
-            $purchases->released_by='';
-            $purchases->save();
-        }
+      
     }
 
     public function release_purchase(Request $request){
