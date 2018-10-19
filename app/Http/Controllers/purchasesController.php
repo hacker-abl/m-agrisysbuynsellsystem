@@ -111,13 +111,15 @@ class purchasesController extends Controller
                 $purchases->status = "On-Hand";
                 $purchases->released_by='';
                 $purchases->save();
-            
-       
+
+                $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
+               
+
             event(new PurchasesUpdated($purchases));
             event(new BalanceUpdated($purchases));
         }
         if($request->get('button_action1') == 'update'){
-            $purchases=  Purchases::find($request->get('id'));;
+            $purchases=  Purchases::find($request->get('id'));
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customerID;
             $purchases->commodity_id= $request->commodityID;
@@ -137,6 +139,9 @@ class purchasesController extends Controller
             $purchases->status = "On-Hand";
             $purchases->released_by='';
             $purchases->save();
+
+            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial);
+               
         }
 
         if( $request->get('stat') == 'new'){
