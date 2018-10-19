@@ -108,7 +108,7 @@
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                             <select  id="type1" name="type1" class="form-control" placeholder="Select item" required style="width:100%;">
-                                                      <option value="Wet">"Wet</option>
+                                                      <option value="Wet">Wet</option>
                                                       <option value="Dry">Dry</option>
                                                         </select>
                                             </div>
@@ -150,7 +150,7 @@
                                              <div class="form-group">
                                                   <label for="name">Price</label>
                                                   <div class="form-line">
-                                                       <input type="text" id="price" name="price" readonly="readonly" value="" class="form-control" required>
+                                                       <input type="number" id="price" name="price" readonly="readonly" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -166,7 +166,7 @@
                                              <div class="form-group">
                                                   <label for="name">Tare (KG)</label>
                                                   <div class="form-line">
-                                                       <input type="text" id="tare" name="tare"  onkeyup="tare1(this)"  value="" class="form-control" required>
+                                                       <input type="number" id="tare" name="tare"  onkeyup="tare1(this)"  value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -180,7 +180,7 @@
                                              <div class="form-group">
                                                   <label for="name">Moisture (%)</label>
                                                   <div class="form-line">
-                                                       <input type="text" id="moist" name="moist" onkeyup="moist1(this)" value="" class="form-control" required>
+                                                       <input type="number" id="moist" name="moist" onkeyup="moist1(this)" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -194,7 +194,7 @@
                                              <div class="form-group">
                                                   <label for="name">Net KG</label>
                                                   <div class="form-line">
-                                                       <input type="text" id="net" name="net" readonly="readonly" value="" class="form-control" required>
+                                                       <input type="number" id="net" name="net" readonly="readonly" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -209,7 +209,7 @@
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                                  <div class="form-line">
-                                                      <input type="text" id="ca" name="ca" readonly="readonly" value="" class="form-control" required>
+                                                      <input type="number" id="ca" name="ca" readonly="readonly" value="" class="form-control" required>
                                                  </div>
                                             </div>
                                        </div>
@@ -235,7 +235,7 @@
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                                  <div class="form-line">
-                                                      <input type="text" id="balance" name="balance" readonly="readonly" value="" class="form-control" required>
+                                                      <input type="number" id="balance" name="balance" readonly="readonly" value="" class="form-control" required>
                                                  </div>
                                             </div>
                                        </div>
@@ -252,7 +252,7 @@
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                                  <div class="form-line">
-                                                      <input type="text" id="total" name="total" readonly="readonly" value="" class="form-control" required>
+                                                      <input type="number" id="total" name="total" readonly="readonly" value="" class="form-control" required>
                                                  </div>
                                             </div>
                                        </div>
@@ -265,7 +265,7 @@
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                                  <div class="form-line">
-                                                      <input type="text" id="amount" name="amount" readonly="readonly" value="" class="form-control" required>
+                                                      <input type="number" id="amount" name="amount" readonly="readonly" value="" class="form-control" required>
                                                  </div>
                                             </div>
                                        </div>
@@ -409,6 +409,20 @@
                                                </div>
                                           </div>
                                      </div>
+                                    
+                                   <div class="row clearfix">
+                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="type">Type</label>
+                                       </div>
+                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                            <select  id="type2" name="type2" class="form-control" placeholder="Select item" required style="width:100%;">
+                                                      <option value="Wet">Wet</option>
+                                                      <option value="Dry">Dry</option>
+                                                        </select>
+                                            </div>
+                                       </div>
+                                  </div>
 
                                      <div class="row clearfix">
                                           <div class="col-md-4">
@@ -445,14 +459,56 @@
                                                 <div class="form-group">
                                                      <label for="name">Price</label>
                                                      <div class="form-line">
-                                                          <input type="text" id="price1" name="price1" readonly="readonly" value="" class="form-control" required>
+                                                          <input type="number" id="price1" name="price1" readonly="readonly" value="" class="form-control" required>
                                                      </div>
                                                 </div>
                                            </div>
                                       </div>
                                           </div>
 
+                                <div class="row clearfix">
+                                    <div class="col-md-4">
+                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                             <div class="form-group">
+                                                  <label for="name">Tare (KG)</label>
+                                                  <div class="form-line">
+                                                       <input type="number" id="tare2" name="tare2"  onkeyup="tare3(this)"  value="" class="form-control" required>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+
+                                         <div class="col-md-4">
+                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                             <div class="form-group">
+                                                  <label for="name">Moisture (%)</label>
+                                                  <div class="form-line">
+                                                       <input type="number" id="moist2" name="moist2" onkeyup="moist3(this)" value="" class="form-control" required>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+
+                                   <div class="col-md-4">
+                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                             <div class="form-group">
+                                                  <label for="name">Net KG</label>
+                                                  <div class="form-line">
+                                                       <input type="number" id="net2" name="net2" readonly="readonly" value="" class="form-control" required>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                                       </div>   
 
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -461,7 +517,7 @@
                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                <div class="form-group">
                                                     <div class="form-line">
-                                                         <input type="text" id="amount1" name="amount1" readonly="readonly" value="" class="form-control" required>
+                                                         <input type="number" id="amount1" name="amount1" readonly="readonly" value="" class="form-control" required>
                                                     </div>
                                                </div>
                                           </div>
@@ -554,6 +610,9 @@
                                                  <th width="100" style="text-align:center;">Balance</th>
                                                  <th width="100" style="text-align:center;">Partial Payment</th>
                                                  <th width="100" style="text-align:center;" >No. of Kilos</th>
+                                                 <th width="100" style="text-align:center;" >Tare</th>
+                                                 <th width="100" style="text-align:center;" >Moisture</th>
+                                                 <th width="100" style="text-align:center;" >Net Kilos</th>
                                                  <th width="100" style="text-align:center;">Price</th>
                                                  <th width="100" style="text-align:center;">Total</th>
                                                  <th width="100" style="text-align:center;">Deducted</th>
@@ -567,6 +626,9 @@
 
                                        <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -602,16 +664,21 @@
     var id;
     //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
     function tare1(value) {
-
+            if($('#tare').val() != ""){
             if($('#total').val() !=""  && $('#moist').val() == "" ){
                
                 var t = parseFloat($('#total').val());
                 var kilo = parseFloat($('#kilo').val());
                 var amount = parseFloat($('#amount').val());
                 var tare = parseFloat($('#tare').val());
+                var partial = 0;
+                if($('#partial').val()!=""){
+                    partial =  parseFloat($('#partial').val());
+                }
+               
                 var price = parseFloat($('#price').val());
-                var temp = amount - (tare*price)  ;
-                var temp1 =total - (tare*price) ;
+                var temp = (price * (kilo - tare)) -  partial ;
+                var temp1 = price * (kilo - tare) ;
                 var temp3 =kilo - tare ;
                 var x = parseFloat(temp).toFixed(2);
                 var y = parseFloat(temp1).toFixed(2);
@@ -628,13 +695,17 @@
                var amount = parseFloat($('#amount').val());
                var moist =  parseFloat($('#moist').val());
                var tare = parseFloat($('#tare').val());
+               var partial = 0;
+                if($('#partial').val()!=""){
+                    partial =  parseFloat($('#partial').val());
+                }
                var price = parseFloat($('#price').val());
                var temp4 = moist/100 * kilo;
                 var temp5 = temp4*price;
                 var x2 = parseFloat(temp5).toFixed(2);
                 var x1 = parseFloat(temp4).toFixed(2);
-               var temp = amount - (tare*price)  - temp5;
-               var temp1 =total - (tare*price) - temp5 ;
+               var temp = ((price * (kilo - tare))  - temp5) - partial;
+               var temp1 =(price * (kilo - tare)) - temp5 ;
                var temp3 =kilo - tare - temp4;
               
                var x = parseFloat(temp).toFixed(2);
@@ -644,6 +715,7 @@
                $('#total').val(x);
                $('#net').val(temp3);
            }
+        }
         
         }
         function moist1(value) {
@@ -655,11 +727,14 @@
                 var amount = parseFloat($('#amount').val());
                 var tare = parseFloat($('#tare').val());
                 var price = parseFloat($('#price').val());
-               
+                var partial = 0;
+                if($('#partial').val()!=""){
+                    partial =  parseFloat($('#partial').val());
+                }
                 var temp4 = moist/100 * kilo;
                 var temp5 = temp4*price;
-                var temp6 = total - temp5;
-                var temp7 = amount-temp5 ;
+                var temp6 = (kilo * price) - temp5;
+                var temp7 = ((kilo * price) - partial)-temp5 ;
                 var temp8 = kilo - temp4;
                 var x5 = parseFloat(temp8).toFixed(2);
                 var x4 = parseFloat(temp7).toFixed(2);
@@ -678,11 +753,14 @@
                var amount = parseFloat($('#amount').val());
                var tare = parseFloat($('#tare').val());
                var price = parseFloat($('#price').val());
-              
+               var partial = 0;
+                if($('#partial').val()!=""){
+                    partial =  parseFloat($('#partial').val());
+                }
                var temp4 = moist/100 * kilo ;
                var temp5 = temp4*price;
-               var temp6 = total - temp5 - (tare*price);
-               var temp7 = amount-temp5 - (tare*price);
+               var temp6 = (kilo * price) - temp5 - (tare*price);
+               var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
                var temp8 = kilo - temp4 -tare;
                var x5 = parseFloat(temp8).toFixed(2);
                var x4 = parseFloat(temp7).toFixed(2);
@@ -692,6 +770,117 @@
                $('#amount').val(x4);
                $('#total').val(x3);
                $('#net').val(x5);
+           }
+        }
+
+        function tare3(value) {
+            if($('#tare2').val() != ""){
+            if($('#total1').val() !=""  && $('#moist2').val() == "" ){
+               
+                var t = parseFloat($('#total1').val());
+                var kilo = parseFloat($('#kilo1').val());
+                var amount = parseFloat($('#amount1').val());
+                var tare = parseFloat($('#tare2').val());
+                var partial = 0;
+                if($('#partial').val()!=""){
+                    partial =  parseFloat($('#partial').val());
+                }
+               
+                var price = parseFloat($('#price1').val());
+                var temp = (price * (kilo - tare)) -  partial ;
+                var temp1 = price * (kilo - tare) ;
+                var temp3 =kilo - tare ;
+                var x = parseFloat(temp).toFixed(2);
+                var y = parseFloat(temp1).toFixed(2);
+                var z = parseFloat(temp1).toFixed(2);
+                $('#amount1').val(x);
+                $('#total1').val(x);
+                $('#net2').val(temp3);
+            }
+
+             if($('#total1').val() !=""  && $('#moist2').val() != "" ){
+               
+               var t = parseFloat($('#total1').val());
+               var kilo = parseFloat($('#kilo1').val());
+               var amount = parseFloat($('#amount1').val());
+               var moist =  parseFloat($('#moist2').val());
+               var tare = parseFloat($('#tare2').val());
+               var partial = 0;
+                if($('#partial1').val()!=""){
+                    partial =  parseFloat($('#partial1').val());
+                }
+               var price = parseFloat($('#price1').val());
+               var temp4 = moist/100 * kilo;
+                var temp5 = temp4*price;
+                var x2 = parseFloat(temp5).toFixed(2);
+                var x1 = parseFloat(temp4).toFixed(2);
+               var temp = ((price * (kilo - tare))  - temp5) - partial;
+               var temp1 =(price * (kilo - tare)) - temp5 ;
+               var temp3 =kilo - tare - temp4;
+              
+               var x = parseFloat(temp).toFixed(2);
+               var y = parseFloat(temp1).toFixed(2);
+               var z = parseFloat(temp1).toFixed(2);
+               $('#amount1').val(x);
+               $('#total1').val(x);
+               $('#net2').val(temp3);
+           }
+        }
+        
+        }
+        function moist3(value) {
+            if($('#amount1').val() !="" && $('#tare2').val() == ""  ){
+               
+                var total = parseFloat($('#total1').val());
+                var moist = parseFloat($('#moist2').val());
+                var kilo = parseFloat($('#kilo1').val());
+                var amount = parseFloat($('#amount1').val());
+                var tare = parseFloat($('#tare2').val());
+                var price = parseFloat($('#price1').val());
+                var partial = 0;
+                if($('#partial1').val()!=""){
+                    partial =  parseFloat($('#partial1').val());
+                }
+                var temp4 = moist/100 * kilo;
+                var temp5 = temp4*price;
+                var temp6 = (kilo * price) - temp5;
+                var temp7 = ((kilo * price) - partial)-temp5 ;
+                var temp8 = kilo - temp4;
+                var x5 = parseFloat(temp8).toFixed(2);
+                var x4 = parseFloat(temp7).toFixed(2);
+                var x3 = parseFloat(temp6).toFixed(2);
+                var x2 = parseFloat(temp5).toFixed(2);
+                var x1 = parseFloat(temp4).toFixed(2);
+                $('#amount1').val(x4);
+                $('#total1').val(x3);
+                $('#net2').val(x5);
+            }
+            if($('#amount1').val() !="" && $('#tare2').val() != ""  ){
+               
+               var total = parseFloat($('#total1').val());
+               var moist = parseFloat($('#moist2').val());
+               var kilo = parseFloat($('#kilo1').val());
+               var amount = parseFloat($('#amount1').val());
+               var tare = parseFloat($('#tare2').val());
+               var price = parseFloat($('#price1').val());
+               var partial = 0;
+               
+                if( $('#partial1').val() != ""){
+                    partial =  parseFloat($('#partial1').val());
+                }
+               var temp4 = moist/100 * kilo ;
+               var temp5 = temp4*price;
+               var temp6 = (kilo * price) - temp5 - (tare*price);
+               var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
+               var temp8 = kilo - temp4 -tare;
+               var x5 = parseFloat(temp8).toFixed(2);
+               var x4 = parseFloat(temp7).toFixed(2);
+               var x3 = parseFloat(temp6).toFixed(2);
+               var x2 = parseFloat(temp5).toFixed(2);
+               var x1 = parseFloat(temp4).toFixed(2);
+               $('#amount1').val(x4);
+               $('#total1').val(x3);
+               $('#net2').val(x5);
            }
         }
     $(document).ready(function () {
@@ -715,14 +904,16 @@
                     method: "get",
                     data:{id:id},
                     success:function(data){
-                        refresh_purchases_table();
+                        swal("Deleted!", "The record has been deleted.", "success");
+                        refresh_purchase_table();
                     }
                 })
-                swal("Deleted!", "The record has been deleted.", "success");
+              
             });
         });
 
         $(document).on('click', '.edit_purchase', function(){
+            $("#homeclick1").hide();
             var id = $(this).attr('id');
             $('.modal_title').text('Update Purchases');
                 $.ajax({
@@ -742,6 +933,10 @@
                         $('#ticket').val(data.trans_no);
                         $("#commodity").val(data.commodity_id).trigger('change');
                         $('#sacks').val(data.sacks);
+                        $('#tare').val(data.tare);
+                        $('#net').val(data.net);
+                        $('#moist').val(data.moist);
+                        $("#type").val(data.type).trigger('change');
                         $('#kilo').val(data.kilo);
                         $('#price').val(data.price);
                         $('#total').val(data.total);
@@ -767,6 +962,7 @@
             $("#homeclick").on('click', function() {
                 $('#stat').val("old");
                 $('#stat1').val("old");
+                
             });
 
             $("#homeclick1").on('click', function() {
@@ -822,45 +1018,19 @@
        
                     // Total over this page
                     pageTotal1 = api
-                        .column( 4, { page: 'current'} )
+                        .column( 7, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
        
                     // Update footer
-                    $( api.column( 4 ).footer() ).html(
+                    $( api.column( 7 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal1,2)
                     );
 
                     // Total over this page
                     pageTotal2 = api
-                        .column( 5, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 5 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal2,2)
-                    );
-
-                    // Total over this page
-                    pageTotal3 = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal3,2)
-                    );
-
-                    // Total over this page
-                    pageTotal4 = api
                         .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -869,11 +1039,11 @@
        
                     // Update footer
                     $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal4,2)
+                        'Total: <br>₱' + number_format(pageTotal2,2)
                     );
 
                     // Total over this page
-                    pageTotal5 = api
+                    pageTotal3 = api
                         .column( 9, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -882,19 +1052,45 @@
        
                     // Update footer
                     $( api.column( 9 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal5,2)
+                        'Total: <br>₱' + number_format(pageTotal3,2)
                     );
 
                     // Total over this page
-                    pageTotal6 = api
-                        .column( 10, { page: 'current'} )
+                    pageTotal4 = api
+                        .column( 11, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
        
                     // Update footer
-                    $( api.column( 10 ).footer() ).html(
+                    $( api.column( 11 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 12, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 12 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+
+                    // Total over this page
+                    pageTotal6 = api
+                        .column( 13, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 13 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal6,2)
                     );
                 },
@@ -902,7 +1098,7 @@
                 buttons: [{
                     extend: 'print',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
                     },
                     customize: function ( win ) {
                         var last = null;
@@ -965,6 +1161,9 @@
                     {data: 'balance_id'},
                     {data: 'partial'},
                     {data: 'kilo'},
+                    {data: 'tare'},
+                    {data: 'moist'},
+                    {data: 'net'},
                     {data: 'price'},
                     {data: 'total'},
                     {data: 'amtpay'},
@@ -1000,45 +1199,19 @@
         
                             // Total over this page
                             pageTotal1 = api
-                                .column( 4, { page: 'current'} )
+                                .column( 7, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
             
                             // Update footer
-                            $( api.column( 4 ).footer() ).html(
+                            $( api.column( 7 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal1,2)
                             );
 
                             // Total over this page
                             pageTotal2 = api
-                                .column( 5, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-            
-                            // Update footer
-                            $( api.column( 5 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal2,2)
-                            );
-
-                            // Total over this page
-                            pageTotal3 = api
-                                .column( 6, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-            
-                            // Update footer
-                            $( api.column( 6 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal3,2)
-                            );
-
-                            // Total over this page
-                            pageTotal4 = api
                                 .column( 8, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
@@ -1047,32 +1220,58 @@
             
                             // Update footer
                             $( api.column( 8 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal4,2)
+                                'Total: <br>₱' + number_format(pageTotal2,2)
                             );
 
                             // Total over this page
-                            pageTotal5 = api
+                            pageTotal3 = api
                                 .column( 9, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-                
-                            // Update footer
-                            $( api.column( 9 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal5,2)
-                            );
-
-                            // Total over this page
-                            pageTotal6 = api
-                                .column( 10, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
             
                             // Update footer
-                            $( api.column( 10 ).footer() ).html(
+                            $( api.column( 9 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal3,2)
+                            );
+
+                            // Total over this page
+                            pageTotal4 = api
+                                .column( 11, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 11 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal4,2)
+                            );
+
+                            // Total over this page
+                            pageTotal5 = api
+                                .column( 12, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                
+                            // Update footer
+                            $( api.column( 12 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal5,2)
+                            );
+
+                            // Total over this page
+                            pageTotal6 = api
+                                .column( 13, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 13 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal6,2)
                             );
                         },
@@ -1080,7 +1279,7 @@
                         buttons: [{
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
@@ -1143,6 +1342,11 @@
                             {data: 'balance_id'},
                             {data: 'partial'},
                             {data: 'kilo'},
+                            {data: 'tare'},
+                            {data: 'moisture'},
+                            {data: 'net'},
+                            {data: 'tare'},
+                            {data: 'moist'},
                             {data: 'price'},
                             {data: 'total'},
                             {data: 'amtpay'},
@@ -1325,6 +1529,11 @@
                             {data: 'balance_id'},
                             {data: 'partial'},
                             {data: 'kilo'},
+                            {data: 'tare'},
+                            {data: 'moisture'},
+                            {data: 'net'},
+                            {data: 'tare'},
+                            {data: 'moist'},
                             {data: 'price'},
                             {data: 'total'},
                             {data: 'amtpay'},
@@ -1705,6 +1914,8 @@
                     $('#amount').val(temp3);
                 }
             }
+            moist1(this);
+            tare1(this);
         }
 
         function partial1(value) {
@@ -1920,6 +2131,7 @@
             });
 
             $(document).on('click','.open_purchase_modal', function(){
+                $("#homeclick1").show();
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
                 $('#button_action1').val('add');
@@ -2023,7 +2235,11 @@
                 placeholder: 'Select a company'
             });
             
-
+            $('#type2').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select a company'
+            });
+            
             $('#customer').on('select2:select', function (e) {
                 var id = $(e.currentTarget).val()
                 $.ajax({
@@ -2113,6 +2329,8 @@
                     console.log(data.amount);
                 }
             });
+            moist1(this);
+            tare1(this);
         });
 
         $('#commodity').on('select2:select', function (e) {
@@ -2197,8 +2415,38 @@
                     console.log(data.suki_price);
                 }
             });
+            moist1(this);
+            tare1(this);
+        });
+        $('#type1').on('select2:select', function (e) {
+            var id = $(e.currentTarget).val()
+        if(id == "Dry"){
+            $("#tare").prop("readonly", true);
+            $("#moist").prop("readonly", true);
+            $("#tare").val('0');
+            $("#moist").val('0');
+            tare1(this);
+            moist1(this);
+        }
+        else{
+            $("#tare").prop('readonly', false);
+            $("#moist").prop('readonly', false);
+        }
         });
 
+        $('#type2').on('select2:select', function (e) {
+            var id = $(e.currentTarget).val()
+        if(id == "Dry"){
+            $("#tare2").prop('readonly', true);
+            $("#moist2").prop('readonly', true);
+            $("#tare2").val('0');
+            $("#moist2").val('0');
+        }
+        else{
+            $("#tare2").prop('readonly', false);
+            $("#moist2").prop('readonly', false);
+        }
+        });
         $('#commodity1').on('select2:select', function (e) {
             var id = $(e.currentTarget).val()
             $.ajax({
@@ -2279,6 +2527,8 @@
                     console.log(data.suki_price);
                 }
             });
+            moist3(this);
+            tare3(this);
         });
     });
     </script>

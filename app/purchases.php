@@ -19,7 +19,7 @@ class purchases extends Model
 	    'kilo',
 		'price',
 		'tare',
-		'moisture',
+		'moist',
 		'type',
 	    'total',
 	    'amtpay',
