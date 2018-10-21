@@ -65,8 +65,13 @@ class trucksController extends Controller
         $trucks = Trucks::all();
         return \DataTables::of(Trucks::query())
         ->addColumn('action', function($trucks){
-            return '<button class="btn btn-xs btn-warning update_trucks waves-effect" id="'.$trucks->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_trucks waves-effect" id="'.$trucks->id.'"><i class="material-icons">delete</i></button>';
+            if(isAdmin()){
+                return '<button class="btn btn-xs btn-warning update_trucks waves-effect" id="'.$trucks->id.'"><i class="material-icons">mode_edit</i></button>
+                <button class="btn btn-xs btn-danger delete_trucks waves-effect" id="'.$trucks->id.'"><i class="material-icons">delete</i></button>';
+            }
+            else{
+                return 'Admin';
+            }
         })
         ->make(true);
     }

@@ -73,8 +73,13 @@ class employeeController extends Controller
 
         return \DataTables::of(Employee::query())
         ->addColumn('action', function($employee){
-            return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
+            if(isAdmin()){
+                return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>
+                <button class="btn btn-xs btn-danger delete_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
+            }
+            else{
+                return 'Admin';
+            }
         })
         ->addColumn('wholename', function ($data){
             return $data->fname." ".$data->mname." ".$data->lname;

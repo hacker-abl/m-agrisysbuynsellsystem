@@ -68,8 +68,13 @@ class companyController extends Controller
         $company = Company::all();
         return \DataTables::of(Company::query())
         ->addColumn('action', function($company){
-            return '<button class="btn btn-xs btn-warning update_company waves-effect" id="'.$company->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_company waves-effect" id="'.$company->id.'"><i class="material-icons">delete</i></button>';
+            if(isAdmin()){
+                return '<button class="btn btn-xs btn-warning update_company waves-effect" id="'.$company->id.'"><i class="material-icons">mode_edit</i></button>
+                <button class="btn btn-xs btn-danger delete_company waves-effect" id="'.$company->id.'"><i class="material-icons">delete</i></button>';
+            }
+            else{
+                return 'Admin';
+            }
         })
         ->make(true);
     }

@@ -46,7 +46,7 @@ class usersController extends Controller
 
     public function addCash(Request $request){
         $user = User::find(Auth::user()->id);
-        $user->cashOnHand = $request->add_admin_cash;
+        $user->cashOnHand = $request->total_admin_cash;
         $user->save();
 
         return $user->cashOnHand;
@@ -112,9 +112,14 @@ class usersController extends Controller
         // $user = User::where('access_id', '!=', 1)->get();
         return \DataTables::of(User::where('access_id', '!=', 1)->get())
         ->addColumn('action', function($user){
-            return '<button class="btn btn-xs btn-info update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button>
-            <button type="button" class="btn btn-xs btn-warning waves-effect" data-id="'.$user->id.'" data-toggle="modal" data-target="#user-permission"><i class="material-icons">vpn_key</i></button>';
+            if(isAdmin()){
+                return '<button class="btn btn-xs btn-info update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>
+                <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button>
+                <button type="button" class="btn btn-xs btn-warning waves-effect" data-id="'.$user->id.'" data-toggle="modal" data-target="#user-permission"><i class="material-icons">vpn_key</i></button>';
+            }
+            else{
+                return 'Admin';
+            }
         })
         ->editColumn('access_id', function ($data){
             $level = access_levels::all();

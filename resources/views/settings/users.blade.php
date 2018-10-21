@@ -94,17 +94,43 @@
                         <h2 class="modal_title">Add Admin Cash</h2>
                     </div>
                     <div class="body">
-                        <form class="form-horizontal " id="admin_cash_form">
+                        <form class="form-horizontal" id="admin_cash_form">
                             <input type="hidden" name="id" id="id" value="">
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="fund">Cash</label>
+                                    <label for="current_admin_cash">Current</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="add_admin_cash" id="add_admin_cash" name="add_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required>
+                                            <input type="number" id="current_admin_cash" name="current_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="add_admin_cash">Add Cash</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="number" onkeyup="addTotal(this)" id="add_admin_cash" name="add_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="total_admin_cash">Total</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="number" id="total_admin_cash" name="total_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -300,7 +326,9 @@
                     method: 'POST',
                     dataType:'text',
                     success:function(data){
-                        $('#add_admin_cash').val(data);
+                        $('#current_admin_cash').val(data);
+                        $('#add_admin_cash').val("");
+                        $('#total_admin_cash').val($('#current_admin_cash').val());
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
@@ -473,5 +501,17 @@
                 }
             });
         });
+
+        function addTotal(tempAdd){
+            var total_admin_cash = $('#total_admin_cash');
+            var current_admin_cash = $('#current_admin_cash');
+
+            if($(tempAdd).val() == "" || $(tempAdd).val().includes("e")){
+                $('#total_admin_cash').val($('#current_admin_cash').val());
+            }
+            else{
+                total_admin_cash.val(parseFloat(current_admin_cash.val()) + parseFloat($(tempAdd).val()));
+            }
+        }
     </script>
 @endsection
