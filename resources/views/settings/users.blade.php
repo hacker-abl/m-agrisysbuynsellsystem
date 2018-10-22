@@ -11,7 +11,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <h2 class="modal_title">Add User </h2>
+                        <h2 class="modal_title">Add User</h2>
                     </div>
                     <div class="body">
                         <form class="form-horizontal " id="user_form">
@@ -62,19 +62,6 @@
                             </div>
 
                             <div class="row clearfix">
-                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="password">Cash</label>
-                                </div>
-                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="number" id="cashOnHand" name="cashOnHand" class="form-control" placeholder="Enter user Cash on Hand"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row clearfix">
                                 <div class="modal-footer">
                                     <button type="submit" id="add_user" class="btn btn-link waves-effect">SAVE CHANGES</button>
                                     <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
@@ -86,25 +73,26 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="admin_cash_modal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="add_cash_modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <h2 class="modal_title">Add Admin Cash</h2>
+                        <h2 class="modal_title">Add Cash</h2>
                     </div>
                     <div class="body">
-                        <form class="form-horizontal" id="admin_cash_form">
-                            <input type="hidden" name="id" id="id" value="">
+                        <form class="form-horizontal" id="cash_form">
+                            <input type="hidden" id="add_cash_id" name="add_cash_id" value="">
+                            <input type="hidden" id="add_cash_access_id" name="add_cash_access_id" value="">
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="current_admin_cash">Current</label>
+                                    <label for="add_cash_username">Username</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" id="current_admin_cash" name="current_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required readonly>
+                                            <input type="text" id="add_cash_username" name="add_cash_username" class="form-control" required readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -112,12 +100,12 @@
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="add_admin_cash">Add Cash</label>
+                                    <label for="current_cash">Current Cash</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" onkeyup="addTotal(this)" id="add_admin_cash" name="add_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required>
+                                            <input type="number" id="current_cash" name="current_admin_cash" class="form-control" required readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -125,12 +113,25 @@
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="total_admin_cash">Total</label>
+                                    <label for="add_cash">Add Cash</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" id="total_admin_cash" name="total_admin_cash" class="form-control" placeholder="Enter admin Cash on Hand" required readonly>
+                                            <input type="number" onkeyup="addTotal(this)" id="add_cash" name="add_cash" class="form-control" placeholder="Enter cash amount to be added" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="total_cash">Total Cash</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="number" id="total_cash" name="total_cash" class="form-control" required readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +139,7 @@
 
                             <div class="row clearfix">
                                 <div class="modal-footer">
-                                    <button type="submit" id="add_cash" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                    <button type="submit" id="add_cash_submit" class="btn btn-link waves-effect">SAVE CHANGES</button>
                                     <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                                 </div>
                             </div>
@@ -156,7 +157,7 @@
                         @csrf
                         <input type="hidden" name="id" value="">
                         <div class="header">
-                            <h2 class="modal_title">Permissions </h2>
+                            <h2 class="modal_title">Permissions</h2>
                         </div>
                         <div class="body">
                             <div class="col-md-12 text-center">
@@ -214,7 +215,7 @@
                     <h2>List of users as of {{ date('Y-m-d ') }}</h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
-                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_admin_modal" data-toggle="modal" data-target="#admin_cash_modal"><i class="material-icons">account_balance_wallet</i></button>
+                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_add_cash_modal" id="{{ auth::user()->id }}" data-toggle="modal" data-target="#add_cash_modal"><i class="material-icons">account_balance_wallet</i></button>
                             <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_user_modal" data-toggle="modal" data-target="#user_modal"><i class="material-icons">library_add</i></button>
                         </li>
                     </ul>
@@ -228,10 +229,42 @@
                                     <th>Username</th>
                                     <th>Access Level</th>
                                     <th>Cash On Hand</th>
-                                    <th width="100">Action</th>
+                                    <th width="180">Action</th>
                                 </tr>
                             </thead>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cash_view_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="row">            
+                <div class="card">
+                    <div class="header">
+                        <h2>Cash History - <span class="modal_title_cash"></span> as of {{ date('Y-m-d ') }}</h2>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                        <br>
+                            <table id="cash_history_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                               <thead>
+                                    <tr>
+                                        <th>Transaction ID</th>
+                                        <th>Previous Amount</th>
+                                        <th>Change in Cash</th>
+                                        <th>Total Cash</th>
+                                        <th>Type</th>
+                                        <th>Date/Time</th>
+                                    </tr>
+                               </thead>
+                            </table>
+                       </div>
+                       <div class="modal-footer">
+                               <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                       </div>
                     </div>
                 </div>
             </div>
@@ -266,6 +299,12 @@
                 .find("input[type=checkbox], input[type=radio]")
                     .prop("checked", "")
                     .end();
+            })
+            $('#add_cash_modal').on('hidden.bs.modal', function (e) {
+                $(this)
+                .find("input,textarea,select")
+                    .val('')
+                    .end()
             })
             var usertable = $('#usertable').DataTable({
                 dom: 'Bfrtip',
@@ -315,20 +354,25 @@
                 }
             });
 
-            //Open Admin Cash Modal
-            $(document).on('click', '.open_admin_modal', function(event){
+            //Open Cash Modal
+            $(document).on('click', '.open_add_cash_modal', function(event){
                 event.preventDefault();
+                var id = $(this).attr("id");
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url:"{{ route('get_balance') }}",
+                    data:{id:id},
                     method: 'POST',
-                    dataType:'text',
+                    dataType:'json',
                     success:function(data){
-                        $('#current_admin_cash').val(data);
-                        $('#add_admin_cash').val("");
-                        $('#total_admin_cash').val($('#current_admin_cash').val());
+                        $('#add_cash_id').val(data.id);
+                        $('#add_cash_access_id').val(data.access_id);
+                        $('#add_cash_username').val(data.username);
+                        $('#current_cash').val(data.cashOnHand);
+                        $('#add_cash').val("");
+                        $('#total_cash').val($('#current_cash').val());
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
@@ -336,8 +380,8 @@
                 })
             });
 
-            //Add Admin Cash Modal
-            $(document).on('click', '#add_cash', function(event){
+            //Add Cash
+            $(document).on('click', '#add_cash_submit', function(event){
                 event.preventDefault();
                 var input = $(this);
                 var button =this;
@@ -350,13 +394,18 @@
                     url:"{{ route('add_cash') }}",
                     method: 'POST',
                     dataType:'text',
-                    data: $('#admin_cash_form').serialize(),
+                    data: $('#cash_form').serialize(),
                     success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
-                        swal("Cash Added!", "Remaining Balance: ₱"+parseFloat(data).toFixed(2), "success")
-                        $('#admin_cash_modal').modal('hide');
-                        $('#curCashOnHand').html(parseFloat(data).toFixed(2));
+                        swal("Cash Added!", "Remaining Balance: ₱"+parseFloat(data).toFixed(2), "success");
+                        $('#add_cash_modal').modal('hide');
+                        if($('#add_cash_access_id').val() == 1){
+                            $('#curCashOnHand').html(parseFloat(data).toFixed(2));
+                        }
+                        else{
+                            refresh_user_table();
+                        }
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
@@ -415,11 +464,9 @@
                         $('#emp_id').val(data.emp_id);
                         $("#emp_id").change();
                         $('#username').val(data.username);
-                        $('#cashOnHand').val(data.cashOnHand);
                         $('.update_user .modal_title').text('Update User');
                         $('#user_modal').modal('show');
                         refresh_user_table();
-                        console.log($('#user_form').serialize());
                     }
                 })
             });
@@ -448,6 +495,45 @@
 			    });
             });
             //USER Datatable ends here
+
+            //CASH History Daatatable starts here
+            $(document).on('click', '.view_cash_history', function(){
+                var id = $(this).attr('id');
+                
+                $.ajax({
+                    url: "{{ route('view_cash_history') }}",
+                    method: 'get',
+                    data: {id:id},
+                    dataType: 'json',
+                    success:function(data){
+                        console.log(data);
+
+                        $('#cash_history_table').DataTable({
+                            destroy: true,
+                            buttons: [
+                            ],
+                            data:{id:id},
+                            processing: true,
+                            columnDefs: [{
+                                "targets": "_all", // your case first column
+                                "className": "text-center",
+                            }],
+                            columns: [
+                                {data: 'trans_id', name: 'trans_id'},
+                                {data: 'previous_cash', name: 'previous_cash'},
+                                {data: 'cash_chagne', name: 'cash_change'},
+                                {data: 'total_cash', name: 'total_cash'},
+                                {data: 'type', name: 'type'},
+                                {data: 'created_at', name: 'created_at'}
+                            ]
+                        });
+                    }
+                })
+
+                
+            });
+
+            //CASH History Datatable ends here
         });
 
         $("#user-permission").on('shown.bs.modal', function(e) {
@@ -503,15 +589,22 @@
         });
 
         function addTotal(tempAdd){
-            var total_admin_cash = $('#total_admin_cash');
-            var current_admin_cash = $('#current_admin_cash');
+            var total_cash = $('#total_cash');
+            var current_cash = $('#current_cash');
 
             if($(tempAdd).val() == "" || $(tempAdd).val().includes("e")){
-                $('#total_admin_cash').val($('#current_admin_cash').val());
+                $('#total_cash').val($('#current_cash').val());
             }
             else{
-                total_admin_cash.val(parseFloat(current_admin_cash.val()) + parseFloat($(tempAdd).val()));
+                total_cash.val(parseFloat(current_cash.val()) + parseFloat($(tempAdd).val()));
             }
         }
+
+        $(document).on('click', '.view_cash_history', function(){
+
+        })
+
+        
+
     </script>
 @endsection

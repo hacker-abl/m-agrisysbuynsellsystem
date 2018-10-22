@@ -934,6 +934,7 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
+                        console.log(data);
                         $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
                        cash_advance_release =  $('#view_cash_advancetable').DataTable({

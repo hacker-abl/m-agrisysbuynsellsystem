@@ -11,6 +11,7 @@ use App\Employee;
 use App\access_levels;
 use App\Permission;
 use App\UserPermission;
+use App\Cash_History;
 use Auth;
 use DB;
 class usersController extends Controller
@@ -38,15 +39,20 @@ class usersController extends Controller
         return view('settings.users', compact('employee'), ['permissions' => $permissions]);
     }
 
-    public function getBalance(){
-        $user = User::find(Auth::user()->id);
-
-        return $user->cashOnHand;
+    public function getBalance(Request $request){
+        $user = User::find($request->id);
+        $output = array(
+            'id' => $user->id,
+            'access_id' => $user->access_id,
+            'username' => $user->username,
+            'cashOnHand' => $user->cashOnHand
+        );
+        echo json_encode($output);
     }
 
     public function addCash(Request $request){
-        $user = User::find(Auth::user()->id);
-        $user->cashOnHand = $request->total_admin_cash;
+        $user = User::find($request->add_cash_id);
+        $user->cashOnHand = $request->total_cash;
         $user->save();
 
         return $user->cashOnHand;
@@ -82,7 +88,7 @@ class usersController extends Controller
             $user->emp_id = $request->emp_id;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
-            $user->cashOnHand = $request->cashOnHand;
+            $user->cashOnHand = 0;
             $user->access_id = 2;
             $user->save();
         }
@@ -91,7 +97,6 @@ class usersController extends Controller
             $user = User::find($request->get('id'));
             $user->emp_id = $request->emp_id;
             $user->username = $request->username;
-            $user->cashOnHand = $request->cashOnHand;
             $user->save();
         }
     }
@@ -113,7 +118,10 @@ class usersController extends Controller
         return \DataTables::of(User::where('access_id', '!=', 1)->get())
         ->addColumn('action', function($user){
             if(isAdmin()){
-                return '<button class="btn btn-xs btn-info update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>
+                return '
+                <button class="btn btn-xs btn-info waves-effect view_cash_history" id="'.$user->id.'" data-toggle="modal" data-target="#cash_view_modal"><i class="material-icons" style="width: 25px;">visibility</i></button>
+                <button type="button" class="btn btn-xs btn-success waves-effect open_add_cash_modal" id="'.$user->id.'" data-toggle="modal" data-target="#add_cash_modal"><i class="material-icons">account_balance_wallet</i></button>
+                <button class="btn btn-xs btn-info update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>
                 <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button>
                 <button type="button" class="btn btn-xs btn-warning waves-effect" data-id="'.$user->id.'" data-toggle="modal" data-target="#user-permission"><i class="material-icons">vpn_key</i></button>';
             }
@@ -149,9 +157,16 @@ class usersController extends Controller
             'emp_id' => $user->emp_id,
             'name' => $user->name,
             'username' => $user->username,
-            'cashOnHand' => $user->cashOnHand,
+            'cashOnHand' => $user->total_user_cash,
         );
         echo json_encode($output);
+    }
+
+    function viewCashHistory(Request $request){
+        $id = $request->id;
+        $cash_history = Cash_History::with('user')->where('user_id', $id)->get();
+
+        return \DataTables::of($cash_history)->make(true);
     }
 
     function deletedata(Request $request){
