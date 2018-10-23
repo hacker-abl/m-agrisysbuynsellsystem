@@ -105,7 +105,7 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" id="current_cash" name="current_admin_cash" class="form-control" required readonly>
+                                            <input type="number" id="current_cash" name="current_cash" class="form-control" required readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -200,7 +200,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="submit" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                            <button type="submit" class="btn btn-link waves-effect">SAVE CHANGES</button>
                             <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                         </div>
                     </form>
@@ -215,6 +215,7 @@
                     <h2>List of users as of {{ date('Y-m-d ') }}</h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
+                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 view_cash_history" id="{{ auth::user()->id }}" data-toggle="modal" data-target="#cash_view_modal"><i class="material-icons">visibility</i></button>
                             <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_add_cash_modal" id="{{ auth::user()->id }}" data-toggle="modal" data-target="#add_cash_modal"><i class="material-icons">account_balance_wallet</i></button>
                             <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_user_modal" data-toggle="modal" data-target="#user_modal"><i class="material-icons">library_add</i></button>
                         </li>
@@ -387,6 +388,7 @@
                 var button =this;
                 button.disabled = true;
                 input.html('SAVING...'); 
+                console.log($('#cash_form').serialize());
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -454,7 +456,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        
+                        console.log(data);
                         //Remove password input when updating User
                         if($(".password_input")[0]){
                             $(".password_input").remove();
@@ -506,22 +508,22 @@
                     data: {id:id},
                     dataType: 'json',
                     success:function(data){
-                        console.log(data);
+                        $('.modal_title_cash').text(data.data[0].user.username);
 
                         $('#cash_history_table').DataTable({
                             destroy: true,
                             buttons: [
                             ],
-                            data:{id:id},
+                            data:data.data,
                             processing: true,
                             columnDefs: [{
                                 "targets": "_all", // your case first column
                                 "className": "text-center",
                             }],
                             columns: [
-                                {data: 'trans_id', name: 'trans_id'},
+                                {data: 'trans_no', name: 'trans_no'},
                                 {data: 'previous_cash', name: 'previous_cash'},
-                                {data: 'cash_chagne', name: 'cash_change'},
+                                {data: 'cash_change', name: 'cash_change'},
                                 {data: 'total_cash', name: 'total_cash'},
                                 {data: 'type', name: 'type'},
                                 {data: 'created_at', name: 'created_at'}

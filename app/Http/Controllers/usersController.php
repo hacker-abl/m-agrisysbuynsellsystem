@@ -57,7 +57,32 @@ class usersController extends Controller
         $user->cashOnHand = $request->total_cash;
         $user->save();
 
+        $userGet = User::where('id', '=', $user->id)->first();
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        $cash_history = new Cash_History;
+        $cash_history->user_id = $userGet->id;
+
+        $getDate = Carbon::now();
+        
+        if($cashLatest != null){
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id;
+        }
+        else{
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+        }
+
+        $cash_history->trans_no = $dateTime;
+        $cash_history->previous_cash = $request->current_cash;
+        $cash_history->cash_change = $request->add_cash;
+        $cash_history->total_cash = $request->total_cash;
+        $cash_history->type = "Add Cash";
+        $cash_history->save();
+
         return $user->cashOnHand;
+    }
+
+    public function addCashHistory($id, $request){
+        
     }
 
     /**
@@ -95,17 +120,17 @@ class usersController extends Controller
             $user->save();
 
             $userGet = User::where('emp_id', '=', $request->emp_id)->first();
-            $cashLatest = Cash_History::latest();
+            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
             $cash_history = new Cash_History;
             $cash_history->user_id = $userGet->id;
 
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day."1";
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id;
             }
             else{
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
             }
 
             $cash_history->trans_no = $dateTime;
@@ -176,10 +201,12 @@ class usersController extends Controller
     function updatedata(Request $request){
         $id = $request->input('id');
         $user = User::find($id);
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
         $output = array(
             'emp_id' => $user->emp_id,
             'name' => $user->name,
             'username' => $user->username,
+            'cash' => $cashLatest
         );
         echo json_encode($output);
     }
