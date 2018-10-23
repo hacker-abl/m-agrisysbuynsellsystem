@@ -65,7 +65,7 @@ class usersController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -79,10 +79,6 @@ class usersController extends Controller
         $cash_history->save();
 
         return $user->cashOnHand;
-    }
-
-    public function addCashHistory($id, $request){
-        
     }
 
     /**
@@ -127,7 +123,7 @@ class usersController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
