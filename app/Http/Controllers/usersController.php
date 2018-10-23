@@ -14,6 +14,8 @@ use App\UserPermission;
 use App\Cash_History;
 use Auth;
 use DB;
+use Carbon\Carbon;
+
 class usersController extends Controller
 {
     /**
@@ -91,6 +93,27 @@ class usersController extends Controller
             $user->cashOnHand = 0;
             $user->access_id = 2;
             $user->save();
+
+            $userGet = User::where('emp_id', '=', $request->emp_id)->first();
+            $cashLatest = Cash_History::latest();
+            $cash_history = new Cash_History;
+            $cash_history->user_id = $userGet->id;
+
+            $getDate = Carbon::now();
+            
+            if($cashLatest != null){
+                $dateTime = $getDate->year.$getDate->month.$getDate->day."1";
+            }
+            else{
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            }
+
+            $cash_history->trans_no = $dateTime;
+            $cash_history->previous_cash = 0;
+            $cash_history->cash_change = 0;
+            $cash_history->total_cash = 0;
+            $cash_history->type = "Add Cash";
+            $cash_history->save();
         }
 
         if($request->get('button_action') == 'update'){
@@ -157,7 +180,6 @@ class usersController extends Controller
             'emp_id' => $user->emp_id,
             'name' => $user->name,
             'username' => $user->username,
-            'cashOnHand' => $user->total_user_cash,
         );
         echo json_encode($output);
     }
