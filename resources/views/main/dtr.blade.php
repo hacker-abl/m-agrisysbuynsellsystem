@@ -563,8 +563,8 @@
                                             dtr.ajax.reload();
                                         }
                                         });
-                                    swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
-                                    $('#curCashOnHand').html(data.toFixed(2));
+                                        swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
+                                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                                     }
                             });
                         }
@@ -586,8 +586,7 @@
                     method: 'POST',
                     dataType: 'text',
                     data: $('#dtr_form').serialize(),
-                    success:function(data){
-                        console.log(data);                                                               
+                    success:function(data){                                                           
                         dataparsed = $.parseJSON(data);
                          if(dataparsed.updated=="updated"){
                                         $('#dtr_view_modal').modal('show');
@@ -703,7 +702,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
                         $('#button_action').val('update');
                         $('#id').val(id);
                         $("#employee_id").val(data.employee_id).trigger('change');

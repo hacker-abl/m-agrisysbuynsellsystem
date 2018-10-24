@@ -8,7 +8,9 @@ use App\Expense;
 use App\User;
 use App\Employee;
 use App\trip_expense;
+use App\Cash_History;
 use Auth;
+use Carbon\Carbon;
 use App\Events\ExpensesUpdated;
 use DB;
 
@@ -32,10 +34,7 @@ class expenseController extends Controller
      */
     public function index()
     {
-
-        
         return view('main.expense');
-
     }
 
     public function isAdmin(){
@@ -61,9 +60,6 @@ class expenseController extends Controller
         $expense->save();    
          event(new ExpensesUpdated($expense));      
         }
-
-        
-       
     }
 
     public function release_update_normal(Request $request){
@@ -85,10 +81,36 @@ class expenseController extends Controller
             $released->save();
         }
 
+        $userGet = User::where('id', '=', $user->id)->first();
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        $cash_history = new Cash_History;
+        $cash_history->user_id = $userGet->id;
+
+        $getDate = Carbon::now();
+        
+        if($cashLatest != null){
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        }
+        else{
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+        }
+
+        $cash_history->trans_no = $dateTime;
+        $cash_history->previous_cash = $user->cashOnHand;
+        $cash_history->cash_change = $released->amount;
+        $cash_history->total_cash = $user->cashOnHand - $released->amount;
+        $cash_history->type = "Release Cash - Expense";
+        $cash_history->save();
+
         $user->cashOnHand -= $released->amount;
         $user->save();
+
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
         
-        return $user->cashOnHand;
+        echo json_encode($output);
     }
 
     public function check_balance(Request $request){

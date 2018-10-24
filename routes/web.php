@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/delete_user', 'usersController@deletedata')->name('delete_user');
     Route::post('/get_balance', 'usersController@getBalance')->name('get_balance');
     Route::post('/add_cash', 'usersController@addCash')->name('add_cash');
+    Route::get('/view_cash_history', 'usersController@viewCashHistory')->name('view_cash_history');
     Route::get('/get/{option}', 'usersController@get');
     Route::post('/permission/{option}', 'usersController@permission')->name('permission');
 
