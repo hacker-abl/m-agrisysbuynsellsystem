@@ -402,7 +402,6 @@
                 var button =this;
                 button.disabled = true;
                 input.html('SAVING...'); 
-                console.log($('#cash_form').serialize());
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -470,7 +469,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
                         //Remove password input when updating User
                         if($(".password_input")[0]){
                             $(".password_input").remove();
