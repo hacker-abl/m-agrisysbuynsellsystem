@@ -135,7 +135,7 @@
                                             </div>
                                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                  <div class="form-group">
-                                                      <label for="name">Kilograms</label>
+                                                      <label for="name">Gross KG.</label>
                                                       <div class="form-line">
                                                            <input type="number" id="kilo" name="kilo" onkeyup="kilos1(this)" class="form-control"   required>
                                                       </div>
@@ -215,7 +215,7 @@
                                        </div>
                                   </div>
 
-                                  <div class="row clearfix">
+                                  <div class="col-md-4">
                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                            <label for="name">Partial Payment</label>
                                       </div>
@@ -227,8 +227,65 @@
                                            </div>
                                       </div>
                                  </div>
+                                 </div>
+                                 <div class="row clearfix">
+                                 <div class="col-md-4">
+                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="type1">Type</label>
+                                       </div>
+                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                 <select type="text" id="tc" name="tc" class="form-control" placeholder="Select item" required style="width:100%;">
+                                                    <option value="Wet">Wet</option>
+                                                    <option value="Dry">Dry</option>
+                                                   
+                                                 </select>
+                                            </div>
+                                       </div>
+                                  </div>
+                                 
+                                  <div class="col-md-4">
+                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                           <label for="name">Moisture (%)</label>
+                                      </div>
+                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                           <div class="form-group">
+                                                <div class="form-line">
+                                                     <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
+                                                </div>
+                                           </div>
+                                      </div>
+                                 </div>
 
+                                 <div class="col-md-4">
+                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                           <label for="name">Tare (kg)</label>
+                                      </div>
+                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                           <div class="form-group">
+                                                <div class="form-line">
+                                                     <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
+                                                </div>
+                                           </div>
+                                      </div>
+                                 </div>
+
+                                </div>
+                                 
+                                <div class="row clearfix">
+                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="name">Net Kilos</label>
+                                       </div>
+                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                 <div class="form-line">
+                                                      <input type="text" id="balance" name="balance" readonly="readonly" value="" class="form-control" required>
+                                                 </div>
+                                            </div>
+                                       </div>
+                                  </div>
                                   <div class="row clearfix">
+                                  <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Balance</label>
                                        </div>
@@ -240,12 +297,7 @@
                                             </div>
                                        </div>
                                   </div>
-
-
-
-
-
-                                  <div class="row clearfix">
+                                   <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Total</label>
                                        </div>
@@ -258,9 +310,9 @@
                                        </div>
                                   </div>
 
-                                  <div class="row clearfix">
+                                  <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Amount to Pay</label>
+                                            <label for="name">Amount</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -270,7 +322,7 @@
                                             </div>
                                        </div>
                                   </div>
-
+                                </div>
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="type">Remarks</label>
@@ -300,48 +352,48 @@
                            <div id="home1" class="tab-pane fade in ">
                                 <form class="form-horizontal " id="purchase_form1">
                                 
-                                     <input type="hidden" name="stat" id="stat" value="new">
-                                     <input type="hidden" name="id1" id="id1" value="">
-                                     <input type="hidden" name="balance2" id="balance2" value="">
-                                     <input type="hidden" name="last1" id="last1" value="">
-                                     <input type="hidden" name="pr1" id="pr1" value="">
-                                     <input type="hidden" name="suki1" id="suki1" value="">
-                                      <input type="hidden" name="ca1" id="ca1" value="">
-                                      <input type="hidden" name="partial1" id="partial1" value="">
-                                      <input type="hidden" name="balance1" id="balance1" value="">
-                                       <input type="hidden" name="total1" id="total1" value="">
-                                        <input type="hidden" name="pricenopad" id="pricenopad" value="">
+                                    <input type="hidden" name="stat" id="stat" value="new">
+                                    <input type="hidden" name="id1" id="id1" value="">
+                                    <input type="hidden" name="balance2" id="balance2" value="">
+                                    <input type="hidden" name="last1" id="last1" value="">
+                                    <input type="hidden" name="pr1" id="pr1" value="">
+                                    <input type="hidden" name="suki1" id="suki1" value="">
+                                    <input type="hidden" name="ca1" id="ca1" value="">
+                                    <input type="hidden" name="partial1" id="partial1" value="">
+                                    <input type="hidden" name="balance1" id="balance1" value="">
+                                    <input type="hidden" name="total1" id="total1" value="">
+                                    <input type="hidden" name="pricenopad" id="pricenopad" value="">
 
-                                        <input type="hidden" name="customerid" id="customerid" value="">
+                                    <input type="hidden" name="customerid" id="customerid" value="">
 
-                                     <input type="hidden" name="button_action" id="button_action" value="">
-                                     <div class="row clearfix">
-                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                               <label for="name">Transaction Number</label>
-                                          </div>
-                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                               <div class="form-group">
-                                                    <div class="form-line">
-                                                         <input type="text" id="ticket1" name="ticket1" readonly="readonly" value="" class="form-control" required>
-                                                    </div>
-                                               </div>
-                                          </div>
-                                     </div>
+                                    <input type="hidden" name="button_action" id="button_action" value="">
+                                    <div class="row clearfix">
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="name">Transaction Number</label>
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                        <input type="text" id="ticket1" name="ticket1" readonly="readonly" value="" class="form-control" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                     <div class="row clearfix">
-                                          <div class="col-md-4">
-                                          <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+                                    <div class="row clearfix">
+                                        <div class="col-md-4">
+                                        <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
 
-                                          </div>
-                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                               <div class="form-group">
-                                                    <label for="name">First Name</label>
-                                                    <div class="form-line">
-                                                         <input type="text" id="fname"   name="fname" class="form-control"   required>
-                                                    </div>
-                                               </div>
-                                          </div>
-                                     </div>
+                                        </div>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                <label for="name">First Name</label>
+                                                <div class="form-line">
+                                                        <input type="text" id="fname"   name="fname" class="form-control"   required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                            <div class="col-md-4">
                                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
 
@@ -1047,7 +1099,7 @@
                         .column( 9, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
+                            return intVal(7) + intVal(b);
                         }, 0 );
        
                     // Update footer
@@ -1612,7 +1664,6 @@
             $(document).on('click', '.release_purchase', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
-                console.log(id);
                 $.ajax({
                     url:"{{ route('check_balance3') }}",
                     method: 'POST',
@@ -1643,11 +1694,9 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
-                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                        swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_purchase_modal').modal('hide');
-                        $('#curCashOnHand').html(data.toFixed(2));
-
+                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                         refresh_purchase_table();
                     }
                 })
@@ -1803,7 +1852,6 @@
                         var temp2 = t+r;
                       var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount').val(temp3);
-                        console.log(temp2);
                     }
                     else{
                         $('#amount').val("");
@@ -1974,7 +2022,6 @@
                         var temp2 = t+r;
                         var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount1').val(temp3);
-                        console.log(temp2);
                     }
                     else{
                         $('#amount1').val("");
@@ -1985,7 +2032,6 @@
                     var temp = c + r;
                     $('#total1').val(c);
                     $('#amount1').val(temp);
-                    //console.log(c+r);
                     if($('#partial1').val()!=""){
                         r = parseFloat($('#partial1').val());
                         temp = c + r;
@@ -2178,7 +2224,6 @@
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                         $('#ticket').val(currentDate+b);
                         $('#ticket1').val(currentDate+b);
-                        console.log( $('#ticket').val());
 
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
@@ -2200,12 +2245,15 @@
                         var a = parseFloat(t);
                         var b = a + 1;
                         $('#customerid').val(b);
-                        console.log( b);
                     }
                 })
             });
  
             $('#commodity').select2({
+                dropdownParent: $('#purchase_modal'),
+                placeholder: 'Select an item'
+            });
+            $('#tc').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
@@ -2326,7 +2374,6 @@
                             }
                         }
                     }
-                    console.log(data.amount);
                 }
             });
             moist1(this);
@@ -2412,7 +2459,6 @@
                             $('#amount').val(temp3);
                         }
                     }
-                    console.log(data.suki_price);
                 }
             });
             moist1(this);
@@ -2524,7 +2570,6 @@
                             $('#amount1').val(temp3);
                         }
                     }
-                    console.log(data.suki_price);
                 }
             });
             moist3(this);

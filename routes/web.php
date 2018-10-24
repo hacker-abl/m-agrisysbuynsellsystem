@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/delete_user', 'usersController@deletedata')->name('delete_user');
     Route::post('/get_balance', 'usersController@getBalance')->name('get_balance');
     Route::post('/add_cash', 'usersController@addCash')->name('add_cash');
+    Route::get('/view_cash_history', 'usersController@viewCashHistory')->name('view_cash_history');
     Route::get('/get/{option}', 'usersController@get');
     Route::post('/permission/{option}', 'usersController@permission')->name('permission');
 
@@ -95,9 +96,10 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
     Route::post('/check_balance2', 'expenseController@check_balance2')->name('check_balance2');
     Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
     Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
+    Route::post('/od_expense_view', 'odController@od_expense_view')->name('od_expense_view');
     Route::get('/update_expense', 'expenseController@updatedata')->name('update_expense');
     Route::get('/delete_expense', 'expenseController@deletedata')->name('delete_expense');
-
+    Route::get('/getNumber', 'expenseController@getNumber')->name('getNumber');
 
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
@@ -114,6 +116,8 @@ Route::group(['middleware'=>['auth', 'user:trips']], function() {
 Route::group(['middleware'=>['auth', 'user:od']], function() {
     //OUTBOUND DELIVERIES
     Route::get('/outbound', 'odController@index')->name('od');
+    Route::post('/release_update_od', 'odController@release_update_od')->name('release_update_od');
+    Route::post('/check_balance_od', 'odController@check_balance_od')->name('check_balance_od');
     Route::post('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
     Route::get('/refresh_id', 'odController@updateId')->name('refresh_id');
     Route::post('/add_delivery', 'odController@store')->name('add_delivery');

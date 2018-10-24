@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Employee;
 use App\Roles;
+use App\Employee_Benefits;
 class employeeController extends Controller
 {
     /**
@@ -55,6 +56,26 @@ class employeeController extends Controller
             $employee->lname = $request->lname;
             $employee->role_id = $request->role_id;
             $employee->save();
+
+            $employee = Employee::orderBy('id', 'DESC')->first();
+            
+            for($x = 0; $x < 3; $x++){
+                $employee_benefits = new Employee_Benefits;
+                $employee_benefits->emp_id = $employee->id;
+                if($x == 0){//SSS
+                    $employee_benefits->benefits_id = 1;
+                    $employee_benefits->id_number = $request->sss;
+                }
+                else if($x == 1){//Philhealth
+                    $employee_benefits->benefits_id = 2;
+                    $employee_benefits->id_number = $request->philhealth;
+                }
+                else if($x == 2){//Pag-ibig
+                    $employee_benefits->benefits_id = 3;
+                    $employee_benefits->id_number = $request->pagibig;
+                }
+                $employee_benefits->save();
+            }
         }
 
         if($request->get('button_action') == 'update'){
@@ -64,6 +85,26 @@ class employeeController extends Controller
             $employee->lname = $request->get('lname');
             $employee->role_id = $request->get('role_id');
             $employee->save();
+
+            $employee = Employee::orderBy('id', 'DESC')->first();
+
+            for($x = 0; $x < 3; $x++){
+                $employee_benefits = Employee_Benefits::where('emp_id', $employee->id)
+                    ->where('benefits_id', $x+1)->first();
+                if($x == 0){//SSS
+                    $employee_benefits->benefits_id = 1;
+                    $employee_benefits->id_number = $request->sss;
+                }
+                else if($x == 1){//Philhealth
+                    $employee_benefits->benefits_id = 2;
+                    $employee_benefits->id_number = $request->philhealth;
+                }
+                else if($x == 2){//Pag-ibig
+                    $employee_benefits->benefits_id = 3;
+                    $employee_benefits->id_number = $request->pagibig;
+                }
+                $employee_benefits->save();
+            }
         }
     }
 
@@ -71,10 +112,15 @@ class employeeController extends Controller
     {
         $employee = Employee::all();
 
-        return \DataTables::of(Employee::query())
+        return \DataTables::of($employee)
         ->addColumn('action', function($employee){
-            return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
+            if(isAdmin()){
+                return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>
+                <button class="btn btn-xs btn-danger delete_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
+            }
+            else{
+                return 'Admin';
+            }
         })
         ->addColumn('wholename', function ($data){
             return $data->fname." ".$data->mname." ".$data->lname;
@@ -88,17 +134,38 @@ class employeeController extends Controller
 
             return $role_name;
         })
+        ->editColumn('sss', function ($data){
+            $employee_benefits = Employee_Benefits::where('emp_id', $data->id)->where('benefits_id', 1)->first();
+
+            return $employee_benefits->id_number;
+        })
+        ->editColumn('philhealth', function ($data){
+            $employee_benefits = Employee_Benefits::where('emp_id', $data->id)->where('benefits_id', 2)->first();
+
+            return $employee_benefits->id_number;
+        })
+        ->editColumn('pagibig', function ($data){
+            $employee_benefits = Employee_Benefits::where('emp_id', $data->id)->where('benefits_id', 3)->first();
+
+            return $employee_benefits->id_number;
+        })
         ->make(true);
     }
 
     function updatedata(Request $request){
         $id = $request->input('id');
         $employee = Employee::find($id);
+        $sss = Employee_Benefits::where('emp_id', $employee->id)->where('benefits_id', 1)->first();
+        $philhealth = Employee_Benefits::where('emp_id', $employee->id)->where('benefits_id', 2)->first();
+        $pagibig = Employee_Benefits::where('emp_id', $employee->id)->where('benefits_id', 3)->first();
         $output = array(
             'fname' => $employee->fname,
             'mname' => $employee->mname,
             'lname' => $employee->lname,
-            'role_id' => $employee->role_id
+            'role_id' => $employee->role_id,
+            'sss' => $sss->id_number,
+            'philhealth' => $philhealth->id_number,
+            'pagibig' => $pagibig->id_number
         );
         echo json_encode($output);
     }
