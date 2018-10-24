@@ -19,7 +19,7 @@ use App\Cash_History;
 use Carbon\Carbon;
 use Auth;
 use App\Events\ExpensesUpdated;
-use App\Events\CashierCashUpdated;
+use App\Events\CashierCashUpdated; 
 
 class tripController extends Controller
 {
@@ -69,7 +69,7 @@ class tripController extends Controller
         $trip_expenses->amount = $request->expense;
         $trip_expenses->status = "On-Hand";
         $trip_expenses->released_by = '';
-        $trip_expenses->save();
+        $trip_expenses->save(); 
         $details =  DB::table('trips')->orderBy('trip_ticket', 'desc')->first();
         
         if($trip_expenses) {

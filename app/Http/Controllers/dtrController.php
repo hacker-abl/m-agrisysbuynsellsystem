@@ -52,6 +52,7 @@ class dtrController extends Controller
         $dtr->overtime = $request->overtime;
         $dtr->num_hours = $request->num_hours;
         $dtr->rate = $request->rate;
+        $dtr->bonus = $request->bonus;
         $dtr->salary = $request->salary;
         $dtr->status = "On-Hand";
         $dtr->save();
@@ -64,6 +65,7 @@ class dtrController extends Controller
         $dtr->overtime = $request->overtime;
         $dtr->num_hours = $request->num_hours;
         $dtr->rate = $request->rate;
+        $dtr->bonus = $request->bonus;
         $dtr->salary = $request->salary;   
         $dtr->save(); 
         $updated = array(
@@ -197,8 +199,9 @@ class dtrController extends Controller
             'role' => $dtr_view[0]->role,
             'overtime' => $dtr_view[0]->overtime,
             'rate' => $dtr_view[0]->rate,
+            'bonus' => $dtr_view[0]->bonus,
             'num_hours' => $dtr_view[0]->num_hours,
-            'salary' => $dtr_view[0]->overtime,
+            'salary' => $dtr_view[0]->salary,
         );
         echo json_encode($output);
     }
@@ -229,6 +232,9 @@ class dtrController extends Controller
         ->addColumn('wholename', function ($data){
             return $data->fname." ".$data->mname." ".$data->lname;
         })
+        ->editColumn('bonus', function ($data) {
+            return '₱ '.number_format($data->bonus, 2, '.', ',');
+        })
         ->editColumn('salary', function ($data) {
             return '₱ '.number_format($data->salary, 2, '.', ',');
         })
@@ -255,6 +261,9 @@ class dtrController extends Controller
         })
 		->editColumn('salary', function ($data) {
             return '₱ '.number_format($data->salary, 2, '.', ',');
+        })
+        ->editColumn('bonus', function ($data) {
+            return '₱ '.number_format($data->bonus, 2, '.', ',');
         })
          ->editColumn('released_by', function ($data) {
             if($data->released_by==""){

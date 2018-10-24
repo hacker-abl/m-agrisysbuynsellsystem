@@ -44,6 +44,7 @@ class expenseController extends Controller
     {
         if($request->get('button_action') == ''){
         $expense = new Expense;
+        $expense->trans_number = $request->trans_number;
         $expense->description = $request->expense;
         $expense->type = $request->type;
         $expense->amount = $request->amount;
@@ -61,6 +62,10 @@ class expenseController extends Controller
          event(new ExpensesUpdated($expense));      
         }
     }
+    function getNumber(){
+        $temp = DB::select('select MAX(id) as "temp" FROM expenses');
+         echo json_encode($temp);
+     }
 
     public function release_update_normal(Request $request){
         $check_admin =Auth::user()->access_id;
@@ -140,6 +145,7 @@ class expenseController extends Controller
         $id = $request->input('id');
         $expense = Expense::find($id);
         $output = array(
+            'trans_number' => $expense->trans_number,
             'description' => $expense->description,
             'type' => $expense->type,
             'amount' => $expense->amount
