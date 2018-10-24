@@ -83,7 +83,12 @@ class usersController extends Controller
         $cash_history->type = "Add Cash";
         $cash_history->save();
 
-        return $user->cashOnHand;
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
+        
+        echo json_encode($output);
     }
 
     /**

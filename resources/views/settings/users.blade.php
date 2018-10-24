@@ -408,15 +408,15 @@
                     },
                     url:"{{ route('add_cash') }}",
                     method: 'POST',
-                    dataType:'text',
+                    dataType:'json',
                     data: $('#cash_form').serialize(),
                     success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
-                        swal("Cash Added!", "Remaining Balance: ₱"+parseFloat(data).toFixed(2), "success");
+                        swal("Cash Added!", "Remaining Balance: ₱"+parseFloat(data.cashOnHand).toFixed(2)+" | Transaction ID: "+data.cashHistory, "success");
                         $('#add_cash_modal').modal('hide');
                         if($('#add_cash_access_id').val() == 1){
-                            $('#curCashOnHand').html(parseFloat(data).toFixed(2));
+                            $('#curCashOnHand').html(parseFloat(data.cashOnHand).toFixed(2));
                         }
                         else{
                             refresh_user_table();
