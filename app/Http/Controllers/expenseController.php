@@ -104,8 +104,13 @@ class expenseController extends Controller
 
         $user->cashOnHand -= $released->amount;
         $user->save();
+
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
         
-        return $user->cashOnHand;
+        echo json_encode($output);
     }
 
     public function check_balance(Request $request){

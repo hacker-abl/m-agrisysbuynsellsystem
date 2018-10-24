@@ -150,7 +150,13 @@ class caController extends Controller
         $user->save();
         
         event(new CashierCashUpdated());
-        return $user->cashOnHand;
+        
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
+        
+        echo json_encode($output);
     }
 
     public function check_balance4(Request $request){

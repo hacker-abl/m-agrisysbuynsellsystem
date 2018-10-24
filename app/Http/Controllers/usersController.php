@@ -43,7 +43,12 @@ class usersController extends Controller
 
     public function getBalance(Request $request){
         $user = User::find($request->id);
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        $getDate = Carbon::now();
+        $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+
         $output = array(
+            'trans_no' => $dateTime,
             'id' => $user->id,
             'access_id' => $user->access_id,
             'username' => $user->username,
@@ -209,7 +214,7 @@ class usersController extends Controller
 
     function viewCashHistory(Request $request){
         $id = $request->id;
-        $cash_history = Cash_History::with('user')->where('user_id', $id)->get();
+        $cash_history = Cash_History::with('user')->where('user_id', $id)->orderBy('id', 'DESC')->get();
 
         return \DataTables::of($cash_history)->make(true);
     }

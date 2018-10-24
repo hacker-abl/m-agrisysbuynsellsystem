@@ -87,6 +87,19 @@
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="trans_no">Transaction Number</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="trans_no" name="trans_no" class="form-control" required readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                     <label for="add_cash_username">Username</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
@@ -368,6 +381,7 @@
                     method: 'POST',
                     dataType:'json',
                     success:function(data){
+                        $('#trans_no').val(data.trans_no);
                         $('#add_cash_id').val(data.id);
                         $('#add_cash_access_id').val(data.access_id);
                         $('#add_cash_username').val(data.username);
@@ -520,6 +534,7 @@
                                 "targets": "_all", // your case first column
                                 "className": "text-center",
                             }],
+                            order: [ 0 ],
                             columns: [
                                 {data: 'trans_no', name: 'trans_no'},
                                 {data: 'previous_cash', name: 'previous_cash'},
@@ -601,12 +616,5 @@
                 total_cash.val(parseFloat(current_cash.val()) + parseFloat($(tempAdd).val()));
             }
         }
-
-        $(document).on('click', '.view_cash_history', function(){
-
-        })
-
-        
-
     </script>
 @endsection

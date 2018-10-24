@@ -52,8 +52,6 @@ class tripController extends Controller
 
 
     public function store(Request $request){
-        
-         
         $trip= new trips;
         $trip->trip_ticket = $request->ticket;
         $trip->expense = $request->expense;
@@ -167,7 +165,13 @@ class tripController extends Controller
         $user->save();
 
         event(new CashierCashUpdated());
-        return $cashOnHand->cashOnHand;
+        
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
+        
+        echo json_encode($output);
     }
     public function refresh(Request $request){
         $from = $request->date_from;
