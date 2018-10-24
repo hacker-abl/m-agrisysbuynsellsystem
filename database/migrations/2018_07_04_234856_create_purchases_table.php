@@ -34,7 +34,11 @@ class CreatePurchasesTable extends Migration
                 ->onDelete('cascade');
             $table->decimal('balance_id', 14, 2);
             $table->decimal('partial', 14, 2);
-            $table->integer('kilo');
+            $table->decimal('kilo', 14, 2);
+            $table->decimal('tare', 14, 2)->nullable();
+            $table->decimal('moist', 14, 2)->nullable();
+            $table->decimal('net', 14, 2);
+            $table->string('type');
             $table->decimal('price', 14, 2);
             $table->decimal('total', 14, 2);
             $table->decimal('amtpay', 14, 2);
