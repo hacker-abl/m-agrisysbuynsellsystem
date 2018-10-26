@@ -45,43 +45,111 @@ class caController extends Controller
 
     public function store(Request $request){
         if($request->get('button_action_ca') == ''){
-        $ca = new ca;
-        $ca->customer_id = $request->customer_id;
-        $ca->reason = $request->reason;
-        $ca->amount = $request->amount;
-        $ca->balance = $request->balance + $request->amount;
-        $ca->status = "On-Hand";
-        $ca->released_by = '';
-        $ca->save();
+        
+        if($request->stat=="new"){ 
+            $customer = new Customer;
+            $customer->fname = $request->fname;
+            $customer->mname = $request->mname;
+            $customer->lname = $request->lname;
 
-        if($ca) {
-            $notification = new Notification;
-            $notification->notification_type = "Cash Advance";
-            $notification->message = "Cash Advance";
-            $notification->status = "Pending";
-            $notification->admin_id = Auth::id();
-            $notification->table_source = "cash_advance";
-            $notification->cash_advance_id = $ca->id;
-            $notification->save();
+            if($request->contacts == ""){
+                $customer->contacts ="Not Specified";
+            }
+            else{
+                $customer->contacts = $request->contacts;
+            }
+            if($request->address == ""){
+                $customer->address ="Not Specified";
+            }
+            else{
+                $customer->address = $request->address;
+            }
 
-            $datum = Notification::where('id', $notification->id)
-                ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
-                ->get()[0];
+            $customer->suki_type = 0;
+            
+            $customer->save();
+            $cid =  $customer->id;
+            $balance = new balance;
+            $balance->customer_id =$cid;
+            $balance->balance = $request->bal;
+            $balance->logs_ID = $cid;
+            $balance->save();
 
-            $notification = array();
+            $ca = new ca;
+            $ca->customer_id = $cid;
+            $ca->reason = $request->reason1;
+            $ca->amount = $request->bal;
+            $ca->balance = 0 +  $request->bal;
+            $ca->status = "On-Hand";
+            $ca->released_by = '';
+            $ca->save();
 
-            $notification = array(
-                'notifications' => $datum,
-                'customer' => $datum->cash_advance->customer,
-                'time' => time_elapsed_string($datum->updated_at),
-            );
+            if($ca) {
+                $notification = new Notification;
+                $notification->notification_type = "Cash Advance";
+                $notification->message = "Cash Advance";
+                $notification->status = "Pending";
+                $notification->admin_id = Auth::id();
+                $notification->table_source = "cash_advance";
+                $notification->cash_advance_id = $ca->id;
+                $notification->save();
 
-            event(new \App\Events\NewNotification($notification));
+                $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->get()[0];
+
+                $notification = array();
+
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->cash_advance->customer,
+                    'time' => time_elapsed_string($datum->updated_at),
+                );
+
+                event(new \App\Events\NewNotification($notification));
+            }
+            
         }
 
-        $balance = balance::where('customer_id', '=',$request->customer_id)
-                 ->increment('balance',  $request->amount);
-        }
+        else{ 
+            $ca = new ca;
+            $ca->customer_id = $request->customer_id;
+            $ca->reason = $request->reason;
+            $ca->amount = $request->amount;
+            $ca->balance = $request->balance + $request->amount;
+            $ca->status = "On-Hand";
+            $ca->released_by = '';
+            $ca->save();
+    
+            if($ca) {
+                $notification = new Notification;
+                $notification->notification_type = "Cash Advance";
+                $notification->message = "Cash Advance";
+                $notification->status = "Pending";
+                $notification->admin_id = Auth::id();
+                $notification->table_source = "cash_advance";
+                $notification->cash_advance_id = $ca->id;
+                $notification->save();
+    
+                $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->get()[0];
+    
+                $notification = array();
+    
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->cash_advance->customer,
+                    'time' => time_elapsed_string($datum->updated_at),
+                );
+    
+                event(new \App\Events\NewNotification($notification));
+            }
+    
+            $balance = balance::where('customer_id', '=',$request->customer_id)
+                     ->increment('balance',  $request->amount);
+            }
+    }
         if($request->get('button_action_ca') == 'update'){
         $ca = ca::find($request->get('id_ca'));
         $cash_advance = DB::table('cash_advance')
@@ -98,10 +166,12 @@ class caController extends Controller
         $ca->save();
         $balance = balance::where('customer_id', '=',$request->customer_id)
                  ->increment('balance',  $request->amount);    
+
+        event(new BalanceUpdated($ca));
         }
 
 
-        event(new BalanceUpdated($ca));
+      
     }
 
     public function release_update(Request $request){
