@@ -395,6 +395,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="row clearfix">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                <label for="lname">Cash Advance</label>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="number" id="bal" name="bal" class="form-control" placeholder="Enter customer's cash advance">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                <label for="type">Commodity</label>
@@ -1672,6 +1684,9 @@
                         $("#sacks1").val("");
                         $("#kilo1").val("");
                         $("#price1").val("");
+                        $("#contact").val("");
+                        $("#address").val("");
+                        $("#bal").val("");
                         $("#fname").val("");
                         $("#mname").val("");
                         $("#lname").val("");
