@@ -14,7 +14,8 @@ class CreateSalesTable extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-             $table->increments('id');
+            $table->increments('id');
+            $table->string('trans_number');
             $table->integer('commodity_id')->unsigned();
             $table->foreign('commodity_id')
                     ->references('id')
@@ -32,6 +33,7 @@ class CreateSalesTable extends Migration
                     ->onDelete('cascade');
             $table->string('check_number');
             $table->integer('kilos');
+            $table->decimal('price', 14,2);
             $table->decimal('amount', 14,2);
             $table->timestamps();
         });

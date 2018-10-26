@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use App\Events\ExpensesUpdated;
 use DB;
 
-class expenseController extends Controller 
+class expenseController extends Controller  
 {
    
     /**
