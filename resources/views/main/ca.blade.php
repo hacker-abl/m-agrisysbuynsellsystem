@@ -1252,8 +1252,8 @@
                                             });    
                                         }
                                     });
-                                    swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success");
-                                    $('#curCashOnHand').html(data.toFixed(2));
+                                    swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
+                                    $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                                 }
                             })
                         }

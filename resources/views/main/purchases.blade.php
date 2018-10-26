@@ -687,7 +687,6 @@
                 $('#total').val(x);
                 $('#net').val(temp3);
             }
-
              if($('#total').val() !=""  && $('#moist').val() != "" ){
                
                var t = parseFloat($('#total').val());
@@ -772,7 +771,6 @@
                $('#net').val(x5);
            }
         }
-
         function tare3(value) {
             if($('#tare2').val() != ""){
             if($('#total1').val() !=""  && $('#moist2').val() == "" ){
@@ -797,7 +795,6 @@
                 $('#total1').val(x);
                 $('#net2').val(temp3);
             }
-
              if($('#total1').val() !=""  && $('#moist2').val() != "" ){
                
                var t = parseFloat($('#total1').val());
@@ -911,7 +908,6 @@
               
             });
         });
-
         $(document).on('click', '.edit_purchase', function(){
             $("#homeclick1").hide();
             var id = $(this).attr('id');
@@ -925,7 +921,6 @@
                         $('#button_action1').val('update');
                         $('#id').val(id);
                         $('#customer').select2('enable',false);
-
                         $("#customer").val(data.customer_id).trigger('change');
                         $('#customerID').val(data.customer_id);
                         $('#commodityID').val(data.commodity_id);
@@ -958,18 +953,15 @@
                     }
                 })
             });
-
             $("#homeclick").on('click', function() {
                 $('#stat').val("old");
                 $('#stat1').val("old");
                 
             });
-
             $("#homeclick1").on('click', function() {
                 $('#stat').val("new");
                 $('#stat1').val("new");
             });
-
             $('#last').val(1);
             $('#balance').val("0");
             $('#ca1').val("0");
@@ -979,7 +971,6 @@
                     processing: 'Loading.. Please wait'
                 }
             });
-
             function number_format(number, decimals, dec_point, thousands_sep) {
                 // Strip all characters but numerical ones.
                 number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
@@ -1003,7 +994,6 @@
                 }
                 return s.join(dec);
             }
-
             purchasestable = $('#purchasetable').DataTable({
                 "footerCallback": function ( row, data, start, end, display ) {
                     var api = this.api(), data;
@@ -1028,7 +1018,6 @@
                     $( api.column( 7 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal1,2)
                     );
-
                     // Total over this page
                     pageTotal2 = api
                         .column( 8, { page: 'current'} )
@@ -1041,7 +1030,6 @@
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal2,2)
                     );
-
                     // Total over this page
                     pageTotal3 = api
                         .column( 9, { page: 'current'} )
@@ -1054,7 +1042,6 @@
                     $( api.column( 9 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal3,2)
                     );
-
                     // Total over this page
                     pageTotal4 = api
                         .column( 11, { page: 'current'} )
@@ -1067,7 +1054,6 @@
                     $( api.column( 11 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal4,2)
                     );
-
                     // Total over this page
                     pageTotal5 = api
                         .column( 12, { page: 'current'} )
@@ -1080,7 +1066,6 @@
                     $( api.column( 12 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal5,2)
                     );
-
                     // Total over this page
                     pageTotal6 = api
                         .column( 13, { page: 'current'} )
@@ -1120,7 +1105,6 @@
                         }
          
                         head.appendChild(style);
-
                         $(win.document.body)
                             .css( 'font-size', '10pt' );
        
@@ -1174,7 +1158,6 @@
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
-
             //Start of Date Range Filter
             $("#purchase_datepicker_from").datepicker({
                 showOn: "button",
@@ -1209,7 +1192,6 @@
                             $( api.column( 7 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal1,2)
                             );
-
                             // Total over this page
                             pageTotal2 = api
                                 .column( 8, { page: 'current'} )
@@ -1222,7 +1204,6 @@
                             $( api.column( 8 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal2,2)
                             );
-
                             // Total over this page
                             pageTotal3 = api
                                 .column( 9, { page: 'current'} )
@@ -1235,7 +1216,6 @@
                             $( api.column( 9 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal3,2)
                             );
-
                             // Total over this page
                             pageTotal4 = api
                                 .column( 11, { page: 'current'} )
@@ -1248,7 +1228,6 @@
                             $( api.column( 11 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal4,2)
                             );
-
                             // Total over this page
                             pageTotal5 = api
                                 .column( 12, { page: 'current'} )
@@ -1261,7 +1240,6 @@
                             $( api.column( 12 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal5,2)
                             );
-
                             // Total over this page
                             pageTotal6 = api
                                 .column( 13, { page: 'current'} )
@@ -1301,7 +1279,6 @@
                                 }
                 
                                 head.appendChild(style);
-
                                 $(win.document.body)
                                     .css( 'font-size', '10pt' );
             
@@ -1361,7 +1338,6 @@
             }).keyup(function() {
                 minDateFilter = new Date(this.value).getTime();
             });
-
             $("#purchase_datepicker_to").datepicker({
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
@@ -1396,7 +1372,6 @@
                             $( api.column( 4 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal1,2)
                             );
-
                             // Total over this page
                             pageTotal2 = api
                                 .column( 5, { page: 'current'} )
@@ -1409,7 +1384,6 @@
                             $( api.column( 5 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal2,2)
                             );
-
                             // Total over this page
                             pageTotal3 = api
                                 .column( 6, { page: 'current'} )
@@ -1422,7 +1396,6 @@
                             $( api.column( 6 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal3,2)
                             );
-
                             // Total over this page
                             pageTotal4 = api
                                 .column( 8, { page: 'current'} )
@@ -1435,7 +1408,6 @@
                             $( api.column( 8 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal4,2)
                             );
-
                             // Total over this page
                             pageTotal5 = api
                                 .column( 9, { page: 'current'} )
@@ -1448,7 +1420,6 @@
                             $( api.column( 9 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal5,2)
                             );
-
                             // Total over this page
                             pageTotal6 = api
                                 .column( 10, { page: 'current'} )
@@ -1488,7 +1459,6 @@
                                 }
             
                                 head.appendChild(style);
-
                                 $(win.document.body)
                                     .css( 'font-size', '10pt' );
             
@@ -1544,18 +1514,15 @@
                             {data: "action", orderable:false,searchable:false}
                         ]
                     });
-
                 }
             }).keyup(function() {
                 maxDateFilter = new Date(this.value).getTime();
                 //oTable.fnDraw();
             });
             //End of Date Range Filter
-
             function refresh_purchase_table(){
                 purchasestable.ajax.reload(); //reload datatable ajax
             }
-
             $(document).on('click', '#add_purchase', function(event){
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
@@ -1595,7 +1562,6 @@
                         $("#amount").val("");
                         $("#ca").val("");
                         $("#balance").val("");
-
                         $("#partial").val("0");
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
@@ -1612,7 +1578,6 @@
             $(document).on('click', '.release_purchase', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
-                console.log(id);
                 $.ajax({
                     url:"{{ route('check_balance3') }}",
                     method: 'POST',
@@ -1632,7 +1597,6 @@
                     }
                 })
             });
-
             $(document).on('click', '#release_purchase_normal', function(){
                 $.ajax({
                     url:"{{ route('release_purchase') }}",
@@ -1643,17 +1607,13 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
-                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                        swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_purchase_modal').modal('hide');
-                        $('#curCashOnHand').html(data.toFixed(2));
-
+                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                         refresh_purchase_table();
                     }
                 })
             });
-
-
             $("#print_purchase").click(function(event) {
                 event.preventDefault();
                 if($('#stat1').val()=="old"){
@@ -1663,7 +1623,6 @@
                 }
                 $("#print_form").trigger("click");
             });
-
             $("#print_form").click(function(event) {
                 if($('#stat1').val()=="old"){
                     $("#ticket_clone").val($("#ticket").val());
@@ -1693,7 +1652,6 @@
                     $("#remarks_clone").val($("#remarks1").val());
                 }
             });
-
             $(document).on('click', '#add_purchase1', function(event){
                 var input = $(this);
                 var button =this;
@@ -1734,7 +1692,6 @@
             
             $('#partial').on('keyup keydown', function (e) {
                 if (e.which == 8) {
-
                     if($('#balance').val()!=""){
                         var a = 0;
                         var b = parseFloat($('#balance').val());
@@ -1743,7 +1700,6 @@
                         var e =0;
          		        if($('#partial').val()!=""){
          			        a = parseFloat($('#partial').val());
-
          			        if($('#total').val()!=""){
          				        e = parseFloat($('#total').val());
          			        }
@@ -1752,10 +1708,8 @@
          			        $('#amount').val(temp3)
          		        }
                         c = d-a;
-
                         if(c <= d){
          		            $('#balance').val(c);
-
          		            if($('#total').val()!=""){
          			             e = parseFloat($('#total').val());
          		            }
@@ -1777,7 +1731,6 @@
                 }
          	});
         });
-
         function sacks1(value) {
             var a = 0;
             var b = parseFloat($('#price').val());
@@ -1803,7 +1756,6 @@
                         var temp2 = t+r;
                       var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount').val(temp3);
-                        console.log(temp2);
                     }
                     else{
                         $('#amount').val("");
@@ -1828,7 +1780,6 @@
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount').val(temp3);
                     }
-
                     if($('#kilo').val()== ""){
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
@@ -1847,7 +1798,6 @@
                 }
             }
         }
-
         function kilos1(value) {
             var a = 0;
             var b = parseFloat($('#price').val());
@@ -1917,7 +1867,6 @@
             moist1(this);
             tare1(this);
         }
-
         function partial1(value) {
             if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance').val()!=""){
@@ -1928,7 +1877,6 @@
                     var e =0;
                     if($('#partial').val()!=""){
                         a = parseFloat($('#partial').val());
-
                         if($('#total').val()!=""){
                             e = parseFloat($('#total').val());
                         }
@@ -1948,7 +1896,6 @@
                 }
             }
         }
-
         function sacks2(value) {
             var a = 0;
             var b = parseFloat($('#price1').val());
@@ -1974,7 +1921,6 @@
                         var temp2 = t+r;
                         var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount1').val(temp3);
-                        console.log(temp2);
                     }
                     else{
                         $('#amount1').val("");
@@ -1985,7 +1931,6 @@
                     var temp = c + r;
                     $('#total1').val(c);
                     $('#amount1').val(temp);
-                    //console.log(c+r);
                     if($('#partial1').val()!=""){
                         r = parseFloat($('#partial1').val());
                         temp = c + r;
@@ -1998,7 +1943,6 @@
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount1').val(temp3);
                     }
-
                     if($('#kilo1').val()== ""){
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
@@ -2017,7 +1961,6 @@
                 }
             }
         }
-
         function kilos2(value) {
             var a = 0;
             var b = parseFloat($('#price1').val());
@@ -2086,7 +2029,6 @@
                 }
             }
         }
-
         function partial2(value) {
             if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance1').val()!=""){
@@ -2104,7 +2046,6 @@
                         var temp3 =  parseFloat(x).toFixed(2);
                         $('#amount1').val(temp3)
                     }
-
                     c = d-a;
                     $('#balance1').val(c);
                     if($('#total1').val()!=""){
@@ -2116,20 +2057,16 @@
                 }
             }
         }
-
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
-
         $(document).ready(function() {
-
       
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
                 }
             });
-
             $(document).on('click','.open_purchase_modal', function(){
                 $("#homeclick1").show();
                 $('.modal_title').text('Add Purchase');
@@ -2155,7 +2092,6 @@
                 $("#amount").val("");
                 $("#ca").val("");
                 $("#balance").val("");
-
                 $("#partial").val("0");
                 $("#commodity").val('').trigger('change');
                 $("#commodity1").val('').trigger('change');
@@ -2178,15 +2114,12 @@
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                         $('#ticket').val(currentDate+b);
                         $('#ticket1').val(currentDate+b);
-                        console.log( $('#ticket').val());
-
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
                         $('#purchase_modal').modal('show');
                     }
                 })
-
                 $.ajax({
                     url:"{{ route('findCustomer') }}",
                     method: 'get',
@@ -2200,7 +2133,6 @@
                         var a = parseFloat(t);
                         var b = a + 1;
                         $('#customerid').val(b);
-                        console.log( b);
                     }
                 })
             });
@@ -2209,23 +2141,19 @@
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
-
             $('#commodity1').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
     
-
             $('#customer').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select a company'
             });
-
             $('#remarks').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select a company'
             });
-
             $('#remarks1').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select a company'
@@ -2260,7 +2188,6 @@
                         c = b-a;
                         $('#balance').val(c);
                     }
-
                     if($('#price').val()!=""){
                         var a = parseFloat($('#last').val());
                         var b = parseFloat($('#suki').val());
@@ -2272,7 +2199,6 @@
                             $('#price').val(b);
                             if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                                 var x = 0;
-
                                 if ($('#kilo').val()!=""){
                                     var x = parseFloat($('#kilo').val());
                                 }
@@ -2282,7 +2208,6 @@
                                 else{
                                     d =  parseFloat($('#sacks').val());
                                 }
-
                                 if ($('#partial').val() != "" ){
                                     t= parseFloat($('#partial').val());
                                 }
@@ -2298,10 +2223,8 @@
                         }
                         else{
                             $('#price').val(c);
-
                             if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                                 var x = 0;
-
                                 if ($('#kilo').val()!=""){
                                     var x = parseFloat($('#kilo').val());
                                 }
@@ -2311,7 +2234,6 @@
                                 else{
                                     d =  parseFloat($('#sacks').val());
                                 }
-
                                 if ($('#partial').val() != "" ){
                                     t =  parseFloat($('#partial').val());
                                 }
@@ -2326,13 +2248,11 @@
                             }
                         }
                     }
-                    console.log(data.amount);
                 }
             });
             moist1(this);
             tare1(this);
         });
-
         $('#commodity').on('select2:select', function (e) {
             if($('#button_action1').val()=="update"){
                 $('#commodityID').val($(e.currentTarget).val());
@@ -2355,7 +2275,6 @@
                         var t = 0;
                         if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                             var x = 0;
-
                             if ($('#kilo').val()!=""){
                                 var x = parseFloat($('#kilo').val());
                             }
@@ -2365,7 +2284,6 @@
                             else{
                                 d =  parseFloat($('#sacks').val());
                             }
-
                             if ($('#partial').val() != "" ){
                                 t= parseFloat($('#partial').val());
                             }
@@ -2388,7 +2306,6 @@
                         var t = 0;
                         if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                             var x = 0;
-
                             if ($('#kilo').val()!=""){
                                 var x = parseFloat($('#kilo').val());
                             }
@@ -2398,7 +2315,6 @@
                             else{
                                 d =  parseFloat($('#sacks').val());
                             }
-
                             if ($('#partial').val() != "" ){
                                 t= parseFloat($('#partial').val());
                             }
@@ -2412,7 +2328,6 @@
                             $('#amount').val(temp3);
                         }
                     }
-                    console.log(data.suki_price);
                 }
             });
             moist1(this);
@@ -2433,7 +2348,6 @@
             $("#moist").prop('readonly', false);
         }
         });
-
         $('#type2').on('select2:select', function (e) {
             var id = $(e.currentTarget).val()
         if(id == "Dry"){
@@ -2456,7 +2370,6 @@
                 success: function(data) {
                     $('#pr1').val(data.price);
                     $('#suki1').val(data.suki_price);
-
                     var a = parseFloat($('#last1').val());
                     if(a==1){
                         $('#price1').val(data.suki_price);
@@ -2467,7 +2380,6 @@
                         var t = 0;
                         if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
                             var x = 0;
-
                             if ($('#kilo1').val()!=""){
                                 var x = parseFloat($('#kilo').val());
                             }
@@ -2477,7 +2389,6 @@
                             else{
                                 d =  parseFloat($('#sacks1').val());
                             }
-
                             if ($('#partial1').val() != "" ){
                                 t= parseFloat($('#partial1').val());
                             }
@@ -2500,7 +2411,6 @@
                         var t = 0;
                         if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
                             var x = 0;
-
                             if ($('#kilo1').val()!=""){
                                 var x = parseFloat($('#kilo1').val());
                             }
@@ -2510,7 +2420,6 @@
                             else{
                                 d =  parseFloat($('#sacks1').val());
                             }
-
                             if ($('#partial1').val() != "" ){
                                 t= parseFloat($('#partial1').val());
                             }
@@ -2524,7 +2433,6 @@
                             $('#amount1').val(temp3);
                         }
                     }
-                    console.log(data.suki_price);
                 }
             });
             moist3(this);

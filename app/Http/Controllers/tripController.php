@@ -15,9 +15,11 @@ use App\Commodity;
 use App\Roles;
 use App\trip_expense;
 use App\Notification;
+use App\Cash_History;
+use Carbon\Carbon;
 use Auth;
 use App\Events\ExpensesUpdated;
-use App\Events\CashierCashUpdated;
+use App\Events\CashierCashUpdated; 
 
 class tripController extends Controller
 {
@@ -50,8 +52,6 @@ class tripController extends Controller
 
 
     public function store(Request $request){
-        
-         
         $trip= new trips;
         $trip->trip_ticket = $request->ticket;
         $trip->expense = $request->expense;
@@ -140,8 +140,38 @@ class tripController extends Controller
             $cashOnHand->save();
         }
 
+        $userGet = User::where('id', '=', $user->id)->first();
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        $cash_history = new Cash_History;
+        $cash_history->user_id = $userGet->id;
+
+        $getDate = Carbon::now();
+        
+        if($cashLatest != null){
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        }
+        else{
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+        }
+
+        $cash_history->trans_no = $dateTime;
+        $cash_history->previous_cash = $user->cashOnHand;
+        $cash_history->cash_change = $released->amount;
+        $cash_history->total_cash = $user->cashOnHand - $released->amount;
+        $cash_history->type = "Release Cash - Trips";
+        $cash_history->save();
+
+        $user->cashOnHand -= $released->amount;
+        $user->save();
+
         event(new CashierCashUpdated());
-        return $cashOnHand->cashOnHand;
+        
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
+        
+        echo json_encode($output);
     }
     public function refresh(Request $request){
         $from = $request->date_from;

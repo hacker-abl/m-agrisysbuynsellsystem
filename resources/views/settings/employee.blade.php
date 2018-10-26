@@ -73,6 +73,45 @@
                             </div>
 
                             <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="sss">SSS</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="sss" name="sss" class="form-control" placeholder="Enter employee's SSS">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="philhealth">Philhealth</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="philhealth" name="philhealth" class="form-control" placeholder="Enter employee's Philhealth">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="pagibig">Pag-ibig</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="pagibig" name="pagibig" class="form-control" placeholder="Enter employee's Pag-ibig">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
                                 <div class="modal-footer">
                                     <button type="submit" id="add_employee" class="btn btn-link waves-effect">SAVE CHANGES</button>
                                     <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
@@ -104,6 +143,9 @@
                                     <th>mname</th>
                                     <th>lname</th>
                                     <th>Type</th>
+                                    <th>SSS</th>
+                                    <th>Philhealth</th>
+                                    <th>Pag-ibig</th>
                                     <th width="100">Action</th>
                                 </tr>
                             </thead>
@@ -159,7 +201,10 @@
                     {data:'wholename', name: 'employee.fname' },
                     {data:'mname', name: 'employee.mname',visible:false  },
                     {data:'lname', name: 'employee.lname',visible:false  },
-                    {data: 'role_id', name: 'role_id'},
+                    {data:'role_id', name: 'role_id'},
+                    {data:'sss', name: 'sss' },
+                    {data:'philhealth', name: 'philhealth' },
+                    {data:'pagibig', name: 'pagibig' },
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
@@ -221,6 +266,9 @@
                         $('#mname').val(data.mname);
                         $('#lname').val(data.lname);
                         $('#role_id').val(data.role_id);
+                        $('#sss').val(data.sss);
+                        $('#philhealth').val(data.philhealth);
+                        $('#pagibig').val(data.pagibig);
                         $('#employee_modal').modal('show');
                         $('.modal_title').text('Update Employee');
                         refresh_employee_table();

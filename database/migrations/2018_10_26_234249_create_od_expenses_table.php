@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Dtr extends Migration
+class OdExpense extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,18 @@ class Dtr extends Migration
      */
     public function up()
     {
-        Schema::create('dtr', function (Blueprint $table) {
+        Schema::create('od_expense', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('employee_id')->unsigned();
-            $table->foreign('employee_id')
+            $table->integer('od_id')->unsigned();
+            $table->foreign('od_id')
                     ->references('id')
-                    ->on('employee')
+                    ->on('deliveries')
                     ->onDelete('cascade');
-            $table->string('role');
-            $table->decimal('overtime');
-            $table->decimal('num_hours');
-            $table->decimal('rate', 14,2);
-            $table->decimal('salary');
-            $table->decimal('bonus');
+            $table->string('description');
+            $table->string('type');
+            $table->decimal('amount', 14,2);
             $table->string('status');
-            $table->string('released_by');
+            $table->string('released_by');          
             $table->timestamps();
         });
     }
@@ -39,6 +36,6 @@ class Dtr extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dtr');
+        Schema::dropIfExists('od_expense');
     }
 }
