@@ -13,8 +13,6 @@ use App\expense;
 use App\employee;
 use App\User;
 use App\Notification;
-use App\Cash_History;
-use Carbon\Carbon;
 use Auth;
 use App\Events\CashierCashUpdated;
 
@@ -52,7 +50,6 @@ class dtrController extends Controller
         $dtr->overtime = $request->overtime;
         $dtr->num_hours = $request->num_hours;
         $dtr->rate = $request->rate;
-        $dtr->bonus = $request->bonus;
         $dtr->salary = $request->salary;
         $dtr->status = "On-Hand";
         $dtr->save();
@@ -65,7 +62,6 @@ class dtrController extends Controller
         $dtr->overtime = $request->overtime;
         $dtr->num_hours = $request->num_hours;
         $dtr->rate = $request->rate;
-        $dtr->bonus = $request->bonus;
         $dtr->salary = $request->salary;   
         $dtr->save(); 
         $updated = array(
@@ -141,38 +137,8 @@ class dtrController extends Controller
         $user->cashOnHand -= $released->salary;
         $user->save();
 
-        $userGet = User::where('id', '=', $user->id)->first();
-        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-        $cash_history = new Cash_History;
-        $cash_history->user_id = $userGet->id;
-
-        $getDate = Carbon::now();
-        
-        if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
-        }
-        else{
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-        }
-
-        $cash_history->trans_no = $dateTime;
-        $cash_history->previous_cash = $user->cashOnHand;
-        $cash_history->cash_change = $released->salary;
-        $cash_history->total_cash = $user->cashOnHand - $released->salary;
-        $cash_history->type = "Release Cash - DTR";
-        $cash_history->save();
-
-        $user->cashOnHand -= $released->amount;
-        $user->save();
-
         event(new CashierCashUpdated());
-
-        $output = array(
-            'cashOnHand' => $user->cashOnHand,
-            'cashHistory' => $dateTime
-        );
-        
-        echo json_encode($output);
+        return $user->cashOnHand;
     }
 
     public function check_balance5(Request $request){
@@ -199,9 +165,8 @@ class dtrController extends Controller
             'role' => $dtr_view[0]->role,
             'overtime' => $dtr_view[0]->overtime,
             'rate' => $dtr_view[0]->rate,
-            'bonus' => $dtr_view[0]->bonus,
             'num_hours' => $dtr_view[0]->num_hours,
-            'salary' => $dtr_view[0]->salary,
+            'salary' => $dtr_view[0]->overtime,
         );
         echo json_encode($output);
     }
@@ -232,9 +197,6 @@ class dtrController extends Controller
         ->addColumn('wholename', function ($data){
             return $data->fname." ".$data->mname." ".$data->lname;
         })
-        ->editColumn('bonus', function ($data) {
-            return '₱ '.number_format($data->bonus, 2, '.', ',');
-        })
         ->editColumn('salary', function ($data) {
             return '₱ '.number_format($data->salary, 2, '.', ',');
         })
@@ -261,9 +223,6 @@ class dtrController extends Controller
         })
 		->editColumn('salary', function ($data) {
             return '₱ '.number_format($data->salary, 2, '.', ',');
-        })
-        ->editColumn('bonus', function ($data) {
-            return '₱ '.number_format($data->bonus, 2, '.', ',');
         })
          ->editColumn('released_by', function ($data) {
             if($data->released_by==""){

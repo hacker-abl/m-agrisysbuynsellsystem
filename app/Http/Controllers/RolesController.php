@@ -50,15 +50,10 @@ class RolesController extends Controller
       $roles = Roles::all();
       return \DataTables::of(Roles::query())
       ->addColumn('action', function($roles){
-            if(isAdmin()){
-                return '<button class="btn btn-xs btn-warning update_role waves-effect" id="'.$roles->id.'"><i class="material-icons">mode_edit</i></button>
-                <button class="btn btn-xs btn-danger delete_role waves-effect" id="'.$roles->id.'"><i class="material-icons">delete</i></button>';
-            }
-            else{
-                return 'Admin';
-            }
-        })
-        ->editColumn('rate', function ($data) {
+          return '<button class="btn btn-xs btn-warning update_role waves-effect" id="'.$roles->id.'"><i class="material-icons">mode_edit</i></button>
+          <button class="btn btn-xs btn-danger delete_role waves-effect" id="'.$roles->id.'"><i class="material-icons">delete</i></button>';
+      })
+      ->editColumn('rate', function ($data) {
             return '₱'.number_format($data->rate, 2, '.', ',');
         })
       ->make(true);

@@ -11,11 +11,8 @@ use App\Employee;
 use App\access_levels;
 use App\Permission;
 use App\UserPermission;
-use App\Cash_History;
 use Auth;
 use DB;
-use Carbon\Carbon;
-
 class usersController extends Controller
 {
     /**
@@ -41,54 +38,18 @@ class usersController extends Controller
         return view('settings.users', compact('employee'), ['permissions' => $permissions]);
     }
 
-    public function getBalance(Request $request){
-        $user = User::find($request->id);
-        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-        $getDate = Carbon::now();
-        $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+    public function getBalance(){
+        $user = User::find(Auth::user()->id);
 
-        $output = array(
-            'trans_no' => $dateTime,
-            'id' => $user->id,
-            'access_id' => $user->access_id,
-            'username' => $user->username,
-            'cashOnHand' => $user->cashOnHand
-        );
-        echo json_encode($output);
+        return $user->cashOnHand;
     }
 
     public function addCash(Request $request){
-        $user = User::find($request->add_cash_id);
-        $user->cashOnHand = $request->total_cash;
+        $user = User::find(Auth::user()->id);
+        $user->cashOnHand = $request->add_admin_cash;
         $user->save();
 
-        $userGet = User::where('id', '=', $user->id)->first();
-        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-        $cash_history = new Cash_History;
-        $cash_history->user_id = $userGet->id;
-
-        $getDate = Carbon::now();
-        
-        if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
-        }
-        else{
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-        }
-
-        $cash_history->trans_no = $dateTime;
-        $cash_history->previous_cash = $request->current_cash;
-        $cash_history->cash_change = $request->add_cash;
-        $cash_history->total_cash = $request->total_cash;
-        $cash_history->type = "Add Cash";
-        $cash_history->save();
-
-        $output = array(
-            'cashOnHand' => $user->cashOnHand,
-            'cashHistory' => $dateTime
-        );
-        
-        echo json_encode($output);
+        return $user->cashOnHand;
     }
 
     /**
@@ -121,36 +82,16 @@ class usersController extends Controller
             $user->emp_id = $request->emp_id;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
-            $user->cashOnHand = 0;
+            $user->cashOnHand = $request->cashOnHand;
             $user->access_id = 2;
             $user->save();
-
-            $userGet = User::where('emp_id', '=', $request->emp_id)->first();
-            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-            $cash_history = new Cash_History;
-            $cash_history->user_id = $userGet->id;
-
-            $getDate = Carbon::now();
-            
-            if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
-            }
-            else{
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-            }
-
-            $cash_history->trans_no = $dateTime;
-            $cash_history->previous_cash = 0;
-            $cash_history->cash_change = 0;
-            $cash_history->total_cash = 0;
-            $cash_history->type = "Add Cash";
-            $cash_history->save();
         }
 
         if($request->get('button_action') == 'update'){
             $user = User::find($request->get('id'));
             $user->emp_id = $request->emp_id;
             $user->username = $request->username;
+            $user->cashOnHand = $request->cashOnHand;
             $user->save();
         }
     }
@@ -171,17 +112,9 @@ class usersController extends Controller
         // $user = User::where('access_id', '!=', 1)->get();
         return \DataTables::of(User::where('access_id', '!=', 1)->get())
         ->addColumn('action', function($user){
-            if(isAdmin()){
-                return '
-                <button class="btn btn-xs btn-info waves-effect view_cash_history" id="'.$user->id.'" data-toggle="modal" data-target="#cash_view_modal"><i class="material-icons" style="width: 25px;">visibility</i></button>
-                <button type="button" class="btn btn-xs btn-success waves-effect open_add_cash_modal" id="'.$user->id.'" data-toggle="modal" data-target="#add_cash_modal"><i class="material-icons">account_balance_wallet</i></button>
-                <button class="btn btn-xs btn-info update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>
-                <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button>
-                <button type="button" class="btn btn-xs btn-warning waves-effect" data-id="'.$user->id.'" data-toggle="modal" data-target="#user-permission"><i class="material-icons">vpn_key</i></button>';
-            }
-            else{
-                return 'Admin';
-            }
+            return '<button class="btn btn-xs btn-info update_user waves-effect" id="'.$user->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_user waves-effect" id="'.$user->id.'"><i class="material-icons">delete</i></button>
+            <button type="button" class="btn btn-xs btn-warning waves-effect" data-id="'.$user->id.'" data-toggle="modal" data-target="#user-permission"><i class="material-icons">vpn_key</i></button>';
         })
         ->editColumn('access_id', function ($data){
             $level = access_levels::all();
@@ -207,21 +140,13 @@ class usersController extends Controller
     function updatedata(Request $request){
         $id = $request->input('id');
         $user = User::find($id);
-        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
         $output = array(
             'emp_id' => $user->emp_id,
             'name' => $user->name,
             'username' => $user->username,
-            'cash' => $cashLatest
+            'cashOnHand' => $user->cashOnHand,
         );
         echo json_encode($output);
-    }
-
-    function viewCashHistory(Request $request){
-        $id = $request->id;
-        $cash_history = Cash_History::with('user')->where('user_id', $id)->orderBy('id', 'DESC')->get();
-
-        return \DataTables::of($cash_history)->make(true);
     }
 
     function deletedata(Request $request){

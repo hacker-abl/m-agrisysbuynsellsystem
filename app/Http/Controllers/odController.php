@@ -7,19 +7,12 @@ use DB;
 use App\Employee;
 use App\Commodity;
 use App\Company;
-use App\od_expense;
 use App\od;
 use App\Roles;
 use App\trucks;
-use Auth;
-use App\User;
-use App\Events\ExpensesUpdated;
-use App\Events\CashierCashUpdated; 
-use App\Notification;
-
 class odController extends Controller
 {
-      /** 
+      /**
      * Create a new controller instance.
      *
      * @return void
@@ -61,19 +54,6 @@ class odController extends Controller
             $commodity->fuel_liters = $request->liter;
             $commodity->allowance = $request->allowance;
             $commodity->save();
-            $lastInsertedId = $commodity->id;
-            $od_expenses = new od_expense;
-            $od_expenses->od_id = $lastInsertedId;
-            $od_expenses->description = $request->destination;
-            $od_expenses->type ="Outbound Expense";
-            $od_expenses->amount = $request->allowance;
-            $od_expenses->status = "On-Hand";
-            $od_expenses->released_by = '';
-            $od_expenses->save();
-            $details =  DB::table('deliveries')->orderBy('outboundTicket', 'desc')->first();
-
-            echo json_encode($details);
-                
           }
 
         if($request->get('button_action') == 'update'){
@@ -88,46 +68,6 @@ class odController extends Controller
           $commodity->fuel_liters = $request->liter;
           $commodity->allowance = $request->allowance;
           $commodity->save();
-        }
-    }
-
-    public function release_update_od(Request $request){
-         $check_admin =Auth::user()->access_id;
-        if($check_admin==1){
-            $logged_id = Auth::user()->name;
-            $user = User::find(Auth::user()->id);
-            $released = od_expense::find($request->id);
-            $released->status = "Released";
-            $released->released_by = $logged_id;
-            $released->save();
-            $cashOnHand = User::find(Auth::user()->id);
-            $cashOnHand->cashOnHand -= $released->amount;
-            $cashOnHand->save();
-        }else{
-            $logged_id = Auth::user()->emp_id;
-            $name= Employee::find($logged_id);             
-            $released=od_expense::find($request->id);
-            $released->status = "Released";
-            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
-            $released->save();
-            $cashOnHand = User::find(Auth::user()->id);
-            $cashOnHand->cashOnHand -= $released->amount;
-            $cashOnHand->save();
-        }
-
-        event(new CashierCashUpdated());
-        return $cashOnHand->cashOnHand;
-    }
-
-     public function check_balance_od(Request $request){
-        $user = User::find(Auth::user()->id);
-        $expense = od_expense::find($request->id);
-
-        if($user->cashOnHand < $expense->amount){
-            return 0;
-        }
-        else{
-            return 1;
         }
     }
 
@@ -197,51 +137,6 @@ class odController extends Controller
         $od->delete();
     }
 
-     public function od_expense_view(Request $request)
-    {
-       $from = $request->date_from;
-       $to = $request->date_to;
-       if($to==""||$from==""){
-          $od_expense = DB::table('deliveries')
-            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
-            ->select('od_expense.id','deliveries.outboundTicket AS od_id','od_expense.description AS description','od_expense.type AS type','od_expense.amount AS amount','od_expense.status AS status','od_expense.released_by as released_by','od_expense.created_at as created_at')
-            ->get();
-        }else{
-           
-             $od_expense = DB::table('deliveries')
-            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
-            ->select('od_expense.id','deliveries.outboundTicket AS od_id','od_expense.description AS description','od_expense.type AS type','od_expense.amount AS amount','od_expense.status AS status','od_expense.released_by as released_by','od_expense.created_at as created_at')
-                ->where('od_expense.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
-                ->where('od_expense.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-                ->get();
-        }
-      
-        return \DataTables::of($od_expense)
-        ->addColumn('action', function($od_expense){
-            if($od_expense->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-success release_expense_od waves-effect" id="'.$od_expense->id.'"><i class="material-icons">eject</i></button>';
-            }else{
-                 return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$od_expense->id.'"><i class="material-icons">done_all</i></button>';
-            }
-           
-        })
-        ->editColumn('amount', function ($data) {
-            return '₱'.number_format($data->amount, 2, '.', ',');
-        })
-         ->editColumn('created_at', function ($data) {
-            return date('F d, Y g:i a', strtotime($data->created_at));
-        })
-        ->editColumn('released_by', function ($data) {
-            if($data->released_by==""){
-                return 'None';
-            }else{
-                return $data->released_by;
-            }
-            
-        })
-        ->make(true);
 
 
-
-}
 }

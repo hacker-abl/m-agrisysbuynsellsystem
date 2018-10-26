@@ -15,7 +15,6 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('trans_number');
             $table->string('description');
             $table->string('type');
             $table->decimal('amount');

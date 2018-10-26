@@ -25,7 +25,6 @@ class Dtr extends Migration
             $table->decimal('num_hours');
             $table->decimal('rate', 14,2);
             $table->decimal('salary');
-            $table->decimal('bonus');
             $table->string('status');
             $table->string('released_by');
             $table->timestamps();

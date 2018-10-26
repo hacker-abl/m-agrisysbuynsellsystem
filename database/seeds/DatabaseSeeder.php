@@ -14,8 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(access_levels::class);
         $this->call(UsersTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
-        $this->call(CashHistoryTableSeeder::class);
-        $this->call(BenefitsTableSeeder::class);
     }
 }
  

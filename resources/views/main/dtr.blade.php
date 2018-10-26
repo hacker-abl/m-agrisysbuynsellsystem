@@ -104,19 +104,6 @@
 										</div>
 									</div>
 								</div>
-                            </div>
-                            
-                            <div class="row clearfix">
-								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-									<label for="name">Bonus</label>
-								</div>
-								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-									<div class="form-group">
-										<div class="form-line">
-											<input type="" id="bonus" min="0" name="bonus" class="form-control" required>
-										</div>
-									</div>
-								</div>
 							</div>
 
                              <div class="row clearfix">
@@ -164,7 +151,6 @@
                                             <th>Overtime</th>
                                             <th>Number of Hours</th>
                                             <th>Date/Time</th>
-                                            <th>Bonus</th>
                                             <th>Salary</th>
                                             <th>Status</th>
                                             <th>Released By</th>
@@ -220,7 +206,6 @@
 										<th width="100" style="text-align:center;">Overtime</th>
 										<th width="100" style="text-align:center;">No. of Hours</th>
                                         <th width="100" style="text-align:center;">Date/Time</th>
-                                        <th width="100" style="text-align:center;">Bonus</th>
                                         <th width="100" style="text-align:center;">Salary</th>
                                         <th width="100" style="text-align:center;">Status</th>
 										<th width="100" style="text-align:center;">Action</th>
@@ -281,7 +266,6 @@
 	var idmain
 	var total;
 	var role;
-    var bonus;
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -345,7 +329,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 8 )
+                        .column( 7 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -353,14 +337,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 8, { page: 'current'} )
+                        .column( 7, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 8 ).footer() ).html(
+                    $( api.column( 7 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -406,7 +390,6 @@
 
 						  return ts.toDateString()+" "+ts.toLocaleTimeString()}
 					},
-                    {data: 'bonus', name: 'bonus'},
 					{data: 'salary', name: 'salary'},
                     {data: 'status', name: 'status'},
 					{data: "action", orderable:false,searchable:false}
@@ -438,7 +421,7 @@
                         $('#rate').val(data[0].rate);
 
                         salary=data[0].rate;
-                         
+                        $('#salary').val(overtime*salary);
                     }
                 })
             });
@@ -455,13 +438,6 @@
 
                 $('#salary').val(overtime*salary);
             });
-            $('#bonus').change(function(){
-
-            overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
-            bonus=parseFloat($('#bonus').val());
-            $('#salary').val(overtime*salary+bonus);
-            });
-            
 
             $(document).on('click', '.release_expense_dtr', function(event){
                 event.preventDefault();
@@ -587,8 +563,8 @@
                                             dtr.ajax.reload();
                                         }
                                         });
-                                        swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
-                                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
+                                    swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
+                                    $('#curCashOnHand').html(data.toFixed(2));
                                     }
                             });
                         }
@@ -610,12 +586,13 @@
                     method: 'POST',
                     dataType: 'text',
                     data: $('#dtr_form').serialize(),
-                    success:function(data){                                                           
+                    success:function(data){
+                        console.log(data);                                                               
                         dataparsed = $.parseJSON(data);
                          if(dataparsed.updated=="updated"){
                                         $('#dtr_view_modal').modal('show');
                                     }
-                        //$("#id").val(dataparsed.details[0].id);
+                        $("#id").val(dataparsed.details[0].id);
                         $('#dtr_modal').modal('hide');
                         $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
@@ -637,7 +614,7 @@
                                          
                                                     // Total over all pages
                                                     total = api
-                                                        .column( 4 )
+                                                        .column( 3 )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -645,14 +622,14 @@
                                          
                                                     // Total over this page
                                                     pageTotal = api
-                                                        .column( 4, { page: 'current'} )
+                                                        .column( 3, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
                                          
                                                     // Update footer
-                                                    $( api.column( 4 ).footer() ).html(
+                                                    $( api.column( 3 ).footer() ).html(
                                                         'Total: <br>₱' + number_format(pageTotal,2)
                                                     );
                                                 },
@@ -693,7 +670,6 @@
 
                                                         return ts.toDateString()+" "+ts.toLocaleTimeString()}
                                                     },
-                                                    {data: 'bonus', name: 'bonus'},
                                                     {data: 'salary', name: 'salary'},
                                                     {data: 'status', name: 'status'},
                                                     {data: 'released_by', name: 'released_by'},
@@ -721,21 +697,20 @@
                  $('#dtr_view_modal').modal('hide'); 
                 event.preventDefault();
                 var id = $(this).attr("id");
-                 
                 $.ajax({
                     url:"{{ route('update_dtr') }}",
                     method: 'get',
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        console.log(data);
                         $('#button_action').val('update');
                         $('#id').val(id);
                         $("#employee_id").val(data.employee_id).trigger('change');
                         $("#role").val(data.role).trigger('change');
-                        $("#overtime").val(data.overtime);
-                        $("#num_hours").val(data.num_hours);
-                        $("#bonus").val(data.bonus);
-                        $('#salary').val(data.salary);
+                        $("#overtime").val(data.overtime).trigger('change');
+                        $("#num_hours").val(data.num_hours).trigger('change');
+                        $('#salary').val(data.salary).trigger('change');
                         $('#dtr_modal').modal('show');
                         $('.modal_title').text('Update DTR');
                         //refresh_expense_table();
@@ -781,7 +756,7 @@
                                          
                                                     // Total over all pages
                                                     total = api
-                                                        .column( 4 )
+                                                        .column( 3 )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -789,14 +764,14 @@
                                          
                                                     // Total over this page
                                                     pageTotal = api
-                                                        .column( 4, { page: 'current'} )
+                                                        .column( 3, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
                                          
                                                     // Update footer
-                                                    $( api.column( 4 ).footer() ).html(
+                                                    $( api.column( 3 ).footer() ).html(
                                                         'Total: <br>₱' + number_format(pageTotal,2)
                                                     );
                                                 },
@@ -837,7 +812,6 @@
 
                                                         return ts.toDateString()+" "+ts.toLocaleTimeString()}
                                                     },
-                                                    {data: 'bonus', name: 'bonus'},
                                                     {data: 'salary', name: 'salary'},
                                                     {data: 'status', name: 'status'},
                                                     {data: 'released_by', name: 'released_by'},
@@ -923,7 +897,7 @@
                      
                                 // Total over all pages
                                 total = api
-                                    .column( 4 )
+                                    .column( 3 )
                                     .data()
                                     .reduce( function (a, b) {
                                         return intVal(a) + intVal(b);
@@ -931,14 +905,14 @@
                      
                                 // Total over this page
                                 pageTotal = api
-                                    .column( 4, { page: 'current'} )
+                                    .column( 3, { page: 'current'} )
                                     .data()
                                     .reduce( function (a, b) {
                                         return intVal(a) + intVal(b);
                                     }, 0 );
                      
                                 // Update footer
-                                $( api.column( 4 ).footer() ).html(
+                                $( api.column( 3 ).footer() ).html(
                                     'Total: <br>₱' + number_format(pageTotal,2)
                                 );
                             },
@@ -979,7 +953,6 @@
 
 									  return ts.toDateString()+" "+ts.toLocaleTimeString()}
 								},
-                                {data: 'bonus', name: 'bonus'},
                                 {data: 'salary', name: 'salary'},
                                 {data: 'status', name: 'status'},
                                 {data: 'released_by', name: 'released_by'},

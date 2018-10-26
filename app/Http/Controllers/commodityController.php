@@ -68,13 +68,8 @@ class commodityController extends Controller
         $commodity = Commodity::all();
         return \DataTables::of(Commodity::query())
         ->addColumn('action', function($commodity){
-            if(isAdmin()){
-                return '<button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>
-                <button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
-            }
-            else{
-                return 'Admin';
-            }
+            return '<button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>
+            <button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
         })
         ->editColumn('price', function ($data) {
             return '₱'.number_format($data->price, 2, '.', ',');

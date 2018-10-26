@@ -112,13 +112,8 @@ class customerController extends Controller
         $customer = Customer::all();
         return \DataTables::of(Customer::query())
         ->addColumn('action', function($customer){
-            if(isAdmin()){
-                return '<button class="btn btn-xs btn-warning update_customer waves-effect" id="'.$customer->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
-                <button class="btn btn-xs btn-danger delete_customer waves-effect" id="'.$customer->id.'"><i class="material-icons">delete</i></button>';
-            }
-            else{
-                return 'Admin';
-            }
+            return '<button class="btn btn-xs btn-warning update_customer waves-effect" id="'.$customer->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+            <button class="btn btn-xs btn-danger delete_customer waves-effect" id="'.$customer->id.'"><i class="material-icons">delete</i></button>';
         })
         ->addColumn('wholename', function ($data){
             return $data->fname." ".$data->mname." ".$data->lname;
