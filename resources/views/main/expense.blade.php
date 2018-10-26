@@ -1900,7 +1900,7 @@
                         console.log(data);
 						var t=0;
 						if(data[0].temp!=null){
-							t = data[0].temp;
+							t = data[0].temp; 
 						}
 						var a = parseInt(t);
 						var b = a + 1;
