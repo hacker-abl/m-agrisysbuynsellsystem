@@ -23,6 +23,10 @@
                                 <input type="hidden" id="ticket_clone" name="ticket_clone">
                                 <input type="hidden" id="customer_clone" name="customer_clone">
                                 <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                <input type="hidden" id="type_clone" name="type_clone">
+                                <input type="hidden" id="tare_clone" name="tare_clone">
+                                <input type="hidden" id="moist_clone" name="moist_clone">
+                                <input type="hidden" id="net_clone" name="net_clone">
                                 <input type="hidden" id="sacks_clone" name="sacks_clone">
                                 <input type="hidden" id="ca_clone" name="ca_clone">
                                 <input type="hidden" id="balance_clone" name="balance_clone">
@@ -612,7 +616,6 @@
                                        <thead>
                                             <tr>
                                                  <th width="100" style="text-align:center;">ID</th>
-
                                                  <th width="100" style="text-align:center;">Customer</th>
                                                  <th width="100" style="text-align:center;">mname</th>
                                                  <th width="100" style="text-align:center;">lname</th>
@@ -638,6 +641,8 @@
 
                                        <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -1017,6 +1022,19 @@
                             typeof i === 'number' ?
                             i : 0;
                     };
+
+                    // Total over this page
+                    pageTotal = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
        
                     // Total over this page
                     pageTotal1 = api
@@ -1044,42 +1062,6 @@
                     );
                     // Total over this page
                     pageTotal3 = api
-                        .column( 9, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 9 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal3,2)
-                    );
-                    // Total over this page
-                    pageTotal4 = api
-                        .column( 11, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 11 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal4,2)
-                    );
-                    // Total over this page
-                    pageTotal5 = api
-                        .column( 12, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 12 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal5,2)
-                    );
-                    // Total over this page
-                    pageTotal6 = api
                         .column( 13, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -1088,14 +1070,38 @@
        
                     // Update footer
                     $( api.column( 13 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal6,2)
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 14, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 14 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 15, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 15 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
                     );
                 },
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'print',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
                     },
                     customize: function ( win ) {
                         var last = null;
@@ -1193,6 +1199,19 @@
                             };
         
                             // Total over this page
+                            pageTotal = api
+                                .column( 6, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 6 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal,2)
+                            );
+            
+                            // Total over this page
                             pageTotal1 = api
                                 .column( 7, { page: 'current'} )
                                 .data()
@@ -1218,42 +1237,6 @@
                             );
                             // Total over this page
                             pageTotal3 = api
-                                .column( 9, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-            
-                            // Update footer
-                            $( api.column( 9 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal3,2)
-                            );
-                            // Total over this page
-                            pageTotal4 = api
-                                .column( 11, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-            
-                            // Update footer
-                            $( api.column( 11 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal4,2)
-                            );
-                            // Total over this page
-                            pageTotal5 = api
-                                .column( 12, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-                
-                            // Update footer
-                            $( api.column( 12 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal5,2)
-                            );
-                            // Total over this page
-                            pageTotal6 = api
                                 .column( 13, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
@@ -1262,14 +1245,38 @@
             
                             // Update footer
                             $( api.column( 13 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal6,2)
+                                'Total: <br>₱' + number_format(pageTotal3,2)
+                            );
+                            // Total over this page
+                            pageTotal4 = api
+                                .column( 14, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 14 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal4,2)
+                            );
+                            // Total over this page
+                            pageTotal5 = api
+                                .column( 15, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 15 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal5,2)
                             );
                         },
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
@@ -1372,84 +1379,85 @@
                                         i : 0;
                             };
         
-                            // Total over this page
-                            pageTotal1 = api
-                                .column( 4, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 4 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal1,2)
-                            );
-                            // Total over this page
-                            pageTotal2 = api
-                                .column( 5, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 5 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal2,2)
-                            );
-                            // Total over this page
-                            pageTotal3 = api
-                                .column( 6, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 6 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal3,2)
-                            );
-                            // Total over this page
-                            pageTotal4 = api
-                                .column( 8, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 8 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal4,2)
-                            );
-                            // Total over this page
-                            pageTotal5 = api
-                                .column( 9, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 9 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal5,2)
-                            );
-                            // Total over this page
-                            pageTotal6 = api
-                                .column( 10, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 10 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal6,2)
-                            );
-                        },
-                        dom: 'Bfrtip',
-                        buttons: [{
-                            extend: 'print',
-                            exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                           // Total over this page
+                    pageTotal = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+       
+                    // Total over this page
+                    pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
+                    // Total over this page
+                    pageTotal2 = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    );
+                    // Total over this page
+                    pageTotal3 = api
+                        .column( 13, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 13 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 14, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 14 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 15, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 15 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
@@ -1640,6 +1648,10 @@
                     $("#ticket_clone").val($("#ticket").val());
                     $("#customer_clone").val($("#customer option:selected").text());
                     $("#commodity_clone").val($("#commodity option:selected").text());
+                    $("#type_clone").val($("#type1 option:selected").text());
+                    $("#tare_clone").val($("#tare").val());
+                    $("#moist_clone").val($("#moist").val());
+                    $("#net_clone").val($("#net").val());
                     $("#sacks_clone").val($("#sacks").val());
                     $("#ca_clone").val($("#ca").val());
                     $("#balance_clone").val($("#balance").val());
@@ -1653,6 +1665,10 @@
                     $("#ticket_clone").val($("#ticket1").val());
                     $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
                     $("#commodity_clone").val($("#commodity1 option:selected").text());
+                    $("#type_clone").val($("#type2 option:selected").text());
+                    $("#tare_clone").val($("#tare2").val());
+                    $("#moist_clone").val($("#moist2").val());
+                    $("#net_clone").val($("#net2").val());
                     $("#sacks_clone").val($("#sacks1").val());
                     $("#ca_clone").val("0");
                     $("#balance_clone").val("0");
