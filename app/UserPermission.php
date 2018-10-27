@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserPermission extends Model
 {
-    protected $fillable = array('user_id', 'permission_id', 'permit');
+    protected $fillable = array('user_id', 'permission_id', 'permit','permit_edit','permit_delete');
     public $timestamps = false;
 
     public function permission() {

@@ -16,7 +16,7 @@ use App\User;
 use App\Events\ExpensesUpdated;
 use App\Events\CashierCashUpdated; 
 use App\Notification;
-
+use App\UserPermission;
 class odController extends Controller
 {
       /** 
@@ -159,8 +159,28 @@ class odController extends Controller
        
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
+            $userid= Auth::user()->access_id;
+            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();   
+            $delete=$permit[0]->permit_delete;  
+            $edit = $permit[0]->permit_edit;
+            if($userid==1){
+                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
             <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+            }if($userid!=1 && $delete===1 && $edit===1){
+                     return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
+                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+            }
+            if($userid!=1 && $delete===1 && $edit===0){
+                 return '
+            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            }
+            if($userid!=1 && $delete===0 && $edit===1){
+                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
+            }
+            if($userid!=1 && $delete===0 && $edit===0){
+                 return 'No Action Permitted';
+            }
+           
         })
         ->editColumn('allowance', function ($data) {
             return '₱'.number_format($data->allowance, 2, '.', ',');

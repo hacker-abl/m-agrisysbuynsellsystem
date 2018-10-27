@@ -267,21 +267,37 @@ class usersController extends Controller
             $request->validate([
                 'id' => 'required'
             ]);
+            $delete=$request->delete_permission;
+            $edit=$request->edit_permission;
             $authorized = ($request->permission)?$request->permission:array();
             $permission = array();
             $permissions = Permission::select('id')->whereNotIn('id', $authorized)->get();
             if($authorized) {
-                foreach ($authorized as $key => $value) {
-                    UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id], ['permit' => 1]);
+                if($delete&&$edit){
+                   foreach ($authorized as $key => $value) {
+                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_delete'=>1,'permit_edit'=>1]);
+                } 
                 }
-            }
-
-            if($permissions) {
-                foreach ($permissions as $key => $value) {
-                UserPermission::updateOrCreate(['permission_id'=>$value->id, 'user_id'=>$request->id], ['permit' => 0]);
+                if($delete&&$edit==null){
+                   foreach ($authorized as $key => $value) {
+                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_delete'=>1]);
+                } 
                 }
+                if($edit&&$delete==null){
+                   foreach ($authorized as $key => $value) {
+                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_edit'=>1]);
+                } 
+                }
+                
             }
-            return 'true';
+            if($permissions) {    
+                   foreach ($permissions as $key => $value) {
+                UserPermission::updateOrCreate(['permission_id'=>$value->id, 'user_id'=>$request->id], ['permit' => 0,'permit_delete'=>0,'permit_edit'=>0]);
+                } 
+          
+                
+            }
+            return "true";
         }
     }
 }

@@ -198,7 +198,7 @@
                                             @endforeach
                                         </div>     
                                     </div>
-                                    <div class="row">Manage</div>
+                                    <div class="row">Manage</div> 
                                     <div class="row">
                                         <div class="col-md-12">
                                             @foreach($permissions as $key=>$permission)
@@ -208,6 +208,15 @@
                                                 @endif
                                             @endforeach
                                         </div>
+                                    </div>
+                                    <div class="row">Action</div>
+                                    <div class="row">
+                                        <div class="col-md-12">                                           
+                                            <input type="checkbox" id="edit_permission" class="chk-col-red" name="edit_permission" value="1">
+                                            <label for="edit_permission">Edit</label>
+                                            <input type="checkbox" id="delete_permission" class="chk-col-red" name="delete_permission" value="1">
+                                            <label for="delete_permission">Delete</label>                                              
+                                        </div>                                                                                   
                                     </div>
                                 @endif
                             </div>
@@ -592,6 +601,7 @@
                 data: data,
                 dataType: 'json',
                 success: function(data) {
+                    console.log(data);
                     if(data) {
                         swal("Success!", "Permission has been updated!", "success");
                         $('#user-permission').modal('hide');
