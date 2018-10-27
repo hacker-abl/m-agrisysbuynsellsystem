@@ -18,9 +18,13 @@
                             </li>
                             <li class="dropdown">
                                 <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_sales') }}">
+                                <input type="hidden" id="transaction_clone" name="transaction_clone">
                                 <input type="hidden" id="commodity_clone" name="commodity_clone">
                                 <input type="hidden" id="company_clone" name="company_clone">
                                 <input type="hidden" id="kilos_clone" name="kilos_clone">
+                                <input type="hidden" id="price_clone" name="price_clone">
+                                <input type="hidden" id="payment_method_clone" name="payment_method_clone">
+                                <input type="hidden" id="check_number_clone" name="check_number_clone">
                                 <input type="hidden" id="amount_clone" name="amount_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
@@ -607,9 +611,13 @@
             });
 
             $("#print_form").click(function(event) {
+                $("#transaction_clone").val($("#trans_num").val());
                 $("#commodity_clone").val($("#commodity option:selected").text());
                 $("#company_clone").val($("#company option:selected").text());
                 $("#kilos_clone").val($("#kilos").val());
+                $("#price_clone").val($("#price").val());
+                $("#payment_method_clone").val($("#paymentmethod").val());
+                $("#check_number_clone").val($("#checknumber").val());
                 $("#amount_clone").val($("#amount").val());
             });
 
