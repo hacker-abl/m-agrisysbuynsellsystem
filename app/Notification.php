@@ -12,7 +12,7 @@ class Notification extends Model
      * @var array
      */
     protected $fillable = [
-        'notification_type', 'message', 'status', 'admin_id', 'cashier_id', 'table_source', 'cash_advance_id', 'dtr_expense_id', 'trip_expense_id', 'expense_id'
+        'notification_type', 'message', 'status', 'admin_id', 'cashier_id', 'table_source', 'cash_advance_id', 'dtr_expense_id', 'trip_expense_id', 'expense_id', 'od_expense_id'
     ];
 
     /**
@@ -51,6 +51,10 @@ class Notification extends Model
 
     public function trip() {
         return $this->hasOne('App\trip_expense', 'id', 'trip_expense_id');
+    }
+
+    public function od() {
+        return $this->hasOne('App\od_expense', 'id', 'od_expense_id');
     }
 
     public function admin() {

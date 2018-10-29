@@ -50,7 +50,7 @@ class odController extends Controller
 
     public function store(Request $request)
     {
-          if($request->get('button_action') == 'add'){
+        if($request->get('button_action') == 'add'){
             $commodity= new od;
             $commodity->outboundTicket = $request->ticket;
             $commodity->commodity_id = $request->commodity;
@@ -72,8 +72,33 @@ class odController extends Controller
             $od_expenses->save();
             $details =  DB::table('deliveries')->orderBy('outboundTicket', 'desc')->first();
 
+            if($od_expenses) {
+                $notification = new Notification;
+                $notification->notification_type = "Outbound Expense";
+                $notification->message = "Outbound Expense";
+                $notification->status = "Pending";
+                $notification->admin_id = Auth::id();
+                $notification->table_source = "od_expense";
+                $notification->od_expense_id = $od_expenses->id;
+                $notification->save();
+
+                $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->get()[0];
+
+                $notification = array();
+
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->cash_advance->customer,
+                    'time' => time_elapsed_string($datum->updated_at),
+                );
+
+                event(new \App\Events\NewNotification($notification));
+            }
+
             echo json_encode($details);
-          }
+        }
 
         if($request->get('button_action') == 'update'){
           $commodity= new od;

@@ -29,8 +29,10 @@ class NotificationController extends Controller
                 return route('expense');
             } else if($notification->notification_type == "daily time record") {
                 return route('dtr');
-            } else if($notification->notification_type == "Trips Expense") {
+            } else if($notification->notification_type == "trips expense") {
                 return route('trips');
+            } else if($notification->notification_type == "outbound expense") {
+                return route('expense')."#od_expense_tab";
             }
 
             return 'false';
@@ -42,7 +44,7 @@ class NotificationController extends Controller
 
         } else {
             $data = Notification::orderBy('id', 'DESC')
-                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee', 'od.odId.driver')
                     ->get();
             $count = Notification::where('status', 'Pending')->count();
             
@@ -71,6 +73,12 @@ class NotificationController extends Controller
                     $notification['notification'][] = array(
                         'notifications' => $datum,
                         'customer' => $datum->trip->tripId->employee,
+                        'time' => time_elapsed_string($datum->updated_at), 
+                    );
+                }else if(!empty($datum->od)) {
+                    $notification['notification'][] = array(
+                        'notifications' => $datum,
+                        'customer' => $datum->od->odId->driver,
                         'time' => time_elapsed_string($datum->updated_at), 
                     );
                 }

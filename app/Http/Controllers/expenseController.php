@@ -34,10 +34,7 @@ class expenseController extends Controller
      */
     public function index()
     {
-
-        
         return view('main.expense');
-
     }
 
     public function isAdmin(){
