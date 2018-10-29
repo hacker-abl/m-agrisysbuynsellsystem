@@ -4,7 +4,7 @@
         <li class="body">
             <ul class="menu">
                 <notification-content v-for="(request, index) in requests" :request="request" v-bind:key="index"></notification-content>
-                <li v-show="requests.length === 0">
+                <li v-show="requests && requests.length === 0">
                     <a href="javascript:;" class="text-center" style="color: gray">
                         No request
                     </a>

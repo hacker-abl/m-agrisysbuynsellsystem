@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Commodity;
+use App\CommodityUpdate;
+
 class commodityController extends Controller
 {
     /**
@@ -59,6 +61,10 @@ class commodityController extends Controller
             $commodity->price = $request->get('price');
             $commodity->suki_price = $request->get('suki_price');
             $commodity->save();
+            
+            $commodityUpdate = CommodityUpdate::where('checked', '1')->get()->toArray();
+
+            event(new \App\Events\CommodityUpdated($commodityUpdate));
         }
 
     }
@@ -93,6 +99,7 @@ class commodityController extends Controller
             'price' => $commodity->price,
             'suki_price' => $commodity->suki_price
         );
+
         echo json_encode($output);
     }
 
@@ -107,9 +114,15 @@ class commodityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id = null)
     {
-        //
+        if(!$id) {
+            $commodity = CommodityUpdate::where('checked', '1')->count();
+
+            if($commodity) {
+                return json_encode(true);
+            } else return json_encode(false);
+        }
     }
 
     /**
@@ -118,9 +131,13 @@ class commodityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id = null)
     {
-        //
+        if(!$id) {
+            $commodity = CommodityUpdate::where('checked', '1')->update(['checked' => '0']);
+
+            echo json_encode($commodity);
+        }
     }
 
     /**

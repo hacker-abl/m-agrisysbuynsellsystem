@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth', 'user:manage_commodity']], function() {
     Route::get('/refresh_commodity', 'commodityController@refresh')->name('refresh_commodity');
     Route::get('/update_commodity', 'commodityController@updatedata')->name('update_commodity');
     Route::get('/delete_commodity', 'commodityController@deletedata')->name('delete_commodity');
+    Route::get('/check_commodity', 'commodityController@edit')->name('check_commodity');
+    Route::get('/commodity/updates', 'commodityController@show')->name('check_commodity_updates');
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function() {

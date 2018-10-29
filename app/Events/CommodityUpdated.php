@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\CommodityUpdate;
 
-class CommodityUpdated
+class CommodityUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,9 +22,9 @@ class CommodityUpdated
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Array $commodity)
     {
-        $this->commodity = CommodityUpdate::all()->toArray();
+        $this->commodity = $commodity;
     }
 
     /**

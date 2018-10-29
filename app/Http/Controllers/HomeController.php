@@ -44,7 +44,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        event(new \App\Events\CommodityUpdated());
         $id = Auth::user()->id;
         $user = User::find($id);
 

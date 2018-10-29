@@ -106,7 +106,7 @@ class caController extends Controller
                     'notifications' => $datum,
                     'customer' => $datum->cash_advance->customer,
                     'time' => time_elapsed_string($datum->updated_at),
-                );
+                );  
 
                 event(new \App\Events\NewNotification($notification));
             }
