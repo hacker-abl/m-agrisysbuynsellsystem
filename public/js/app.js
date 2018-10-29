@@ -1145,11 +1145,13 @@ if (document.getElementById('request')) {
             axios.get('/notification/get').then(function (response) {
                 _this.requests = response.data.notification;
                 _this.count = response.data.count;
+                console.log(_this.count);
             });
 
             window.Echo.channel('notifications.cashier').listen('NewNotification', function (e) {
                 // console.log(e);
                 _this.requests.unshift(e.notification);
+                _this.count++;
             });
         }
     });
@@ -1215,7 +1217,7 @@ window.Pusher = __webpack_require__(33);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
-  key: "b9b550394a26b7bb3f20",
+  key: "65491207c44d5d24373d",
   cluster: "ap1",
   encrypted: true
 });
