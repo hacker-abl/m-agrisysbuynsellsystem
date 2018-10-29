@@ -72,4 +72,12 @@ if(document.getElementById('request')) {
     
         }
     });
+
+    swal('Any fool can use a computer');
+    
+    window.Echo.channel('commodity')
+        .listen('CommodityUpdated', e => {
+            // console.log(e);
+            this.requests.unshift(e.notification);
+        });
 }

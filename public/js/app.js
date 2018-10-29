@@ -1079,6 +1079,7 @@ module.exports = __webpack_require__(61);
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var _this2 = this;
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -1153,6 +1154,13 @@ if (document.getElementById('request')) {
             });
         }
     });
+
+    swal('Any fool can use a computer');
+
+    window.Echo.channel('commodity').listen('CommodityUpdated', function (e) {
+        // console.log(e);
+        _this2.requests.unshift(e.notification);
+    });
 }
 
 /***/ }),
@@ -1215,7 +1223,7 @@ window.Pusher = __webpack_require__(33);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
-  key: "b9b550394a26b7bb3f20",
+  key: "65491207c44d5d24373d",
   cluster: "ap1",
   encrypted: true
 });
