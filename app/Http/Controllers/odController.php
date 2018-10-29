@@ -83,14 +83,14 @@ class odController extends Controller
                 $notification->save();
 
                 $datum = Notification::where('id', $notification->id)
-                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee', 'od.odId.driver')
                     ->get()[0];
 
                 $notification = array();
 
                 $notification = array(
                     'notifications' => $datum,
-                    'customer' => $datum->cash_advance->customer,
+                    'customer' => $datum->od->odId->driver,
                     'time' => time_elapsed_string($datum->updated_at),
                 );
 
