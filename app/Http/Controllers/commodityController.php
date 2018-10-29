@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Commodity;
+use Auth;
+use App\UserPermission;
 class commodityController extends Controller
 {
     /**
@@ -68,12 +70,27 @@ class commodityController extends Controller
         $commodity = Commodity::all();
         return \DataTables::of(Commodity::query())
         ->addColumn('action', function($commodity){
+
+            $userid= Auth::user()->access_id;
+            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',12)->get();
+            if($userid!=1){
+                $delete=$permit[0]->permit_delete;  
+                $edit = $permit[0]->permit_edit;
+            }   
+            
             if(isAdmin()){
                 return '<button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>
                 <button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
             }
-            else{
-                return 'Admin';
+            if($userid!=1 && $delete===1 && $edit===1){
+                return '<button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>
+                <button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $delete===0 && $edit===1){
+                return '<button class="btn btn-xs btn-warning update_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">mode_edit</i></button>';
+            }if($userid!=1 && $delete===1 && $edit===0){
+                return '<button class="btn btn-xs btn-danger delete_commodity waves-effect" id="'.$commodity->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $delete===0 && $edit===0){
+                return 'No Action Permitted';
             }
         })
         ->editColumn('price', function ($data) {

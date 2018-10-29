@@ -187,29 +187,44 @@
                             </div>
                             <div class="demo-checkbox hidden">
                                 @if($permissions)
-                                    <div class="row">Default</div>
-                                    <div class="row">
-                                        <div class="col-md-12">             
+                                    <div class="container-fluid">Default</div>
+                                    <div class="container-fluid">
+                                        <div class="col-md-12">
+                                              
                                             @foreach($permissions as $key=>$permission)
+                                           
                                                 @if (strpos($permission->middleware, 'manage') === false)
+                                               <div class="col-sm">
                                                     <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
-                                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
-                                                @endif
+                                                    <label style="font-weight: bold;" for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}">
+                                                    <label style="font-style: italic;" for="edit_permission{{$permission->id}}">Edit</label>
+                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}">
+                                                    <label style="font-style: italic;" for="delete_permission{{$permission->id}}">Delete</label>
+                                                </div>
+                                                @endif 
+                                                
                                             @endforeach
+                                           
                                         </div>     
                                     </div>
-                                    <div class="row">Manage</div> 
-                                    <div class="row">
+                                    <div class="container-fluid">Manage</div> 
+                                    <div class="container-fluid">
                                         <div class="col-md-12">
                                             @foreach($permissions as $key=>$permission)
                                                 @if (strpos($permission->middleware, 'manage') !== false)
                                                     <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
-                                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                    <label style="font-weight: bold;" for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}">
+                                                    <label style="font-style: italic;" for="edit_permission{{$permission->id}}">Edit</label>
+                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}">
+                                                    <label style="font-style: italic;" for="delete_permission{{$permission->id}}">Delete</label>
+
                                                 @endif
                                             @endforeach
                                         </div>
                                     </div>
-                                    <div class="row">Action</div>
+                                    <!-- <div class="row">Action</div>
                                     <div class="row">
                                         <div class="col-md-12">                                           
                                             <input type="checkbox" id="edit_permission" class="chk-col-red" name="edit_permission" value="1">
@@ -217,7 +232,7 @@
                                             <input type="checkbox" id="delete_permission" class="chk-col-red" name="delete_permission" value="1">
                                             <label for="delete_permission">Delete</label>                                              
                                         </div>                                                                                   
-                                    </div>
+                                    </div> -->
                                 @endif
                             </div>
                         </div>
@@ -573,9 +588,14 @@
                     $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
                 },
                 success: function(data) {
+                    console.log(data);
                     $.each(data.userpermission, function(i, val){
                         if(val.permit != 0)
                         $('#user-permission form#user-permission-form input[id="permission'+val.permission_id+'"]').prop('checked', true);
+                        if(val.permit_delete != 0)
+                        $('#user-permission form#user-permission-form input[id="delete_permission'+val.permission_id+'"]').prop('checked', true);
+                        if(val.permit_edit != 0)
+                        $('#user-permission form#user-permission-form input[id="edit_permission'+val.permission_id+'"]').prop('checked', true);
                     });
                     
                     $('#user-permission form#user-permission-form .preloader').addClass('hidden');

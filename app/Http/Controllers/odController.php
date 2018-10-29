@@ -160,9 +160,12 @@ class odController extends Controller
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
             $userid= Auth::user()->access_id;
-            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();   
-            $delete=$permit[0]->permit_delete;  
-            $edit = $permit[0]->permit_edit;
+            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();
+            if($userid!=1){
+                $delete=$permit[0]->permit_delete;  
+                $edit = $permit[0]->permit_edit;
+            }   
+            
             if($userid==1){
                  return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
             <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';

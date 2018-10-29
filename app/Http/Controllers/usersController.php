@@ -267,36 +267,53 @@ class usersController extends Controller
             $request->validate([
                 'id' => 'required'
             ]);
-            $delete=$request->delete_permission;
-            $edit=$request->edit_permission;
+      
             $authorized = ($request->permission)?$request->permission:array();
+            $authorized_delete = ($request->delete_permission)?$request->delete_permission:array();
+            $authorized_edit = ($request->edit_permission)?$request->edit_permission:array();
             $permission = array();
             $permissions = Permission::select('id')->whereNotIn('id', $authorized)->get();
-            if($authorized) {
-                if($delete&&$edit){
+
+            for ($i=1; $i <= 12; $i++){
+                UserPermission::updateOrCreate(['permission_id'=>$i, 'user_id'=>$request->id], ['permit' => 0,'permit_delete'=>0,'permit_edit'=>0]);
+            } 
+
+            if($authorized) {  
                    foreach ($authorized as $key => $value) {
-                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_delete'=>1,'permit_edit'=>1]);
+                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1]);
                 } 
-                }
-                if($delete&&$edit==null){
-                   foreach ($authorized as $key => $value) {
-                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_delete'=>1]);
+                // foreach ($authorized_edit as $key => $value) {
+                //     $per_delete = UserPermission::where('user_id',$$request->id)->where('permit',1)->get();
+
+                //      // UserPermission::find(['permission_id'=>$authorized_edit[$key], 'user_id'=>$authorized_edit[$key]],['permit'=>1,'permit_edit'=>1]);
+                // } 
+                foreach ($authorized_delete as $key => $value) {
+                      $per_delete = UserPermission::where('permission_id',$authorized_delete[$key])->where('permit',1)->first();
+                      $per_delete->permit_delete = 1;
+                      $per_delete->save();
                 } 
-                }
-                if($edit&&$delete==null){
-                   foreach ($authorized as $key => $value) {
-                     UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_edit'=>1]);
+                foreach ($authorized_edit as $key => $value) {
+                      $per_edit = UserPermission::where('permission_id',$authorized_edit[$key])->where('permit',1)->first();
+                      $per_edit->permit_edit = 1;
+                      $per_edit->save();
                 } 
-                }
+                
+                // if($delete!=null && $edit == null){
+                //    foreach ($authorized as $key => $value) {
+                //      UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_delete'=>1]);
+                // } 
+                // }
+                // if($edit&&$delete==null){
+                //    foreach ($authorized as $key => $value) {
+                //      UserPermission::updateOrCreate(['permission_id'=>$authorized[$key], 'user_id'=>$request->id],['permit'=>1,'permit_edit'=>1]);
+                // } 
+                // }
                 
             }
-            if($permissions) {    
-                   foreach ($permissions as $key => $value) {
-                UserPermission::updateOrCreate(['permission_id'=>$value->id, 'user_id'=>$request->id], ['permit' => 0,'permit_delete'=>0,'permit_edit'=>0]);
-                } 
+           
           
                 
-            }
+        
             return "true";
         }
     }
