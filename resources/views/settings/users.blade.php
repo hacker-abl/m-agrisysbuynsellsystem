@@ -630,7 +630,13 @@
 
         $("#user-permission").on('hidden.bs.modal', function(e) {
             $('#user-permission form#user-permission-form input[type="checkbox"]').prop('checked', false);
+            for (var i =1; i <= 12; i++) {
+              $('#user-permission form#user-permission-form input[id="edit_permission'+i+'"]').attr('disabled', 'disabled');
+              $('#user-permission form#user-permission-form input[id="delete_permission'+i+'"]').attr('disabled', 'disabled');
+            }
+            
             $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
+          
         });
 
         $('form#user-permission-form').submit(function(e) {
