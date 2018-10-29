@@ -9,7 +9,7 @@
 	<div class="modal fade" id="od_modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="card"> 
+				<div class="card">
 					<div class="header">
 						<h2 class="modal_title">Add Delivery</h2>
 						<ul class="header-dropdown m-r--5">
@@ -41,7 +41,7 @@
 									<label for="name">Outbound Ticket</label>
 								</div>
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-									<div class="form-group"> 
+									<div class="form-group">
 										<div class="form-line">
 											<input type="text" id="ticket" name="ticket" readonly="readonly" value="" class="form-control" required>
 										</div>

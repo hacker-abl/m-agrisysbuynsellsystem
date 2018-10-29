@@ -35,11 +35,11 @@
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
-                        </ul> 
+                        </ul>
                     </div>
                     <div class="body">
                         <form action="#" class="form-horizontal " id="expense_form">
-                             <input type="hidden" name="id" id="id" value="">
+                            <input type="hidden" name="id" id="id" value="">
                             <input type="hidden" name="button_action" id="button_action" value="">
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>    
+                            </div>      
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                     <label for="expense">Name</label>
@@ -124,7 +124,7 @@
                         </p>
                         <br>
                         <table id ="expensetable" class="table table-bordered table-striped table-hover  ">
-                            <thead> 
+                            <thead>
                                 <tr>
                                     <th  width="100" style="text-align:center;">Expense Number</th>
                                     <th  width="100" style="text-align:center;">Name</th>
@@ -152,7 +152,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 </div>
 
 
@@ -928,7 +928,6 @@
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
-
 
             $("#trip_expense_datepicker_from").datepicker({
                 showOn: "button",
@@ -1803,6 +1802,7 @@
                     }
                 })
             });
+
             $(document).on('click', '.release_expense_od', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
@@ -1825,7 +1825,6 @@
                     }
                 })
             });
-
 
             $(document).on('click', '#release_money', function(){
                 $.ajax({
@@ -1900,7 +1899,7 @@
                         console.log(data);
 						var t=0;
 						if(data[0].temp!=null){
-							t = data[0].temp;
+							t = data[0].temp; 
 						}
 						var a = parseInt(t);
 						var b = a + 1;
@@ -1957,7 +1956,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                         console.log(data);
                         $('#button_action').val('update');
                         $('#trans_number').val(data.trans_number);
                         $('#id').val(id);

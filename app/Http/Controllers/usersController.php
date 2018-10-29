@@ -15,7 +15,6 @@ use App\Cash_History;
 use Auth;
 use DB;
 use Carbon\Carbon;
-
 class usersController extends Controller
 {
     /**

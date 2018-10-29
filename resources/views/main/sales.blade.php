@@ -18,9 +18,13 @@
                             </li>
                             <li class="dropdown">
                                 <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_sales') }}">
+                                <input type="hidden" id="transaction_clone" name="transaction_clone">
                                 <input type="hidden" id="commodity_clone" name="commodity_clone">
                                 <input type="hidden" id="company_clone" name="company_clone">
                                 <input type="hidden" id="kilos_clone" name="kilos_clone">
+                                <input type="hidden" id="price_clone" name="price_clone">
+                                <input type="hidden" id="payment_method_clone" name="payment_method_clone">
+                                <input type="hidden" id="check_number_clone" name="check_number_clone">
                                 <input type="hidden" id="amount_clone" name="amount_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
@@ -31,7 +35,18 @@
 						<form class="form-horizontal " id="sales_form">
 							<input type="hidden" name="id" id="id" value="">
 							<input type="hidden" name="button_action" id="button_action" value="">
-
+							<div class="row clearfix">
+								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+									<label for="name">Transaction number</label>
+								</div>
+								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="text" id="trans_num" name="trans_num" class="form-control"   required readonly="readonly">
+										</div>
+									</div>
+								</div>
+							</div>
 							<div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 									<label for="type">Commodity</label>
@@ -68,6 +83,18 @@
 									<div class="form-group">
 										<div class="form-line">
 											<input type="number" id="kilos" name="kilos" class="form-control"   required>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row clearfix">
+								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+									<label for="name">Price</label>
+								</div>
+								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="price" name="price" class="form-control"   required>
 										</div>
 									</div>
 								</div>
@@ -109,7 +136,7 @@
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 									<div class="form-group">
 										<div class="form-line">
-											<input type="number" id="amount" name="amount" class="form-control"   required>
+											<input type="number" id="amount" name="amount" class="form-control"   required readonly="readonly">
 										</div>
 									</div>
 								</div>
@@ -150,11 +177,13 @@
 							<table id="salestable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
+										<th width="100" style="text-align:center;">Transaction No.</th>
 										<th width="100" style="text-align:center;">Date</th>
 										<th width="100" style="text-align:center;">Received By</th>
 										<th width="100" style="text-align:center;">Commodity</th>
 										<th width="100" style="text-align:center;">Company</th>
 										<th width="100" style="text-align:center;">No. Of Kilos</th>
+										<th width="100" style="text-align:center;">Price</th>
 										<th width="100" style="text-align:center;">Check Number</th>
 										<th width="100" style="text-align:center;">Amount</th>
 										<th width="100" style="text-align:center;">Action</th>
@@ -168,6 +197,8 @@
 	                                    <th></th>
 	                                    <th></th>
 	                                    <th></th>
+										<th></th>
+										<th></th>
 										<th></th>
 										<th></th>
 	                                </tr>
@@ -249,7 +280,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 6 )
+                        .column(8)
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -257,14 +288,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 6, { page: 'current'} )
+                        .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 6 ).footer() ).html(
+                    $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -273,7 +304,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -312,11 +343,13 @@
                 
                 },
 				columns: [
+					{data: 'trans_number'},
 					{data: 'created_at'},
 					{data: 'uname',name:'users.name'},
 					{data: 'commodity_name',name:'commodity.name'},
 					{data: 'name',name:'company.name'},
 					{data: 'kilos'},
+					{data: 'price',name:'price'},
 					{data: 'check_number'},
 					{data: 'amount'},
 					{data: "action", orderable:false,searchable:false}
@@ -357,11 +390,13 @@
 	                
 	                },
 					columns: [
+					{data: 'trans_number'},
 					{data: 'created_at'},
 					{data: 'uname'},
 					{data: 'commodity_name'},
 					{data: 'name'},
 					{data: 'kilos'},
+					{data: 'price',name:'price'},
 					{data: 'check_number'},
 					{data: 'amount'},
 					{data: "action", orderable:false,searchable:false}
@@ -396,11 +431,13 @@
 	                
 	                },
 					columns: [
+					{data: 'trans_number'},
 	                {data: 'created_at'},
 					{data: 'uname'},
 					{data: 'commodity_name'},
 					{data: 'name'},
 					{data: 'kilos'},
+					{data: 'price',name:'price'},
 					{data: 'check_number'},
 					{data: 'amount'},
 					{data: "action", orderable:false,searchable:false}
@@ -443,11 +480,13 @@
 	                
 	                },
 					columns: [
+					{data: 'trans_number'},
 	                {data: 'created_at'},
 					{data: 'uname'},
 					{data: 'commodity_name'},
 					{data: 'name'},
 					{data: 'kilos'},
+					{data: 'price',name:'price'},
 					{data: 'check_number'},
 					{data: 'amount'},
 					{data: "action", orderable:false,searchable:false}
@@ -482,11 +521,13 @@
 	                
 	                },
 					columns: [
+					{data: 'trans_number'},
 					{data: 'created_at'},
 					{data: 'uname'},
 					{data: 'commodity_name'},
 					{data: 'name'},
 					{data: 'kilos'},
+					{data: 'price',name:'price'},
 					{data: 'check_number'},
 					{data: 'amount'},
 					{data: "action", orderable:false,searchable:false}
@@ -511,6 +552,18 @@
 			}
 
 			$(document).on('click','.open_sales_modal', function(){
+
+				$.ajax({
+					url:"{{ route('getSales') }}",
+					method: 'get',
+					dataType:'json',
+					success:function(data){
+                  
+						$('#trans_num').val(data.trans_no);
+                       
+                    }
+				
+				})
 				$('.modal_title').text('Add Sales');
 				$('#button_action').val('add');
                     $("#company").val('').trigger('change');
@@ -558,9 +611,13 @@
             });
 
             $("#print_form").click(function(event) {
+                $("#transaction_clone").val($("#trans_num").val());
                 $("#commodity_clone").val($("#commodity option:selected").text());
                 $("#company_clone").val($("#company option:selected").text());
                 $("#kilos_clone").val($("#kilos").val());
+                $("#price_clone").val($("#price").val());
+                $("#payment_method_clone").val($("#paymentmethod").val());
+                $("#check_number_clone").val($("#checknumber").val());
                 $("#amount_clone").val($("#amount").val());
             });
 
@@ -596,6 +653,40 @@
 					}
 				})
 			});
+
+			$('#price').on('keyup keydown', function (e) {
+               
+                    if($('#kilos').val()!=""&&$('#price').val()!=""){
+                        var a = parseFloat($('#kilos').val());
+                      	var b = parseFloat($('#price').val());
+                      	var x;        
+         		        if($('#kilos').val()!=""){
+         			        a = parseFloat($('#kilos').val());        			       
+                             x = a*b;
+                             var temp3 =  parseFloat(x).toFixed(2);
+         			        $('#amount').val(temp3)
+         		        }
+                    }else{
+                    	$('#amount').val(0);
+                    }
+         	});
+			$('#kilos').on('keyup keydown', function (e) {                  
+                        var a = parseFloat($('#price').val());
+                      	var b = parseFloat($('#kilos').val());
+                      	var x;
+                      
+         		        if($('#price').val()!=""&&$('#kilos').val()!=""){
+         			        a = parseFloat($('#price').val());
+
+         			       
+                             x = a*b;
+                             var temp3 =  parseFloat(x).toFixed(2);
+         			        $('#amount').val(temp3)
+         		        }else{
+                    	$('#amount').val(0);
+                    }
+                   
+         	});
 
 			$(document).on('click', '.delete_sales', function(){
 				var id = $(this).attr('id');

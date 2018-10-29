@@ -170,17 +170,11 @@ class employeeController extends Controller
     function updatedata(Request $request){
         $id = $request->input('id');
         $employee = Employee::find($id);
-        $sss = Employee_Benefits::where('emp_id', $employee->id)->where('benefits_id', 1)->first();
-        $philhealth = Employee_Benefits::where('emp_id', $employee->id)->where('benefits_id', 2)->first();
-        $pagibig = Employee_Benefits::where('emp_id', $employee->id)->where('benefits_id', 3)->first();
         $output = array(
             'fname' => $employee->fname,
             'mname' => $employee->mname,
             'lname' => $employee->lname,
-            'role_id' => $employee->role_id,
-            'sss' => $sss->id_number,
-            'philhealth' => $philhealth->id_number,
-            'pagibig' => $pagibig->id_number
+            'role_id' => $employee->role_id
         );
         echo json_encode($output);
     }

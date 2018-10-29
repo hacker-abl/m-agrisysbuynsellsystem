@@ -138,6 +138,15 @@
                    </ul>
                      </div>
                      <div class="body">
+                     <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" id ="homeclick" href="#home">Customer Purchases</a></li>
+                                <li><a data-toggle="tab" id="homeclick1" href="#home1">Walk-in Purchases</a></li>
+                             </ul>
+                             <div class="clearfix"></div>
+                             <br>
+
+                              <div class="tab-content">
+                             <div id="home" class="tab-pane fade in active">
                           <form class="form-horizontal " id="ca_form">
                                <input type="hidden"  name="id_ca" id="id_ca" value="">
                                <input type="hidden"  name="button_action_ca" id="button_action_ca" value="">
@@ -206,6 +215,115 @@
                                     </div>
                                </div>
                           </form>
+                          </div>
+                          <div id="home1" class="tab-pane fade in ">
+                          <form class="form-horizontal " id="ca_form1">
+                                
+                            <input type="hidden" name="stat" id="stat" value="old">
+                          <input type="hidden" name="button_action" id="button_action" value="">
+                                    
+
+                                     <div class="row clearfix">
+                                          <div class="col-md-4">
+                                          <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <label for="name">First Name</label>
+                                                    <div class="form-line">
+                                                         <input type="text" id="fname"   name="fname" class="form-control"   required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
+                                           <div class="col-md-4">
+                                               <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+
+                                               </div>
+                                               <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                    <div class="form-group">
+                                                         <label for="name">Middle Name</label>
+                                                         <div class="form-line">
+                                                              <input type="text" id="mname" name="mname"  class="form-control"   required>
+                                                         </div>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+
+                                           </div>
+                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                <div class="form-group">
+                                                     <label for="name">Last Name</label>
+                                                     <div class="form-line">
+                                                          <input type="text" id="lname" name="lname"  value="" class="form-control" required>
+                                                     </div>
+                                                </div>
+                                           </div>
+                                      </div>
+                                          </div>
+
+                                          <div class="row clearfix">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                 <label for="lname">Address</label>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                 <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="text" id="address" name="address" class="form-control" placeholder="Enter customer's address"  >
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row clearfix">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                 <label for="lname">Reason</label>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                 <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="text" id="reason1" name="reason1" class="form-control" placeholder="Enter customer's reason"  >
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                  
+                                        <div class="row clearfix">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                <label for="lname">Contacts</label>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="number" id="contacts" name="contacts" class="form-control" placeholder="Enter customer's contact number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row clearfix">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                <label for="lname">Amount</label>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="number" id="bal" name="bal" class="form-control" placeholder="Enter customer's cash advance">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     <div class="row clearfix">
+                                          <div class="modal-footer">
+                                               <button type="submit" id="add_cash_advance1" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                               <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                          </div>
+                                     </div>
+                          </div>
+                          </div>
                      </div>
                </div>
           </div>
@@ -403,6 +521,15 @@
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
+        $("#homeclick").on('click', function() {
+               $('#stat').val("old");
+                //$('#stat1').val("old");
+            });
+
+            $("#homeclick1").on('click', function() {
+               $('#stat').val("new");
+                //$('#stat1').val("new");
+            });
 
         $(document).ready(function() {
 
@@ -613,6 +740,7 @@
                 $("#amount").val('').trigger('change');
                 $("#balance").val('').trigger('change');
                 $('#ca_modal').modal('show');
+                $( "#homeclick1" ).show();
 			});
 
                $(document).on('click','.open_balancemodal', function(){
@@ -677,6 +805,114 @@
                     $('#cn').addClass('hidden');
               }
             });
+
+            $("#add_cash_advance1").click(function(event){
+                event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');   
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('add_cashadvance') }}",
+                    method: 'POST',
+                    dataType: 'text',
+                    data: $('#ca_form1').serialize(),
+                    success:function(data){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        $("#customer_id").val('').trigger('change');
+                        $("#reason").val('').trigger('change');
+                        $("#amount").val('').trigger('change');
+                        $("#balance").val('').trigger('change');
+                        swal("Success!", "Record has been added to database", "success");
+            						$('#ca_modal').modal('hide');
+            						refresh_cash_advance_table();
+                       $.ajax({
+                          url: "{{ route('refresh_view_cashadvance') }}",
+                          method: 'get',
+                          data:{id:person_id},
+                          dataType: 'json',
+                          success:function(data){
+                              $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+
+                             cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                  "footerCallback": function ( row, data, start, end, display ) {
+                                      var api = this.api(), data;
+                           
+                                      // Remove the formatting to get integer data for summation
+                                      var intVal = function ( i ) {
+                                          return typeof i === 'string' ?
+                                              i.replace(/[\₱,]/g, '')*1 :
+                                              typeof i === 'number' ?
+                                                  i : 0;
+                                      };
+                           
+                                      // Total over all pages
+                                      total = api
+                                          .column( 1 )
+                                          .data()
+                                          .reduce( function (a, b) {
+                                              return intVal(a) + intVal(b);
+                                          }, 0 );
+                           
+                                      // Total over this page
+                                      pageTotal = api
+                                          .column( 1, { page: 'current'} )
+                                          .data()
+                                          .reduce( function (a, b) {
+                                              return intVal(a) + intVal(b);
+                                          }, 0 );
+                           
+                                      // Update footer
+                                      $( api.column( 1 ).footer() ).html(
+                                          'Total: <br>₱' + number_format(pageTotal,2)
+                                      );
+                                  },
+                                  dom: 'Bfrtip',
+                                  buttons: [
+                                      {
+                                          extend: 'print',
+                                          exportOptions: {
+                                              columns: [ 0, 1, 2, 3, 4 ]
+                                          },
+                                          customize: function ( win ) {
+                                              $(win.document.body)
+                                                  .css( 'font-size', '10pt' );
+                           
+                                              $(win.document.body).find( 'table' )
+                                                  .addClass( 'compact' )
+                                                  .css( 'font-size', 'inherit' );
+                                          },
+                                          footer: true
+                                      }
+                                  ],
+                                  order: [[ 2, "desc" ]],
+                                  bDestroy: true,
+                                  data: data.data,
+                                  columns:[
+                                      {data: 'reason', name: 'reason'},
+                                      {data: 'amount', name: 'amount'},
+                                      {data: 'created_at', name: 'created_at'},
+                                      {data: 'status', name: 'status'},
+                                      {data: 'released_by', name: 'released_by'},
+                                      {data: "action", orderable:false,searchable:false}
+                                  ]
+                              }); 
+                              $('#ca_view_modal').modal('show');
+                          }
+                      });
+                    },
+                    error: function(data){
+						swal("Oh no!", "Something went wrong, try again.", "error");
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+					}
+                });
+            });
+
             $("#add_cash_advance").click(function(event){
                 event.preventDefault();
                 var input = $(this);
@@ -934,7 +1170,6 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-                        console.log(data);
                         $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
                        cash_advance_release =  $('#view_cash_advancetable').DataTable({
@@ -1016,6 +1251,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        $( "#homeclick1" ).hide();
                         $("#button_action_ca").val('update');
                         $("#id_ca").val(id);
                         $("#customer_id").val(data.customer_id).trigger('change');

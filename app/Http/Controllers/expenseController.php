@@ -15,7 +15,7 @@ use App\Events\ExpensesUpdated;
 use App\UserPermission;
 use DB;
 
-class expenseController extends Controller 
+class expenseController extends Controller  
 {
    
     /**
@@ -72,10 +72,11 @@ class expenseController extends Controller
          event(new ExpensesUpdated($expense));      
         }
     }
+
     function getNumber(){
         $temp = DB::select('select MAX(id) as "temp" FROM expenses');
-         echo json_encode($temp);
-     }
+        echo json_encode($temp);
+    }
 
     public function release_update_normal(Request $request){
         $check_admin =Auth::user()->access_id;
@@ -119,12 +120,11 @@ class expenseController extends Controller
 
         $user->cashOnHand -= $released->amount;
         $user->save();
-
+        
         $output = array(
             'cashOnHand' => $user->cashOnHand,
             'cashHistory' => $dateTime
         );
-        
         echo json_encode($output);
     }
 

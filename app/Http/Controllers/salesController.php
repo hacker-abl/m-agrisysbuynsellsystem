@@ -48,9 +48,11 @@ class salesController extends Controller
     {
           if($request->get('button_action') == 'add'){
             $sales= new sales;
+            $sales->trans_number = $request->trans_num;
             $sales->commodity_id = $request->commodity;
             $sales->company_id = $request->company;
             $sales->kilos = $request->kilos;
+            $sales->price = $request->price;
             $sales->amount = $request->amount;
             $sales->receiver_id = Auth::user()->id;
             if( $request->checknumber!=""){
@@ -65,9 +67,11 @@ class salesController extends Controller
         if($request->get('button_action') == 'update'){
           $sales= new sales;
           $sales= sales::find($request->get('id'));
+          $sales->trans_number = $request->trans_num;
           $sales->commodity_id = $request->commodity;
           $sales->company_id = $request->company;
           $sales->kilos = $request->kilos;
+          $sales->price = $request->price;
           $sales->amount = $request->amount;
           $sales->receiver_id = Auth::user()->id;
             if( $request->checknumber!=""){
@@ -83,6 +87,28 @@ class salesController extends Controller
         
         event(new SalesUpdated($sales));
     }
+     function getSales(Request $request){
+        
+        $salesLatest = sales::orderBy('id', 'DESC')->first();
+        if($salesLatest==null){
+          $getDate = Carbon::now();
+        $dateTime = $getDate->year.$getDate->month.$getDate->day."1";
+         $output = array(
+            'trans_no' => $dateTime
+            
+        );
+        return json_encode($output);
+
+        }else{
+        $getDate = Carbon::now();
+        $dateTime = $getDate->year.$getDate->month.$getDate->day.$salesLatest->id+1;
+         $output = array(
+            'trans_no' => $dateTime
+            
+        );
+        return json_encode($output);
+      }
+     }
 
     function updatedata(Request $request){
         $id = $request->input('id');
@@ -112,14 +138,14 @@ class salesController extends Controller
             ->join('commodity', 'commodity.id', '=', 'sales.commodity_id')
             ->join('company', 'company.id', '=', 'sales.company_id')
             ->join('users', 'users.id', '=', 'sales.receiver_id')
-            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name','users.name as uname','sales.check_number')
+            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name','users.name as uname','sales.check_number','sales.price as price','sales.trans_number as trans_number')
             ->latest();
         }else{
            $ultimatesickquery= DB::table('sales')
             ->join('commodity', 'commodity.id', '=', 'sales.commodity_id')
             ->join('company', 'company.id', '=', 'sales.company_id')
             ->join('users', 'users.id', '=', 'sales.receiver_id')
-            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name','users.name as uname','sales.check_number')
+            ->select('sales.id','sales.created_at','commodity.name AS commodity_name','sales.kilos','sales.amount','company.name','users.name as uname','sales.check_number','sales.price as price','sales.trans_number as trans_number')
             ->where('sales.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('sales.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->latest();
@@ -161,9 +187,14 @@ class salesController extends Controller
         ->editColumn('amount', function ($data) {
             return '₱ '.number_format($data->amount, 2, '.', ',');
         })
+        ->editColumn('price', function ($data) {
+            return '₱ '.number_format($data->price, 2, '.', ',');
+        })
          ->editColumn('created_at', function ($data) {
             return date('F d, Y g:i a', strtotime($data->created_at));
         })
         ->make(true);
+
+        var_dump($ultimatesickquery);
     }
 }

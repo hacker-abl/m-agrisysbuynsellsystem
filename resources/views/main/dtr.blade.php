@@ -104,7 +104,7 @@
 										</div>
 									</div>
 								</div>
-                            </div>
+							</div>
                             
                             <div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -117,7 +117,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+                            </div>
 
                              <div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -180,6 +180,7 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -228,6 +229,7 @@
 								</thead>
                                 <tfoot>
                                         <tr>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -360,7 +362,7 @@
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 8 ).footer() ).html(
+                    $( api.column( 8 ).footer() ).html( 
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -438,7 +440,6 @@
                         $('#rate').val(data[0].rate);
 
                         salary=data[0].rate;
-                         
                     }
                 })
             });
@@ -455,13 +456,13 @@
 
                 $('#salary').val(overtime*salary);
             });
+
             $('#bonus').change(function(){
 
             overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
             bonus=parseFloat($('#bonus').val());
             $('#salary').val(overtime*salary+bonus);
             });
-            
 
             $(document).on('click', '.release_expense_dtr', function(event){
                 event.preventDefault();
@@ -615,7 +616,6 @@
                          if(dataparsed.updated=="updated"){
                                         $('#dtr_view_modal').modal('show');
                                     }
-                        //$("#id").val(dataparsed.details[0].id);
                         $('#dtr_modal').modal('hide');
                         $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
@@ -721,7 +721,6 @@
                  $('#dtr_view_modal').modal('hide'); 
                 event.preventDefault();
                 var id = $(this).attr("id");
-                 
                 $.ajax({
                     url:"{{ route('update_dtr') }}",
                     method: 'get',

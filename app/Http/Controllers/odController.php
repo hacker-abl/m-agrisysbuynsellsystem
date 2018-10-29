@@ -19,7 +19,7 @@ use App\Notification;
 use App\UserPermission;
 class odController extends Controller
 {
-      /** 
+      /**
      * Create a new controller instance.
      *
      * @return void
@@ -73,7 +73,6 @@ class odController extends Controller
             $details =  DB::table('deliveries')->orderBy('outboundTicket', 'desc')->first();
 
             echo json_encode($details);
-                
           }
 
         if($request->get('button_action') == 'update'){
@@ -92,44 +91,44 @@ class odController extends Controller
     }
 
     public function release_update_od(Request $request){
-         $check_admin =Auth::user()->access_id;
-        if($check_admin==1){
-            $logged_id = Auth::user()->name;
-            $user = User::find(Auth::user()->id);
-            $released = od_expense::find($request->id);
-            $released->status = "Released";
-            $released->released_by = $logged_id;
-            $released->save();
-            $cashOnHand = User::find(Auth::user()->id);
-            $cashOnHand->cashOnHand -= $released->amount;
-            $cashOnHand->save();
-        }else{
-            $logged_id = Auth::user()->emp_id;
-            $name= Employee::find($logged_id);             
-            $released=od_expense::find($request->id);
-            $released->status = "Released";
-            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
-            $released->save();
-            $cashOnHand = User::find(Auth::user()->id);
-            $cashOnHand->cashOnHand -= $released->amount;
-            $cashOnHand->save();
-        }
+        $check_admin =Auth::user()->access_id;
+       if($check_admin==1){
+           $logged_id = Auth::user()->name;
+           $user = User::find(Auth::user()->id);
+           $released = od_expense::find($request->id);
+           $released->status = "Released";
+           $released->released_by = $logged_id;
+           $released->save();
+           $cashOnHand = User::find(Auth::user()->id);
+           $cashOnHand->cashOnHand -= $released->amount;
+           $cashOnHand->save();
+       }else{
+           $logged_id = Auth::user()->emp_id;
+           $name= Employee::find($logged_id);             
+           $released=od_expense::find($request->id);
+           $released->status = "Released";
+           $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
+           $released->save();
+           $cashOnHand = User::find(Auth::user()->id);
+           $cashOnHand->cashOnHand -= $released->amount;
+           $cashOnHand->save();
+       }
 
-        event(new CashierCashUpdated());
-        return $cashOnHand->cashOnHand;
-    }
+       event(new CashierCashUpdated());
+       return $cashOnHand->cashOnHand;
+   }
 
-     public function check_balance_od(Request $request){
-        $user = User::find(Auth::user()->id);
-        $expense = od_expense::find($request->id);
+    public function check_balance_od(Request $request){
+       $user = User::find(Auth::user()->id);
+       $expense = od_expense::find($request->id);
 
-        if($user->cashOnHand < $expense->amount){
-            return 0;
-        }
-        else{
-            return 1;
-        }
-    }
+       if($user->cashOnHand < $expense->amount){
+           return 0;
+       }
+       else{
+           return 1;
+       }
+   }
 
     public function refresh(Request $request)
     {
@@ -220,7 +219,7 @@ class odController extends Controller
         $od->delete();
     }
 
-     public function od_expense_view(Request $request)
+    public function od_expense_view(Request $request)
     {
        $from = $request->date_from;
        $to = $request->date_to;
@@ -263,8 +262,7 @@ class odController extends Controller
             
         })
         ->make(true);
+    }
 
 
-
-}
 }

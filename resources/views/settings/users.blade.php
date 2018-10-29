@@ -510,6 +510,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        
                         //Remove password input when updating User
                         if($(".password_input")[0]){
                             $(".password_input").remove();
@@ -585,8 +586,6 @@
                         });
                     }
                 })
-
-                
             });
 
             //CASH History Datatable ends here

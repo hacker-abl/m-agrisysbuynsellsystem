@@ -90,7 +90,7 @@
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>Suki Price</th>
-                                    <th width="100">Action</th>
+                                    <th width="50">Action</th>
                                 </tr>
                             </thead>
                         </table>

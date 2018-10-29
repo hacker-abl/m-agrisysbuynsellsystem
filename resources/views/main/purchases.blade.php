@@ -23,6 +23,10 @@
                                 <input type="hidden" id="ticket_clone" name="ticket_clone">
                                 <input type="hidden" id="customer_clone" name="customer_clone">
                                 <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                <input type="hidden" id="type_clone" name="type_clone">
+                                <input type="hidden" id="tare_clone" name="tare_clone">
+                                <input type="hidden" id="moist_clone" name="moist_clone">
+                                <input type="hidden" id="net_clone" name="net_clone">
                                 <input type="hidden" id="sacks_clone" name="sacks_clone">
                                 <input type="hidden" id="ca_clone" name="ca_clone">
                                 <input type="hidden" id="balance_clone" name="balance_clone">
@@ -135,7 +139,7 @@
                                             </div>
                                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                  <div class="form-group">
-                                                      <label for="name">Gross KG.</label>
+                                                      <label for="name">Kilograms</label>
                                                       <div class="form-line">
                                                            <input type="number" id="kilo" name="kilo" onkeyup="kilos1(this)" class="form-control"   required>
                                                       </div>
@@ -215,7 +219,7 @@
                                        </div>
                                   </div>
 
-                                  <div class="col-md-4">
+                                  <div class="row clearfix">
                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                            <label for="name">Partial Payment</label>
                                       </div>
@@ -227,65 +231,8 @@
                                            </div>
                                       </div>
                                  </div>
-                                 </div>
-                                 <div class="row clearfix">
-                                 <div class="col-md-4">
-                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="type1">Type</label>
-                                       </div>
-                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                            <div class="form-group">
-                                                 <select type="text" id="tc" name="tc" class="form-control" placeholder="Select item" required style="width:100%;">
-                                                    <option value="Wet">Wet</option>
-                                                    <option value="Dry">Dry</option>
-                                                   
-                                                 </select>
-                                            </div>
-                                       </div>
-                                  </div>
-                                 
-                                  <div class="col-md-4">
-                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                           <label for="name">Moisture (%)</label>
-                                      </div>
-                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                           <div class="form-group">
-                                                <div class="form-line">
-                                                     <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
-                                                </div>
-                                           </div>
-                                      </div>
-                                 </div>
 
-                                 <div class="col-md-4">
-                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                           <label for="name">Tare (kg)</label>
-                                      </div>
-                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                           <div class="form-group">
-                                                <div class="form-line">
-                                                     <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
-                                                </div>
-                                           </div>
-                                      </div>
-                                 </div>
-
-                                </div>
-                                 
-                                <div class="row clearfix">
-                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Net Kilos</label>
-                                       </div>
-                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                            <div class="form-group">
-                                                 <div class="form-line">
-                                                      <input type="text" id="balance" name="balance" readonly="readonly" value="" class="form-control" required>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                  </div>
                                   <div class="row clearfix">
-                                  <div class="col-md-4">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Balance</label>
                                        </div>
@@ -297,7 +244,12 @@
                                             </div>
                                        </div>
                                   </div>
-                                   <div class="col-md-4">
+
+
+
+
+
+                                  <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name">Total</label>
                                        </div>
@@ -310,9 +262,9 @@
                                        </div>
                                   </div>
 
-                                  <div class="col-md-4">
+                                  <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Amount</label>
+                                            <label for="name">Amount to Pay</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -322,7 +274,7 @@
                                             </div>
                                        </div>
                                   </div>
-                                </div>
+
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="type">Remarks</label>
@@ -352,48 +304,48 @@
                            <div id="home1" class="tab-pane fade in ">
                                 <form class="form-horizontal " id="purchase_form1">
                                 
-                                    <input type="hidden" name="stat" id="stat" value="new">
-                                    <input type="hidden" name="id1" id="id1" value="">
-                                    <input type="hidden" name="balance2" id="balance2" value="">
-                                    <input type="hidden" name="last1" id="last1" value="">
-                                    <input type="hidden" name="pr1" id="pr1" value="">
-                                    <input type="hidden" name="suki1" id="suki1" value="">
-                                    <input type="hidden" name="ca1" id="ca1" value="">
-                                    <input type="hidden" name="partial1" id="partial1" value="">
-                                    <input type="hidden" name="balance1" id="balance1" value="">
-                                    <input type="hidden" name="total1" id="total1" value="">
-                                    <input type="hidden" name="pricenopad" id="pricenopad" value="">
+                                     <input type="hidden" name="stat" id="stat" value="new">
+                                     <input type="hidden" name="id1" id="id1" value="">
+                                     <input type="hidden" name="balance2" id="balance2" value="">
+                                     <input type="hidden" name="last1" id="last1" value="">
+                                     <input type="hidden" name="pr1" id="pr1" value="">
+                                     <input type="hidden" name="suki1" id="suki1" value="">
+                                      <input type="hidden" name="ca1" id="ca1" value="">
+                                      <input type="hidden" name="partial1" id="partial1" value="">
+                                      <input type="hidden" name="balance1" id="balance1" value="">
+                                       <input type="hidden" name="total1" id="total1" value="">
+                                        <input type="hidden" name="pricenopad" id="pricenopad" value="">
 
-                                    <input type="hidden" name="customerid" id="customerid" value="">
+                                        <input type="hidden" name="customerid" id="customerid" value="">
 
-                                    <input type="hidden" name="button_action" id="button_action" value="">
-                                    <div class="row clearfix">
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Transaction Number</label>
-                                        </div>
-                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                        <input type="text" id="ticket1" name="ticket1" readonly="readonly" value="" class="form-control" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                     <input type="hidden" name="button_action" id="button_action" value="">
+                                     <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Transaction Number</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="text" id="ticket1" name="ticket1" readonly="readonly" value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
 
-                                    <div class="row clearfix">
-                                        <div class="col-md-4">
-                                        <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
+                                     <div class="row clearfix">
+                                          <div class="col-md-4">
+                                          <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
 
-                                        </div>
-                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                            <div class="form-group">
-                                                <label for="name">First Name</label>
-                                                <div class="form-line">
-                                                        <input type="text" id="fname"   name="fname" class="form-control"   required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <label for="name">First Name</label>
+                                                    <div class="form-line">
+                                                         <input type="text" id="fname"   name="fname" class="form-control"   required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
                                            <div class="col-md-4">
                                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
 
@@ -447,6 +399,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="row clearfix">
+                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                <label for="lname">Cash Advance</label>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="number" id="bal" name="bal" class="form-control" placeholder="Enter customer's cash advance">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                <label for="type">Commodity</label>
@@ -652,7 +616,6 @@
                                        <thead>
                                             <tr>
                                                  <th width="100" style="text-align:center;">ID</th>
-
                                                  <th width="100" style="text-align:center;">Customer</th>
                                                  <th width="100" style="text-align:center;">mname</th>
                                                  <th width="100" style="text-align:center;">lname</th>
@@ -678,6 +641,8 @@
 
                                        <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -739,7 +704,6 @@
                 $('#total').val(x);
                 $('#net').val(temp3);
             }
-
              if($('#total').val() !=""  && $('#moist').val() != "" ){
                
                var t = parseFloat($('#total').val());
@@ -824,7 +788,6 @@
                $('#net').val(x5);
            }
         }
-
         function tare3(value) {
             if($('#tare2').val() != ""){
             if($('#total1').val() !=""  && $('#moist2').val() == "" ){
@@ -849,7 +812,6 @@
                 $('#total1').val(x);
                 $('#net2').val(temp3);
             }
-
              if($('#total1').val() !=""  && $('#moist2').val() != "" ){
                
                var t = parseFloat($('#total1').val());
@@ -963,7 +925,6 @@
               
             });
         });
-
         $(document).on('click', '.edit_purchase', function(){
             $("#homeclick1").hide();
             var id = $(this).attr('id');
@@ -977,7 +938,6 @@
                         $('#button_action1').val('update');
                         $('#id').val(id);
                         $('#customer').select2('enable',false);
-
                         $("#customer").val(data.customer_id).trigger('change');
                         $('#customerID').val(data.customer_id);
                         $('#commodityID').val(data.commodity_id);
@@ -1010,18 +970,15 @@
                     }
                 })
             });
-
             $("#homeclick").on('click', function() {
                 $('#stat').val("old");
                 $('#stat1').val("old");
                 
             });
-
             $("#homeclick1").on('click', function() {
                 $('#stat').val("new");
                 $('#stat1').val("new");
             });
-
             $('#last').val(1);
             $('#balance').val("0");
             $('#ca1').val("0");
@@ -1031,7 +988,6 @@
                     processing: 'Loading.. Please wait'
                 }
             });
-
             function number_format(number, decimals, dec_point, thousands_sep) {
                 // Strip all characters but numerical ones.
                 number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
@@ -1055,7 +1011,6 @@
                 }
                 return s.join(dec);
             }
-
             purchasestable = $('#purchasetable').DataTable({
                 "footerCallback": function ( row, data, start, end, display ) {
                     var api = this.api(), data;
@@ -1067,6 +1022,19 @@
                             typeof i === 'number' ?
                             i : 0;
                     };
+
+                    // Total over this page
+                    pageTotal = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
        
                     // Total over this page
                     pageTotal1 = api
@@ -1080,7 +1048,6 @@
                     $( api.column( 7 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal1,2)
                     );
-
                     // Total over this page
                     pageTotal2 = api
                         .column( 8, { page: 'current'} )
@@ -1093,48 +1060,8 @@
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal2,2)
                     );
-
                     // Total over this page
                     pageTotal3 = api
-                        .column( 9, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(7) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 9 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal3,2)
-                    );
-
-                    // Total over this page
-                    pageTotal4 = api
-                        .column( 11, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 11 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal4,2)
-                    );
-
-                    // Total over this page
-                    pageTotal5 = api
-                        .column( 12, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 12 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal5,2)
-                    );
-
-                    // Total over this page
-                    pageTotal6 = api
                         .column( 13, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -1143,14 +1070,38 @@
        
                     // Update footer
                     $( api.column( 13 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal6,2)
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 14, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 14 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 15, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 15 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
                     );
                 },
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'print',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
                     },
                     customize: function ( win ) {
                         var last = null;
@@ -1172,7 +1123,6 @@
                         }
          
                         head.appendChild(style);
-
                         $(win.document.body)
                             .css( 'font-size', '10pt' );
        
@@ -1226,7 +1176,6 @@
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
-
             //Start of Date Range Filter
             $("#purchase_datepicker_from").datepicker({
                 showOn: "button",
@@ -1250,6 +1199,19 @@
                             };
         
                             // Total over this page
+                            pageTotal = api
+                                .column( 6, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+            
+                            // Update footer
+                            $( api.column( 6 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal,2)
+                            );
+            
+                            // Total over this page
                             pageTotal1 = api
                                 .column( 7, { page: 'current'} )
                                 .data()
@@ -1261,7 +1223,6 @@
                             $( api.column( 7 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal1,2)
                             );
-
                             // Total over this page
                             pageTotal2 = api
                                 .column( 8, { page: 'current'} )
@@ -1274,48 +1235,8 @@
                             $( api.column( 8 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal2,2)
                             );
-
                             // Total over this page
                             pageTotal3 = api
-                                .column( 9, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-            
-                            // Update footer
-                            $( api.column( 9 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal3,2)
-                            );
-
-                            // Total over this page
-                            pageTotal4 = api
-                                .column( 11, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-            
-                            // Update footer
-                            $( api.column( 11 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal4,2)
-                            );
-
-                            // Total over this page
-                            pageTotal5 = api
-                                .column( 12, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-                
-                            // Update footer
-                            $( api.column( 12 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal5,2)
-                            );
-
-                            // Total over this page
-                            pageTotal6 = api
                                 .column( 13, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
@@ -1324,14 +1245,38 @@
             
                             // Update footer
                             $( api.column( 13 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal6,2)
+                                'Total: <br>₱' + number_format(pageTotal3,2)
+                            );
+                            // Total over this page
+                            pageTotal4 = api
+                                .column( 14, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 14 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal4,2)
+                            );
+                            // Total over this page
+                            pageTotal5 = api
+                                .column( 15, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 15 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal5,2)
                             );
                         },
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
@@ -1353,7 +1298,6 @@
                                 }
                 
                                 head.appendChild(style);
-
                                 $(win.document.body)
                                     .css( 'font-size', '10pt' );
             
@@ -1413,7 +1357,6 @@
             }).keyup(function() {
                 minDateFilter = new Date(this.value).getTime();
             });
-
             $("#purchase_datepicker_to").datepicker({
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
@@ -1436,89 +1379,85 @@
                                         i : 0;
                             };
         
-                            // Total over this page
-                            pageTotal1 = api
-                                .column( 4, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 4 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal1,2)
-                            );
+                           // Total over this page
+                    pageTotal = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+       
+                    // Total over this page
+                    pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
+                    // Total over this page
+                    pageTotal2 = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    );
+                    // Total over this page
+                    pageTotal3 = api
+                        .column( 13, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+       
+                    // Update footer
+                    $( api.column( 13 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 14, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
 
-                            // Total over this page
-                            pageTotal2 = api
-                                .column( 5, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 5 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal2,2)
-                            );
+                    // Update footer
+                    $( api.column( 14 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 15, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
 
-                            // Total over this page
-                            pageTotal3 = api
-                                .column( 6, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 6 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal3,2)
-                            );
-
-                            // Total over this page
-                            pageTotal4 = api
-                                .column( 8, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 8 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal4,2)
-                            );
-
-                            // Total over this page
-                            pageTotal5 = api
-                                .column( 9, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 9 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal5,2)
-                            );
-
-                            // Total over this page
-                            pageTotal6 = api
-                                .column( 10, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-        
-                            // Update footer
-                            $( api.column( 10 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal6,2)
-                            );
-                        },
-                        dom: 'Bfrtip',
-                        buttons: [{
-                            extend: 'print',
-                            exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                    // Update footer
+                    $( api.column( 15 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
@@ -1540,7 +1479,6 @@
                                 }
             
                                 head.appendChild(style);
-
                                 $(win.document.body)
                                     .css( 'font-size', '10pt' );
             
@@ -1596,18 +1534,15 @@
                             {data: "action", orderable:false,searchable:false}
                         ]
                     });
-
                 }
             }).keyup(function() {
                 maxDateFilter = new Date(this.value).getTime();
                 //oTable.fnDraw();
             });
             //End of Date Range Filter
-
             function refresh_purchase_table(){
                 purchasestable.ajax.reload(); //reload datatable ajax
             }
-
             $(document).on('click', '#add_purchase', function(event){
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
@@ -1647,7 +1582,6 @@
                         $("#amount").val("");
                         $("#ca").val("");
                         $("#balance").val("");
-
                         $("#partial").val("0");
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
@@ -1683,7 +1617,6 @@
                     }
                 })
             });
-
             $(document).on('click', '#release_purchase_normal', function(){
                 $.ajax({
                     url:"{{ route('release_purchase') }}",
@@ -1701,8 +1634,6 @@
                     }
                 })
             });
-
-
             $("#print_purchase").click(function(event) {
                 event.preventDefault();
                 if($('#stat1').val()=="old"){
@@ -1712,12 +1643,15 @@
                 }
                 $("#print_form").trigger("click");
             });
-
             $("#print_form").click(function(event) {
                 if($('#stat1').val()=="old"){
                     $("#ticket_clone").val($("#ticket").val());
                     $("#customer_clone").val($("#customer option:selected").text());
                     $("#commodity_clone").val($("#commodity option:selected").text());
+                    $("#type_clone").val($("#type1 option:selected").text());
+                    $("#tare_clone").val($("#tare").val());
+                    $("#moist_clone").val($("#moist").val());
+                    $("#net_clone").val($("#net").val());
                     $("#sacks_clone").val($("#sacks").val());
                     $("#ca_clone").val($("#ca").val());
                     $("#balance_clone").val($("#balance").val());
@@ -1731,6 +1665,10 @@
                     $("#ticket_clone").val($("#ticket1").val());
                     $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
                     $("#commodity_clone").val($("#commodity1 option:selected").text());
+                    $("#type_clone").val($("#type2 option:selected").text());
+                    $("#tare_clone").val($("#tare2").val());
+                    $("#moist_clone").val($("#moist2").val());
+                    $("#net_clone").val($("#net2").val());
                     $("#sacks_clone").val($("#sacks1").val());
                     $("#ca_clone").val("0");
                     $("#balance_clone").val("0");
@@ -1742,7 +1680,6 @@
                     $("#remarks_clone").val($("#remarks1").val());
                 }
             });
-
             $(document).on('click', '#add_purchase1', function(event){
                 var input = $(this);
                 var button =this;
@@ -1763,6 +1700,9 @@
                         $("#sacks1").val("");
                         $("#kilo1").val("");
                         $("#price1").val("");
+                        $("#contact").val("");
+                        $("#address").val("");
+                        $("#bal").val("");
                         $("#fname").val("");
                         $("#mname").val("");
                         $("#lname").val("");
@@ -1783,7 +1723,6 @@
             
             $('#partial').on('keyup keydown', function (e) {
                 if (e.which == 8) {
-
                     if($('#balance').val()!=""){
                         var a = 0;
                         var b = parseFloat($('#balance').val());
@@ -1792,7 +1731,6 @@
                         var e =0;
          		        if($('#partial').val()!=""){
          			        a = parseFloat($('#partial').val());
-
          			        if($('#total').val()!=""){
          				        e = parseFloat($('#total').val());
          			        }
@@ -1801,10 +1739,8 @@
          			        $('#amount').val(temp3)
          		        }
                         c = d-a;
-
                         if(c <= d){
          		            $('#balance').val(c);
-
          		            if($('#total').val()!=""){
          			             e = parseFloat($('#total').val());
          		            }
@@ -1826,7 +1762,6 @@
                 }
          	});
         });
-
         function sacks1(value) {
             var a = 0;
             var b = parseFloat($('#price').val());
@@ -1876,7 +1811,6 @@
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount').val(temp3);
                     }
-
                     if($('#kilo').val()== ""){
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
@@ -1895,7 +1829,6 @@
                 }
             }
         }
-
         function kilos1(value) {
             var a = 0;
             var b = parseFloat($('#price').val());
@@ -1965,7 +1898,6 @@
             moist1(this);
             tare1(this);
         }
-
         function partial1(value) {
             if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance').val()!=""){
@@ -1976,7 +1908,6 @@
                     var e =0;
                     if($('#partial').val()!=""){
                         a = parseFloat($('#partial').val());
-
                         if($('#total').val()!=""){
                             e = parseFloat($('#total').val());
                         }
@@ -1996,7 +1927,6 @@
                 }
             }
         }
-
         function sacks2(value) {
             var a = 0;
             var b = parseFloat($('#price1').val());
@@ -2044,7 +1974,6 @@
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount1').val(temp3);
                     }
-
                     if($('#kilo1').val()== ""){
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
@@ -2063,7 +1992,6 @@
                 }
             }
         }
-
         function kilos2(value) {
             var a = 0;
             var b = parseFloat($('#price1').val());
@@ -2132,7 +2060,6 @@
                 }
             }
         }
-
         function partial2(value) {
             if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance1').val()!=""){
@@ -2150,7 +2077,6 @@
                         var temp3 =  parseFloat(x).toFixed(2);
                         $('#amount1').val(temp3)
                     }
-
                     c = d-a;
                     $('#balance1').val(c);
                     if($('#total1').val()!=""){
@@ -2162,20 +2088,16 @@
                 }
             }
         }
-
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
-
         $(document).ready(function() {
-
       
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
                 }
             });
-
             $(document).on('click','.open_purchase_modal', function(){
                 $("#homeclick1").show();
                 $('.modal_title').text('Add Purchase');
@@ -2201,7 +2123,6 @@
                 $("#amount").val("");
                 $("#ca").val("");
                 $("#balance").val("");
-
                 $("#partial").val("0");
                 $("#commodity").val('').trigger('change');
                 $("#commodity1").val('').trigger('change');
@@ -2224,14 +2145,12 @@
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                         $('#ticket').val(currentDate+b);
                         $('#ticket1').val(currentDate+b);
-
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
                         $('#purchase_modal').modal('show');
                     }
                 })
-
                 $.ajax({
                     url:"{{ route('findCustomer') }}",
                     method: 'get',
@@ -2253,27 +2172,19 @@
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
-            $('#tc').select2({
-                dropdownParent: $('#purchase_modal'),
-                placeholder: 'Select an item'
-            });
-
             $('#commodity1').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
     
-
             $('#customer').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select a company'
             });
-
             $('#remarks').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select a company'
             });
-
             $('#remarks1').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select a company'
@@ -2308,7 +2219,6 @@
                         c = b-a;
                         $('#balance').val(c);
                     }
-
                     if($('#price').val()!=""){
                         var a = parseFloat($('#last').val());
                         var b = parseFloat($('#suki').val());
@@ -2320,7 +2230,6 @@
                             $('#price').val(b);
                             if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                                 var x = 0;
-
                                 if ($('#kilo').val()!=""){
                                     var x = parseFloat($('#kilo').val());
                                 }
@@ -2330,7 +2239,6 @@
                                 else{
                                     d =  parseFloat($('#sacks').val());
                                 }
-
                                 if ($('#partial').val() != "" ){
                                     t= parseFloat($('#partial').val());
                                 }
@@ -2346,10 +2254,8 @@
                         }
                         else{
                             $('#price').val(c);
-
                             if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                                 var x = 0;
-
                                 if ($('#kilo').val()!=""){
                                     var x = parseFloat($('#kilo').val());
                                 }
@@ -2359,7 +2265,6 @@
                                 else{
                                     d =  parseFloat($('#sacks').val());
                                 }
-
                                 if ($('#partial').val() != "" ){
                                     t =  parseFloat($('#partial').val());
                                 }
@@ -2379,7 +2284,6 @@
             moist1(this);
             tare1(this);
         });
-
         $('#commodity').on('select2:select', function (e) {
             if($('#button_action1').val()=="update"){
                 $('#commodityID').val($(e.currentTarget).val());
@@ -2402,7 +2306,6 @@
                         var t = 0;
                         if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                             var x = 0;
-
                             if ($('#kilo').val()!=""){
                                 var x = parseFloat($('#kilo').val());
                             }
@@ -2412,7 +2315,6 @@
                             else{
                                 d =  parseFloat($('#sacks').val());
                             }
-
                             if ($('#partial').val() != "" ){
                                 t= parseFloat($('#partial').val());
                             }
@@ -2435,7 +2337,6 @@
                         var t = 0;
                         if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                             var x = 0;
-
                             if ($('#kilo').val()!=""){
                                 var x = parseFloat($('#kilo').val());
                             }
@@ -2445,7 +2346,6 @@
                             else{
                                 d =  parseFloat($('#sacks').val());
                             }
-
                             if ($('#partial').val() != "" ){
                                 t= parseFloat($('#partial').val());
                             }
@@ -2479,7 +2379,6 @@
             $("#moist").prop('readonly', false);
         }
         });
-
         $('#type2').on('select2:select', function (e) {
             var id = $(e.currentTarget).val()
         if(id == "Dry"){
@@ -2502,7 +2401,6 @@
                 success: function(data) {
                     $('#pr1').val(data.price);
                     $('#suki1').val(data.suki_price);
-
                     var a = parseFloat($('#last1').val());
                     if(a==1){
                         $('#price1').val(data.suki_price);
@@ -2513,7 +2411,6 @@
                         var t = 0;
                         if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
                             var x = 0;
-
                             if ($('#kilo1').val()!=""){
                                 var x = parseFloat($('#kilo').val());
                             }
@@ -2523,7 +2420,6 @@
                             else{
                                 d =  parseFloat($('#sacks1').val());
                             }
-
                             if ($('#partial1').val() != "" ){
                                 t= parseFloat($('#partial1').val());
                             }
@@ -2546,7 +2442,6 @@
                         var t = 0;
                         if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
                             var x = 0;
-
                             if ($('#kilo1').val()!=""){
                                 var x = parseFloat($('#kilo1').val());
                             }
@@ -2556,7 +2451,6 @@
                             else{
                                 d =  parseFloat($('#sacks1').val());
                             }
-
                             if ($('#partial1').val() != "" ){
                                 t= parseFloat($('#partial1').val());
                             }

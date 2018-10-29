@@ -134,6 +134,8 @@ Route::group(['middleware'=>['auth', 'user:sales']], function() {
     Route::get('/update_sales', 'salesController@updatedata')->name('update_sales');
     Route::get('/delete_sales', 'salesController@deletedata')->name('delete_sales');
     Route::post('/print_sales', 'pdfController@sales')->name('print_sales');
+    Route::get('/getSales', 'salesController@getSales')->name('getSales');
+
 });
 
 Route::group(['middleware'=>['auth', 'user:ca']], function() {
