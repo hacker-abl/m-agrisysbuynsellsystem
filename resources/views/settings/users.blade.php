@@ -194,12 +194,12 @@
                                             @foreach($permissions as $key=>$permission)
                                            
                                                 @if (strpos($permission->middleware, 'manage') === false)
-                                               <div class="col-sm">
+                                               <div class="col-sm" id="checkbox_group">
                                                     <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
                                                     <label style="font-weight: bold;" for="permission{{$permission->id}}">{{$permission->name}}</label>
-                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}">
+                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}" disabled="">
                                                     <label style="font-style: italic;" for="edit_permission{{$permission->id}}">Edit</label>
-                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}">
+                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}" disabled="">
                                                     <label style="font-style: italic;" for="delete_permission{{$permission->id}}">Delete</label>
                                                 </div>
                                                 @endif 
@@ -213,13 +213,14 @@
                                         <div class="col-md-12">
                                             @foreach($permissions as $key=>$permission)
                                                 @if (strpos($permission->middleware, 'manage') !== false)
+                                                 <div class="col-sm" id="checkbox_group_manage">
                                                     <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
                                                     <label style="font-weight: bold;" for="permission{{$permission->id}}">{{$permission->name}}</label>
-                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}">
+                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}" disabled="">
                                                     <label style="font-style: italic;" for="edit_permission{{$permission->id}}">Edit</label>
-                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}">
+                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}" disabled="">
                                                     <label style="font-style: italic;" for="delete_permission{{$permission->id}}">Delete</label>
-
+                                                </div>
                                                 @endif
                                             @endforeach
                                         </div>
@@ -316,6 +317,22 @@
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
+
+         $(":checkbox").change(function(){
+            // $.post("index.php", { id: this.id, checked: this.checked });
+             
+            var suffix = this.id.match(/\d+/); // 123456
+            if ($("#permission"+suffix).is(':checked')){
+                            $("#delete_permission"+suffix).removeAttr("disabled");
+                            $("#edit_permission"+suffix).removeAttr("disabled");
+            }else{
+                 $("#delete_permission"+suffix).attr('disabled', 'disabled');
+                 $("#edit_permission"+suffix).attr('disabled', 'disabled');
+                 $("#delete_permission"+suffix).prop('checked', false);
+                 $("#edit_permission"+suffix).prop('checked', false);
+            }
+          });
+
 
         $(document).ready(function() {
             $('#emp_id').select2({
@@ -590,8 +607,13 @@
                 success: function(data) {
                     console.log(data);
                     $.each(data.userpermission, function(i, val){
+                        
                         if(val.permit != 0)
                         $('#user-permission form#user-permission-form input[id="permission'+val.permission_id+'"]').prop('checked', true);
+                        if ($("#permission"+val.permission_id).is(':checked')){
+                            $("#delete_permission"+val.permission_id).removeAttr("disabled");
+                            $("#edit_permission"+val.permission_id).removeAttr("disabled");
+                        }
                         if(val.permit_delete != 0)
                         $('#user-permission form#user-permission-form input[id="delete_permission'+val.permission_id+'"]').prop('checked', true);
                         if(val.permit_edit != 0)
