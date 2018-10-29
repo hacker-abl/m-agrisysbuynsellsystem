@@ -673,75 +673,96 @@
     </div>
 @endsection
 
+
 @section('script')
     <script>
-    var purchasestable;
-    var purchase_date_from;
-    var purchase_date_to;
-    var id;
-    //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
-    function tare1(value) {
-            if($('#tare').val() != ""){
-            if($('#total').val() !=""  && $('#moist').val() == "" ){
-               
-                var t = parseFloat($('#total').val());
-                var kilo = parseFloat($('#kilo').val());
-                var amount = parseFloat($('#amount').val());
-                var tare = parseFloat($('#tare').val());
-                var partial = 0;
-                if($('#partial').val()!=""){
-                    partial =  parseFloat($('#partial').val());
+        var purchasestable;
+        var purchase_date_from;
+        var purchase_date_to;
+        var id;
+        //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
+        function tare1(value) {
+            //alert();
+
+                if( $('#moist').val() == "" ){
+
+                    var t = parseFloat($('#total').val());
+                    var kilo = parseFloat($('#kilo').val());
+                    var amount = parseFloat($('#amount').val());
+                    var tare = parseFloat($('#tare').val());
+                    var partial = 0;
+                    if($('#partial').val()!=""){
+                        partial =  parseFloat($('#partial').val());
+                    }
+
+                    var price = parseFloat($('#price').val());
+                    var temp = (price * (kilo - tare)) -  partial ;
+                    var temp1 = price * (kilo - tare) ;
+                    var temp3 =kilo - tare ;
+                    var x = parseFloat(temp).toFixed(2);
+                    var y = parseFloat(temp1).toFixed(2);
+                    var z = parseFloat(temp1).toFixed(2);
+                    $('#amount').val(x);
+                    $('#total').val(x);
+                    if($('#tare').val() != "") {
+                        $('#net').val(temp3);
+                    }
+                    else{
+                        $('#net').val(kilo);
+                    }
                 }
-               
-                var price = parseFloat($('#price').val());
-                var temp = (price * (kilo - tare)) -  partial ;
-                var temp1 = price * (kilo - tare) ;
-                var temp3 =kilo - tare ;
-                var x = parseFloat(temp).toFixed(2);
-                var y = parseFloat(temp1).toFixed(2);
-                var z = parseFloat(temp1).toFixed(2);
-                $('#amount').val(x);
-                $('#total').val(x);
-                $('#net').val(temp3);
-            }
-             if($('#total').val() !=""  && $('#moist').val() != "" ){
-               
-               var t = parseFloat($('#total').val());
-               var kilo = parseFloat($('#kilo').val());
-               var amount = parseFloat($('#amount').val());
-               var moist =  parseFloat($('#moist').val());
-               var tare = parseFloat($('#tare').val());
-               var partial = 0;
-                if($('#partial').val()!=""){
-                    partial =  parseFloat($('#partial').val());
+
+
+                if( $('#moist').val() != "" ){
+
+                    var t = parseFloat($('#total').val());
+                    var kilo = parseFloat($('#kilo').val());
+                    var amount = parseFloat($('#amount').val());
+                    var moist =  0;
+                    if($('#moist').val()!=""){
+                        moist = parseFloat($('#moist').val());
+                    }
+                    var tare = 0;
+                    if($('#tare').val()!=""){
+                        tare = parseFloat($('#tare').val());
+                    }
+                    var partial = 0;
+                    if($('#partial').val()!=""){
+                        partial =  parseFloat($('#partial').val());
+                    }
+                    var price = parseFloat($('#price').val());
+                    var temp4 = moist/100 * kilo;
+                    var temp5 = temp4*price;
+                    var x2 = parseFloat(temp5).toFixed(2);
+                    var x1 = parseFloat(temp4).toFixed(2);
+                    var temp = ((price * (kilo - tare))  - temp5) - partial;
+                    var temp1 =(price * (kilo - tare)) - temp5 ;
+                    var temp3 = kilo  - temp4 - tare;
+
+                    var x = parseFloat(temp).toFixed(2);
+                    var y = parseFloat(temp1).toFixed(2);
+                    var z = parseFloat(temp1).toFixed(2);
+                    $('#amount').val(x);
+                    $('#total').val(x);
+                    $('#net').val(temp3);
                 }
-               var price = parseFloat($('#price').val());
-               var temp4 = moist/100 * kilo;
-                var temp5 = temp4*price;
-                var x2 = parseFloat(temp5).toFixed(2);
-                var x1 = parseFloat(temp4).toFixed(2);
-               var temp = ((price * (kilo - tare))  - temp5) - partial;
-               var temp1 =(price * (kilo - tare)) - temp5 ;
-               var temp3 =kilo - tare - temp4;
-              
-               var x = parseFloat(temp).toFixed(2);
-               var y = parseFloat(temp1).toFixed(2);
-               var z = parseFloat(temp1).toFixed(2);
-               $('#amount').val(x);
-               $('#total').val(x);
-               $('#net').val(temp3);
-           }
-        }
-        
+
+
         }
         function moist1(value) {
-            if($('#total').val() !="" && $('#tare').val() == ""  ){
-               
+            if( $('#tare').val() == ""  ){
+
                 var total = parseFloat($('#total').val());
-                var moist = parseFloat($('#moist').val());
+                var moist = 0;
+                if($('#moist').val()!=""){
+                    moist = parseFloat($('#moist').val());
+                }
                 var kilo = parseFloat($('#kilo').val());
                 var amount = parseFloat($('#amount').val());
-                var tare = parseFloat($('#tare').val());
+                var tare = 0;
+                if($('#tare').val()!=""){
+                    tare = parseFloat($('#tare').val());
+                }
                 var price = parseFloat($('#price').val());
                 var partial = 0;
                 if($('#partial').val()!=""){
@@ -761,46 +782,55 @@
                 $('#total').val(x3);
                 $('#net').val(x5);
             }
-            if($('#total').val() !="" && $('#tare').val() != ""  ){
-               
-               var total = parseFloat($('#total').val());
-               var moist = parseFloat($('#moist').val());
-               var kilo = parseFloat($('#kilo').val());
-               var amount = parseFloat($('#amount').val());
-               var tare = parseFloat($('#tare').val());
-               var price = parseFloat($('#price').val());
-               var partial = 0;
+            if( $('#tare').val() != ""  ){
+
+                var total = parseFloat($('#total').val());
+                var moist = 0
+                if($('#moist').val()!=""){
+                  moist = parseFloat($('#moist').val());
+                }
+
+                var kilo = parseFloat($('#kilo').val());
+                var amount = parseFloat($('#amount').val());
+                var tare = 0;
+                if($('#tare').val()!=""){
+                    tare = parseFloat($('#tare').val());
+                }
+                var price = parseFloat($('#price').val());
+                var partial = 0;
                 if($('#partial').val()!=""){
                     partial =  parseFloat($('#partial').val());
                 }
-               var temp4 = moist/100 * kilo ;
-               var temp5 = temp4*price;
-               var temp6 = (kilo * price) - temp5 - (tare*price);
-               var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
-               var temp8 = kilo - temp4 -tare;
-               var x5 = parseFloat(temp8).toFixed(2);
-               var x4 = parseFloat(temp7).toFixed(2);
-               var x3 = parseFloat(temp6).toFixed(2);
-               var x2 = parseFloat(temp5).toFixed(2);
-               var x1 = parseFloat(temp4).toFixed(2);
-               $('#amount').val(x4);
-               $('#total').val(x3);
-               $('#net').val(x5);
-           }
+                var temp4 = moist/100 * kilo ;
+                var temp5 = temp4*price;
+                var temp6 = (kilo * price) - temp5 - (tare*price);
+                var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
+                var temp8 = kilo - temp4 -tare;
+                var x5 = parseFloat(temp8).toFixed(2);
+                var x4 = parseFloat(temp7).toFixed(2);
+                var x3 = parseFloat(temp6).toFixed(2);
+                var x2 = parseFloat(temp5).toFixed(2);
+                var x1 = parseFloat(temp4).toFixed(2);
+                $('#amount').val(x4);
+                $('#total').val(x3);
+                $('#net').val(x5);
+            }
         }
+
         function tare3(value) {
-            if($('#tare2').val() != ""){
-            if($('#total1').val() !=""  && $('#moist2').val() == "" ){
-               
+            //test
+
+            if( $('#moist2').val() == "" ){
+
                 var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
                 var tare = parseFloat($('#tare2').val());
                 var partial = 0;
-                if($('#partial').val()!=""){
-                    partial =  parseFloat($('#partial').val());
+                if($('#partial1').val()!=""){
+                    partial =  parseFloat($('#partial1').val());
                 }
-               
+
                 var price = parseFloat($('#price1').val());
                 var temp = (price * (kilo - tare)) -  partial ;
                 var temp1 = price * (kilo - tare) ;
@@ -810,46 +840,65 @@
                 var z = parseFloat(temp1).toFixed(2);
                 $('#amount1').val(x);
                 $('#total1').val(x);
-                $('#net2').val(temp3);
+                if($('#tare2').val() != "") {
+                    $('#net2').val(temp3);
+                }
+                else{
+                    $('#net2').val(kilo);
+                }
             }
-             if($('#total1').val() !=""  && $('#moist2').val() != "" ){
-               
-               var t = parseFloat($('#total1').val());
-               var kilo = parseFloat($('#kilo1').val());
-               var amount = parseFloat($('#amount1').val());
-               var moist =  parseFloat($('#moist2').val());
-               var tare = parseFloat($('#tare2').val());
-               var partial = 0;
+
+
+            if( $('#moist2').val() != "" ){
+
+                var t = parseFloat($('#total1').val());
+                var kilo = parseFloat($('#kilo1').val());
+                var amount = parseFloat($('#amount1').val());
+                var moist =  0;
+                if($('#moist2').val()!=""){
+                    moist = parseFloat($('#moist2').val());
+                }
+                var tare = 0;
+                if($('#tare2').val()!=""){
+                    tare = parseFloat($('#tare2').val());
+                }
+                var partial = 0;
                 if($('#partial1').val()!=""){
                     partial =  parseFloat($('#partial1').val());
                 }
-               var price = parseFloat($('#price1').val());
-               var temp4 = moist/100 * kilo;
+                var price = parseFloat($('#price1').val());
+                var temp4 = moist/100 * kilo;
                 var temp5 = temp4*price;
                 var x2 = parseFloat(temp5).toFixed(2);
                 var x1 = parseFloat(temp4).toFixed(2);
-               var temp = ((price * (kilo - tare))  - temp5) - partial;
-               var temp1 =(price * (kilo - tare)) - temp5 ;
-               var temp3 =kilo - tare - temp4;
-              
-               var x = parseFloat(temp).toFixed(2);
-               var y = parseFloat(temp1).toFixed(2);
-               var z = parseFloat(temp1).toFixed(2);
-               $('#amount1').val(x);
-               $('#total1').val(x);
-               $('#net2').val(temp3);
-           }
-        }
-        
+                var temp = ((price * (kilo - tare))  - temp5) - partial;
+                var temp1 =(price * (kilo - tare)) - temp5 ;
+                var temp3 = kilo  - temp4 - tare;
+
+                var x = parseFloat(temp).toFixed(2);
+                var y = parseFloat(temp1).toFixed(2);
+                var z = parseFloat(temp1).toFixed(2);
+                $('#amount1').val(x);
+                $('#total1').val(x);
+                $('#net2').val(temp3);
+            }
+
+
         }
         function moist3(value) {
-            if($('#amount1').val() !="" && $('#tare2').val() == ""  ){
-               
+            if( $('#tare2').val() == ""  ){
+
                 var total = parseFloat($('#total1').val());
-                var moist = parseFloat($('#moist2').val());
+                var moist = 0;
+                if($('#moist2').val()!=""){
+                    moist = parseFloat($('#moist2').val());
+                }
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
-                var tare = parseFloat($('#tare2').val());
+                var tare = 0;
+                if($('#tare2').val()!=""){
+                    tare = parseFloat($('#tare2').val());
+                }
                 var price = parseFloat($('#price1').val());
                 var partial = 0;
                 if($('#partial1').val()!=""){
@@ -869,66 +918,73 @@
                 $('#total1').val(x3);
                 $('#net2').val(x5);
             }
-            if($('#amount1').val() !="" && $('#tare2').val() != ""  ){
-               
-               var total = parseFloat($('#total1').val());
-               var moist = parseFloat($('#moist2').val());
-               var kilo = parseFloat($('#kilo1').val());
-               var amount = parseFloat($('#amount1').val());
-               var tare = parseFloat($('#tare2').val());
-               var price = parseFloat($('#price1').val());
-               var partial = 0;
-               
-                if( $('#partial1').val() != ""){
+            if( $('#tare2').val() != ""  ){
+
+                var total = parseFloat($('#total1').val());
+                var moist = 0
+                if($('#moist2').val()!=""){
+                    moist = parseFloat($('#moist2').val());
+                }
+
+                var kilo = parseFloat($('#kilo1').val());
+                var amount = parseFloat($('#amount1').val());
+                var tare = 0;
+                if($('#tare2').val()!=""){
+                    tare = parseFloat($('#tare2').val());
+                }
+                var price = parseFloat($('#price1').val());
+                var partial = 0;
+                if($('#partial1').val()!=""){
                     partial =  parseFloat($('#partial1').val());
                 }
-               var temp4 = moist/100 * kilo ;
-               var temp5 = temp4*price;
-               var temp6 = (kilo * price) - temp5 - (tare*price);
-               var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
-               var temp8 = kilo - temp4 -tare;
-               var x5 = parseFloat(temp8).toFixed(2);
-               var x4 = parseFloat(temp7).toFixed(2);
-               var x3 = parseFloat(temp6).toFixed(2);
-               var x2 = parseFloat(temp5).toFixed(2);
-               var x1 = parseFloat(temp4).toFixed(2);
-               $('#amount1').val(x4);
-               $('#total1').val(x3);
-               $('#net2').val(x5);
-           }
+                var temp4 = moist/100 * kilo ;
+                var temp5 = temp4*price;
+                var temp6 = (kilo * price) - temp5 - (tare*price);
+                var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
+                var temp8 = kilo - temp4 -tare;
+                var x5 = parseFloat(temp8).toFixed(2);
+                var x4 = parseFloat(temp7).toFixed(2);
+                var x3 = parseFloat(temp6).toFixed(2);
+                var x2 = parseFloat(temp5).toFixed(2);
+                var x1 = parseFloat(temp4).toFixed(2);
+                $('#amount1').val(x4);
+                $('#total1').val(x3);
+                $('#net2').val(x5);
+            }
         }
-    $(document).ready(function () {
-        document.title = "M-Agri - Purchases";
-        
-        //Delete Purchases
-        $(document).on('click', '.delete_purchase', function(){
-            var id = $(this).attr('id');
-            swal({
-                title: "Are you sure?",
-                text: "Delete this record?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                $.ajax({
-                    url:"{{ route('delete_purchases') }}",
-                    method: "get",
-                    data:{id:id},
-                    success:function(data){
-                        swal("Deleted!", "The record has been deleted.", "success");
-                        refresh_purchase_table();
-                    }
-                })
-              
+        $(document).ready(function () {
+            document.title = "M-Agri - Purchases";
+
+            //Delete Purchases
+            $(document).on('click', '.delete_purchase', function(){
+                var id = $(this).attr('id');
+                swal({
+                        title: "Are you sure?",
+                        text: "Delete this record?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Yes, delete it!",
+                        closeOnConfirm: false
+                    },
+                    function(){
+                        $.ajax({
+                            url:"{{ route('delete_purchases') }}",
+                            method: "get",
+                            data:{id:id},
+                            success:function(data){
+                                swal("Deleted!", "The record has been deleted.", "success");
+                                refresh_purchase_table();
+                            }
+                        })
+
+                    });
             });
-        });
-        $(document).on('click', '.edit_purchase', function(){
-            $("#homeclick1").hide();
-            var id = $(this).attr('id');
-            $('.modal_title').text('Update Purchases');
+
+            $(document).on('click', '.edit_purchase', function(){
+                $("#homeclick1").hide();
+                var id = $(this).attr('id');
+                $('.modal_title').text('Update Purchases');
                 $.ajax({
                     url:"{{ route('update_purchases') }}",
                     method: 'get',
@@ -938,6 +994,7 @@
                         $('#button_action1').val('update');
                         $('#id').val(id);
                         $('#customer').select2('enable',false);
+
                         $("#customer").val(data.customer_id).trigger('change');
                         $('#customerID').val(data.customer_id);
                         $('#commodityID').val(data.commodity_id);
@@ -970,15 +1027,18 @@
                     }
                 })
             });
+
             $("#homeclick").on('click', function() {
                 $('#stat').val("old");
                 $('#stat1').val("old");
-                
+
             });
+
             $("#homeclick1").on('click', function() {
                 $('#stat').val("new");
                 $('#stat1').val("new");
             });
+
             $('#last').val(1);
             $('#balance').val("0");
             $('#ca1').val("0");
@@ -988,6 +1048,7 @@
                     processing: 'Loading.. Please wait'
                 }
             });
+
             function number_format(number, decimals, dec_point, thousands_sep) {
                 // Strip all characters but numerical ones.
                 number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
@@ -1011,31 +1072,19 @@
                 }
                 return s.join(dec);
             }
+
             purchasestable = $('#purchasetable').DataTable({
                 "footerCallback": function ( row, data, start, end, display ) {
                     var api = this.api(), data;
-       
+
                     // Remove the formatting to get integer data for summation
                     var intVal = function ( i ) {
                         return typeof i === 'string' ?
                             i.replace(/[\₱,]/g, '')*1 :
                             typeof i === 'number' ?
-                            i : 0;
+                                i : 0;
                     };
 
-                    // Total over this page
-                    pageTotal = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-       
                     // Total over this page
                     pageTotal1 = api
                         .column( 7, { page: 'current'} )
@@ -1043,11 +1092,12 @@
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
-       
+
                     // Update footer
                     $( api.column( 7 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal1,2)
                     );
+
                     // Total over this page
                     pageTotal2 = api
                         .column( 8, { page: 'current'} )
@@ -1055,91 +1105,108 @@
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
-       
+
                     // Update footer
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal2,2)
                     );
+
                     // Total over this page
                     pageTotal3 = api
+                        .column( 9, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 9 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
+
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 11, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 11 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 12, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 12 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+
+                    // Total over this page
+                    pageTotal6 = api
                         .column( 13, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
-       
+
                     // Update footer
                     $( api.column( 13 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal3,2)
-                    );
-                    // Total over this page
-                    pageTotal4 = api
-                        .column( 14, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-
-                    // Update footer
-                    $( api.column( 14 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal4,2)
-                    );
-                    // Total over this page
-                    pageTotal5 = api
-                        .column( 15, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-
-                    // Update footer
-                    $( api.column( 15 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal5,2)
+                        'Total: <br>₱' + number_format(pageTotal6,2)
                     );
                 },
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'print',
                     exportOptions: {
-                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
+                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
                     },
                     customize: function ( win ) {
                         var last = null;
                         var current = null;
                         var bod = [];
-         
+
                         var css = '@page { size: landscape; }',
                             head = win.document.head || win.document.getElementsByTagName('head')[0],
                             style = win.document.createElement('style');
-         
+
                         style.type = 'text/css';
                         style.media = 'print';
-         
+
                         if (style.styleSheet){
-                          style.styleSheet.cssText = css;
+                            style.styleSheet.cssText = css;
                         }
                         else{
-                          style.appendChild(win.document.createTextNode(css));
+                            style.appendChild(win.document.createTextNode(css));
                         }
-         
+
                         head.appendChild(style);
+
                         $(win.document.body)
                             .css( 'font-size', '10pt' );
-       
+
                         $(win.document.body).find( 'table' )
                             .addClass( 'compact' )
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
                 }],
-              
+
                 scrollX: true,
                 order:[],
                 columnDefs: [{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
- 				},
-				],
+                    "targets": "_all", // your case first column
+                    "className": "text-center",
+                },
+                ],
                 ajax:{
                     url: "{{ route('refresh_purchases') }}",
                     // dataType: 'text',
@@ -1176,6 +1243,7 @@
                     {data: "action", orderable:false,searchable:false}
                 ]
             });
+
             //Start of Date Range Filter
             $("#purchase_datepicker_from").datepicker({
                 showOn: "button",
@@ -1189,7 +1257,7 @@
                     purchasestable = $('#purchasetable').DataTable({
                         "footerCallback": function ( row, data, start, end, display ) {
                             var api = this.api(), data;
-            
+
                             // Remove the formatting to get integer data for summation
                             var intVal = function ( i ) {
                                 return typeof i === 'string' ?
@@ -1197,20 +1265,7 @@
                                     typeof i === 'number' ?
                                         i : 0;
                             };
-        
-                            // Total over this page
-                            pageTotal = api
-                                .column( 6, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-            
-                            // Update footer
-                            $( api.column( 6 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal,2)
-                            );
-            
+
                             // Total over this page
                             pageTotal1 = api
                                 .column( 7, { page: 'current'} )
@@ -1218,11 +1273,12 @@
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
-            
+
                             // Update footer
                             $( api.column( 7 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal1,2)
                             );
+
                             // Total over this page
                             pageTotal2 = api
                                 .column( 8, { page: 'current'} )
@@ -1230,77 +1286,94 @@
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
-            
+
                             // Update footer
                             $( api.column( 8 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal2,2)
                             );
+
                             // Total over this page
                             pageTotal3 = api
+                                .column( 9, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 9 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal3,2)
+                            );
+
+                            // Total over this page
+                            pageTotal4 = api
+                                .column( 11, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 11 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal4,2)
+                            );
+
+                            // Total over this page
+                            pageTotal5 = api
+                                .column( 12, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 12 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal5,2)
+                            );
+
+                            // Total over this page
+                            pageTotal6 = api
                                 .column( 13, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
-            
+
                             // Update footer
                             $( api.column( 13 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal3,2)
-                            );
-                            // Total over this page
-                            pageTotal4 = api
-                                .column( 14, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-
-                            // Update footer
-                            $( api.column( 14 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal4,2)
-                            );
-                            // Total over this page
-                            pageTotal5 = api
-                                .column( 15, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-
-                            // Update footer
-                            $( api.column( 15 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal5,2)
+                                'Total: <br>₱' + number_format(pageTotal6,2)
                             );
                         },
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
                                 var current = null;
                                 var bod = [];
-                
+
                                 var css = '@page { size: landscape; }',
                                     head = win.document.head || win.document.getElementsByTagName('head')[0],
                                     style = win.document.createElement('style');
-                
+
                                 style.type = 'text/css';
                                 style.media = 'print';
-                
+
                                 if (style.styleSheet){
-                                style.styleSheet.cssText = css;
+                                    style.styleSheet.cssText = css;
                                 }
                                 else{
-                                style.appendChild(win.document.createTextNode(css));
+                                    style.appendChild(win.document.createTextNode(css));
                                 }
-                
+
                                 head.appendChild(style);
+
                                 $(win.document.body)
                                     .css( 'font-size', '10pt' );
-            
+
                                 $(win.document.body).find( 'table' )
                                     .addClass( 'compact' )
                                     .css( 'font-size', 'inherit' );
@@ -1309,7 +1382,7 @@
                         }],
                         scrollX: true,
                         processing: true,
-          
+
                         order:[],
                         columnDefs: [{
                             "targets": "_all", // your case first column
@@ -1357,6 +1430,7 @@
             }).keyup(function() {
                 minDateFilter = new Date(this.value).getTime();
             });
+
             $("#purchase_datepicker_to").datepicker({
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
@@ -1370,7 +1444,7 @@
                     purchasestable = $('#purchasetable').DataTable({
                         "footerCallback": function ( row, data, start, end, display ) {
                             var api = this.api(), data;
-                
+
                             // Remove the formatting to get integer data for summation
                             var intVal = function ( i ) {
                                 return typeof i === 'string' ?
@@ -1378,110 +1452,115 @@
                                     typeof i === 'number' ?
                                         i : 0;
                             };
-        
-                           // Total over this page
-                    pageTotal = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-       
-                    // Total over this page
-                    pageTotal1 = api
-                        .column( 7, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 7 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal1,2)
-                    );
-                    // Total over this page
-                    pageTotal2 = api
-                        .column( 8, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal2,2)
-                    );
-                    // Total over this page
-                    pageTotal3 = api
-                        .column( 13, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-       
-                    // Update footer
-                    $( api.column( 13 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal3,2)
-                    );
-                    // Total over this page
-                    pageTotal4 = api
-                        .column( 14, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
 
-                    // Update footer
-                    $( api.column( 14 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal4,2)
-                    );
-                    // Total over this page
-                    pageTotal5 = api
-                        .column( 15, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
+                            // Total over this page
+                            pageTotal1 = api
+                                .column( 4, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
 
-                    // Update footer
-                    $( api.column( 15 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal5,2)
-                    );
-                },
-                dom: 'Bfrtip',
-                buttons: [{
-                    extend: 'print',
-                    exportOptions: {
-                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
+                            // Update footer
+                            $( api.column( 4 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal1,2)
+                            );
+
+                            // Total over this page
+                            pageTotal2 = api
+                                .column( 5, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 5 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal2,2)
+                            );
+
+                            // Total over this page
+                            pageTotal3 = api
+                                .column( 6, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 6 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal3,2)
+                            );
+
+                            // Total over this page
+                            pageTotal4 = api
+                                .column( 8, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 8 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal4,2)
+                            );
+
+                            // Total over this page
+                            pageTotal5 = api
+                                .column( 9, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 9 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal5,2)
+                            );
+
+                            // Total over this page
+                            pageTotal6 = api
+                                .column( 10, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 10 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal6,2)
+                            );
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [{
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
                                 var current = null;
                                 var bod = [];
-                
+
                                 var css = '@page { size: landscape; }',
                                     head = win.document.head || win.document.getElementsByTagName('head')[0],
                                     style = win.document.createElement('style');
-                
+
                                 style.type = 'text/css';
                                 style.media = 'print';
-            
+
                                 if (style.styleSheet){
-                                style.styleSheet.cssText = css;
+                                    style.styleSheet.cssText = css;
                                 }
                                 else{
-                                style.appendChild(win.document.createTextNode(css));
+                                    style.appendChild(win.document.createTextNode(css));
                                 }
-            
+
                                 head.appendChild(style);
+
                                 $(win.document.body)
                                     .css( 'font-size', '10pt' );
-            
+
                                 $(win.document.body).find( 'table' )
                                     .addClass( 'compact' )
                                     .css( 'font-size', 'inherit' );
@@ -1490,7 +1569,7 @@
                         }],
                         scrollX: true,
                         processing: true,
-               
+
                         order:[],
                         columnDefs: [{
                             "targets": "_all", // your case first column
@@ -1502,7 +1581,7 @@
                             type: 'post',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
+                            },
                             data: {
                                 date_from: purchase_date_from,
                                 date_to: purchase_date_to,
@@ -1534,19 +1613,22 @@
                             {data: "action", orderable:false,searchable:false}
                         ]
                     });
+
                 }
             }).keyup(function() {
                 maxDateFilter = new Date(this.value).getTime();
                 //oTable.fnDraw();
             });
             //End of Date Range Filter
+
             function refresh_purchase_table(){
                 purchasestable.ajax.reload(); //reload datatable ajax
             }
+
             $(document).on('click', '#add_purchase', function(event){
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
-               
+
                 event.preventDefault();
                 var input = $(this);
                 var button =this;
@@ -1554,7 +1636,7 @@
                 input.html('SAVING...');
                 $.ajax({
                     headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url:"{{ route('add_purchases') }}",
                     method: 'POST',
@@ -1582,6 +1664,7 @@
                         $("#amount").val("");
                         $("#ca").val("");
                         $("#balance").val("");
+
                         $("#partial").val("0");
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
@@ -1598,6 +1681,7 @@
             $(document).on('click', '.release_purchase', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
+                console.log(id);
                 $.ajax({
                     url:"{{ route('check_balance3') }}",
                     method: 'POST',
@@ -1617,6 +1701,7 @@
                     }
                 })
             });
+
             $(document).on('click', '#release_purchase_normal', function(){
                 $.ajax({
                     url:"{{ route('release_purchase') }}",
@@ -1627,13 +1712,17 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
+                        console.log(data);
+                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success")
                         $('#release_purchase_modal').modal('hide');
-                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
+                        $('#curCashOnHand').html(data.toFixed(2));
+
                         refresh_purchase_table();
                     }
                 })
             });
+
+
             $("#print_purchase").click(function(event) {
                 event.preventDefault();
                 if($('#stat1').val()=="old"){
@@ -1643,15 +1732,12 @@
                 }
                 $("#print_form").trigger("click");
             });
+
             $("#print_form").click(function(event) {
                 if($('#stat1').val()=="old"){
                     $("#ticket_clone").val($("#ticket").val());
                     $("#customer_clone").val($("#customer option:selected").text());
                     $("#commodity_clone").val($("#commodity option:selected").text());
-                    $("#type_clone").val($("#type1 option:selected").text());
-                    $("#tare_clone").val($("#tare").val());
-                    $("#moist_clone").val($("#moist").val());
-                    $("#net_clone").val($("#net").val());
                     $("#sacks_clone").val($("#sacks").val());
                     $("#ca_clone").val($("#ca").val());
                     $("#balance_clone").val($("#balance").val());
@@ -1665,10 +1751,6 @@
                     $("#ticket_clone").val($("#ticket1").val());
                     $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
                     $("#commodity_clone").val($("#commodity1 option:selected").text());
-                    $("#type_clone").val($("#type2 option:selected").text());
-                    $("#tare_clone").val($("#tare2").val());
-                    $("#moist_clone").val($("#moist2").val());
-                    $("#net_clone").val($("#net2").val());
                     $("#sacks_clone").val($("#sacks1").val());
                     $("#ca_clone").val("0");
                     $("#balance_clone").val("0");
@@ -1680,11 +1762,12 @@
                     $("#remarks_clone").val($("#remarks1").val());
                 }
             });
+
             $(document).on('click', '#add_purchase1', function(event){
                 var input = $(this);
                 var button =this;
                 button.disabled = true;
-                input.html('SAVING...'); 
+                input.html('SAVING...');
                 event.preventDefault();
                 $.ajax({
                     headers: {
@@ -1700,9 +1783,6 @@
                         $("#sacks1").val("");
                         $("#kilo1").val("");
                         $("#price1").val("");
-                        $("#contact").val("");
-                        $("#address").val("");
-                        $("#bal").val("");
                         $("#fname").val("");
                         $("#mname").val("");
                         $("#lname").val("");
@@ -1720,48 +1800,53 @@
                     }
                 })
             });
-            
+
             $('#partial').on('keyup keydown', function (e) {
                 if (e.which == 8) {
+
                     if($('#balance').val()!=""){
                         var a = 0;
                         var b = parseFloat($('#balance').val());
                         var d = parseFloat($('#ca').val());
                         var c = 0;
                         var e =0;
-         		        if($('#partial').val()!=""){
-         			        a = parseFloat($('#partial').val());
-         			        if($('#total').val()!=""){
-         				        e = parseFloat($('#total').val());
-         			        }
-                             x = a+e;
-                             var temp3 =  parseFloat(x).toFixed(2);
-         			        $('#amount').val(temp3)
-         		        }
+                        if($('#partial').val()!=""){
+                            a = parseFloat($('#partial').val());
+
+                            if($('#total').val()!=""){
+                                e = parseFloat($('#total').val());
+                            }
+                            x = a+e;
+                            var temp3 =  parseFloat(x).toFixed(2);
+                            $('#amount').val(temp3)
+                        }
                         c = d-a;
+
                         if(c <= d){
-         		            $('#balance').val(c);
-         		            if($('#total').val()!=""){
-         			             e = parseFloat($('#total').val());
-         		            }
-         		            x = e-a;
-                             var temp3 =  parseFloat(x).toFixed(2);
-         		            if($('#total').val()=="" && $('#partial').val()==""){
+                            $('#balance').val(c);
+
+                            if($('#total').val()!=""){
+                                e = parseFloat($('#total').val());
+                            }
+                            x = e-a;
+                            var temp3 =  parseFloat(x).toFixed(2);
+                            if($('#total').val()=="" && $('#partial').val()==""){
                                 $('#amount').val('');
                                 $('#total').val('');
-         		            }
-         		            else{
-         			            $('#amount').val(temp3);
-         		            }
-         	            }
+                            }
+                            else{
+                                $('#amount').val(temp3);
+                            }
+                        }
                     }
                     else if ($('#balance').val()==""){
                         var d = parseFloat($('#ca').val());
                         $('#balance').val(d);
                     }
                 }
-         	});
+            });
         });
+
         function sacks1(value) {
             var a = 0;
             var b = parseFloat($('#price').val());
@@ -1785,8 +1870,9 @@
                             t = parseFloat($('#total').val());
                         }
                         var temp2 = t+r;
-                      var temp3 =  parseFloat(temp2).toFixed(2);
+                        var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount').val(temp3);
+                        console.log(temp2);
                     }
                     else{
                         $('#amount').val("");
@@ -1811,6 +1897,7 @@
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount').val(temp3);
                     }
+
                     if($('#kilo').val()== ""){
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
@@ -1829,6 +1916,7 @@
                 }
             }
         }
+
         function kilos1(value) {
             var a = 0;
             var b = parseFloat($('#price').val());
@@ -1856,7 +1944,7 @@
                         $('#amount').val(temp3);
                     }
                     else{
-                         $('#amount').val("");
+                        $('#amount').val("");
                     }
                 }
                 else{
@@ -1898,6 +1986,7 @@
             moist1(this);
             tare1(this);
         }
+
         function partial1(value) {
             if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance').val()!=""){
@@ -1908,6 +1997,7 @@
                     var e =0;
                     if($('#partial').val()!=""){
                         a = parseFloat($('#partial').val());
+
                         if($('#total').val()!=""){
                             e = parseFloat($('#total').val());
                         }
@@ -1917,7 +2007,7 @@
                     }
                     c = d-a;
                     $('#balance').val(c);
-               
+
                     if($('#total').val()!=""){
                         e = parseFloat($('#total').val());
                     }
@@ -1927,6 +2017,7 @@
                 }
             }
         }
+
         function sacks2(value) {
             var a = 0;
             var b = parseFloat($('#price1').val());
@@ -1952,6 +2043,7 @@
                         var temp2 = t+r;
                         var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount1').val(temp3);
+                        console.log(temp2);
                     }
                     else{
                         $('#amount1').val("");
@@ -1962,6 +2054,7 @@
                     var temp = c + r;
                     $('#total1').val(c);
                     $('#amount1').val(temp);
+                    //console.log(c+r);
                     if($('#partial1').val()!=""){
                         r = parseFloat($('#partial1').val());
                         temp = c + r;
@@ -1974,6 +2067,7 @@
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount1').val(temp3);
                     }
+
                     if($('#kilo1').val()== ""){
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
@@ -1992,6 +2086,7 @@
                 }
             }
         }
+
         function kilos2(value) {
             var a = 0;
             var b = parseFloat($('#price1').val());
@@ -2059,7 +2154,11 @@
                     $('#amount1').val(temp3);
                 }
             }
+
+            tare3(this);
+            moist3(this);
         }
+
         function partial2(value) {
             if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance1').val()!=""){
@@ -2077,6 +2176,7 @@
                         var temp3 =  parseFloat(x).toFixed(2);
                         $('#amount1').val(temp3)
                     }
+
                     c = d-a;
                     $('#balance1').val(c);
                     if($('#total1').val()!=""){
@@ -2088,16 +2188,20 @@
                 }
             }
         }
+
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
+
         $(document).ready(function() {
-      
+
+
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
                 }
             });
+
             $(document).on('click','.open_purchase_modal', function(){
                 $("#homeclick1").show();
                 $('.modal_title').text('Add Purchase');
@@ -2106,9 +2210,9 @@
                 $('#customer').select2('enable');
                 $("#customer").val('').trigger('change');
                 $("#commodity").val('').trigger('change');
-                       
+
                 $('#purchase_modal').modal('hide');
-                    
+
                 $("#sacks").val("");
                 $("#kilo").val("");
                 $("#price").val("");
@@ -2123,6 +2227,7 @@
                 $("#amount").val("");
                 $("#ca").val("");
                 $("#balance").val("");
+
                 $("#partial").val("0");
                 $("#commodity").val('').trigger('change');
                 $("#commodity1").val('').trigger('change');
@@ -2135,7 +2240,7 @@
                     success:function(data){
                         var t=0;
                         if(data[0].temp!=null){
-                                t = data[0].temp;
+                            t = data[0].temp;
                         }
                         var a = parseFloat(t);
                         var b = a + 1;
@@ -2145,12 +2250,15 @@
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                         $('#ticket').val(currentDate+b);
                         $('#ticket1').val(currentDate+b);
+                        console.log( $('#ticket').val());
+
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
                         $('#purchase_modal').modal('show');
                     }
                 })
+
                 $.ajax({
                     url:"{{ route('findCustomer') }}",
                     method: 'get',
@@ -2164,72 +2272,162 @@
                         var a = parseFloat(t);
                         var b = a + 1;
                         $('#customerid').val(b);
+                        console.log( b);
                     }
                 })
             });
- 
+
             $('#commodity').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
+
             $('#commodity1').select2({
                 dropdownParent: $('#purchase_modal'),
                 placeholder: 'Select an item'
             });
-    
+
+
             $('#customer').select2({
                 dropdownParent: $('#purchase_modal'),
-                placeholder: 'Select a company'
+                placeholder: 'Select a customer'
             });
+
             $('#remarks').select2({
                 dropdownParent: $('#purchase_modal'),
-                placeholder: 'Select a company'
+                placeholder: 'Remarks'
             });
+
             $('#remarks1').select2({
                 dropdownParent: $('#purchase_modal'),
-                placeholder: 'Select a company'
+                placeholder: 'Remarks'
             });
             $('#type1').select2({
                 dropdownParent: $('#purchase_modal'),
-                placeholder: 'Select a company'
+                placeholder: 'Select a type'
             });
-            
+
             $('#type2').select2({
                 dropdownParent: $('#purchase_modal'),
-                placeholder: 'Select a company'
+                placeholder: 'Select a type'
             });
-            
+
             $('#customer').on('select2:select', function (e) {
                 var id = $(e.currentTarget).val()
                 $.ajax({
-                url: "{{ route('find_amt') }}",
-                data: { id : id },
-                dataType:'json',
-                success: function(data) {
-                    $('#ca').val(data.balance)
-                    $('#balance').val(data.balance)
-                    $('#balance1').val(data.balance)
-                    $('#last').val(data.suki_type)
-                    if($('#partial').val()!=""){
-                        var a = 0;
-                        var b = parseFloat($('#balance').val());
-                        var d = parseFloat($('#ca').val());
-                        var c = 0;
-                        a = parseFloat($('#partial').val());
-                        c = b-a;
-                        $('#balance').val(c);
+                    url: "{{ route('find_amt') }}",
+                    data: { id : id },
+                    dataType:'json',
+                    success: function(data) {
+                        $('#ca').val(data.balance)
+                        $('#balance').val(data.balance)
+                        $('#balance1').val(data.balance)
+                        $('#last').val(data.suki_type)
+                        if($('#partial').val()!=""){
+                            var a = 0;
+                            var b = parseFloat($('#balance').val());
+                            var d = parseFloat($('#ca').val());
+                            var c = 0;
+                            a = parseFloat($('#partial').val());
+                            c = b-a;
+                            $('#balance').val(c);
+                        }
+
+                        if($('#price').val()!=""){
+                            var a = parseFloat($('#last').val());
+                            var b = parseFloat($('#suki').val());
+                            var c = parseFloat($('#pr').val());
+                            var d = 0;
+                            var e = 0;
+                            var t = 0;
+                            if(a==1){
+                                $('#price').val(b);
+                                if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                                    var x = 0;
+
+                                    if ($('#kilo').val()!=""){
+                                        var x = parseFloat($('#kilo').val());
+                                    }
+                                    if ($('#sacks').val() == "" ){
+                                        d = 0;
+                                    }
+                                    else{
+                                        d =  parseFloat($('#sacks').val());
+                                    }
+
+                                    if ($('#partial').val() != "" ){
+                                        t= parseFloat($('#partial').val());
+                                    }
+                                    e = b * (d*50);
+                                    var y = e + (b*x);
+                                    var z = e + (b*x)+t;
+                                    //alert(e);
+                                    var tempo =  parseFloat(y).toFixed(2);
+                                    $('#total').val(tempo);
+                                    var temp3 =  parseFloat(z).toFixed(2);
+                                    $('#amount').val(temp3);
+                                }
+                            }
+                            else{
+                                $('#price').val(c);
+
+                                if ($('#sacks').val()!="" || $('#kilo').val()!=""){
+                                    var x = 0;
+
+                                    if ($('#kilo').val()!=""){
+                                        var x = parseFloat($('#kilo').val());
+                                    }
+                                    if ($('#sacks').val() == "" ){
+                                        d = 0;
+                                    }
+                                    else{
+                                        d =  parseFloat($('#sacks').val());
+                                    }
+
+                                    if ($('#partial').val() != "" ){
+                                        t =  parseFloat($('#partial').val());
+                                    }
+                                    e = c * (d*50);
+                                    var y = e + (c*x);
+                                    var z = e + (c*x)+t;
+                                    //alert(e);
+                                    var tempo =  parseFloat(y).toFixed(2);
+                                    $('#total').val(tempo);
+                                    var temp3 =  parseFloat(z).toFixed(2);
+                                    $('#amount').val(temp3);
+                                }
+                            }
+                        }
+                        console.log(data.amount);
                     }
-                    if($('#price').val()!=""){
+                });
+                moist1(this);
+                tare1(this);
+            });
+
+            $('#commodity').on('select2:select', function (e) {
+                if($('#button_action1').val()=="update"){
+                    $('#commodityID').val($(e.currentTarget).val());
+                }
+                var id = $(e.currentTarget).val()
+                $.ajax({
+                    url: "{{ route('find_comm') }}",
+                    data: { id : id },
+                    dataType:'json',
+                    success: function(data) {
+                        $('#pr').val(data.price);
+                        $('#suki').val(data.suki_price);
                         var a = parseFloat($('#last').val());
-                        var b = parseFloat($('#suki').val());
-                        var c = parseFloat($('#pr').val());
-                        var d = 0;
-                        var e = 0;
-                        var t = 0;
                         if(a==1){
-                            $('#price').val(b);
+                            $('#price').val(data.suki_price);
+                            var d = 0;
+                            var e = 0;
+                            var b = parseFloat($('#suki').val());
+                            var c = parseFloat($('#pr').val());
+                            var t = 0;
                             if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                                 var x = 0;
+
                                 if ($('#kilo').val()!=""){
                                     var x = parseFloat($('#kilo').val());
                                 }
@@ -2239,10 +2437,11 @@
                                 else{
                                     d =  parseFloat($('#sacks').val());
                                 }
+
                                 if ($('#partial').val() != "" ){
                                     t= parseFloat($('#partial').val());
                                 }
-                                e = b * (d*50);
+                                e = b * d;
                                 var y = e + (b*x);
                                 var z = e + (b*x)+t;
                                 //alert(e);
@@ -2253,9 +2452,15 @@
                             }
                         }
                         else{
-                            $('#price').val(c);
+                            $('#price').val(data.price);
+                            var d = 0;
+                            var e = 0;
+                            var b = parseFloat($('#suki').val());
+                            var c = parseFloat($('#pr').val());
+                            var t = 0;
                             if ($('#sacks').val()!="" || $('#kilo').val()!=""){
                                 var x = 0;
+
                                 if ($('#kilo').val()!=""){
                                     var x = parseFloat($('#kilo').val());
                                 }
@@ -2265,10 +2470,11 @@
                                 else{
                                     d =  parseFloat($('#sacks').val());
                                 }
+
                                 if ($('#partial').val() != "" ){
-                                    t =  parseFloat($('#partial').val());
+                                    t= parseFloat($('#partial').val());
                                 }
-                                e = c * (d*50);
+                                e = c * (d);
                                 var y = e + (c*x);
                                 var z = e + (c*x)+t;
                                 //alert(e);
@@ -2278,197 +2484,124 @@
                                 $('#amount').val(temp3);
                             }
                         }
+                        console.log(data.suki_price);
                     }
+                });
+                moist1(this);
+                tare1(this);
+            });
+            $('#type1').on('select2:select', function (e) {
+                var id = $(e.currentTarget).val()
+                if(id == "Dry"){
+                    $("#tare").prop("readonly", true);
+                    $("#moist").prop("readonly", true);
+                    $("#tare").val('0');
+                    $("#moist").val('0');
+                    tare1(this);
+                    moist1(this);
+                }
+                else{
+                    $("#tare").prop('readonly', false);
+                    $("#moist").prop('readonly', false);
                 }
             });
-            moist1(this);
-            tare1(this);
-        });
-        $('#commodity').on('select2:select', function (e) {
-            if($('#button_action1').val()=="update"){
-                $('#commodityID').val($(e.currentTarget).val());
-            }
-            var id = $(e.currentTarget).val()
-            $.ajax({
-                url: "{{ route('find_comm') }}",
-                data: { id : id },
-                dataType:'json',
-                success: function(data) {
-                    $('#pr').val(data.price);
-                    $('#suki').val(data.suki_price);
-                    var a = parseFloat($('#last').val());
-                    if(a==1){
-                        $('#price').val(data.suki_price);
-                        var d = 0;
-                        var e = 0;
-                        var b = parseFloat($('#suki').val());
-                        var c = parseFloat($('#pr').val());
-                        var t = 0;
-                        if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                            var x = 0;
-                            if ($('#kilo').val()!=""){
-                                var x = parseFloat($('#kilo').val());
+
+            $('#type2').on('select2:select', function (e) {
+                var id = $(e.currentTarget).val()
+                if(id == "Dry"){
+                    $("#tare2").prop('readonly', true);
+                    $("#moist2").prop('readonly', true);
+                    $("#tare2").val('0');
+                    $("#moist2").val('0');
+                }
+                else{
+                    $("#tare2").prop('readonly', false);
+                    $("#moist2").prop('readonly', false);
+                }
+            });
+            $('#commodity1').on('select2:select', function (e) {
+                var id = $(e.currentTarget).val()
+                $.ajax({
+                    url: "{{ route('find_comm') }}",
+                    data: { id : id },
+                    dataType:'json',
+                    success: function(data) {
+                        $('#pr1').val(data.price);
+                        $('#suki1').val(data.suki_price);
+
+                        var a = parseFloat($('#last1').val());
+                        if(a==1){
+                            $('#price1').val(data.suki_price);
+                            var d = 0;
+                            var e = 0;
+                            var b = parseFloat($('#suki').val());
+                            var c = parseFloat($('#pr').val());
+                            var t = 0;
+                            if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                                var x = 0;
+
+                                if ($('#kilo1').val()!=""){
+                                    var x = parseFloat($('#kilo').val());
+                                }
+                                if ($('#sacks1').val() == "" ){
+                                    d = 0;
+                                }
+                                else{
+                                    d =  parseFloat($('#sacks1').val());
+                                }
+
+                                if ($('#partial1').val() != "" ){
+                                    t= parseFloat($('#partial1').val());
+                                }
+                                e = b * (d);
+                                var y = e + (b*x);
+                                var z = e + (b*x)+t;
+                                //alert(e);
+                                var tempo =  parseFloat(y).toFixed(2);
+                                $('#total1').val(tempo);
+                                var temp3 =  parseFloat(z).toFixed(2);
+                                $('#amount1').val(temp3);
                             }
-                            if ($('#sacks').val() == "" ){
-                                d = 0;
-                            }
-                            else{
-                                d =  parseFloat($('#sacks').val());
-                            }
-                            if ($('#partial').val() != "" ){
-                                t= parseFloat($('#partial').val());
-                            }
-                            e = b * d;
-                            var y = e + (b*x);
-                            var z = e + (b*x)+t;
-                            //alert(e);
-                            var tempo =  parseFloat(y).toFixed(2);
-                            $('#total').val(tempo);
-                            var temp3 =  parseFloat(z).toFixed(2);
-                            $('#amount').val(temp3);
                         }
-                    }
-                    else{
-                        $('#price').val(data.price);
-                        var d = 0;
-                        var e = 0;
-                        var b = parseFloat($('#suki').val());
-                        var c = parseFloat($('#pr').val());
-                        var t = 0;
-                        if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                            var x = 0;
-                            if ($('#kilo').val()!=""){
-                                var x = parseFloat($('#kilo').val());
-                            }
-                            if ($('#sacks').val() == "" ){
-                                d = 0;
-                            }
-                            else{
-                                d =  parseFloat($('#sacks').val());
-                            }
-                            if ($('#partial').val() != "" ){
-                                t= parseFloat($('#partial').val());
-                            }
-                            e = c * (d);
-                            var y = e + (c*x);
+                        else{
+                            $('#price1').val(data.price);
+                            var d = 0;
+                            var e = 0;
+                            var b = parseFloat($('#suki1').val());
+                            var c = parseFloat($('#pr1').val());
+                            var t = 0;
+                            if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                                var x = 0;
+
+                                if ($('#kilo1').val()!=""){
+                                    var x = parseFloat($('#kilo1').val());
+                                }
+                                if ($('#sacks1').val() == "" ){
+                                    d = 0;
+                                }
+                                else{
+                                    d =  parseFloat($('#sacks1').val());
+                                }
+
+                                if ($('#partial1').val() != "" ){
+                                    t= parseFloat($('#partial1').val());
+                                }
+                                e = c * (d);
+                                var y = e + (c*x);
                                 var z = e + (c*x)+t;
-                            //alert(e);
-                            var tempo =  parseFloat(y).toFixed(2);
-                            $('#total').val(tempo);
-                            var temp3 =  parseFloat(z).toFixed(2);
-                            $('#amount').val(temp3);
+                                //alert(e);
+                                var tempo =  parseFloat(y).toFixed(2);
+                                $('#total1').val(tempo);
+                                var temp3 =  parseFloat(z).toFixed(2);
+                                $('#amount1').val(temp3);
+                            }
                         }
+                        console.log(data.suki_price);
                     }
-                }
+                });
+                moist3(this);
+                tare3(this);
             });
-            moist1(this);
-            tare1(this);
         });
-        $('#type1').on('select2:select', function (e) {
-            var id = $(e.currentTarget).val()
-        if(id == "Dry"){
-            $("#tare").prop("readonly", true);
-            $("#moist").prop("readonly", true);
-            $("#tare").val('0');
-            $("#moist").val('0');
-            tare1(this);
-            moist1(this);
-        }
-        else{
-            $("#tare").prop('readonly', false);
-            $("#moist").prop('readonly', false);
-        }
-        });
-        $('#type2').on('select2:select', function (e) {
-            var id = $(e.currentTarget).val()
-        if(id == "Dry"){
-            $("#tare2").prop('readonly', true);
-            $("#moist2").prop('readonly', true);
-            $("#tare2").val('0');
-            $("#moist2").val('0');
-        }
-        else{
-            $("#tare2").prop('readonly', false);
-            $("#moist2").prop('readonly', false);
-        }
-        });
-        $('#commodity1').on('select2:select', function (e) {
-            var id = $(e.currentTarget).val()
-            $.ajax({
-                url: "{{ route('find_comm') }}",
-                data: { id : id },
-                dataType:'json',
-                success: function(data) {
-                    $('#pr1').val(data.price);
-                    $('#suki1').val(data.suki_price);
-                    var a = parseFloat($('#last1').val());
-                    if(a==1){
-                        $('#price1').val(data.suki_price);
-                        var d = 0;
-                        var e = 0;
-                        var b = parseFloat($('#suki').val());
-                        var c = parseFloat($('#pr').val());
-                        var t = 0;
-                        if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
-                            var x = 0;
-                            if ($('#kilo1').val()!=""){
-                                var x = parseFloat($('#kilo').val());
-                            }
-                            if ($('#sacks1').val() == "" ){
-                               d = 0;
-                            }
-                            else{
-                                d =  parseFloat($('#sacks1').val());
-                            }
-                            if ($('#partial1').val() != "" ){
-                                t= parseFloat($('#partial1').val());
-                            }
-                            e = b * (d);
-                            var y = e + (b*x);
-                            var z = e + (b*x)+t;
-                            //alert(e);
-                            var tempo =  parseFloat(y).toFixed(2);
-                            $('#total1').val(tempo);
-                            var temp3 =  parseFloat(z).toFixed(2);
-                            $('#amount1').val(temp3);
-                        }
-                    }
-                    else{
-                        $('#price1').val(data.price);
-                        var d = 0;
-                        var e = 0;
-                        var b = parseFloat($('#suki1').val());
-                        var c = parseFloat($('#pr1').val());
-                        var t = 0;
-                        if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
-                            var x = 0;
-                            if ($('#kilo1').val()!=""){
-                                var x = parseFloat($('#kilo1').val());
-                            }
-                            if ($('#sacks1').val() == "" ){
-                                d = 0;
-                            }
-                            else{
-                                d =  parseFloat($('#sacks1').val());
-                            }
-                            if ($('#partial1').val() != "" ){
-                                t= parseFloat($('#partial1').val());
-                            }
-                            e = c * (d);
-                            var y = e + (c*x);
-                            var z = e + (c*x)+t;
-                            //alert(e);
-                            var tempo =  parseFloat(y).toFixed(2);
-                            $('#total1').val(tempo);
-                            var temp3 =  parseFloat(z).toFixed(2);
-                            $('#amount1').val(temp3);
-                        }
-                    }
-                }
-            });
-            moist3(this);
-            tare3(this);
-        });
-    });
     </script>
 @endsection
