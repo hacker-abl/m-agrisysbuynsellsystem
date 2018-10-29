@@ -20,6 +20,8 @@ class CreateUserPermissionsTable extends Migration
             $table->unsignedInteger('permission_id');
             $table->foreign('permission_id')->references('id')->on('permissions');
             $table->integer('permit');
+            $table->integer('permit_edit');
+            $table->integer('permit_delete');
         });
     }
 

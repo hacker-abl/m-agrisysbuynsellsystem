@@ -187,28 +187,53 @@
                             </div>
                             <div class="demo-checkbox hidden">
                                 @if($permissions)
-                                    <div class="row">Default</div>
-                                    <div class="row">
-                                        <div class="col-md-12">             
+                                    <div class="container-fluid">Default</div>
+                                    <div class="container-fluid">
+                                        <div class="col-md-12">
+                                              
                                             @foreach($permissions as $key=>$permission)
+                                           
                                                 @if (strpos($permission->middleware, 'manage') === false)
+                                               <div class="col-sm" id="checkbox_group">
                                                     <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
-                                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
-                                                @endif
+                                                    <label style="font-weight: bold;" for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}" disabled="">
+                                                    <label style="font-style: italic;" for="edit_permission{{$permission->id}}">Edit</label>
+                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}" disabled="">
+                                                    <label style="font-style: italic;" for="delete_permission{{$permission->id}}">Delete</label>
+                                                </div>
+                                                @endif 
+                                                
                                             @endforeach
+                                           
                                         </div>     
                                     </div>
-                                    <div class="row">Manage</div>
-                                    <div class="row">
+                                    <div class="container-fluid">Manage</div> 
+                                    <div class="container-fluid">
                                         <div class="col-md-12">
                                             @foreach($permissions as $key=>$permission)
                                                 @if (strpos($permission->middleware, 'manage') !== false)
+                                                 <div class="col-sm" id="checkbox_group_manage">
                                                     <input type="checkbox" id="permission{{$permission->id}}" class="chk-col-red" name="permission[]" value="{{$permission->id}}">
-                                                    <label for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                    <label style="font-weight: bold;" for="permission{{$permission->id}}">{{$permission->name}}</label>
+                                                    <input type="checkbox" id="edit_permission{{$permission->id}}" class="chk-col-red" name="edit_permission[]" value="{{$permission->id}}" disabled="">
+                                                    <label style="font-style: italic;" for="edit_permission{{$permission->id}}">Edit</label>
+                                                    <input type="checkbox" id="delete_permission{{$permission->id}}" class="chk-col-red" name="delete_permission[]" value="{{$permission->id}}" disabled="">
+                                                    <label style="font-style: italic;" for="delete_permission{{$permission->id}}">Delete</label>
+                                                </div>
                                                 @endif
                                             @endforeach
                                         </div>
                                     </div>
+                                    <!-- <div class="row">Action</div>
+                                    <div class="row">
+                                        <div class="col-md-12">                                           
+                                            <input type="checkbox" id="edit_permission" class="chk-col-red" name="edit_permission" value="1">
+                                            <label for="edit_permission">Edit</label>
+                                            <input type="checkbox" id="delete_permission" class="chk-col-red" name="delete_permission" value="1">
+                                            <label for="delete_permission">Delete</label>                                              
+                                        </div>                                                                                   
+                                    </div> -->
                                 @endif
                             </div>
                         </div>
@@ -292,6 +317,22 @@
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
+
+         $(":checkbox").change(function(){
+            // $.post("index.php", { id: this.id, checked: this.checked });
+             
+            var suffix = this.id.match(/\d+/); // 123456
+            if ($("#permission"+suffix).is(':checked')){
+                            $("#delete_permission"+suffix).removeAttr("disabled");
+                            $("#edit_permission"+suffix).removeAttr("disabled");
+            }else{
+                 $("#delete_permission"+suffix).attr('disabled', 'disabled');
+                 $("#edit_permission"+suffix).attr('disabled', 'disabled');
+                 $("#delete_permission"+suffix).prop('checked', false);
+                 $("#edit_permission"+suffix).prop('checked', false);
+            }
+          });
+
 
         $(document).ready(function() {
             $('#emp_id').select2({
@@ -563,9 +604,19 @@
                     $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
                 },
                 success: function(data) {
+                    console.log(data);
                     $.each(data.userpermission, function(i, val){
+                        
                         if(val.permit != 0)
                         $('#user-permission form#user-permission-form input[id="permission'+val.permission_id+'"]').prop('checked', true);
+                        if ($("#permission"+val.permission_id).is(':checked')){
+                            $("#delete_permission"+val.permission_id).removeAttr("disabled");
+                            $("#edit_permission"+val.permission_id).removeAttr("disabled");
+                        }
+                        if(val.permit_delete != 0)
+                        $('#user-permission form#user-permission-form input[id="delete_permission'+val.permission_id+'"]').prop('checked', true);
+                        if(val.permit_edit != 0)
+                        $('#user-permission form#user-permission-form input[id="edit_permission'+val.permission_id+'"]').prop('checked', true);
                     });
                     
                     $('#user-permission form#user-permission-form .preloader').addClass('hidden');
@@ -578,7 +629,13 @@
 
         $("#user-permission").on('hidden.bs.modal', function(e) {
             $('#user-permission form#user-permission-form input[type="checkbox"]').prop('checked', false);
+            for (var i =1; i <= 12; i++) {
+              $('#user-permission form#user-permission-form input[id="edit_permission'+i+'"]').attr('disabled', 'disabled');
+              $('#user-permission form#user-permission-form input[id="delete_permission'+i+'"]').attr('disabled', 'disabled');
+            }
+            
             $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
+          
         });
 
         $('form#user-permission-form').submit(function(e) {
@@ -591,6 +648,7 @@
                 data: data,
                 dataType: 'json',
                 success: function(data) {
+                    console.log(data);
                     if(data) {
                         swal("Success!", "Permission has been updated!", "success");
                         $('#user-permission').modal('hide');
