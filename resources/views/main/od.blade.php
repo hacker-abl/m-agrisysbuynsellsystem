@@ -55,9 +55,9 @@
 								</div>
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 									<div class="form-group">
-										<select type="text" id="commodity" name="commodity" class="form-control" placeholder="Select item" required style="width:100%;">
+										<select type="text" id="commodity" name="commodity" class="form-control" placeholder="Select Commodity" required style="width:100%;">
 											@foreach($commodity as $a)
-											<option value="{{ $a->id }}">{{ $a->name }} Price: {{ $a->price }}({{ $a->suki_price }})</option>
+											<option value="{{ $a->id }}">{{ $a->name }}</option>
 											@endforeach
 										</select>
 									</div>
@@ -892,7 +892,7 @@
             });
             $('#commodity').select2({
                 dropdownParent: $('#od_modal'),
-                 placeholder: 'Select an item'
+                 placeholder: 'Select Commodity'
             });
             $('#company').select2({
                 dropdownParent: $('#od_modal'),

@@ -166,10 +166,10 @@ class odController extends Controller
             }   
             
             if($userid==1){
-                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
+                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
             <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
             }if($userid!=1 && $delete===1 && $edit===1){
-                     return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
+                     return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                 <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
             }
             if($userid!=1 && $delete===1 && $edit===0){
