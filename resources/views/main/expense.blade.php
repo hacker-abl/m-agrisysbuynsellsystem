@@ -1827,6 +1827,8 @@
             });
 
             $(document).on('click', '#release_money', function(){
+                var button =this;
+                button.disabled = true;
                 $.ajax({
                     url:"{{ route('release_update') }}",
                     method: 'POST',
@@ -1839,12 +1841,14 @@
                         swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_modal').modal('hide');
                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
-
+                         button.disabled = false;
                         trip_expensetable.ajax.reload(); //reload datatable ajax
                     }
                 })
             });
             $(document).on('click', '#release_money_od', function(){
+                var button =this;
+                button.disabled = true;
                 $.ajax({
                     url:"{{ route('release_update_od') }}",
                     method: 'POST',
@@ -1857,13 +1861,15 @@
                         swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success");
                         $('#release_modal_od').modal('hide');
                         $('#curCashOnHand').html(data.toFixed(2));
-
+                         button.disabled = false;
                         od_expensetable.ajax.reload(); //reload datatable ajax
                     }
                 })
             });
 
             $(document).on('click', '#release_money_normal', function(){
+                var button =this;
+                button.disabled = true;
                 $.ajax({
                     url:"{{ route('release_update_normal') }}",
                     method: 'POST',
@@ -1876,7 +1882,7 @@
                         swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_modal_normal').modal('hide');
                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
-
+                        button.disabled = false;
                         expensetable.ajax.reload(); //reload datatable ajax
                     }
                 })

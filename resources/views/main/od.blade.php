@@ -134,6 +134,19 @@
 									</div>
 								</div>
 							</div>
+							<div class="row clearfix">
+								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+									<label for="name">No. of Kilos</label>
+								</div>
+								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="kilos" name="kilos" class="form-control"   required>
+										</div>
+									</div>
+								</div>
+							</div>
+
 
 							<div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -190,6 +203,7 @@
 										<th width="100" style="text-align:center;">Driver</th>
 										<th width="100" style="text-align:center;">Plate No.</th>
 										<th width="100" style="text-align:center;">Liters</th>
+										<th width="100" style="text-align:center;">Kilos</th>
 										<th width="100" style="text-align:center;">Allowance</th>
 										<th width="100" style="text-align:center;">Date</th>
 										<th width="100" style="text-align:center;">Action</th>
@@ -207,6 +221,7 @@
 	                                    <th></th>
 	                                    <th></th>
 	                                    <th></th>
+	                                    <th></th>	
 	                                </tr>
 	                            </tfoot>
 							</table>
@@ -290,7 +305,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 7 )
+                        .column( 8 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -298,14 +313,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 7, { page: 'current'} )
+                        .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 7 ).footer() ).html(
+                    $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -314,7 +329,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -358,6 +373,7 @@
 					},
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
+					{data: 'kilos'},
 					{data: 'allowance'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
@@ -388,7 +404,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 7 )
+                        .column( 8 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -396,14 +412,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 7, { page: 'current'} )
+                        .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 7 ).footer() ).html(
+                    $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -412,7 +428,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -456,6 +472,7 @@
 					},
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
+					{data: 'kilos'},
 					{data: 'allowance'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
@@ -480,7 +497,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 7 )
+                        .column( 8 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -488,14 +505,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 7, { page: 'current'} )
+                        .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 7 ).footer() ).html(
+                    $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -504,7 +521,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -550,6 +567,7 @@
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
 					{data: 'allowance'},
+					{data: 'kilos'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
 				]
@@ -580,7 +598,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 7 )
+                        .column( 8 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -588,14 +606,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 7, { page: 'current'} )
+                        .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 7 ).footer() ).html(
+                    $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -604,7 +622,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -648,6 +666,7 @@
 					},
 					{data: 'plateno', name: 'plateno'},
 					{data: 'fuel_liters', name: 'fuel_liters'},
+					{data: 'kilos', name:'kilos'},
 					{data: 'allowance', name: 'allowance'},
 					{data: 'created_at', name: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
@@ -672,7 +691,7 @@
          
                     // Total over all pages
                     total = api
-                        .column( 7 )
+                        .column( 8 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -680,14 +699,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 7, { page: 'current'} )
+                        .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 7 ).footer() ).html(
+                    $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -696,7 +715,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -740,6 +759,7 @@
 					},
 					{data: 'plateno'},
 					{data: 'fuel_liters'},
+					{data: 'kilos'},
 					{data: 'allowance'},
 					{data: 'created_at'},
 					{data: "action", orderable:false,searchable:false}
@@ -848,6 +868,7 @@
 						$("#commodity").val(data.commodity_id).trigger('change');
 						$("#plateno").val(data.plateno).trigger('change');
 						$('#liter').val(data.fuel_liters);
+						$('#kilos').val(data.kilos);
 						$('#allowance').val(data.allowance);
 						$('#od_modal').modal('show');
 						$('.modal_title').text('Update Delivery');

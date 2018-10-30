@@ -38,6 +38,7 @@ class CreateDeliveriesTable extends Migration
                     ->on('trucks')
                     ->onDelete('cascade');
             $table->integer('fuel_liters');
+            $table->integer('kilos');
             $table->integer('allowance');
             $table->timestamps();
         });
