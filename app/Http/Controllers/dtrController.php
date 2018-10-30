@@ -138,9 +138,6 @@ class dtrController extends Controller
             $released->save();
         }
 
-        $user->cashOnHand -= $released->salary;
-        $user->save();
-
         $userGet = User::where('id', '=', $user->id)->first();
         $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
         $cash_history = new Cash_History;
@@ -162,7 +159,7 @@ class dtrController extends Controller
         $cash_history->type = "Release Cash - DTR";
         $cash_history->save();
 
-        $user->cashOnHand -= $released->amount;
+        $user->cashOnHand -= $released->salary;
         $user->save();
 
         event(new CashierCashUpdated());
