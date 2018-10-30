@@ -65,6 +65,14 @@
                 <div class="card">
                     <div class="header">
                         <h2 class="modal_title">Update Trip(Pick Up)</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <button id="print_trip1" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            </li>
+                            <li class="dropdown">
+                                <button class="btn btn-sm btn-icon print-icon" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            </li>
+                        </ul>
                     </div>
                     <div class="body">
                         <form class="form-horizontal trip_form_update" id="trip_form_update">
@@ -966,6 +974,16 @@
             //     print_indicator = true;
             //     $("#add_trip").trigger("click");
             // });
+                
+            $("#print_trip1").click(function(event) {
+                event.preventDefault();
+                $("#print_form1").trigger("click");
+                $("#update_trip").trigger("click");
+            });
+
+            $("#print_form1").click(function(event) {
+                print_loop1();
+            });
 
             $("#print_trip").click(function(event) {
                 event.preventDefault();
@@ -1000,6 +1018,20 @@
                     trip_counter=1;
                 }
             }, 100)
+
+            }
+
+            function print_loop1 () {
+
+                $("#ticket_clone").val($("#ticket").val());
+                $("#expense_clone").val($("#expense").val());
+                $("#commodity_clone").val($("#commodity option:selected").text());
+                $("#driver_id_clone").val($("#driver_id option:selected").text());
+                $("#plateno_clone").val($("#plateno option:selected").text());
+                $("#destination_clone").val($("#destination").val());
+                $("#num_liters_clone").val($("#num_liters").val());
+
+                $("#printForm").submit();
 
             }
 
