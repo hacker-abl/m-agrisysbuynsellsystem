@@ -32,7 +32,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "expense"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,200);
+			$customPaper = array(0,0,288,300);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
@@ -181,6 +181,10 @@ class pdfController extends Controller
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
+				<td width='40%'><span>Transaction No.: </span></td>
+				<td width='60%' align='right'><span>".$request->trans_clone."</span></td>
+				</tr>
+				<tr>
 				<td width='40%'><span>Name: </span></td>
 				<td width='60%' align='right'><span>".$request->expense_clone."</span></td>
 				</tr>
@@ -193,6 +197,11 @@ class pdfController extends Controller
 				<td align='right'><span>₱ ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
+
+				<br>
+				<br>
+				
+				<img style='width:100%;' src='data:image/png;base64,".base64_encode($generator->getBarcode($request->trans_clone, $generator::TYPE_CODE_39, 1, 35))."'>
 
 		        </div>";
 
