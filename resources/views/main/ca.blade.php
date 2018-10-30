@@ -447,24 +447,26 @@
 							<table id="cash_advancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
 								<thead>
 									<tr>
-                    <th>Name</th>
-                    <th>mname</th>
-                    <th>lname</th>
-                    <th>Recent Amount</th>
-                    <th>Latest Date/Time</th>
-                    <th>Total Balance</th>
-                    <th width="90">View History</th>
+                                        <th>Name</th>
+                                        <th>mname</th>
+                                        <th>lname</th>
+                                        <th>Recent Amount</th>
+                                        <th>Latest Date/Time</th>
+                                        <th>Total Balance</th>
+                                        <th width="90">View History</th>
 									</tr>
 								</thead>
-                <tfoot>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </tfoot>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
 							</table>
 						</div>
 					</div>
@@ -608,13 +610,26 @@
                   $( api.column( 3 ).footer() ).html(
                       'Total: <br>₱' + number_format(pageTotal,2)
                   );
+
+                // Total over this page
+                pageTotal1 = api
+                    .column( 5, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+    
+                // Update footer
+                $( api.column( 5 ).footer() ).html(
+                    'Total: <br>₱' + number_format(pageTotal1,2)
+                );
               },
       				dom: 'Bfrtip',
       				buttons: [
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3 ]
+                            columns: [ 0, 3, 4, 5 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
