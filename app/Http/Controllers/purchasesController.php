@@ -281,7 +281,7 @@ class purchasesController extends Controller
             ->join('customer', 'customer.id', '=', 'purchases.customer_id')
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
             ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
-            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
+            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
             //->orderBy('purchases.id', 'desc')
             ->latest();
         }else{
@@ -289,7 +289,7 @@ class purchasesController extends Controller
             ->join('customer', 'customer.id', '=', 'purchases.customer_id')
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
             ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
-            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
+            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
             ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             //->orderBy('purchases.id', 'desc')

@@ -285,6 +285,7 @@
 
                                                       <option value="Good">Good</option>
                                                       <option value="Immature">Immature</option>
+                                                      <option value="Reject">Reject</option>
                                                  </select>
                                             </div>
                                        </div>
@@ -549,6 +550,7 @@
 
                                                          <option value="Good">Good</option>
                                                          <option value="Immature">Immature</option>
+                                                         <option value="Reject">Reject</option>
                                                     </select>
                                                </div>
                                           </div>
@@ -625,6 +627,7 @@
                                                  <th width="100" style="text-align:center;">Balance</th>
                                                  <th width="100" style="text-align:center;">Partial Payment</th>
                                                  <th width="100" style="text-align:center;" >No. of Kilos</th>
+                                                 <th width="100" style="text-align:center;" >Type</th>
                                                  <th width="100" style="text-align:center;" >Tare</th>
                                                  <th width="100" style="text-align:center;" >Moisture</th>
                                                  <th width="100" style="text-align:center;" >Net Kilos</th>
@@ -641,6 +644,7 @@
 
                                        <tfoot>
                                         <tr>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -1087,19 +1091,6 @@
 
                     // Total over this page
                     pageTotal1 = api
-                        .column( 7, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-
-                    // Update footer
-                    $( api.column( 7 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal1,2)
-                    );
-
-                    // Total over this page
-                    pageTotal2 = api
                         .column( 8, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -1108,11 +1099,11 @@
 
                     // Update footer
                     $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal2,2)
+                        'Total: <br>₱' + number_format(pageTotal1,2)
                     );
 
                     // Total over this page
-                    pageTotal3 = api
+                    pageTotal2 = api
                         .column( 9, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
@@ -1121,6 +1112,19 @@
 
                     // Update footer
                     $( api.column( 9 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    );
+
+                    // Total over this page
+                    pageTotal3 = api
+                        .column( 10, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 10 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal3,2)
                     );
 
@@ -1167,7 +1171,7 @@
                 buttons: [{
                     extend: 'print',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
+                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
                     },
                     customize: function ( win ) {
                         var last = null;
@@ -1230,6 +1234,7 @@
                     {data: 'balance_id'},
                     {data: 'partial'},
                     {data: 'kilo'},
+                    {data: 'type'},
                     {data: 'tare'},
                     {data: 'moist'},
                     {data: 'net'},
@@ -1268,19 +1273,6 @@
 
                             // Total over this page
                             pageTotal1 = api
-                                .column( 7, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-
-                            // Update footer
-                            $( api.column( 7 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal1,2)
-                            );
-
-                            // Total over this page
-                            pageTotal2 = api
                                 .column( 8, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
@@ -1289,11 +1281,11 @@
 
                             // Update footer
                             $( api.column( 8 ).footer() ).html(
-                                'Total: <br>₱' + number_format(pageTotal2,2)
+                                'Total: <br>₱' + number_format(pageTotal1,2)
                             );
 
                             // Total over this page
-                            pageTotal3 = api
+                            pageTotal2 = api
                                 .column( 9, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
@@ -1302,6 +1294,19 @@
 
                             // Update footer
                             $( api.column( 9 ).footer() ).html(
+                                'Total: <br>₱' + number_format(pageTotal2,2)
+                            );
+
+                            // Total over this page
+                            pageTotal3 = api
+                                .column( 10, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 10 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal3,2)
                             );
 
@@ -1348,7 +1353,7 @@
                         buttons: [{
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
                             },
                             customize: function ( win ) {
                                 var last = null;
@@ -1411,6 +1416,7 @@
                             {data: 'balance_id'},
                             {data: 'partial'},
                             {data: 'kilo'},
+                            {data: 'type'},
                             {data: 'tare'},
                             {data: 'moisture'},
                             {data: 'net'},
@@ -1657,6 +1663,9 @@
                         $("#kilo1").val("");
                         $("#price1").val("");
                         $("#fname").val("");
+                        $("#tare").val("");
+                        $("#moist").val("");
+                        $("#net").val("");
                         $("#mname").val("");
                         $("#lname").val("");
                         $("#amount1").val("");
@@ -1665,7 +1674,7 @@
                         $("#ca").val("");
                         $("#balance").val("");
 
-                        $("#partial").val("0");
+                        $("#partial").val("");
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
@@ -1784,6 +1793,9 @@
                         $("#kilo1").val("");
                         $("#price1").val("");
                         $("#fname").val("");
+                        $("#tare2").val("");
+                        $("#moist2").val("");
+                        $("#net2").val("");
                         $("#mname").val("");
                         $("#lname").val("");
                         $("#amount1").val("");
@@ -2228,7 +2240,7 @@
                 $("#ca").val("");
                 $("#balance").val("");
 
-                $("#partial").val("0");
+                $("#partial").val("");
                 $("#commodity").val('').trigger('change');
                 $("#commodity1").val('').trigger('change');
                 $("#customer").val('').trigger('change');
