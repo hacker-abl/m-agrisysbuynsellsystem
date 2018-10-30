@@ -18,4 +18,8 @@ class od extends Model
 		'fuel_liters',
 		'allowance',
 	);
+
+    public function driver() {
+        return $this->hasOne('App\employee', 'id', 'driver_id');
+    }
 }

@@ -2025,6 +2025,11 @@
                     });
                 },
             });
+
+            if(window.location.hash) {
+                console.log(window.location.hash);
+                $('.nav-tabs li a[href="'+window.location.hash+'"]').tab('show')
+            }
         });
     </script>
 @endsection

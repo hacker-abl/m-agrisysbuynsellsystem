@@ -62,12 +62,14 @@ if(document.getElementById('request')) {
             axios.get('/notification/get').then((response) => {
                 this.requests = response.data.notification;
                 this.count = response.data.count;
+                console.log(this.count);
             });
     
             window.Echo.channel('notifications.cashier')
                 .listen('NewNotification', e => {
                     // console.log(e);
                     this.requests.unshift(e.notification);
+                    this.count++;
                 });
     
         }

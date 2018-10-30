@@ -41,7 +41,6 @@ class expenseController extends Controller
          //    echo 'console.log('. json_encode( $permit[0]->permit_delete ) .')';
          //    echo '</script>';
         return view('main.expense');
-
     }
 
     public function isAdmin(){
