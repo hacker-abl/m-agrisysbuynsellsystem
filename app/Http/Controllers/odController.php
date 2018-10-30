@@ -59,6 +59,7 @@ class odController extends Controller
             $commodity->company_id = $request->company;
             $commodity->plateno = $request->plateno;
             $commodity->fuel_liters = $request->liter;
+            $commodity->kilos = $request->kilos;
             $commodity->allowance = $request->allowance;
             $commodity->save();
             $lastInsertedId = $commodity->id;
@@ -110,6 +111,7 @@ class odController extends Controller
           $commodity->company_id = $request->company;
           $commodity->plateno = $request->plateno;
           $commodity->fuel_liters = $request->liter;
+          $commodity->kilos = $request->kilos;
           $commodity->allowance = $request->allowance;
           $commodity->save();
         }
@@ -166,7 +168,7 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.allowance','deliveries.created_at')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at')
             ->latest();
         }else{
             $ultimatesickquery= DB::table('deliveries')
@@ -174,7 +176,7 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.allowance','deliveries.created_at')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at')
             ->where('deliveries.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('deliveries.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->latest();
@@ -191,15 +193,14 @@ class odController extends Controller
             }   
             
             if($userid==1){
-                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }if($userid!=1 && $delete===1 && $edit===1){
-                     return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
-                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+                     return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }
             if($userid!=1 && $delete===1 && $edit===0){
-                 return '
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            return '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }
             if($userid!=1 && $delete===0 && $edit===1){
                  return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';

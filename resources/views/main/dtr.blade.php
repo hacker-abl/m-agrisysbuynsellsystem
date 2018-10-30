@@ -522,7 +522,7 @@
                                          
                                                     // Total over all pages
                                                     total = api
-                                                        .column( 3 )
+                                                        .column( 4 )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -530,14 +530,14 @@
                                          
                                                     // Total over this page
                                                     pageTotal = api
-                                                        .column( 3, { page: 'current'} )
+                                                        .column( 4, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
                                          
                                                     // Update footer
-                                                    $( api.column( 3 ).footer() ).html(
+                                                    $( api.column( 4 ).footer() ).html(
                                                         'Total: <br>₱' + number_format(pageTotal,2)
                                                     );
                                                 },
@@ -547,7 +547,7 @@
                                                     {
                                                         extend: 'print',
                                                         exportOptions: {
-                                                            columns: [ 0, 1, 2, 3, 4, 5 ]
+                                                            columns: [ 0, 1, 2, 3, 4, 5 ,6]
                                                         },
                                                         customize: function ( win ) {
                                                             $(win.document.body)
@@ -578,6 +578,7 @@
 
                                                             return ts.toDateString()+" "+ts.toLocaleTimeString()}
                                                     },
+                                                    {data: 'bonus', name: 'bonus'},
                                                     {data: 'salary', name: 'salary'},
                                                     {data: 'status', name: 'status'},
                                                     {data: 'released_by', name: 'released_by'},

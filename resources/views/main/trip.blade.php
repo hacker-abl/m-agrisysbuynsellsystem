@@ -783,17 +783,17 @@
 
                 $('#plateno'+item+'').select2({
                     dropdownParent: $('#trip_form'+item),
-                    placeholder: '--Select a truck--'
+                    placeholder: 'Select Truck'
                 });
 
                 $('#driver_id'+item+'').select2({
                     dropdownParent: $('#trip_form'+item),
-                    placeholder: '--Select a driver--'
+                    placeholder: 'Select Driver'
                 });
 
                 $('#commodity'+item+'').select2({
                     dropdownParent: $('#trip_form'+item),
-                    placeholder: '--Select an item--'
+                    placeholder: 'Select Commodity'
                 });
 
                 $('#commodity'+item+'').val('').trigger('change');
@@ -1124,17 +1124,17 @@
 
             $("#plateno").select2({
                 dropdownParent: $('#pickup_modal_update'),
-                placeholder: '--Select a truck--'
+                placeholder: 'Select Truck'
             });
 
             $("#driver_id").select2({
                 dropdownParent: $('#pickup_modal_update'),
-                placeholder: '--Select a driver--'
+                placeholder: 'Select Driver'
             });
 
             $("#commodity").select2({
                 dropdownParent: $('#pickup_modal_update'),
-                placeholder: '--Select an item--'
+                placeholder: 'Select Commodity'
             });
         });//END DOCUMENT READY
 
