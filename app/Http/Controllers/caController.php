@@ -348,7 +348,7 @@ class caController extends Controller
             }else{
                 return $data->released_by;
             }
-            
+             
         })
         ->editColumn('balance', function ($data) {
            return '₱'.number_format($data->balance, 2, '.', ',');
@@ -370,5 +370,9 @@ class caController extends Controller
         $balance = balance::where('customer_id', '=', $request->id)
             ->get();
         echo json_encode($balance);
+    }
+    public function getCustomer(Request $request){
+      $data =  Customer::find($request->id);
+        return $data;
     }
 }
