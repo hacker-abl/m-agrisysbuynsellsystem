@@ -16,7 +16,9 @@ use App\User;
 use App\Events\ExpensesUpdated;
 use App\Events\CashierCashUpdated; 
 use App\Notification;
-
+use App\Cash_History;
+use Carbon\Carbon;
+use App\UserPermission;
 class odController extends Controller
 {
       /**
@@ -50,7 +52,7 @@ class odController extends Controller
 
     public function store(Request $request)
     {
-          if($request->get('button_action') == 'add'){
+        if($request->get('button_action') == 'add'){
             $commodity= new od;
             $commodity->outboundTicket = $request->ticket;
             $commodity->commodity_id = $request->commodity;
@@ -59,6 +61,7 @@ class odController extends Controller
             $commodity->company_id = $request->company;
             $commodity->plateno = $request->plateno;
             $commodity->fuel_liters = $request->liter;
+            $commodity->kilos = $request->kilos;
             $commodity->allowance = $request->allowance;
             $commodity->save();
             $lastInsertedId = $commodity->id;
@@ -72,8 +75,33 @@ class odController extends Controller
             $od_expenses->save();
             $details =  DB::table('deliveries')->orderBy('outboundTicket', 'desc')->first();
 
+            if($od_expenses) {
+                $notification = new Notification;
+                $notification->notification_type = "Outbound Expense";
+                $notification->message = "Outbound Expense";
+                $notification->status = "Pending";
+                $notification->admin_id = Auth::id();
+                $notification->table_source = "od_expense";
+                $notification->od_expense_id = $od_expenses->id;
+                $notification->save();
+
+                $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee', 'od.odId.driver')
+                    ->get()[0];
+
+                $notification = array();
+
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->od->odId->driver,
+                    'time' => time_elapsed_string($datum->updated_at),
+                );
+
+                event(new \App\Events\NewNotification($notification));
+            }
+
             echo json_encode($details);
-          }
+        }
 
         if($request->get('button_action') == 'update'){
           $commodity= new od;
@@ -85,6 +113,7 @@ class odController extends Controller
           $commodity->company_id = $request->company;
           $commodity->plateno = $request->plateno;
           $commodity->fuel_liters = $request->liter;
+          $commodity->kilos = $request->kilos;
           $commodity->allowance = $request->allowance;
           $commodity->save();
         }
@@ -92,30 +121,55 @@ class odController extends Controller
 
     public function release_update_od(Request $request){
         $check_admin =Auth::user()->access_id;
-       if($check_admin==1){
-           $logged_id = Auth::user()->name;
-           $user = User::find(Auth::user()->id);
-           $released = od_expense::find($request->id);
-           $released->status = "Released";
-           $released->released_by = $logged_id;
-           $released->save();
-           $cashOnHand = User::find(Auth::user()->id);
-           $cashOnHand->cashOnHand -= $released->amount;
-           $cashOnHand->save();
-       }else{
-           $logged_id = Auth::user()->emp_id;
-           $name= Employee::find($logged_id);             
-           $released=od_expense::find($request->id);
-           $released->status = "Released";
-           $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
-           $released->save();
-           $cashOnHand = User::find(Auth::user()->id);
-           $cashOnHand->cashOnHand -= $released->amount;
-           $cashOnHand->save();
-       }
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $released = od_expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $logged_id;
+            $released->save();
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $name= Employee::find($logged_id);       
+            $user = User::find(Auth::user()->id);      
+            $released=od_expense::find($request->id);
+            $released->status = "Released";
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
+            $released->save();
+        }
 
-       event(new CashierCashUpdated());
-       return $cashOnHand->cashOnHand;
+        $userGet = User::where('id', '=', $user->id)->first();
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        $cash_history = new Cash_History;
+        $cash_history->user_id = $userGet->id;
+
+        $getDate = Carbon::now();
+        
+        if($cashLatest != null){
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        }
+        else{
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+        }
+
+        $cash_history->trans_no = $dateTime;
+        $cash_history->previous_cash = $user->cashOnHand;
+        $cash_history->cash_change = $released->amount;
+        $cash_history->total_cash = $user->cashOnHand - $released->amount;
+        $cash_history->type = "Release Cash - Purchases";
+        $cash_history->save();
+
+        $user->cashOnHand -= $released->amount;
+        $user->save();
+         
+        event(new CashierCashUpdated());
+       
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
+        
+        echo json_encode($output);
    }
 
     public function check_balance_od(Request $request){
@@ -141,7 +195,7 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.allowance','deliveries.created_at')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at')
             ->latest();
         }else{
             $ultimatesickquery= DB::table('deliveries')
@@ -149,7 +203,7 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.allowance','deliveries.created_at')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at')
             ->where('deliveries.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('deliveries.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->latest();
@@ -158,8 +212,30 @@ class odController extends Controller
        
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
+            $userid= Auth::user()->access_id;
+            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();
+            if($userid!=1){
+                $delete=$permit[0]->permit_delete;  
+                $edit = $permit[0]->permit_edit;
+            }   
+            
+            if($userid==1){
+                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $delete===1 && $edit===1){
+                     return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            }
+            if($userid!=1 && $delete===1 && $edit===0){
+            return '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            }
+            if($userid!=1 && $delete===0 && $edit===1){
+                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
+            }
+            if($userid!=1 && $delete===0 && $edit===0){
+                 return 'No Action Permitted';
+            }
+           
         })
         ->editColumn('allowance', function ($data) {
             return '₱'.number_format($data->allowance, 2, '.', ',');

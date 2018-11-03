@@ -20,7 +20,7 @@ use Carbon\Carbon;
 use Auth;
 use App\Events\ExpensesUpdated;
 use App\Events\CashierCashUpdated; 
-
+use App\UserPermission;
 class tripController extends Controller
 {
     /**
@@ -198,8 +198,28 @@ class tripController extends Controller
        
         return \DataTables::of($trips)
         ->addColumn('action', function($trips){
-            return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>
-            <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
+            $userid= Auth::user()->access_id;
+            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',2)->get();
+            if($userid!=1){
+                $delete=$permit[0]->permit_delete;  
+                $edit = $permit[0]->permit_edit;
+            }   
+            
+            if($userid==1){
+                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+                     <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
+            }
+            if($userid!=1 && $delete===1 && $edit===1){
+                return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+                     <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
+            }
+             if($userid!=1 && $delete===0 && $edit===1){
+                return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>';
+            }
+            if($userid!=1 && $delete===1 && $edit===0){
+                return '<button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
+            }
+           
         })
         ->editColumn('expense', function ($data) {
             return '₱ '.number_format($data->expense, 2, '.', ',');

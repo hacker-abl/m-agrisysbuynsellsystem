@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Employee;
 use App\Roles;
 use App\Employee_Benefits;
+Use App\UserPermission;
+use Auth;
 class employeeController extends Controller
 {
     /**
@@ -114,12 +116,25 @@ class employeeController extends Controller
 
         return \DataTables::of($employee)
         ->addColumn('action', function($employee){
-            if(isAdmin()){
-                return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>
+            $userid= Auth::user()->access_id;
+            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',9)->get();
+            if($userid!=1){
+                $delete=$permit[0]->permit_delete;  
+                $edit = $permit[0]->permit_edit;
+            }   
+            
+            if($userid===1){
+                return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                 <button class="btn btn-xs btn-danger delete_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
-            }
-            else{
-                return 'Admin';
+            }if($userid!=1 && $delete===1 && $edit===1){
+                return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+                <button class="btn btn-xs btn-danger delete_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $delete===0 && $edit===1){
+                return '<button class="btn btn-xs btn-warning update_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">mode_edit</i>';
+            }if($userid!=1 && $delete===1 && $edit===0){
+                return '<button class="btn btn-xs btn-danger delete_employee waves-effect" id="'.$employee->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $delete===0 && $edit===0){
+                return 'No Action Permitted';
             }
         })
         ->addColumn('wholename', function ($data){

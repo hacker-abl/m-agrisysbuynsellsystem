@@ -20,6 +20,7 @@ class purchases extends Model
 		'price',
 		'tare',
 		'moist',
+        'net',
 		'type',
 	    'total',
 	    'amtpay',

@@ -1240,11 +1240,13 @@ if (document.getElementById('request')) {
             axios.get('/notification/get').then(function (response) {
                 _this.requests = response.data.notification;
                 _this.count = response.data.count;
+                console.log(_this.count);
             });
 
             window.Echo.channel('notifications.cashier').listen('NewNotification', function (e) {
                 // console.log(e);
                 _this.requests.unshift(e.notification);
+                _this.count++;
             });
         }
     });

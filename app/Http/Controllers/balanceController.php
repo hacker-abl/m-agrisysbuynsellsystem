@@ -30,7 +30,7 @@ class balanceController extends Controller
               ->get();
 		    return \DataTables::of($ultimatesickquery)
 		    ->addColumn('action', function($ultimatesickquery){
-			   return '<button class="btn btn-md btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+			   return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
 		    })
 		    ->editColumn('balance', function ($data) {
      		  return '₱'.number_format($data->balance, 2, '.', ',');

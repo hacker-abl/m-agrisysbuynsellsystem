@@ -836,8 +836,15 @@
                           data:{id:person_id},
                           dataType: 'json',
                           success:function(data){
-                              $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-
+                            $.ajax({
+                          url: "{{ route('getCustomer') }}",
+                          method: 'get',
+                          data:{id:person_id},
+                          dataType: 'json',
+                          success:function(data){
+                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                          }
+                        });
                              cash_advance_release =  $('#view_cash_advancetable').DataTable({
                                   "footerCallback": function ( row, data, start, end, display ) {
                                       var api = this.api(), data;
@@ -943,8 +950,15 @@
                           data:{id:person_id},
                           dataType: 'json',
                           success:function(data){
-                              $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-
+                            $.ajax({
+                          url: "{{ route('getCustomer') }}",
+                          method: 'get',
+                          data:{id:person_id},
+                          dataType: 'json',
+                          success:function(data){
+                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                          }
+                        });
                              cash_advance_release =  $('#view_cash_advancetable').DataTable({
                                   "footerCallback": function ( row, data, start, end, display ) {
                                       var api = this.api(), data;
@@ -1170,8 +1184,15 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-                        $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-
+                        $.ajax({
+                          url: "{{ route('getCustomer') }}",
+                          method: 'get',
+                          data:{id:person_id},
+                          dataType: 'json',
+                          success:function(data){
+                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                          }
+                        });
                        cash_advance_release =  $('#view_cash_advancetable').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {
                                 var api = this.api(), data;
@@ -1289,9 +1310,15 @@
                                       data:{id:person_id},
                                       dataType: 'json',
                                       success:function(data){
-                                      
-                                          $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-
+                                        $.ajax({
+                          url: "{{ route('getCustomer') }}",
+                          method: 'get',
+                          data:{id:person_id},
+                          dataType: 'json',
+                          success:function(data){
+                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                          }
+                        });
                                           cash_advance_release =  $('#view_cash_advancetable').DataTable({
                                               "footerCallback": function ( row, data, start, end, display ) {
                                                   var api = this.api(), data;
@@ -1412,9 +1439,15 @@
                                                 data:{id:person_id},
                                                 dataType: 'json',
                                                 success:function(data){
-                                                
-                                                    $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-
+                                                    $.ajax({
+                          url: "{{ route('getCustomer') }}",
+                          method: 'get',
+                          data:{id:person_id},
+                          dataType: 'json',
+                          success:function(data){
+                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                          }
+                        });
                                                     cash_advance_release =  $('#view_cash_advancetable').DataTable({
                                                         "footerCallback": function ( row, data, start, end, display ) {
                                                             var api = this.api(), data;
