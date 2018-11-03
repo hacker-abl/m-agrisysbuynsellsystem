@@ -26,7 +26,7 @@
                                     <div class="form-group">
                                         <select id="emp_id" name="emp_id" class="form-control" placeholder="Enter employee" required style="width:100%;">
                                             @foreach($employee as $emp)
-                                                @if(strcasecmp($employee[$emp->id-1]->cashier->role, 'cashier') == 0)
+                                                @if(strcasecmp($employee[$emp->id-1]->cashier->role, 'cashier') == 0 || strcasecmp($employee[$emp->id-1]->cashier->role, 'manager') == 0 || strcasecmp($employee[$emp->id-1]->cashier->role, 'secretary') == 0)
                                                 <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
                                                 @endif
                                             @endforeach
