@@ -100,8 +100,6 @@ class tripController extends Controller
         }
 
         echo json_encode($details);
-
-        event(new ExpensesUpdated($trip_expenses));
     }
 
     public function update_trip(Request $request){
@@ -128,6 +126,7 @@ class tripController extends Controller
             $cashOnHand = User::find(Auth::user()->id);
             $cashOnHand->cashOnHand -= $released->amount;
             $cashOnHand->save();
+            event(new ExpensesUpdated($released));
         }else{
             $logged_id = Auth::user()->emp_id;
             $name= Employee::find($logged_id);             
@@ -138,6 +137,7 @@ class tripController extends Controller
             $cashOnHand = User::find(Auth::user()->id);
             $cashOnHand->cashOnHand -= $released->amount;
             $cashOnHand->save();
+            event(new ExpensesUpdated($released));
         }
 
         $userGet = User::where('id', '=', $user->id)->first();

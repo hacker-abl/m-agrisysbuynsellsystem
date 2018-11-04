@@ -96,6 +96,8 @@
 
         $(document).ready(function() {
 
+            document.title = "M-Agri - Roles";
+
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -116,6 +118,21 @@
             var rolestable = $('#roletable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    }
                 ],
                 processing: true,
                 columnDefs: [

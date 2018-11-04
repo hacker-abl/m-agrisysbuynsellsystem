@@ -129,6 +129,7 @@ class odController extends Controller
            $cashOnHand = User::find(Auth::user()->id);
            $cashOnHand->cashOnHand -= $released->amount;
            $cashOnHand->save();
+           event(new ExpensesUpdated($released));
        }else{
            $logged_id = Auth::user()->emp_id;
            $name= Employee::find($logged_id);             
@@ -139,6 +140,7 @@ class odController extends Controller
            $cashOnHand = User::find(Auth::user()->id);
            $cashOnHand->cashOnHand -= $released->amount;
            $cashOnHand->save();
+           event(new ExpensesUpdated($released));
        }
 
        event(new CashierCashUpdated());

@@ -369,7 +369,21 @@
                   salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
-						'print'
+                    {
+						extend: 'print',
+						exportOptions: {
+							columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
+						},
+						customize: function ( win ) {
+							$(win.document.body)
+								.css( 'font-size', '10pt' );
+		
+							$(win.document.body).find( 'table' )
+								.addClass( 'compact' )
+								.css( 'font-size', 'inherit' );
+						},
+						footer: true
+						}
 					],
 					processing: true,
 				
@@ -410,8 +424,22 @@
                  salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
-						'print'
-					],
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    }
+                	],	
 					processing: true,
 			
 					order:[],
@@ -459,8 +487,22 @@
                  salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
-						'print'
-					],
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    }
+                	],
 					processing: true,
 	
 					order:[],
@@ -500,8 +542,22 @@
                  salestable = $('#salestable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
-						'print'
-					],
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    }
+                	],
 					processing: true,
 				
 					order:[],

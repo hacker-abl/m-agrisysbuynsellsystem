@@ -80,6 +80,8 @@
 
         $(document).ready(function() {
 
+            document.title = "M-Agri - Companies";
+
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -100,7 +102,22 @@
             var companytable = $('#companytable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                ],
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [0]
+                    },
+                    customize: function ( win ) {
+                        $(win.document.body)
+                            .css( 'font-size', '10pt' );
+        
+                        $(win.document.body).find( 'table' )
+                            .addClass( 'compact' )
+                            .css( 'font-size', 'inherit' );
+                    },
+                    footer: true
+                }
+                ],	
                 processing: true,
                 columnDefs: [
   				{

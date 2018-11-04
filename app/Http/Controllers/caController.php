@@ -176,7 +176,6 @@ class caController extends Controller
         $balance = balance::where('customer_id', '=',$request->customer_id)
                  ->increment('balance',  $request->amount);    
 
-        event(new BalanceUpdated($ca));
         }
 
 
@@ -192,6 +191,7 @@ class caController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
+            event(new BalanceUpdated($released));
         }else{
             $logged_id = Auth::user()->emp_id;
             $name= Employee::find($logged_id);
@@ -200,6 +200,7 @@ class caController extends Controller
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
+            event(new BalanceUpdated($released));
         }
 
         $userGet = User::where('id', '=', $user->id)->first();
@@ -324,8 +325,10 @@ class caController extends Controller
          ->addColumn('action', function($cash_advance){
             $userid= Auth::user()->access_id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',5)->get();   
-            $delete=$permit[0]->permit_delete;  
-            $edit = $permit[0]->permit_edit;  
+            if($userid!=1){
+                $delete=$permit[0]->permit_delete;  
+                $edit = $permit[0]->permit_edit;  
+           }
             if($cash_advance->status=="On-Hand" && isAdmin()==1){
                  return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
             }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete===1 && $edit===1){

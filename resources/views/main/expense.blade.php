@@ -1860,7 +1860,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        swal("Cash Released!", "Remaining Balance: ₱"+data.toFixed(2), "success");
+                        swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_modal_od').modal('hide');
                         $('#curCashOnHand').html(data.toFixed(2));
                          button.disabled = false;

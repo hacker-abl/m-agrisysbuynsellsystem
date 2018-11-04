@@ -27,14 +27,23 @@
                 .listen('BalanceUpdated', (e) => {
                     if(e.paymentamount){
                         this.balance[0].amount = parseFloat(this.balance[0].amount) - parseFloat(e.paymentamount);
+                            if(this.balance[0].amount < 0){
+                                this.balance[0].amount = 0;
+                            }
                         var totalYear = parseFloat($( "#totalBalanceYear" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
                         var totalMonth = parseFloat($( "#totalBalanceMonth" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
                     }else if(e.partial){
                         this.balance[0].amount = parseFloat(this.balance[0].amount) - parseFloat(e.partial);
+                            if(this.balance[0].amount < 0){
+                                this.balance[0].amount = 0;
+                            }
                         var totalYear = parseFloat($( "#totalBalanceYear" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
                         var totalMonth = parseFloat($( "#totalBalanceMonth" ).text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
                     }else{
                         this.balance[0].amount = parseFloat(this.balance[0].amount) + parseFloat(e.amount);
+                            if(this.balance[0].amount < 0){
+                                this.balance[0].amount = 0;
+                            }
                         var totalYear = parseFloat($( "#totalBalanceYear" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
                         var totalMonth = parseFloat($( "#totalBalanceMonth" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
                     }

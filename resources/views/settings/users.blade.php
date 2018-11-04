@@ -335,6 +335,10 @@
 
 
         $(document).ready(function() {
+
+            document.title = "M-Agri - Users";
+
+
             $('#emp_id').select2({
             dropdownParent: $('#user_modal'),
             placeholder: 'Select an option'
@@ -364,6 +368,21 @@
             var usertable = $('#usertable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    }
                 ],
                 processing: true,
                 columnDefs: [
@@ -565,8 +584,24 @@
                         $('.modal_title_cash').text(data.data[0].user.username);
 
                         $('#cash_history_table').DataTable({
+                            dom: 'Bfrtip',
                             destroy: true,
                             buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3, 4, 5]
+                                    },
+                                    customize: function ( win ) {
+                                        $(win.document.body)
+                                            .css( 'font-size', '10pt' );
+                    
+                                        $(win.document.body).find( 'table' )
+                                            .addClass( 'compact' )
+                                            .css( 'font-size', 'inherit' );
+                                    },
+                                    footer: true
+                                }
                             ],
                             data:data.data,
                             processing: true,
