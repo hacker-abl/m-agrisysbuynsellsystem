@@ -18,3 +18,7 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 Broadcast::channel('notifications.cashier', function ($user, $id) {
     return true;
 });
+
+Broadcast::channel('commodity', function ($user, $id) {
+    return true;
+});

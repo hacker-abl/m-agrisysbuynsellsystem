@@ -1862,8 +1862,8 @@
                     success:function(data){
                         swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_modal_od').modal('hide');
-                        $('#curCashOnHand').html(data.toFixed(2));
-                         button.disabled = false;
+                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
+                        button.disabled = false;
                         od_expensetable.ajax.reload(); //reload datatable ajax
                     }
                 })

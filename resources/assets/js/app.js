@@ -74,4 +74,43 @@ if(document.getElementById('request')) {
     
         }
     });
+
+    axios.get('/commodity/updates').then((response) => {
+        if(response.data) {
+            CommodityUpdateAlert();
+        }
+    });
+    
+    window.Echo.channel('commodity').listen('CommodityUpdated', e => {
+        CommodityUpdateAlert();
+    });
+
+    function CommodityUpdateAlert() {
+        swal({
+            text: 'The price of commodities has been updated by the admin.',
+            button: {
+            text: "Ok",
+            closeModal: false,
+            },
+        })
+        .then(name => {
+            if (!name) throw null;
+        
+            return fetch(`/check_commodity`);
+        })
+        .then(results => {
+            return results.json();
+        })
+        .then(json => {            
+            location.href = "/commodity";
+        })
+        .catch(err => {
+            if (err) {
+                swal("Oh no!", "The AJAX request failed!", "error");
+            } else {
+                swal.stopLoading();
+                swal.close();
+            }
+        });
+    }
 }
