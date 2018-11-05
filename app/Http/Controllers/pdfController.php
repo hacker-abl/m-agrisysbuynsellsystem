@@ -28,11 +28,11 @@ class pdfController extends Controller
 
 		if($name == "trips"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,280);
+			$customPaper = array(0,0,288,330);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "expense"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,200);
+			$customPaper = array(0,0,288,300);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
@@ -40,7 +40,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,280);
+			$customPaper = array(0,0,288,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
@@ -93,48 +93,57 @@ class pdfController extends Controller
 		    font-style: normal;
 		    font-size: 13px;
 		}
+
+		td, th {
+			border: 1px solid black;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
 		</style>
 		</head>
 		<body>
 		<basefont size='4'>
-		<h3 align='center'>M-AGRI - TRIPS</h3>
-		<br>";
+		<h2 align='center'>TRIPS</h2>
+		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
 				<td width='40%'><span>Trip Ticket: </span></td>
-				<td width='60%' align='right'><span><b>".$request->ticket_clone."</b></span></td>
+				<td width='60%' align='right'><span>".$request->ticket_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Expense: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->expense_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->expense_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Commodity: </span></td>
-				<td align='right'><span><b>".$request->commodity_clone."</b></span></td>
+				<td align='right'><span>".$request->commodity_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Driver: </span></td>
-				<td align='right'><span><b>".$request->driver_id_clone."</b></span></td>
+				<td align='right'><span>".$request->driver_id_clone."</span></td>
 				</tr>
 				<tr>
-				<td><span>Plate #: </span></td>
-				<td align='right'><span><b>".$request->plateno_clone."</b></span></td>
+				<td><span>Plate No.: </span></td>
+				<td align='right'><span>".$request->plateno_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Destination: </span></td>
-				<td align='right'><span><b>".$request->destination_clone."</b></span></td>
+				<td align='right'><span>".$request->destination_clone."</span></td>
 				</tr>
 				<tr>
-				<td><span># of Liters: </span></td>
-				<td align='right'><span><b>".$request->num_liters_clone."</b></span></td>
+				<td><span>No. of Liters: </span></td>
+				<td align='right'><span>".$request->num_liters_clone."</span></td>
 				</tr>
 				</table>
 				<br>
 				<br>
-				<div style='margin:0 auto; width:160px;'>
-				".$generator->getBarcode($request->ticket_clone, $generator::TYPE_CODE_39, 1)."
-				</div>
+				
+				<img style='width:100%;' src='data:image/png;base64,".base64_encode($generator->getBarcode($request->ticket_clone, $generator::TYPE_CODE_39, 1, 35))."'>
+
 				</div>";
 
 		self::generate_pdf($pdf,'trips');
@@ -154,27 +163,45 @@ class pdfController extends Controller
 		    font-style: normal;
 		    font-size: 13px;
 		}
+
+		td, th {
+			border: 1px solid black;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
 		</style>
 		</head>
 		<body>
 		<basefont size='4'>
-		<h3 align='center'>M-AGRI - EXPENSE</h3>
-		<br>";
+		<h2 align='center'>EXPENSE</h2>
+		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
+				<td width='40%'><span>Transaction No.: </span></td>
+				<td width='60%' align='right'><span>".$request->trans_clone."</span></td>
+				</tr>
+				<tr>
 				<td width='40%'><span>Name: </span></td>
-				<td width='60%' align='right'><span><b>".$request->expense_clone."</b></span></td>
+				<td width='60%' align='right'><span>".$request->expense_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Type: </span></td>
-				<td align='right'><span><b>".$request->type_clone."</b></span></td>
+				<td align='right'><span>".$request->type_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->amount_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
+
+				<br>
+				<br>
+				
+				<img style='width:100%;' src='data:image/png;base64,".base64_encode($generator->getBarcode($request->trans_clone, $generator::TYPE_CODE_39, 1, 35))."'>
 
 		        </div>";
 
@@ -195,37 +222,46 @@ class pdfController extends Controller
 		    font-style: normal;
 		    font-size: 13px;
 		}
+
+		td, th {
+			border: 1px solid black;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
 		</style>
 		</head>
 		<body>
 		<basefont size='4'>
-		<h3 align='center'>M-AGRI - DAILY TIME RECORD</h3>
-		<br>";
+		<h2 align='center'>DAILY TIME RECORD</h2>
+		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
 				<td width='40%'><span>Name: </span></td>
-				<td width='60%' align='right'><span><b>".$request->employee_id_clone."</b></span></td>
+				<td width='60%' align='right'><span>".$request->employee_id_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Role: </span></td>
-				<td align='right'><span><b>".$request->role_clone."</b></span></td>
+				<td align='right'><span>".$request->role_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Overtime: </span></td>
-				<td align='right'><span><b>".$request->overtime_clone."</b></span></td>
+				<td align='right'><span>".$request->overtime_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Rate: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->rate_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->rate_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
-				<td><span># of hours: </span></td>
-				<td align='right'><span><b>".$request->num_hours_clone."</b></span></td>
+				<td><span>No. of hours: </span></td>
+				<td align='right'><span>".$request->num_hours_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Salary: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->salary_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->salary_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 
@@ -248,45 +284,58 @@ class pdfController extends Controller
 		    font-style: normal;
 		    font-size: 13px;
 		}
+
+		td, th {
+			border: 1px solid black;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
 		</style>
 		</head>
 		<body>
 		<basefont size='4'>
-		<h3 align='center'>M-AGRI - OUTBOUND DELIVERIES</h3>
-		<br>";
+		<h2 align='center'>OUTBOUND DELIVERIES</h2>
+		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
 				<td width='40%'><span>Outbound ticket: </span></td>
-				<td width='60%' align='right'><span><b>".$request->ticket_clone."</b></span></td>
+				<td width='60%' align='right'><span>".$request->ticket_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Commodity: </span></td>
-				<td align='right'><span><b>".$request->commodity_clone."</b></span></td>
+				<td align='right'><span>".$request->commodity_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Destination: </span></td>
-				<td align='right'><span><b>".$request->destination_clone."</b></span></td>
+				<td align='right'><span>".$request->destination_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Driver: </span></td>
-				<td align='right'><span><b>".$request->driver_id_clone."</b></span></td>
+				<td align='right'><span>".$request->driver_id_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Company: </span></td>
-				<td align='right'><span><b>".$request->company_clone."</b></span></td>
+				<td align='right'><span>".$request->company_clone."</span></td>
 				</tr>
 				<tr>
-				<td><span>Plate #: </span></td>
-				<td align='right'><span><b>".$request->plateno_clone."</b></span></td>
+				<td><span>Plate No.: </span></td>
+				<td align='right'><span>".$request->plateno_clone."</span></td>
 				</tr>
 				<tr>
-				<td><span># of liters: </span></td>
-				<td align='right'><span><b>".$request->liter_clone."</b></span></td>
+				<td><span>No. of liters: </span></td>
+				<td align='right'><span>".$request->liter_clone."</span></td>
+				</tr>
+				<tr>
+				<td><span>No. of kilos: </span></td>
+				<td align='right'><span>".$request->kilos_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Allowance: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->allowance_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->allowance_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 				<br>
@@ -313,29 +362,38 @@ class pdfController extends Controller
 		    font-style: normal;
 		    font-size: 13px;
 		}
+
+		td, th {
+			border: 1px solid black;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
 		</style>
 		</head>
 		<body>
 		<basefont size='4'>
-		<h3 align='center'>M-AGRI - CASH ADVANCE</h3>
-		<br>";
+		<h2 align='center'>CASH ADVANCE</h2>
+		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
 				<td width='40%'><span>Name: </span></td>
-				<td width='60%' align='right'><span><b>".$request->customer_id_clone."</b></span></td>
+				<td width='60%' align='right'><span>".$request->customer_id_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Reason: </span></td>
-				<td align='right'><span><b>".$request->reason_clone."</b></span></td>
+				<td align='right'><span>".$request->reason_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->amount_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Balance: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->balance_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->balance_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 		        </div>";
@@ -369,7 +427,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h2 align='center'>M-AGRI - PURCHASE</h2>
+		<h2 align='center'>PURCHASE</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
@@ -387,7 +445,7 @@ class pdfController extends Controller
 				<td align='right'><span>".$request->commodity_clone."</span></td>
 				</tr>
 				<tr>
-				<td><span>Type: </span></td>
+				<td><span>Wet/Dry: </span></td>
 				<td align='right'><span>".$request->type_clone."</span></td>
 				</tr>
 				<tr>
@@ -474,7 +532,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h2 align='center'>M-AGRI - SALES</h2>
+		<h2 align='center'>SALES</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
@@ -498,10 +556,6 @@ class pdfController extends Controller
 				<tr>
 				<td><span>Kilos: </span></td>
 				<td align='right'><span>".number_format($request->kilos_clone, $this->getLength($request->kilos_clone), '.', ',')."</span></td>
-				</tr>
-				<tr>
-				<td><span>Payment Method: </span></td>
-				<td align='right'><span>".$request->payment_method_clone."</span></td>
 				</tr>";
 
 				if($request->payment_method_clone == "Check"){
@@ -542,34 +596,43 @@ class pdfController extends Controller
 		    font-style: normal;
 		    font-size: 13px;
 		}
+
+		td, th {
+			border: 1px solid black;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
 		</style>
 		</head>
 		<body>
 		<basefont size='4'>
-		<h3 align='center'>M-AGRI - BALANCE PAYMENT</h3>
-		<br>";
+		<h2 align='center'>BALANCE PAYMENT</h2>
+		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
 				<td width='40%'><span>Name: </span></td>
-				<td width='60%' align='right'><span><b>".$request->customer_id1_clone."</b></span></td>
+				<td width='60%' align='right'><span>".$request->customer_id1_clone."</span></td>
 				</tr>";
 
 		if($request->paymentmethod_clone == "Check"){
 			$pdf .= "
 				<tr>
 				<td width='40%'><span>Check No.: </span></td>
-				<td width='60%' align='right'><span><b>".$request->checknumber_clone."</b></span></td>
+				<td width='60%' align='right'><span>".$request->checknumber_clone."</span></td>
 				</tr>";
 		}
 		$pdf .= "
 				<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->amount1_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->amount1_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Balance: </span></td>
-				<td align='right'><span><b>₱ ".number_format($request->balance2_clone, 2, '.', ',')."</b></span></td>
+				<td align='right'><span>₱ ".number_format($request->balance2_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 		        </div>";

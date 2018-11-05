@@ -32,6 +32,7 @@
                                 <input type="hidden" id="expense_clone" name="expense_clone">
                                 <input type="hidden" id="type_clone" name="type_clone">
                                 <input type="hidden" id="amount_clone" name="amount_clone">
+                                <input type="hidden" id="trans_clone" name="trans_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
@@ -138,6 +139,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -417,14 +419,14 @@
          
                     // Total over this page
                     pageTotal = api
-                        .column( 2, { page: 'current'} )
+                        .column( 3, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
          
                     // Update footer
-                    $( api.column( 2 ).footer() ).html(
+                    $( api.column( 3 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
@@ -433,7 +435,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5 ]
+                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -512,14 +514,14 @@
                  
                             // Total over this page
                             pageTotal = api
-                                .column( 2, { page: 'current'} )
+                                .column( 3, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
                  
                             // Update footer
-                            $( api.column( 2 ).footer() ).html(
+                            $( api.column( 3 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal,2)
                             );
                         },
@@ -528,7 +530,7 @@
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                 },
                                 customize: function ( win ) {
                                     $(win.document.body)
@@ -598,14 +600,14 @@
              
                         // Total over this page
                         pageTotal = api
-                            .column( 2, { page: 'current'} )
+                            .column( 3, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0 );
              
                         // Update footer
-                        $( api.column( 2 ).footer() ).html(
+                        $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
                     },
@@ -614,7 +616,7 @@
                         {
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                             },
                             customize: function ( win ) {
                                 $(win.document.body)
@@ -692,14 +694,14 @@
                  
                             // Total over this page
                             pageTotal = api
-                                .column( 2, { page: 'current'} )
+                                .column( 3, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
                  
                             // Update footer
-                            $( api.column( 2 ).footer() ).html(
+                            $( api.column( 3 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal,2)
                             );
                         },
@@ -708,7 +710,7 @@
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                 },
                                 customize: function ( win ) {
                                     $(win.document.body)
@@ -779,14 +781,14 @@
              
                         // Total over this page
                         pageTotal = api
-                            .column( 2, { page: 'current'} )
+                            .column( 3, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0 );
              
                         // Update footer
-                        $( api.column( 2 ).footer() ).html(
+                        $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
                     },
@@ -795,7 +797,7 @@
                         {
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                             },
                             customize: function ( win ) {
                                 $(win.document.body)
@@ -1047,14 +1049,14 @@
              
                         // Total over this page
                         pageTotal = api
-                            .column( 2, { page: 'current'} )
+                            .column( 3, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0 );
              
                         // Update footer
-                        $( api.column( 2 ).footer() ).html(
+                        $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
                     },
@@ -1063,7 +1065,7 @@
                         {
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                             },
                             customize: function ( win ) {
                                 $(win.document.body)
@@ -1227,14 +1229,14 @@
              
                         // Total over this page
                         pageTotal = api
-                            .column( 2, { page: 'current'} )
+                            .column( 3, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0 );
              
                         // Update footer
-                        $( api.column( 2 ).footer() ).html(
+                        $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
                     },
@@ -1243,7 +1245,7 @@
                         {
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                             },
                             customize: function ( win ) {
                                 $(win.document.body)
@@ -1502,14 +1504,14 @@
              
                         // Total over this page
                         pageTotal = api
-                            .column( 2, { page: 'current'} )
+                            .column( 3, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0 );
              
                         // Update footer
-                        $( api.column( 2 ).footer() ).html(
+                        $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
                     },
@@ -1518,7 +1520,7 @@
                         {
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                             },
                             customize: function ( win ) {
                                 $(win.document.body)
@@ -1682,14 +1684,14 @@
              
                         // Total over this page
                         pageTotal = api
-                            .column( 2, { page: 'current'} )
+                            .column( 3, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0 );
              
                         // Update footer
-                        $( api.column( 2 ).footer() ).html(
+                        $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
                     },
@@ -1698,7 +1700,7 @@
                         {
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
+                                columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                             },
                             customize: function ( win ) {
                                 $(win.document.body)
@@ -2012,6 +2014,7 @@
                 $("#expense_clone").val($("#expense").val());
                 $("#type_clone").val($("#type").val());
                 $("#amount_clone").val($("#amount").val());
+                $("#trans_clone").val($("#trans_number").val());
             });
             //EXPENSE Datatable ends here
 
