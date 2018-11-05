@@ -118,8 +118,7 @@ class purchasesController extends Controller
                 $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
                
 
-            event(new PurchasesUpdated($purchases));
-            event(new BalanceUpdated($purchases));
+            
         }
         if($request->get('button_action1') == 'update'){
             $purchases=  Purchases::find($request->get('id'));
@@ -197,8 +196,7 @@ class purchasesController extends Controller
                 $purchases->save();
             
 
-            event(new PurchasesUpdated($purchases));
-            event(new BalanceUpdated($purchases));
+            
         }
       
     }
@@ -215,6 +213,9 @@ class purchasesController extends Controller
 
             $balance = balance::where('customer_id', '=',$request->customer)
             ->decrement('balance', $request->balance1 - $request->balance);
+
+            event(new PurchasesUpdated($released));
+            event(new BalanceUpdated($released));
         }else{
             $logged_id = Auth::user()->emp_id;
             $name= employee::find($logged_id);
@@ -227,6 +228,9 @@ class purchasesController extends Controller
 
             $balance = balance::where('customer_id', '=',$request->customer)
             ->decrement('balance', $request->balance1 - $request->balance);
+
+            event(new PurchasesUpdated($released));
+            event(new BalanceUpdated($released));
         }
 
         $userGet = User::where('id', '=', $user->id)->first();
@@ -317,7 +321,7 @@ class purchasesController extends Controller
             }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete===0 && $edit===0){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>';
             }else{
-              return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$expense->id.'"><i class="material-icons">done_all</i></button>';
+              return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>';
             }
         })
         ->addColumn('wholename', function ($data){

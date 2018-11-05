@@ -167,6 +167,8 @@
 
         $(document).ready(function() {
 
+            document.title = "M-Agri - Employees";
+
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -187,7 +189,22 @@
             var employeetable = $('#employeetable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                ],
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 3, 4, 5, 6]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    }
+                ],	
                 processing: true,
                 columnDefs: [
   				{

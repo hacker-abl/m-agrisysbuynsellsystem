@@ -19457,14 +19457,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Echo.channel('homepage').listen('BalanceUpdated', function (e) {
                 if (e.paymentamount) {
                     _this2.balance[0].amount = parseFloat(_this2.balance[0].amount) - parseFloat(e.paymentamount);
+                    if (_this2.balance[0].amount < 0) {
+                        _this2.balance[0].amount = 0;
+                    }
                     var totalYear = parseFloat($("#totalBalanceYear").text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
                     var totalMonth = parseFloat($("#totalBalanceMonth").text().replace(/[^\d.]/g, '')) - parseFloat(e.paymentamount);
                 } else if (e.partial) {
                     _this2.balance[0].amount = parseFloat(_this2.balance[0].amount) - parseFloat(e.partial);
+                    if (_this2.balance[0].amount < 0) {
+                        _this2.balance[0].amount = 0;
+                    }
                     var totalYear = parseFloat($("#totalBalanceYear").text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
                     var totalMonth = parseFloat($("#totalBalanceMonth").text().replace(/[^\d.]/g, '')) - parseFloat(e.partial);
                 } else {
                     _this2.balance[0].amount = parseFloat(_this2.balance[0].amount) + parseFloat(e.amount);
+                    if (_this2.balance[0].amount < 0) {
+                        _this2.balance[0].amount = 0;
+                    }
                     var totalYear = parseFloat($("#totalBalanceYear").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
                     var totalMonth = parseFloat($("#totalBalanceMonth").text().replace(/[^\d.]/g, '')) + parseFloat(e.amount);
                 }

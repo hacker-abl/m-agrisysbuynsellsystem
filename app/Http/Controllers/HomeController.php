@@ -15,6 +15,7 @@ use App\sales;
 use App\balance;
 use App\expense;
 use App\trip_expense;
+use App\od_expense;
 use App\ca;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +59,7 @@ class HomeController extends Controller
         $latestCustomer = customer::latest()->first();
 
         $totalSalesYear = sales::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(amount) AS total_sales')]);
-        $totalPurchasesYear = purchases::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(total) AS total_purchases')]);
+        $totalPurchasesYear = purchases::whereYear('created_at', Carbon::today()->year)->where('released_by', '!=' ,'')->get([DB::raw('SUM(total) AS total_purchases')]);
         
         $balanceYear = ca::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(amount) AS amount')]);
         $paymentYear1 = paymentlogs::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(paymentamount) AS amount')]);
@@ -66,13 +67,14 @@ class HomeController extends Controller
         $totalBalanceYear = 0;
         $totalBalanceYear = $balanceYear[0]->amount - ($paymentYear1[0]->amount + $paymentYear2[0]->amount);
         
-        $totalExpenseYear = expense::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(amount) AS total_expense')]);
-        $totalTripExpenseYear = trip_expense::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalExpenseYear = expense::whereYear('created_at', Carbon::today()->year)->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpenseYear = trip_expense::whereYear('created_at', Carbon::today()->year)->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalOdExpenseYear = od_expense::whereDate('created_at', Carbon::today()->year)->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_od_expense')]);
         $finalTotalExpenseYear = 0;
-        $finalTotalExpenseYear = $totalExpenseYear[0]->total_expense + $totalTripExpenseYear[0]->total_trip_expense;
+        $finalTotalExpenseYear = $totalExpenseYear[0]->total_expense + $totalTripExpenseYear[0]->total_trip_expense + $totalOdExpenseYear[0]->total_od_expense;
 
         $totalSalesMonth = sales::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(amount) AS total_sales')]);
-        $totalPurchasesMonth = purchases::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(total) AS total_purchases')]);
+        $totalPurchasesMonth = purchases::whereMonth('created_at', Carbon::today()->month)->where('released_by', '!=' ,'')->get([DB::raw('SUM(total) AS total_purchases')]);
         
         $balanceMonth = ca::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(amount) AS amount')]);
         $paymentMonth1 = paymentlogs::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(paymentamount) AS amount')]);
@@ -80,18 +82,20 @@ class HomeController extends Controller
         $totalBalanceMonth = 0;
         $totalBalanceMonth = $balanceMonth[0]->amount - ($paymentMonth1[0]->amount + $paymentMonth2[0]->amount);
         
-        $totalExpenseMonth = expense::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(amount) AS total_expense')]);
-        $totalTripExpenseMonth = trip_expense::whereMonth('created_at', Carbon::today()->month)->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalExpenseMonth = expense::whereMonth('created_at', Carbon::today()->month)->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpenseMonth = trip_expense::whereMonth('created_at', Carbon::today()->month)->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalOdExpenseMonth = od_expense::whereDate('created_at', Carbon::today()->month)->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_od_expense')]);
         $finalTotalExpenseMonth = 0;
-        $finalTotalExpenseMonth = $totalExpenseMonth[0]->total_expense + $totalTripExpenseMonth[0]->total_trip_expense;
+        $finalTotalExpenseMonth = $totalExpenseMonth[0]->total_expense + $totalTripExpenseMonth[0]->total_trip_expense + $totalOdExpenseMonth[0]->total_od_expense;
 
         $totalSalesToday = sales::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_sales')]);
-        $totalPurchasesToday = purchases::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(total) AS total_purchases')]);
+        $totalPurchasesToday = purchases::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(total) AS total_purchases')]);
         $totalBalanceToday = balance::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(balance) AS total_balance')]);
-        $totalExpenseToday = expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_expense')]);
-        $totalTripExpenseToday = trip_expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalExpenseToday = expense::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpenseToday = trip_expense::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalOdExpenseToday = od_expense::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_od_expense')]);
 
-        $finalTotalExpenseToday = $totalExpenseToday[0]->total_expense + $totalTripExpenseToday[0]->total_trip_expense;
+        $finalTotalExpenseToday = $totalExpenseToday[0]->total_expense + $totalTripExpenseToday[0]->total_trip_expense + $totalOdExpenseToday[0]->total_od_expense;
 
         if($user->role->name === "admin") {
             return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'latestCustomer', 'totalSalesYear', 'totalPurchasesYear', 'totalBalanceYear', 'finalTotalExpenseYear', 'totalSalesToday', 'totalPurchasesToday', 'totalBalanceToday', 'finalTotalExpenseToday', 'totalSalesMonth', 'totalPurchasesMonth', 'totalBalanceMonth', 'finalTotalExpenseMonth'));
@@ -116,7 +120,7 @@ class HomeController extends Controller
     }
 
     public function purchases_today(){
-        $totalPurchasesToday = purchases::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(total) AS total')]);
+        $totalPurchasesToday = purchases::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(total) AS total')]);
         
         if($totalPurchasesToday[0]->total){
             return $totalPurchasesToday;
@@ -142,11 +146,12 @@ class HomeController extends Controller
     }
 
     public function expenses_today(){
-        $totalExpenseToday = expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_expense')]);
-        $totalTripExpenseToday = trip_expense::whereDate('created_at', Carbon::today())->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalExpenseToday = expense::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_expense')]);
+        $totalTripExpenseToday = trip_expense::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_trip_expense')]);
+        $totalOdExpenseToday = od_expense::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(amount) AS total_od_expense')]);
 
         $finalTotalExpenseToday = 0;
-        $finalTotalExpenseToday = $totalExpenseToday[0]->total_expense + $totalTripExpenseToday[0]->total_trip_expense;
+        $finalTotalExpenseToday = $totalExpenseToday[0]->total_expense + $totalTripExpenseToday[0]->total_trip_expense + $totalOdExpenseToday[0]->total_od_expense;
         $arr = array('amount' => $finalTotalExpenseToday);
         return response()->json([
             $arr

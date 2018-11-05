@@ -55,15 +55,13 @@ class expenseController extends Controller
         $expense->status = "On-Hand";
         $expense->released_by = '';
         $expense->save();
-         event(new ExpensesUpdated($expense));
         }
         if($request->get('button_action') == 'update'){
         $expense = Expense::find($request->get('id'));  
         $expense->description = $request->expense;
         $expense->type = $request->type;
         $expense->amount = $request->amount;
-        $expense->save();    
-         event(new ExpensesUpdated($expense));      
+        $expense->save();          
         }
     }
 
@@ -81,6 +79,7 @@ class expenseController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
+            event(new ExpensesUpdated($released));
         }else{
             $logged_id = Auth::user()->emp_id;
             $name= Employee::find($logged_id);
@@ -89,6 +88,7 @@ class expenseController extends Controller
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $released->save();
+            event(new ExpensesUpdated($released));
         }
 
         $userGet = User::where('id', '=', $user->id)->first();

@@ -540,6 +540,19 @@
                                                     $( api.column( 4 ).footer() ).html(
                                                         'Total: <br>₱' + number_format(pageTotal,2)
                                                     );
+
+                                                    // Total over this page
+                                                    pageTotal1 = api
+                                                        .column( 3, { page: 'current'} )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Update footer
+                                                    $( api.column( 3 ).footer() ).html(
+                                                        'Total: <br>₱' + number_format(pageTotal1,2)
+                                                    );
                                                 },
                                                 dom: 'Bfrtip',
                                                 bDestroy: true,
@@ -656,6 +669,19 @@
                                                     $( api.column( 4 ).footer() ).html(
                                                         'Total: <br>₱' + number_format(pageTotal,2)
                                                     );
+
+                                                    // Total over this page
+                                                    pageTotal1 = api
+                                                        .column( 3, { page: 'current'} )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Update footer
+                                                    $( api.column( 3 ).footer() ).html(
+                                                        'Total: <br>₱' + number_format(pageTotal1,2)
+                                                    );
                                                 },
                                                 dom: 'Bfrtip',
                                                 bDestroy: true,
@@ -663,7 +689,7 @@
                                                     {
                                                         extend: 'print',
                                                         exportOptions: {
-                                                            columns: [ 0, 1, 2, 3, 4, 5 ]
+                                                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                                         },
                                                         customize: function ( win ) {
                                                             $(win.document.body)
@@ -799,6 +825,19 @@
                                                     $( api.column( 4 ).footer() ).html(
                                                         'Total: <br>₱' + number_format(pageTotal,2)
                                                     );
+
+                                                    // Total over this page
+                                                    pageTotal1 = api
+                                                        .column( 3, { page: 'current'} )
+                                                        .data()
+                                                        .reduce( function (a, b) {
+                                                            return intVal(a) + intVal(b);
+                                                        }, 0 );
+                                         
+                                                    // Update footer
+                                                    $( api.column( 3 ).footer() ).html(
+                                                        'Total: <br>₱' + number_format(pageTotal1,2)
+                                                    );
                                                 },
                                                 dom: 'Bfrtip',
                                                 bDestroy: true,
@@ -806,7 +845,7 @@
                                                     {
                                                         extend: 'print',
                                                         exportOptions: {
-                                                            columns: [ 0, 1, 2, 3, 4, 5 ]
+                                                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                                         },
                                                         customize: function ( win ) {
                                                             $(win.document.body)
@@ -941,6 +980,19 @@
                                 $( api.column( 4 ).footer() ).html(
                                     'Total: <br>₱' + number_format(pageTotal,2)
                                 );
+
+                                // Total over this page
+                                pageTotal1 = api
+                                .column( 3, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                    
+                                // Update footer
+                                $( api.column( 3 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal1,2)
+                                );
                             },
                             dom: 'Bfrtip',
                             bDestroy: true,
@@ -948,7 +1000,7 @@
                                 {
                                     extend: 'print',
                                     exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4, 5 ]
+                                        columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                     },
                                     customize: function ( win ) {
                                         $(win.document.body)

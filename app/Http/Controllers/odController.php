@@ -158,6 +158,8 @@ class odController extends Controller
         $cash_history->total_cash = $user->cashOnHand - $released->amount;
         $cash_history->type = "Release Cash - Purchases";
         $cash_history->save();
+        
+        event(new ExpensesUpdated($released));
 
         $user->cashOnHand -= $released->amount;
         $user->save();
