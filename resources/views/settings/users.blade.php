@@ -33,7 +33,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div> 
 
                             <div class="row clearfix in_password">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -548,16 +548,14 @@
 
             $(document).on('click', '.delete_user', function(){
                 var id = $(this).attr('id');
-                    swal({
-                title: "Are you sure?",
-                text: "Delete this record!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-                },
-				function(){
+                   swal({
+                    title: "Are you sure?",
+                    text: "Delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
                     $.ajax({
                         url:"{{ route('delete_user') }}",
                         method: "get",
@@ -567,7 +565,8 @@
                         }
                     })
 				swal("Deleted!", "The record has been deleted.", "success");
-			    });
+                    }
+			    })
             });
             //USER Datatable ends here
 

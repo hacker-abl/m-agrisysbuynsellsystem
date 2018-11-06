@@ -32,7 +32,7 @@
                             </li>
                             <li class="dropdown">
                                 <button class="btn btn-sm btn-icon print-icon" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                            </li>
+                            </li> 
                         </ul>
                     </div>
                     <div class="body">
@@ -904,16 +904,14 @@
 
             $(document).on('click', '.delete_pickup', function(){
                 var id = $(this).attr('id');
-                swal({
+               swal({
                     title: "Are you sure?",
-                    text: "Delete this record!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
+                    text: "Delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
                     $.ajax({
                         url:"{{ route('delete_trip') }}",
                         method: "get",
@@ -923,7 +921,8 @@
                         }
                     })
                     swal("Deleted!", "The record has been deleted.", "success");
-                });
+                }
+                })
             });
 
             $("#add_trip").click(function(){

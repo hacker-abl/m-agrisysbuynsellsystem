@@ -25,7 +25,7 @@
                         <h2 class="modal_title">Add Expense</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" title="PRINT AND SAVE" ><i class="material-icons">print</i></button>
+                                <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" title="PRINT AND SAVE" ><i class="material-icons">print</i></button> 
                             </li>
                             <li class="dropdown">
                                 <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_expense') }}">
@@ -1983,13 +1983,11 @@
                 swal({
                     title: "Are you sure?",
                     text: "Delete this record?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
                     $.ajax({
                         url:"{{ route('delete_expense') }}",
                         method: "get",
@@ -1999,6 +1997,7 @@
                              swal("Deleted!", "The record has been deleted.", "success");
                         }
                     })
+                }
                    
                 });
             });

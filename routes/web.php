@@ -98,6 +98,7 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
     Route::post('/check_balance2', 'expenseController@check_balance2')->name('check_balance2');
     Route::post('/print_expense', 'pdfController@expenses')->name('print_expense');
     Route::post('/trip_expense_view', 'tripController@trip_expense_view')->name('trip_expense_view');
+    Route::post('/check_balance_od', 'odController@check_balance_od')->name('check_balance_od');
     Route::post('/od_expense_view', 'odController@od_expense_view')->name('od_expense_view');
     Route::get('/update_expense', 'expenseController@updatedata')->name('update_expense');
     Route::get('/delete_expense', 'expenseController@deletedata')->name('delete_expense');
@@ -116,10 +117,9 @@ Route::group(['middleware'=>['auth', 'user:trips']], function() {
 });
 
 Route::group(['middleware'=>['auth', 'user:od']], function() {
-    //OUTBOUND DELIVERIES
+    //OUTBOUND DELIVERIES 
     Route::get('/outbound', 'odController@index')->name('od');
     Route::post('/release_update_od', 'odController@release_update_od')->name('release_update_od');
-    Route::post('/check_balance_od', 'odController@check_balance_od')->name('check_balance_od');
     Route::post('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
     Route::get('/refresh_id', 'odController@updateId')->name('refresh_id');
     Route::post('/add_delivery', 'odController@store')->name('add_delivery');

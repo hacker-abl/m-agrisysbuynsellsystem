@@ -30,7 +30,7 @@
                                             <input type="text" id="role" name="role" class="form-control" placeholder="Enter role description"  required>
                                         </div>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
 
                             <div class="row clearfix in_password">
@@ -213,16 +213,14 @@
             //Delete Role
             $(document).on('click', '.delete_role', function(){
                 var id = $(this).attr('id');
-                swal({
+               swal({
                     title: "Are you sure?",
-                    text: "Delete this record!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
+                    text: "Delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
                     $.ajax({
                         url:"{{ route('delete_role') }}",
                         method: "get",
@@ -232,7 +230,8 @@
                         }
                     })
                         swal("Deleted!", "The record has been deleted.", "success");
-                });
+                    }
+                })
             });
             //ROLE Datatable ends here
         });

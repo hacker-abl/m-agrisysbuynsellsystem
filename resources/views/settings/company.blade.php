@@ -28,7 +28,7 @@
                                             <input type="text" id="name" name="name" class="form-control" placeholder="Enter company name"  required>
                                         </div>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
 
                             <div class="row clearfix">
@@ -196,16 +196,14 @@
             //Delete Company
             $(document).on('click', '.delete_company', function(){
                 var id = $(this).attr('id');
-                swal({
+               swal({
                     title: "Are you sure?",
                     text: "Delete this record?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-				function(){
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
                     $.ajax({
                         url:"{{ route('delete_company') }}",
                         method: "get",
@@ -215,7 +213,8 @@
                         }
                     })
 				    swal("Deleted!", "The record has been deleted.", "success");
-			    });
+                }
+			    })
             });
             //COMPANY Datatable ends here
         });
