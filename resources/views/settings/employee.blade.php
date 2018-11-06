@@ -292,20 +292,18 @@
                     }
                 })
             });
-
+ 
             //Delete Employee
             $(document).on('click', '.delete_employee', function(){
                 var id = $(this).attr('id');
                 swal({
                     title: "Are you sure?",
-                    text: "Delete this record!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-				function(){
+                    text: "Delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
                     $.ajax({
                         url:"{{ route('delete_employee') }}",
                         method: "get",
@@ -315,7 +313,8 @@
                         }
                     })
 				    swal("Deleted!", "The record has been deleted.", "success");
-			    });
+                }
+			    })
             });
             //EMPLOYEE Datatable ends here
 

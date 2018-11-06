@@ -21,7 +21,7 @@
                             <input type="hidden" id="balance2_clone" name="balance2_clone">
                             <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
-                       </li>
+                       </li> 
                    </ul>
                   </div>
                   <div class="body">
@@ -1307,114 +1307,102 @@
                 swal({
                     title: "Are you sure?",
                     text: "Delete this record?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    $.ajax({
-                        url:"{{ route('delete_ca') }}",
-                        method: "get",
-                        data:{id:id},
-                        success:function(data){                            
-                                  $('#view_cash_advancetable').DataTable().destroy();
-                                  $.ajax({
-                                      url: "{{ route('refresh_view_cashadvance') }}",
-                                      method: 'get',
-                                      data:{id:person_id},
-                                      dataType: 'json',
-                                      success:function(data){
-                                        $.ajax({
-                          url: "{{ route('getCustomer') }}",
+                    icon: "warning",
+                    buttons: true,
+                }).then((willDelete) => {
+                if (willDelete) {
+                  $.ajax({
+                      url:"{{ route('delete_ca') }}",
+                      method: "get",
+                      data:{id:id},
+                      success:function(data){                            
+                            swal("Deleted!", "The record has been deleted.", "success");
+                                    $.ajax({
+                          url: "{{ route('refresh_view_cashadvance') }}",
                           method: 'get',
                           data:{id:person_id},
                           dataType: 'json',
                           success:function(data){
-                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
-                          }
-                        });
-                                          cash_advance_release =  $('#view_cash_advancetable').DataTable({
-                                              "footerCallback": function ( row, data, start, end, display ) {
-                                                  var api = this.api(), data;
-                                       
-                                                  // Remove the formatting to get integer data for summation
-                                                  var intVal = function ( i ) {
-                                                      return typeof i === 'string' ?
-                                                          i.replace(/[\₱,]/g, '')*1 :
-                                                          typeof i === 'number' ?
-                                                              i : 0;
-                                                  };
-                                       
-                                                  // Total over all pages
-                                                  total = api
-                                                      .column( 1 )
-                                                      .data()
-                                                      .reduce( function (a, b) {
-                                                          return intVal(a) + intVal(b);
-                                                      }, 0 );
-                                       
-                                                  // Total over this page
-                                                  pageTotal = api
-                                                      .column( 1, { page: 'current'} )
-                                                      .data()
-                                                      .reduce( function (a, b) {
-                                                          return intVal(a) + intVal(b);
-                                                      }, 0 );
-                                       
-                                                  // Update footer
-                                                  $( api.column( 1 ).footer() ).html(
-                                                      'Total: <br>₱' + number_format(pageTotal,2)
-                                                  );
-                                              },
-                                              dom: 'Bfrtip',
-                                              buttons: [
-                                                  {
-                                                      extend: 'print',
-                                                      exportOptions: {
-                                                          columns: [ 0, 1, 2, 3, 4 ]
-                                                      },
-                                                      customize: function ( win ) {
-                                                          $(win.document.body)
-                                                              .css( 'font-size', '10pt' );
-                                       
-                                                          $(win.document.body).find( 'table' )
-                                                              .addClass( 'compact' )
-                                                              .css( 'font-size', 'inherit' );
-                                                      },
-                                                      footer: true
-                                                  }
-                                              ],
-                                              order: [[ 2, "desc" ]],
-                                              bDestroy: true,
-                                              columnDefs: [
-                                                  {
-                                                      "targets": "_all", // your case first column
-                                                  "className": "text-left",
-                                                      
-                                              }
-                                              ],
-                                              data: data.data,
-                                              columns:[
-                                                  {data: 'reason', name: 'reason'},
-                                                  {data: 'amount', name: 'amount'},
-                                                  {data: 'created_at', name: 'created_at'},
-                                                  {data: 'status', name: 'status'},
-                                                  {data: 'released_by', name: 'released_by'},
-                                                  {data: "action", orderable:false,searchable:false}
-                                              ]
-                                          }); 
+                              $.ajax({
+                                url: "{{ route('getCustomer') }}",
+                                method: 'get',
+                                data:{id:person_id},
+                                dataType: 'json',
+                                success:function(data){
+                                    console.log(data)
+                                    $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                                }
+                              });
+                             cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                  "footerCallback": function ( row, data, start, end, display ) {
+                                      var api = this.api(), data;
+                           
+                                      // Remove the formatting to get integer data for summation
+                                      var intVal = function ( i ) {
+                                          return typeof i === 'string' ?
+                                              i.replace(/[\₱,]/g, '')*1 :
+                                              typeof i === 'number' ?
+                                                  i : 0;
+                                      };
+                           
+                                      // Total over all pages
+                                      total = api
+                                          .column( 1 )
+                                          .data()
+                                          .reduce( function (a, b) {
+                                              return intVal(a) + intVal(b);
+                                          }, 0 );
+                           
+                                      // Total over this page
+                                      pageTotal = api
+                                          .column( 1, { page: 'current'} )
+                                          .data()
+                                          .reduce( function (a, b) {
+                                              return intVal(a) + intVal(b);
+                                          }, 0 );
+                           
+                                      // Update footer
+                                      $( api.column( 1 ).footer() ).html(
+                                          'Total: <br>₱' + number_format(pageTotal,2)
+                                      );
+                                  },
+                                  dom: 'Bfrtip',
+                                  buttons: [
+                                      {
+                                          extend: 'print',
+                                          exportOptions: {
+                                              columns: [ 0, 1, 2, 3, 4 ]
+                                          },
+                                          customize: function ( win ) {
+                                              $(win.document.body)
+                                                  .css( 'font-size', '10pt' );
+                           
+                                              $(win.document.body).find( 'table' )
+                                                  .addClass( 'compact' )
+                                                  .css( 'font-size', 'inherit' );
+                                          },
+                                          footer: true
                                       }
-                                  });    
-                            
-                      refresh_cash_advance_table();
-                      swal("Deleted!", "The record has been deleted.", "success");
-                        }
-                    })
-                   
-                });
-            });
+                                  ],
+                                  order: [[ 2, "desc" ]],
+                                  bDestroy: true,
+                                  data: data.data,
+                                  columns:[
+                                      {data: 'reason', name: 'reason'},
+                                      {data: 'amount', name: 'amount'},
+                                      {data: 'created_at', name: 'created_at'},
+                                      {data: 'status', name: 'status'},
+                                      {data: 'released_by', name: 'released_by'},
+                                      {data: "action", orderable:false,searchable:false}
+                                  ]
+                              }); 
+                          }
+                      });
+                              }
+                          })
+                          } 
+                        });
+                 });
 
             $(document).on('click', '.release_ca', function(event){
                 event.preventDefault();
@@ -1456,14 +1444,14 @@
                                                 dataType: 'json',
                                                 success:function(data){
                                                     $.ajax({
-                          url: "{{ route('getCustomer') }}",
-                          method: 'get',
-                          data:{id:person_id},
-                          dataType: 'json',
-                          success:function(data){
-                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
-                          }
-                        });
+                                                        url: "{{ route('getCustomer') }}",
+                                                        method: 'get',
+                                                        data:{id:person_id},
+                                                        dataType: 'json',
+                                                        success:function(data){
+                                                            $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                                                        }
+                                                      });
                                                     cash_advance_release =  $('#view_cash_advancetable').DataTable({
                                                         "footerCallback": function ( row, data, start, end, display ) {
                                                             var api = this.api(), data;

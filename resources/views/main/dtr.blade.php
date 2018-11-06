@@ -29,7 +29,7 @@
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
-                        </ul>
+                        </ul> 
 					</div>
 					<div class="body">
 						<form class="form-horizontal " id="dtr_form">
@@ -775,14 +775,12 @@
                 swal({
                     title: "Are you sure?",
                     text: "Delete this record?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    $.ajax({
+                    icon: "warning",
+                    buttons: true,
+                }).then((willDelete) => {
+                if (willDelete) {
+
+                     $.ajax({
                         url:"{{ route('delete_dtr') }}",
                         method: "get",
                         data:{id:id},
@@ -891,7 +889,8 @@
                         }
                     })
                    
-                });
+                }
+            })
             });
 
             $("#print_dtr").click(function(event) {

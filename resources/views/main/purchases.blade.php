@@ -39,7 +39,7 @@
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
-                        </ul>
+                        </ul> 
                         </div>
                         <div class="body">
                              <ul class="nav nav-tabs">
@@ -962,16 +962,14 @@
             //Delete Purchases
             $(document).on('click', '.delete_purchase', function(){
                 var id = $(this).attr('id');
-                swal({
-                        title: "Are you sure?",
-                        text: "Delete this record?",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonClass: "btn-danger",
-                        confirmButtonText: "Yes, delete it!",
-                        closeOnConfirm: false
-                    },
-                    function(){
+               swal({
+                    title: "Are you sure?",
+                    text: "Delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
                         $.ajax({
                             url:"{{ route('delete_purchases') }}",
                             method: "get",
@@ -981,8 +979,9 @@
                                 refresh_purchase_table();
                             }
                         })
+                      }
 
-                    });
+                    })
             });
 
             $(document).on('click', '.edit_purchase', function(){

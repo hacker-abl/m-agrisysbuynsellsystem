@@ -30,7 +30,7 @@
                                             <input type="text" id="name" name="name" class="form-control" placeholder="Enter commodity name" required>
                                         </div>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
 
                             <div class="row clearfix">
@@ -236,13 +236,11 @@
                 swal({
                     title: "Are you sure?",
                     text: "Delete this record?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-				function(){
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
 				    $.ajax({
                         url:"{{ route('delete_commodity') }}",
                         method: "get",
@@ -252,7 +250,8 @@
                         }
                     })
 				    swal("Deleted!", "The record has been deleted.", "success");
-			    });
+                }
+			    })
             });
             //COMMODITY Datatable ends here
         });

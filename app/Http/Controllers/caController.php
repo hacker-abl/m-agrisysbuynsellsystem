@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; 
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
@@ -235,7 +235,7 @@ class caController extends Controller
         );
         
         echo json_encode($output);
-        return $user->cashOnHand;
+        //return $user->cashOnHand;
     }
 
     public function check_balance4(Request $request){

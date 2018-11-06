@@ -16,11 +16,11 @@ class AlterNotificiationsTableColumn extends Migration
         Schema::table('notifications', function (Blueprint $table){
             $table->unsignedInteger('cash_advance_id')->nullable()->change();
             $table->unsignedInteger('expense_id')->nullable()->after('cash_advance_id');
-            $table->foreign('expense_id')->references('id')->on('expenses');
+            $table->foreign('expense_id')->references('id')->on('expenses')->onDelete('cascade');;
             $table->unsignedInteger('trip_expense_id')->nullable()->after('cash_advance_id');
-            $table->foreign('trip_expense_id')->references('id')->on('trip_expense');
+            $table->foreign('trip_expense_id')->references('id')->on('trip_expense')->onDelete('cascade');;
             $table->unsignedInteger('dtr_expense_id')->nullable()->after('cash_advance_id');
-            $table->foreign('dtr_expense_id')->references('id')->on('dtr_expense');
+            $table->foreign('dtr_expense_id')->references('id')->on('dtr_expense')->onDelete('cascade');;
             $table->string('table_source')->after('cashier_id');
         });
     }

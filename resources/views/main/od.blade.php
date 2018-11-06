@@ -27,7 +27,7 @@
                                 <input type="hidden" id="liter_clone" name="liter_clone">
                                 <input type="hidden" id="kilos_clone" name="kilos_clone">
                                 <input type="hidden" id="allowance_clone" name="allowance_clone">
-                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button> 
                                 </form>
                             </li>
                         </ul>
@@ -882,15 +882,13 @@
 			$(document).on('click', '.delete_delivery', function(){
 				var id = $(this).attr('id');
 				swal({
-					title: "Are you sure?",
-					text: "Delete this record!",
-					type: "warning",
-					showCancelButton: true,
-					confirmButtonClass: "btn-danger",
-					confirmButtonText: "Yes, delete it!",
-					closeOnConfirm: false
-				},
-				function(){
+                    title: "Are you sure?",
+                    text: "Delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                if (willDelete) {
 					$.ajax({
 						url:"{{ route('delete_delivery') }}",
 						method: "get",
@@ -900,7 +898,8 @@
 						}
 					})
 					swal("Deleted!", "The record has been deleted.", "success");
-				});
+				}
+				})
 			});
 			//OUTBOUND DELIVERIES Datatable ends here
 
