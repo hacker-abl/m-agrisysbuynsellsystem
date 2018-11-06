@@ -103,6 +103,8 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
     Route::get('/update_expense', 'expenseController@updatedata')->name('update_expense');
     Route::get('/delete_expense', 'expenseController@deletedata')->name('delete_expense');
     Route::get('/getNumber', 'expenseController@getNumber')->name('getNumber');
+    Route::post('/release_update', 'tripController@release_update')->name('release_update');
+    Route::post('/release_update_od', 'odController@release_update_od')->name('release_update_od');
 
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
@@ -111,7 +113,6 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
 Route::group(['middleware'=>['auth', 'user:trips']], function() {
     //TRIPS
     Route::get('/trips', 'tripController@index')->name('trips');
-    Route::post('/release_update', 'tripController@release_update')->name('release_update');
     Route::post('/release_update_dtr', 'dtrController@release_update_dtr')->name('release_update_dtr');
     Route::post('/print_trip', 'pdfController@trips')->name('print_trip');
 });
@@ -119,7 +120,6 @@ Route::group(['middleware'=>['auth', 'user:trips']], function() {
 Route::group(['middleware'=>['auth', 'user:od']], function() {
     //OUTBOUND DELIVERIES 
     Route::get('/outbound', 'odController@index')->name('od');
-    Route::post('/release_update_od', 'odController@release_update_od')->name('release_update_od');
     Route::post('/refresh_deliveries', 'odController@refresh')->name('refresh_deliveries');
     Route::get('/refresh_id', 'odController@updateId')->name('refresh_id');
     Route::post('/add_delivery', 'odController@store')->name('add_delivery');
@@ -157,6 +157,7 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
     Route::post('/check_balance4', 'caController@check_balance4')->name('check_balance4');
     Route::get('/update_ca', 'caController@updatedata')->name('update_ca');
     Route::get('/delete_ca', 'caController@deletedata')->name('delete_ca');
+    Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
 });
 
 Route::group(['middleware'=>['auth', 'user:purchases']], function() {
@@ -180,7 +181,6 @@ Route::group(['middleware'=>['auth', 'user:dtr']], function() {
     Route::get('/check_employee', 'dtrController@check_employee')->name('check_employee');
     Route::get('/dtr_details', 'dtrController@dtr_details')->name('dtr_details');
     Route::get('/refresh_dtr', 'dtrController@refresh')->name('refresh_dtr');
-    Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
 	Route::get('/refresh_view_total', 'dtrController@refresh_total')->name('refresh_view_total');
     Route::post('/add_dtr', 'dtrController@store')->name('add_dtr');
     Route::post('/add_dtr_expense', 'dtrController@add_dtr_expense')->name('add_dtr_expense');

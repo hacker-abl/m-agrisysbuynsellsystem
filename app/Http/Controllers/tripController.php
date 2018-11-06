@@ -123,20 +123,15 @@ class tripController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
-            $cashOnHand = User::find(Auth::user()->id);
-            $cashOnHand->cashOnHand -= $released->amount;
-            $cashOnHand->save();
             event(new ExpensesUpdated($released));
         }else{
             $logged_id = Auth::user()->emp_id;
-            $name= Employee::find($logged_id);             
+            $name= Employee::find($logged_id);      
+            $user = User::find(Auth::user()->id);       
             $released=trip_expense::find($request->id);
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;;
             $released->save();
-            $cashOnHand = User::find(Auth::user()->id);
-            $cashOnHand->cashOnHand -= $released->amount;
-            $cashOnHand->save();
             event(new ExpensesUpdated($released));
         }
 

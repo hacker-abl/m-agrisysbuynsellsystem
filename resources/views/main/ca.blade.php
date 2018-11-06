@@ -1205,7 +1205,6 @@
                           data:{id:person_id},
                           dataType: 'json',
                           success:function(data){
-                              console.log(data)
                               $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
                           }
                         });
@@ -1329,7 +1328,6 @@
                                 data:{id:person_id},
                                 dataType: 'json',
                                 success:function(data){
-                                    console.log(data)
                                     $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
                                 }
                               });

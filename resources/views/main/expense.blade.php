@@ -1754,11 +1754,6 @@
 
 
             //---END of OD EXPense
-
-            $(document).on('click', '.release_expense', function(){
-                id = $(this).attr("id");
-            });
-
             $(document).on('click', '.release_expense_normal', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");

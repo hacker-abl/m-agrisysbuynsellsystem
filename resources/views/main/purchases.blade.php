@@ -1720,9 +1720,10 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        console.log(data);
                         swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_purchase_modal').modal('hide');
-                        $('#curCashOnHand').html(data.toFixed(2));
+                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
 
                         refresh_purchase_table();
                     }
