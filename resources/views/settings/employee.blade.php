@@ -276,7 +276,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        
                         $('#button_action').val('update');
                         $('#id').val(id);
                         $('#fname').val(data.fname);
