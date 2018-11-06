@@ -112,7 +112,7 @@
                                     <div class="form-group">
                                         <select type="text" id="commodity" name="commodity" class="form-control"value="" placeholder="Select item" required style="width:100%;">
                                             @foreach($commodity as $a)
-                                            <option value="{{ $a->id }}">{{ $a->name }} Price: {{ $a->price }}({{ $a->suki_price }})</option>
+                                            <option value="{{ $a->id }}">{{ $a->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -722,7 +722,7 @@
                                 '<div class="form-group">'+
                                     '<select type="text" id="commodity'+item+'" name="commodity" class="form-control" placeholder="Select item" required style="width:100%;">'+
                                         '@foreach($commodity as $a)'+
-                                        '<option value="{{ $a->id }}">{{ $a->name }} Price: {{ $a->price }}({{ $a->suki_price }})</option>'+
+                                        '<option value="{{ $a->id }}">{{ $a->name }}</option>'+
                                         '@endforeach'+
                                     '</select>'+
                                 '</div>'+

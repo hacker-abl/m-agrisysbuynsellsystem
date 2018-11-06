@@ -25,8 +25,8 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <select id="emp_id" name="emp_id" class="form-control" placeholder="Enter employee" required style="width:100%;">
-                                            @foreach($employee as $emp)
-                                                @if(strcasecmp($employee[$emp->id-1]->cashier->role, 'cashier') == 0 || strcasecmp($employee[$emp->id-1]->cashier->role, 'manager') == 0 || strcasecmp($employee[$emp->id-1]->cashier->role, 'secretary') == 0)
+                                            @foreach($employee as $key => $emp)
+                                                @if(strcasecmp($employee[$key]->cashier->role, 'cashier') == 0 || strcasecmp($employee[$key]->cashier->role, 'manager') == 0 || strcasecmp($employee[$key]->cashier->role, 'secretary') == 0)
                                                 <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
                                                 @endif
                                             @endforeach
@@ -225,15 +225,6 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    <!-- <div class="row">Action</div>
-                                    <div class="row">
-                                        <div class="col-md-12">                                           
-                                            <input type="checkbox" id="edit_permission" class="chk-col-red" name="edit_permission" value="1">
-                                            <label for="edit_permission">Edit</label>
-                                            <input type="checkbox" id="delete_permission" class="chk-col-red" name="delete_permission" value="1">
-                                            <label for="delete_permission">Delete</label>                                              
-                                        </div>                                                                                   
-                                    </div> -->
                                 @endif
                             </div>
                         </div>
@@ -319,8 +310,6 @@
         });
 
          $(":checkbox").change(function(){
-            // $.post("index.php", { id: this.id, checked: this.checked });
-             
             var suffix = this.id.match(/\d+/); // 123456
             if ($("#permission"+suffix).is(':checked')){
                             $("#delete_permission"+suffix).removeAttr("disabled");
