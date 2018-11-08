@@ -2512,9 +2512,7 @@
             $('#type1').on('select2:select', function (e) {
                 var id = $(e.currentTarget).val()
                 if(id == "Dry"){
-                    $("#tare").prop("readonly", true);
                     $("#moist").prop("readonly", true);
-                    $("#tare").val('0');
                     $("#moist").val('0');
                     tare1(this);
                     moist1(this);
@@ -2528,9 +2526,7 @@
             $('#type2').on('select2:select', function (e) {
                 var id = $(e.currentTarget).val()
                 if(id == "Dry"){
-                    $("#tare2").prop('readonly', true);
                     $("#moist2").prop('readonly', true);
-                    $("#tare2").val('0');
                     $("#moist2").val('0');
                 }
                 else{
