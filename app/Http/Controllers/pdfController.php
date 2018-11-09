@@ -28,35 +28,35 @@ class pdfController extends Controller
 
 		if($name == "trips"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,330);
+			$customPaper = array(0,0,240,330);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "expense"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,300);
+			$customPaper = array(0,0,240,300);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,200);
+			$customPaper = array(0,0,240,200);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,350);
+			$customPaper = array(0,0,240,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,220);
+			$customPaper = array(0,0,240,220);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "sales"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,350);
+			$customPaper = array(0,0,240,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "purchases"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,475);
+			$customPaper = array(0,0,240,475);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "balance_payment"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,288,200);
+			$customPaper = array(0,0,240,200);
 			$dompdf->set_paper($customPaper);
 		}
 		
@@ -106,13 +106,14 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>TRIPS</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
-				<td width='40%'><span>Trip Ticket: </span></td>
-				<td width='60%' align='right'><span>".$request->ticket_clone."</span></td>
+				<td width='50%'><span>Trip Ticket: </span></td>
+				<td width='50%' align='right'><span>".$request->ticket_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Expense: </span></td>
@@ -176,7 +177,8 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>EXPENSE</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%'>
@@ -235,7 +237,8 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>DAILY TIME RECORD</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%'>
@@ -297,13 +300,14 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>OUTBOUND DELIVERIES</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%'>
 				<tr>
-				<td width='40%'><span>Outbound ticket: </span></td>
-				<td width='60%' align='right'><span>".$request->ticket_clone."</span></td>
+				<td width='45%'><span>Outbound ticket: </span></td>
+				<td width='55%' align='right'><span>".$request->ticket_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Commodity: </span></td>
@@ -375,7 +379,8 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>CASH ADVANCE</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%'>
@@ -428,13 +433,14 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>PURCHASE</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%;'>
 				<tr>
-				<td width='40%'><span>Transaction No.: </span></td>
-				<td width='60%' align='right'><span>".$request->ticket_clone."</span></td>
+				<td width='50%'><span>Transaction No.: </span></td>
+				<td width='50%' align='right'><span>".$request->ticket_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Customer: </span></td>
@@ -533,7 +539,8 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>SALES</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%'>
@@ -609,7 +616,8 @@ class pdfController extends Controller
 		<body>
 		<basefont size='4'>
 		<h2 align='center'>BALANCE PAYMENT</h2>
-		<p align='center'><b>P-1B Sto. Niño Carmen, Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
+		<p align='center'><b>P-1B Sto. Niño Carmen<br>
+		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
 		";
 		$pdf .= "<div>
 				<table style='width:100%'>
