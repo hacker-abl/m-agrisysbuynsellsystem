@@ -298,6 +298,19 @@
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 5, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 5 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
                 },
                 dom: 'Bfrtip',
                 buttons: [

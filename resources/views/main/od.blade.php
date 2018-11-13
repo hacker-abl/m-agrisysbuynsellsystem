@@ -324,6 +324,19 @@
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
                 },
 				dom: 'Bfrtip',
 				buttons: [
@@ -423,6 +436,19 @@
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
+
+					// Total over this page
+					pageTotal1 = api
+						.column( 7, { page: 'current'} )
+						.data()
+						.reduce( function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0 );
+
+					// Update footer
+					$( api.column( 7 ).footer() ).html(
+						'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+					);
                 },
 				dom: 'Bfrtip',
 				buttons: [
@@ -516,6 +542,19 @@
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
+
+					// Total over this page
+					pageTotal1 = api
+						.column( 7, { page: 'current'} )
+						.data()
+						.reduce( function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0 );
+
+					// Update footer
+					$( api.column( 7 ).footer() ).html(
+						'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+					);
                 },
 				dom: 'Bfrtip',
 				buttons: [
@@ -617,6 +656,19 @@
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
                 },
 				dom: 'Bfrtip',
 				buttons: [
@@ -709,6 +761,19 @@
                     // Update footer
                     $( api.column( 8 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
                     );
                 },
 				dom: 'Bfrtip',
