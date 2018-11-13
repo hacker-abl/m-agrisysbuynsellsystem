@@ -28,35 +28,35 @@ class pdfController extends Controller
 
 		if($name == "trips"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,330);
+			$customPaper = array(0,0,200,330);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "expense"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,300);
+			$customPaper = array(0,0,200,300);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,200);
+			$customPaper = array(0,0,200,200);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,350);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,220);
+			$customPaper = array(0,0,200,220);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "sales"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,350);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "purchases"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,475);
+			$customPaper = array(0,0,200,475);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "balance_payment"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,240,200);
+			$customPaper = array(0,0,200,200);
 			$dompdf->set_paper($customPaper);
 		}
 		
@@ -87,7 +87,7 @@ class pdfController extends Controller
 		<head>
 		<title>Trips PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;
@@ -158,7 +158,7 @@ class pdfController extends Controller
 		<head>
 		<title>Expense PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;
@@ -218,7 +218,7 @@ class pdfController extends Controller
 		<head>
 		<title>DTR PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;
@@ -281,7 +281,7 @@ class pdfController extends Controller
 		<head>
 		<title>Outbound Deliveries PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;
@@ -360,7 +360,7 @@ class pdfController extends Controller
 		<head>
 		<title>Cash Advance PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;
@@ -414,7 +414,7 @@ class pdfController extends Controller
 		<head>
 		<title>Purchases PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;
@@ -520,7 +520,7 @@ class pdfController extends Controller
 		<head>
 		<title>Sales PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;
@@ -597,7 +597,7 @@ class pdfController extends Controller
 		<head>
 		<title>Balance Payment PDF</title>
 		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 10px; margin-right: 10px; }
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
 			font-family: DejaVu Sans Mono, Times, serif;
 		    font-style: normal;

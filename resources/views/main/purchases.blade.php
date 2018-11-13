@@ -107,7 +107,7 @@
 
                                    <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="type">Type</label>
+                                            <label for="type">Moisture</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -196,7 +196,7 @@
                                         </div>
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                              <div class="form-group">
-                                                  <label for="name">Net KG</label>
+                                                  <label for="name">Net Weight</label>
                                                   <div class="form-line">
                                                        <input type="number" id="net" name="net" readonly="readonly" value="" class="form-control" required>
                                                   </div>
@@ -429,7 +429,7 @@
                                     
                                    <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="type">Type</label>
+                                            <label for="type">Moisture</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -518,7 +518,7 @@
                                         </div>
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                              <div class="form-group">
-                                                  <label for="name">Net KG</label>
+                                                  <label for="name">Net Weight</label>
                                                   <div class="form-line">
                                                        <input type="number" id="net2" name="net2" readonly="readonly" value="" class="form-control" required>
                                                   </div>
@@ -627,10 +627,10 @@
                                                  <th width="100" style="text-align:center;">Balance</th>
                                                  <th width="100" style="text-align:center;">Partial Payment</th>
                                                  <th width="100" style="text-align:center;" >No. of Kilos</th>
-                                                 <th width="100" style="text-align:center;" >Type</th>
-                                                 <th width="100" style="text-align:center;" >Tare</th>
                                                  <th width="100" style="text-align:center;" >Moisture</th>
-                                                 <th width="100" style="text-align:center;" >Net Kilos</th>
+                                                 <th width="100" style="text-align:center;" >Tare</th>
+                                                 <th width="100" style="text-align:center;" >Moisture %</th>
+                                                 <th width="100" style="text-align:center;" >Net Weight</th>
                                                  <th width="100" style="text-align:center;">Price</th>
                                                  <th width="100" style="text-align:center;">Total</th>
                                                  <th width="100" style="text-align:center;">Deducted</th>
@@ -1170,7 +1170,7 @@
                 buttons: [{
                     extend: 'print',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                     },
                     customize: function ( win ) {
                         var last = null;
@@ -1352,7 +1352,7 @@
                         buttons: [{
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                             },
                             customize: function ( win ) {
                                 var last = null;
@@ -1540,7 +1540,7 @@
                         buttons: [{
                             extend: 'print',
                             exportOptions: {
-                                columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                             },
                             customize: function ( win ) {
                                 var last = null;
