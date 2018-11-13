@@ -89,7 +89,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -117,7 +117,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Expense: </span></td>
-				<td align='right'><span>₱ ".number_format($request->expense_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->expense_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Commodity: </span></td>
@@ -160,7 +160,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -196,7 +196,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span>₱ ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 
@@ -220,7 +220,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -256,7 +256,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Rate: </span></td>
-				<td align='right'><span>₱ ".number_format($request->rate_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'><span style='font-family:DejaVu Sans;'>₱</span></span> ".number_format($request->rate_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>No. of hours: </span></td>
@@ -264,7 +264,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Salary: </span></td>
-				<td align='right'><span>₱ ".number_format($request->salary_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->salary_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 
@@ -283,7 +283,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -339,7 +339,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Allowance: </span></td>
-				<td align='right'><span>₱ ".number_format($request->allowance_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->allowance_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 				<br>
@@ -362,7 +362,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -394,11 +394,11 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span>₱ ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Balance: </span></td>
-				<td align='right'><span>₱ ".number_format($request->balance_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->balance_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 		        </div>";
@@ -416,7 +416,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -476,27 +476,27 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Price: </span></td>
-				<td align='right'><span>₱ ".number_format($request->price_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->price_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Cash Advance: </span></td>
-				<td align='right'><span>₱ ".number_format($request->ca_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->ca_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Balance: </span></td>
-				<td align='right'><span>₱ ".number_format($request->balance_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->balance_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Partial payment: </span></td>
-				<td align='right'><span>₱ ".number_format($request->partial_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->partial_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Total: </span></td>
-				<td align='right'><span>₱ ".number_format($request->total_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->total_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Deducted: </span></td>
-				<td align='right'><span>₱ ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Remarks: </span></td>
@@ -522,7 +522,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -558,7 +558,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Price: </span></td>
-				<td align='right'><span>₱ ".number_format($request->price_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->price_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Kilos: </span></td>
@@ -575,7 +575,7 @@ class pdfController extends Controller
 
 		$pdf .= "<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span>₱ ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 				
@@ -599,7 +599,7 @@ class pdfController extends Controller
 		<style>
 		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
 		body {
-			font-family: DejaVu Sans Mono, Times, serif;
+			font-family: Courier, Times, serif;
 		    font-style: normal;
 		    font-size: 13px;
 		}
@@ -636,11 +636,11 @@ class pdfController extends Controller
 		$pdf .= "
 				<tr>
 				<td><span>Amount: </span></td>
-				<td align='right'><span>₱ ".number_format($request->amount1_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount1_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Balance: </span></td>
-				<td align='right'><span>₱ ".number_format($request->balance2_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->balance2_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 		        </div>";
