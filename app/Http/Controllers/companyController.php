@@ -70,7 +70,7 @@ class companyController extends Controller
         $company = Company::all();
         return \DataTables::of(Company::query())
         ->addColumn('action', function($company){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',8)->get(); 
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  

@@ -116,7 +116,7 @@ class employeeController extends Controller
 
         return \DataTables::of($employee)
         ->addColumn('action', function($employee){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',9)->get();
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  

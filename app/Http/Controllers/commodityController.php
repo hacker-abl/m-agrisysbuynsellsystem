@@ -77,7 +77,7 @@ class commodityController extends Controller
         return \DataTables::of(Commodity::query())
         ->addColumn('action', function($commodity){
 
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',12)->get();
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  

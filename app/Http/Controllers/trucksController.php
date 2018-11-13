@@ -67,7 +67,7 @@ class trucksController extends Controller
         $trucks = Trucks::all();
         return \DataTables::of(Trucks::query())
         ->addColumn('action', function($trucks){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',11)->get(); 
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  

@@ -114,7 +114,7 @@ class customerController extends Controller
         $customer = Customer::all();
         return \DataTables::of(Customer::query())
         ->addColumn('action', function($customer){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',10)->get();
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  

@@ -115,7 +115,7 @@ class tripController extends Controller
         echo json_encode("update");
     }
      public function release_update(Request $request){
-         $check_admin =Auth::user()->access_id;
+         $check_admin =Auth::user()->id;
         if($check_admin==1){
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);
@@ -193,7 +193,7 @@ class tripController extends Controller
        
         return \DataTables::of($trips)
         ->addColumn('action', function($trips){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',2)->get();
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  

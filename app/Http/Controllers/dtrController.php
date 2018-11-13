@@ -36,7 +36,7 @@ class dtrController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function isAdmin(){
-    return Auth::user()->access_id;
+    return Auth::user()->id;
     }
     public function index(){
         $employee = employee::all();
@@ -120,7 +120,7 @@ class dtrController extends Controller
         echo json_encode($details);
     }
      public function release_update_dtr(Request $request){
-        $check_admin =Auth::user()->access_id;
+        $check_admin =Auth::user()->id;
         if($check_admin==1){
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);

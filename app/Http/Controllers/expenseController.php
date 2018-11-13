@@ -40,7 +40,7 @@ class expenseController extends Controller
 
     public function isAdmin(){
             
-    return Auth::user()->access_id;
+    return Auth::user()->id;
     }
     
      
@@ -71,7 +71,7 @@ class expenseController extends Controller
     }
 
     public function release_update_normal(Request $request){
-        $check_admin =Auth::user()->access_id;
+        $check_admin =Auth::user()->id;
         if($check_admin==1){
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);
@@ -180,7 +180,7 @@ class expenseController extends Controller
           
        return \DataTables::of($expense)
        ->addColumn('action', function($expense){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',1)->get();
             if($userid!=1){
                  $delete=$permit[0]->permit_delete;  

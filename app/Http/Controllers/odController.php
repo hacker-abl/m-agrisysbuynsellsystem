@@ -120,7 +120,7 @@ class odController extends Controller
     }
 
     public function release_update_od(Request $request){
-        $check_admin =Auth::user()->access_id;
+        $check_admin =Auth::user()->id;
         if($check_admin==1){
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);
@@ -214,7 +214,7 @@ class odController extends Controller
        
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  
