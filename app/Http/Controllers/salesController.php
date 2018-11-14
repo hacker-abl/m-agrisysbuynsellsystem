@@ -155,7 +155,7 @@ class salesController extends Controller
         
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function(  $ultimatesickquery){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',7)->get();
             if($userid!=1){
               $delete=$permit[0]->permit_delete;  

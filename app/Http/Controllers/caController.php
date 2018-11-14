@@ -38,10 +38,10 @@ class caController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function isAdmin(){
-    return Auth::user()->access_id;
+    return Auth::user()->id;
     }
     public function permission(){
-    $userid= Auth::user()->access_id;
+    $userid= Auth::user()->id;
 
     $permit = UserPermission::find($request->id)->where('user_id',$userid);
 
@@ -183,7 +183,7 @@ class caController extends Controller
     }
 
     public function release_update(Request $request){
-        $check_admin =Auth::user()->access_id;
+        $check_admin =Auth::user()->id;
         if($check_admin==1){
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);
@@ -323,7 +323,7 @@ class caController extends Controller
             ->latest();
         return \DataTables::of($cash_advance)
          ->addColumn('action', function($cash_advance){
-            $userid= Auth::user()->access_id;
+            $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',5)->get();   
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  

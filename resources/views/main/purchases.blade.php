@@ -1443,10 +1443,8 @@
                             {data: 'kilo'},
                             {data: 'type'},
                             {data: 'tare'},
-                            {data: 'moisture'},
-                            {data: 'net'},
-                            {data: 'tare'},
                             {data: 'moist'},
+                            {data: 'net'},
                             {data: 'price'},
                             {data: 'total'},
                             {data: 'amtpay'},
@@ -1459,7 +1457,180 @@
                     });
                 }
             }).keyup(function() {
-                minDateFilter = new Date(this.value).getTime();
+              $('#purchasetable').dataTable().fnDestroy();
+                purchase_date_from="";
+                  purchasestable = $('#purchasetable').DataTable({
+                "footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    // Total over this page
+                    pageTotal1 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
+
+                    // Total over this page
+                    pageTotal2 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    );
+
+                    // Total over this page
+                    pageTotal3 = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
+
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 14, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 14 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 15, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 15 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+
+                    // Total over this page
+                    pageTotal6 = api
+                        .column( 16, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 16 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal6,2)
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
+                    },
+                    customize: function ( win ) {
+                        var last = null;
+                        var current = null;
+                        var bod = [];
+
+                        var css = '@page { size: landscape; }',
+                            head = win.document.head || win.document.getElementsByTagName('head')[0],
+                            style = win.document.createElement('style');
+
+                        style.type = 'text/css';
+                        style.media = 'print';
+
+                        if (style.styleSheet){
+                            style.styleSheet.cssText = css;
+                        }
+                        else{
+                            style.appendChild(win.document.createTextNode(css));
+                        }
+
+                        head.appendChild(style);
+
+                        $(win.document.body)
+                            .css( 'font-size', '10pt' );
+
+                        $(win.document.body).find( 'table' )
+                            .addClass( 'compact' )
+                            .css( 'font-size', 'inherit' );
+                    },
+                    footer: true
+                }],
+
+                scrollX: true,
+                order:[],
+                columnDefs: [{
+                    "targets": "_all", // your case first column
+                    "className": "text-center",
+                },
+                ],
+                ajax:{
+                    url: "{{ route('refresh_purchases') }}",
+                    // dataType: 'text',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        date_from: purchase_date_from,
+                        date_to: purchase_date_to,
+                    },
+                },
+                columns: [
+                    {data: 'trans_no'},
+                    {data:'wholename', name: 'customer.fname'  },
+                    {data:'mname', name: 'customer.mname',visible:false  },
+                    {data:'lname', name: 'customer.lname',visible:false  },
+                    {data: 'commname', name: 'commodity.name'},
+                    {data: 'sacks'},
+                    {data: 'balance', name: 'balance.balance'},
+                    {data: 'balance_id'},
+                    {data: 'partial'},
+                    {data: 'kilo'},
+                    {data: 'type'},
+                    {data: 'tare'},
+                    {data: 'moist'},
+                    {data: 'net'},
+                    {data: 'price'},
+                    {data: 'total'},
+                    {data: 'amtpay'},
+                    {data:'created_at'},
+                    {data:'status'},
+                    {data:'released_by'},
+                    {data: 'remarks'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
+
             });
 
             $("#purchase_datepicker_to").datepicker({
@@ -1642,11 +1813,10 @@
                             {data: 'balance_id'},
                             {data: 'partial'},
                             {data: 'kilo'},
-                            {data: 'tare'},
-                            {data: 'moisture'},
-                            {data: 'net'},
+                            {data: 'type'},
                             {data: 'tare'},
                             {data: 'moist'},
+                            {data: 'net'},
                             {data: 'price'},
                             {data: 'total'},
                             {data: 'amtpay'},
@@ -1660,8 +1830,180 @@
 
                 }
             }).keyup(function() {
-                maxDateFilter = new Date(this.value).getTime();
-                //oTable.fnDraw();
+              $('#purchasetable').dataTable().fnDestroy();
+                purchase_date_to="";
+                 purchasestable = $('#purchasetable').DataTable({
+                "footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    // Total over this page
+                    pageTotal1 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
+
+                    // Total over this page
+                    pageTotal2 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal2,2)
+                    );
+
+                    // Total over this page
+                    pageTotal3 = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal3,2)
+                    );
+
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 14, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 14 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal4,2)
+                    );
+
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 15, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 15 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+
+                    // Total over this page
+                    pageTotal6 = api
+                        .column( 16, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 16 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal6,2)
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
+                    },
+                    customize: function ( win ) {
+                        var last = null;
+                        var current = null;
+                        var bod = [];
+
+                        var css = '@page { size: landscape; }',
+                            head = win.document.head || win.document.getElementsByTagName('head')[0],
+                            style = win.document.createElement('style');
+
+                        style.type = 'text/css';
+                        style.media = 'print';
+
+                        if (style.styleSheet){
+                            style.styleSheet.cssText = css;
+                        }
+                        else{
+                            style.appendChild(win.document.createTextNode(css));
+                        }
+
+                        head.appendChild(style);
+
+                        $(win.document.body)
+                            .css( 'font-size', '10pt' );
+
+                        $(win.document.body).find( 'table' )
+                            .addClass( 'compact' )
+                            .css( 'font-size', 'inherit' );
+                    },
+                    footer: true
+                }],
+
+                scrollX: true,
+                order:[],
+                columnDefs: [{
+                    "targets": "_all", // your case first column
+                    "className": "text-center",
+                },
+                ],
+                ajax:{
+                    url: "{{ route('refresh_purchases') }}",
+                    // dataType: 'text',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        date_from: purchase_date_from,
+                        date_to: purchase_date_to,
+                    },
+                },
+                columns: [
+                    {data: 'trans_no'},
+                    {data:'wholename', name: 'customer.fname'  },
+                    {data:'mname', name: 'customer.mname',visible:false  },
+                    {data:'lname', name: 'customer.lname',visible:false  },
+                    {data: 'commname', name: 'commodity.name'},
+                    {data: 'sacks'},
+                    {data: 'balance', name: 'balance.balance'},
+                    {data: 'balance_id'},
+                    {data: 'partial'},
+                    {data: 'kilo'},
+                    {data: 'type'},
+                    {data: 'tare'},
+                    {data: 'moist'},
+                    {data: 'net'},
+                    {data: 'price'},
+                    {data: 'total'},
+                    {data: 'amtpay'},
+                    {data:'created_at'},
+                    {data:'status'},
+                    {data:'released_by'},
+                    {data: 'remarks'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
+
             });
             //End of Date Range Filter
 
