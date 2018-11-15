@@ -770,6 +770,7 @@
             });
 
             $(document).on('click', '.delete_dtr', function(event){
+                var ObjData;
                 event.preventDefault();
                 var id = $(this).attr('id');
                 swal({
@@ -785,6 +786,8 @@
                         method: "get",
                         data:{id:id},
                         success:function(data){
+                            ObjData = JSON.parse(data);
+                            console.log(ObjData);
                              $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
                                         method: 'get',
@@ -885,7 +888,8 @@
                                         }
                                     });
                                 refresh_dtr_table();
-                                swal("Deleted!", "The record has been deleted.", "success");
+                                $('#curCashOnHand').html(ObjData.cashOnHand.toFixed(2));
+                                swal("Data Deleted !", "Cash On Hand: ₱"+ObjData.cashOnHand.toFixed(2)+" | Transaction ID: "+ObjData.cashHistory, "success")
                         }
                     })
                    

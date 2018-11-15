@@ -204,8 +204,37 @@ class dtrController extends Controller
     }
 
     function deletedata(Request $request){
-        $expense = dtr::find($request->input('id'));
-        $expense->delete();
+        $dtr = dtr::find($request->input('id'));
+        $user = User::find(Auth::user()->id);
+        $userGet = User::where('id', '=', $user->id)->first();
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        $cash_history = new Cash_History;
+        $cash_history->user_id = $userGet->id;
+
+        $getDate = Carbon::now();
+        
+        if($cashLatest != null){
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        }
+        else{
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+        }
+
+        $cash_history->trans_no = $dateTime;
+        $cash_history->previous_cash = $user->cashOnHand;
+        $cash_history->cash_change = $dtr->salary;
+        $cash_history->total_cash = $user->cashOnHand + $dtr->salary;
+        $cash_history->type = "Released DTR Deleted";
+        $cash_history->save();
+
+        $user->cashOnHand += $dtr->salary;
+        $user->save();
+         $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory' => $dateTime
+        );
+        $dtr->delete();
+        return  json_encode($output);
     }
     public function refresh(){
         $join = DB::table('dtr')
@@ -249,10 +278,13 @@ class dtrController extends Controller
         ->addColumn('action', function($dtr_view){
             if($dtr_view->status=="On-Hand" && isAdmin()==1){
                  return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';
-            }else if($dtr_view->status=="On-Hand" && isAdmin()!=1)
+            }else if($dtr_view->status=="On-Hand" && isAdmin()!=1){
                 return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>';    
-            else{
-                 return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>';
+            }
+            else if($dtr_view->status=="Released" && isAdmin()==1){
+                 return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';
+            }else{
+                return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>';
             }
 
         })
