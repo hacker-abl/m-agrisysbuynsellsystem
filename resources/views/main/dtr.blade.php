@@ -787,7 +787,6 @@
                         data:{id:id},
                         success:function(data){
                             ObjData = JSON.parse(data);
-                            console.log(ObjData);
                              $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
                                         method: 'get',

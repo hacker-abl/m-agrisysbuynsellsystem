@@ -896,7 +896,6 @@
                     error: function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
-                        console.log($('#trip_form_update').serialize())
                         swal("Oh no!", "Something went wrong, try again.", "error")
                     }
                 })
@@ -934,8 +933,6 @@
                 var count_length = $('.trip_form').length;
                 $('.trip_form').each(function(){
                     valuesToSend = $(this).serialize();
-                    console.log(valuesToSend);
-
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -946,9 +943,6 @@
                         data: valuesToSend,
                         success:function(data){
                             dataparsed = $.parseJSON(data);
-                            console.log(datasend);
-
-
                             $("#id").val(dataparsed.driver_id);
                             button.disabled = false;
                             input.html('SAVE CHANGES');

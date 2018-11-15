@@ -698,9 +698,10 @@
 					data:{id:id},
 					dataType:'json',
 					success:function(data){
-						console.log(data);
+						 
 						$('#button_action').val('update');
 						$('#id').val(id);
+						$('#trans_num').val(data.trans_number);
 						$("#company").val(data.company_id).trigger('change');
 						$("#commodity").val(data.commodity_id).trigger('change');
 						$('#kilos').val(data.kilos);

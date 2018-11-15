@@ -114,6 +114,7 @@ class salesController extends Controller
         $id = $request->input('id');
         $sales = sales::find($id);
         $output = array(
+            'trans_number' => $sales->trans_number,
             'commodity_id' => $sales->commodity_id,
             'company_id' => $sales->company_id,
             'kilos' => $sales->kilos,

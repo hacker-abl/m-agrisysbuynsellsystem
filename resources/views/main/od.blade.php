@@ -728,7 +728,7 @@
                 }
               }).keyup(function() {
               	od_date_to="";
-              	console.log(od_date_to);
+              	 
                 $('#deliverytable').dataTable().fnDestroy();
 				deliveriestable = $('#deliverytable').DataTable({
 				"footerCallback": function ( row, data, start, end, display ) {
@@ -860,7 +860,6 @@
 						var twoDigitMonth = ((c.getMonth().length+1) == 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
 						var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
 						$('#ticket').val(currentDate+b);
-						console.log( $('#ticket').val());
 						$('#od_modal').modal('show');
 					}
 				})

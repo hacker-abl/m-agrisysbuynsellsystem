@@ -2072,7 +2072,6 @@
             $(document).on('click', '.release_purchase', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
-                console.log(id);
                 $.ajax({
                     url:"{{ route('check_balance3') }}",
                     method: 'POST',
@@ -2103,7 +2102,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
                         swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_purchase_modal').modal('hide');
                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
@@ -2274,7 +2272,6 @@
                         var temp2 = t+r;
                         var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount').val(temp3);
-                        console.log(temp2);
                     }
                     else{
                         $('#amount').val("");
@@ -2445,7 +2442,6 @@
                         var temp2 = t+r;
                         var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount1').val(temp3);
-                        console.log(temp2);
                     }
                     else{
                         $('#amount1').val("");
@@ -2456,7 +2452,6 @@
                     var temp = c + r;
                     $('#total1').val(c);
                     $('#amount1').val(temp);
-                    //console.log(c+r);
                     if($('#partial1').val()!=""){
                         r = parseFloat($('#partial1').val());
                         temp = c + r;
@@ -2652,8 +2647,6 @@
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                         $('#ticket').val(currentDate+b);
                         $('#ticket1').val(currentDate+b);
-                        console.log( $('#ticket').val());
-
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
@@ -2674,7 +2667,6 @@
                         var a = parseFloat(t);
                         var b = a + 1;
                         $('#customerid').val(b);
-                        console.log( b);
                     }
                 })
             });
@@ -2800,7 +2792,6 @@
                                 }
                             }
                         }
-                        console.log(data.amount);
                     }
                 });
                 moist1(this);
@@ -2886,7 +2877,6 @@
                                 $('#amount').val(temp3);
                             }
                         }
-                        console.log(data.suki_price);
                     }
                 });
                 moist1(this);
@@ -2994,7 +2984,6 @@
                                 $('#amount1').val(temp3);
                             }
                         }
-                        console.log(data.suki_price);
                     }
                 });
                 moist3(this);

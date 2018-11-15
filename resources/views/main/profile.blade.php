@@ -182,9 +182,7 @@
                 success:function(data){
                     if(data == 1){
                         $('#incorrect').hide();
-                        $('#notMatch').hide();
-                        console.log($('#npassword').val() + " " + $('#cnpassword').val());
-                        
+                        $('#notMatch').hide();                        
                         if($('#npassword').val() == $('#cnpassword').val()){
                             {{ route('newpass') }}
                             $.ajax({

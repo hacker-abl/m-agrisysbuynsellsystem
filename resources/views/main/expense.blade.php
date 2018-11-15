@@ -1899,7 +1899,6 @@
 					data: { temp: 'temp' },
 					dataType:'json',
 					success:function(data){
-                        console.log(data);
 						var t=0;
 						if(data[0].temp!=null){
 							t = data[0].temp; 
@@ -1911,10 +1910,7 @@
 						var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                         if(type!='update'){
 						$('#trans_number').val(currentDate+b);
-                       
-						console.log( $('#trans_number').val());
                     }
-						//$('#od_modal').modal('show');
 					}
 				})
             })
@@ -2030,7 +2026,6 @@
             });
 
             if(window.location.hash) {
-                console.log(window.location.hash);
                 $('.nav-tabs li a[href="'+window.location.hash+'"]').tab('show')
             }
         });
