@@ -118,6 +118,7 @@ class salesController extends Controller
             'company_id' => $sales->company_id,
             'kilos' => $sales->kilos,
             'amount' => $sales->amount,
+            'price' => $sales->price,
             'check_number' => $sales->check_number ,
         );
         echo json_encode($output);

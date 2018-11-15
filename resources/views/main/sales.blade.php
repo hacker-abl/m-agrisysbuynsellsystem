@@ -698,11 +698,13 @@
 					data:{id:id},
 					dataType:'json',
 					success:function(data){
+						console.log(data);
 						$('#button_action').val('update');
 						$('#id').val(id);
 						$("#company").val(data.company_id).trigger('change');
 						$("#commodity").val(data.commodity_id).trigger('change');
 						$('#kilos').val(data.kilos);
+						$('#price').val(data.price);
 						$('#amount').val(data.amount);
 						if(data.check_number != "Not Specified"){
 							$('#checknumber').val(data.check_number);

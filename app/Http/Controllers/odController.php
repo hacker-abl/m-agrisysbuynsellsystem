@@ -259,6 +259,7 @@ class odController extends Controller
             'company_id' => $od->company_id,
             'plateno' => $od->plateno,
             'fuel_liters' => $od->fuel_liters,
+            'kilos' => $od->kilos,
             'allowance' => $od->allowance,
         );
         echo json_encode($output);
