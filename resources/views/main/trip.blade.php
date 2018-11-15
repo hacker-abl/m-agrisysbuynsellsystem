@@ -288,9 +288,9 @@
          
                     // Remove the formatting to get integer data for summation
                     var intVal = function ( i ) {
-                        return typeof i === 'string' ?
+                        return typeof i == 'string' ?
                             i.replace(/[\₱,]/g, '')*1 :
-                            typeof i === 'number' ?
+                            typeof i == 'number' ?
                                 i : 0;
                     };
          
@@ -379,9 +379,9 @@
          
                     // Remove the formatting to get integer data for summation
                     var intVal = function ( i ) {
-                        return typeof i === 'string' ?
+                        return typeof i == 'string' ?
                             i.replace(/[\₱,]/g, '')*1 :
-                            typeof i === 'number' ?
+                            typeof i == 'number' ?
                                 i : 0;
                     };
          
@@ -477,9 +477,9 @@
          
                     // Remove the formatting to get integer data for summation
                     var intVal = function ( i ) {
-                        return typeof i === 'string' ?
+                        return typeof i == 'string' ?
                             i.replace(/[\₱,]/g, '')*1 :
-                            typeof i === 'number' ?
+                            typeof i == 'number' ?
                                 i : 0;
                     };
          
@@ -567,9 +567,9 @@
          
                     // Remove the formatting to get integer data for summation
                     var intVal = function ( i ) {
-                        return typeof i === 'string' ?
+                        return typeof i == 'string' ?
                             i.replace(/[\₱,]/g, '')*1 :
-                            typeof i === 'number' ?
+                            typeof i == 'number' ?
                                 i : 0;
                     };
          
@@ -827,7 +827,7 @@
                         var a = parseInt(e);
                         var b = a + 1;
                         var c = new Date();
-                        var twoDigitMonth = ((c.getMonth().length+1) === 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
+                        var twoDigitMonth = ((c.getMonth().length+1) == 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
                         $("input[id=ticket"+(item)+"]").val(currentDate+b);
                         if(item>=1){
@@ -1040,8 +1040,8 @@
                 number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
                 var n = !isFinite(+number) ? 0 : +number,
                     prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-                    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-                    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                    sep = (typeof thousands_sep == 'undefined') ? ',' : thousands_sep,
+                    dec = (typeof dec_point == 'undefined') ? '.' : dec_point,
                     s = '',
                     toFixedFix = function (n, prec) {
                         var k = Math.pow(10, prec);
@@ -1065,9 +1065,9 @@
          
                     // Remove the formatting to get integer data for summation
                     var intVal = function ( i ) {
-                        return typeof i === 'string' ?
+                        return typeof i == 'string' ?
                             i.replace(/[\₱,]/g, '')*1 :
-                            typeof i === 'number' ?
+                            typeof i == 'number' ?
                                 i : 0;
                     };
          

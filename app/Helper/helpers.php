@@ -2,13 +2,13 @@
 
 function notifications($option) {
 	if(Auth::check()){
-		if($option === 'request'){
+		if($option == 'request'){
 			$data = App\Notification::where(['notification_type' => $option, 'user_id' => Auth::id(), 'approved_by' => null, 'status' => 1])
             ->orderBy('id', 'DESC')
             ->with('requested_by')
             ->limit(10)
 			->get();
-		} else if($option === 'reply'){
+		} else if($option == 'reply'){
 			$data = App\Notification::where(['notification_type' => $option, 'requested_by' => Auth::id()])
 				->whereNotNull('approved_by')
                 ->orderBy('id', 'DESC')
@@ -55,7 +55,7 @@ function time_elapsed_string($datetime, $full = false) {
 function isAdmin() {
     $user = \App\User::with('role')->find(Auth::id())->role;
 
-    return ($user->name === 'admin' ? true : false);
+    return ($user->name == 'admin' ? true : false);
 }
 
 function getName(){

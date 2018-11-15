@@ -188,17 +188,17 @@ class expenseController extends Controller
             }             
             if($expense->status=="On-Hand" && isAdmin()==1 ){
                  return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning update_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">delete</i></button>';
-            }elseif($expense->status=="On-Hand" && isAdmin()!=1 && $delete===1 && $edit===0){
+            }elseif($expense->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==0){
                  return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">delete</i></button>';
              
-            }elseif($expense->status=="On-Hand" && isAdmin()!=1  && $delete===0 && $edit===1){
+            }elseif($expense->status=="On-Hand" && isAdmin()!=1  && $delete==0 && $edit==1){
                
                 return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning update_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">mode_edit</i></button>';
          
-            }elseif($expense->status=="On-Hand" && isAdmin()!=1 && $delete===1 && $edit===1){
+            }elseif($expense->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==1){
                  return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning update_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_expense waves-effect" id="'.$expense->id.'"><i class="material-icons">delete</i></button>';
             }
-            elseif($expense->status=="On-Hand" && isAdmin()!=1 &&  $delete===0 && $edit===0){
+            elseif($expense->status=="On-Hand" && isAdmin()!=1 &&  $delete==0 && $edit==0){
                  return '<button class="btn btn-xs btn-success release_expense_normal waves-effect" id="'.$expense->id.'"><i class="material-icons">eject</i></button>';
             }
             else if($expense->status=="Released"){

@@ -204,14 +204,14 @@ class tripController extends Controller
                  return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                      <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
             }
-            if($userid!=1 && $delete===1 && $edit===1){
+            if($userid!=1 && $delete==1 && $edit==1){
                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                      <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
             }
-             if($userid!=1 && $delete===0 && $edit===1){
+             if($userid!=1 && $delete==0 && $edit==1){
                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>';
             }
-            if($userid!=1 && $delete===1 && $edit===0){
+            if($userid!=1 && $delete==1 && $edit==0){
                 return '<button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
             }
            

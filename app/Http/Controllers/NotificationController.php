@@ -12,7 +12,7 @@ class NotificationController extends Controller
     }
 
     public function update(Request $request, $option) {
-        if($option === 'seen') {
+        if($option == 'seen') {
             $validatedData = $request->validate([
                 'notification' => 'required',
             ]);

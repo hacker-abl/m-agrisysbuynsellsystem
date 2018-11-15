@@ -162,21 +162,21 @@ class salesController extends Controller
               $edit = $permit[0]->permit_edit;
             }   
             
-            if($userid===1){
+            if($userid==1){
                return '<div class="btn-group"><button class="btn btn-xs btn-warning update_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                 <button class="btn btn-xs btn-danger delete_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
             }
-            if($userid!=1 && $delete===1 && $edit===1){
+            if($userid!=1 && $delete==1 && $edit==1){
                return '<div class="btn-group"><button class="btn btn-xs btn-warning update_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                 <button class="btn btn-xs btn-danger delete_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
             }  
-            if($userid!=1 && $delete===0 && $edit===1){
+            if($userid!=1 && $delete==0 && $edit==1){
                return '<div class="btn-group"><button class="btn btn-xs btn-warning update_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>
                 </div>';
-            }if($userid!=1 && $delete===1 && $edit===0){
+            }if($userid!=1 && $delete==1 && $edit==0){
                return '<div class="btn-group">
                 <button class="btn btn-xs btn-danger delete_sales  waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button></div>';
-            }if($userid!=1 && $delete===0 && $edit===0){
+            }if($userid!=1 && $delete==0 && $edit==0){
                return 'No Action Permitted';
             }        
            

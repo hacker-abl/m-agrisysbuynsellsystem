@@ -97,7 +97,7 @@ class usersController extends Controller
      */
     public function get($option = null, Request $request)
     {
-        if($option === "permission") {
+        if($option == "permission") {
             $request->validate([
                 'id' => 'required'
             ]);
@@ -262,7 +262,7 @@ class usersController extends Controller
     }
 
     public function permission($option, Request $request) {
-        if($option === 'update') {            
+        if($option == 'update') {            
             $request->validate([
                 'id' => 'required'
             ]);
