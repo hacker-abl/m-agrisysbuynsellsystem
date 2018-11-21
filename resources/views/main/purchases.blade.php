@@ -977,8 +977,16 @@
                             method: "get",
                             data:{id:id},
                             success:function(data){
+                              if(data!='OK'){
+                                var ObjData = JSON.parse(data);
+                                 $('#curCashOnHand').html(ObjData.cashOnHand.toFixed(2));
+                                  swal("Data Deleted !", "Cash On Hand: ₱"+ObjData.cashOnHand.toFixed(2)+" | Transaction ID: "+ObjData.cashHistory, "success")
+                                refresh_purchase_table();
+                              }else{    
                                 swal("Deleted!", "The record has been deleted.", "success");
                                 refresh_purchase_table();
+                              }
+                             
                             }
                         })
                       }
