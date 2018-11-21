@@ -626,8 +626,8 @@
                                                  <th width="100" style="text-align:center;">Commodity</th>
                                                  <th width="100" style="text-align:center;">No. of Sacks</th>
                                                  <th width="100" style="text-align:center;">Cash Advance</th>
-                                                 <th width="100" style="text-align:center;">Balance</th>
                                                  <th width="100" style="text-align:center;">Partial Payment</th>
+                                                 <th width="100" style="text-align:center;">Balance </th>
                                                  <th width="100" style="text-align:center;" >No. of Kilos</th>
                                                  <th width="100" style="text-align:center;" >Moisture</th>
                                                  <th width="100" style="text-align:center;" >Tare</th>
@@ -1244,9 +1244,9 @@
                     {data:'lname', name: 'customer.lname',visible:false  },
                     {data: 'commname', name: 'commodity.name'},
                     {data: 'sacks'},
-                    {data: 'balance', name: 'balance.balance'},
-                    {data: 'balance_id'},
                     {data: 'partial'},
+                    {data: 'balance_id'},
+                    {data: 'balance', name: 'balance.balance'},
                     {data: 'kilo'},
                     {data: 'type'},
                     {data: 'tare'},
@@ -1439,9 +1439,9 @@
                             {data:'lname', name: 'customer.lname',visible:false  },
                             {data: 'commname', name: 'commodity.name'},
                             {data: 'sacks'},
-                            {data: 'balance', name: 'balance.balance'},
-                            {data: 'balance_id'},
                             {data: 'partial'},
+                            {data: 'balance_id'},
+                            {data: 'balance', name: 'balance.balance'},
                             {data: 'kilo'},
                             {data: 'type'},
                             {data: 'tare'},
@@ -1614,9 +1614,9 @@
                     {data:'lname', name: 'customer.lname',visible:false  },
                     {data: 'commname', name: 'commodity.name'},
                     {data: 'sacks'},
-                    {data: 'balance', name: 'balance.balance'},
-                    {data: 'balance_id'},
                     {data: 'partial'},
+                    {data: 'balance_id'},
+                    {data: 'balance', name: 'balance.balance'},
                     {data: 'kilo'},
                     {data: 'type'},
                     {data: 'tare'},
@@ -1811,9 +1811,9 @@
                             {data:'lname', name: 'customer.lname',visible:false  },
                             {data: 'commname', name: 'commodity.name'},
                             {data: 'sacks'},
-                            {data: 'balance', name:'balance.balance'},
-                            {data: 'balance_id'},
                             {data: 'partial'},
+                            {data: 'balance_id'},
+                            {data: 'balance', name: 'balance.balance'},
                             {data: 'kilo'},
                             {data: 'type'},
                             {data: 'tare'},
@@ -1987,9 +1987,9 @@
                     {data:'lname', name: 'customer.lname',visible:false  },
                     {data: 'commname', name: 'commodity.name'},
                     {data: 'sacks'},
-                    {data: 'balance', name: 'balance.balance'},
-                    {data: 'balance_id'},
                     {data: 'partial'},
+                    {data: 'balance_id'},
+                    {data: 'balance', name: 'balance.balance'},
                     {data: 'kilo'},
                     {data: 'type'},
                     {data: 'tare'},
@@ -2727,71 +2727,6 @@
                             $('#balance').val(c);
                         }
 
-                        if($('#price').val()!=""){
-                            var a = parseFloat($('#last').val());
-                            var b = parseFloat($('#suki').val());
-                            var c = parseFloat($('#pr').val());
-                            var d = 0;
-                            var e = 0;
-                            var t = 0;
-                            if(a==1){
-                                $('#price').val(b);
-                                if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                                    var x = 0;
-
-                                    if ($('#kilo').val()!=""){
-                                        var x = parseFloat($('#kilo').val());
-                                    }
-                                    if ($('#sacks').val() == "" ){
-                                        d = 0;
-                                    }
-                                    else{
-                                        d =  parseFloat($('#sacks').val());
-                                    }
-
-                                    if ($('#partial').val() != "" ){
-                                        t= parseFloat($('#partial').val());
-                                    }
-                                    e = b * (d*50);
-                                    var y = e + (b*x);
-                                    var z = e + (b*x)+t;
-                                    //alert(e);
-                                    var tempo =  parseFloat(y).toFixed(2);
-                                    $('#total').val(tempo);
-                                    var temp3 =  parseFloat(z).toFixed(2);
-                                    $('#amount').val(temp3);
-                                }
-                            }
-                            else{
-                                $('#price').val(c);
-
-                                if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                                    var x = 0;
-
-                                    if ($('#kilo').val()!=""){
-                                        var x = parseFloat($('#kilo').val());
-                                    }
-                                    if ($('#sacks').val() == "" ){
-                                        d = 0;
-                                    }
-                                    else{
-                                        d =  parseFloat($('#sacks').val());
-                                    }
-
-                                    if ($('#partial').val() != "" ){
-                                        t =  parseFloat($('#partial').val());
-                                    }
-                                    e = c * (d*50);
-                                    var y = e + (c*x);
-                                    var z = e + (c*x)+t;
-                                    //alert(e);
-                                    var tempo =  parseFloat(y).toFixed(2);
-                                    $('#total').val(tempo);
-                                    var temp3 =  parseFloat(z).toFixed(2);
-                                    $('#amount').val(temp3);
-                                }
-                            }
-                        }
                     }
                 });
                 moist1(this);
