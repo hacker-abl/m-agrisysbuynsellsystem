@@ -20,6 +20,7 @@
                             </li>
                             <li class="dropdown">
                                 <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_dtr') }}">
+                                <input type="hidden" id="view_dtr_name" name="view_dtr_name">
                                 <input type="hidden" id="employee_id_clone" name="employee_id_clone">
                                 <input type="hidden" id="role_clone" name="role_clone">
                                 <input type="hidden" id="overtime_clone" name="overtime_clone">
@@ -371,7 +372,7 @@
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                            columns: [ 0, 3, 4, 5, 6, 7, 8, 9 ]
                         },
                         customize: function ( win ) {
                             $(win.document.body)
@@ -562,6 +563,7 @@
                                                         exportOptions: {
                                                             columns: [ 0, 1, 2, 3, 4, 5 ,6]
                                                         },
+                                                        title: $('#view_dtr_name').val(),
                                                         customize: function ( win ) {
                                                             $(win.document.body)
                                                                 .css( 'font-size', '10pt' );
@@ -569,6 +571,8 @@
                                                             $(win.document.body).find( 'table' )
                                                                 .addClass( 'compact' )
                                                                 .css( 'font-size', 'inherit' );
+
+                                                            $(win.document.body).find('h1').css('font-size', '15pt');
                                                         },
                                                         footer: true
                                                     }
@@ -691,6 +695,7 @@
                                                         exportOptions: {
                                                             columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                                         },
+                                                        title: $('#view_dtr_name').val(),
                                                         customize: function ( win ) {
                                                             $(win.document.body)
                                                                 .css( 'font-size', '10pt' );
@@ -698,6 +703,8 @@
                                                             $(win.document.body).find( 'table' )
                                                                 .addClass( 'compact' )
                                                                 .css( 'font-size', 'inherit' );
+                                                            
+                                                            $(win.document.body).find('h1').css('font-size', '15pt');
                                                         },
                                                         footer: true
                                                     }
@@ -847,6 +854,7 @@
                                                         exportOptions: {
                                                             columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                                         },
+                                                        title: $('#view_dtr_name').val(),
                                                         customize: function ( win ) {
                                                             $(win.document.body)
                                                                 .css( 'font-size', '10pt' );
@@ -854,6 +862,8 @@
                                                             $(win.document.body).find( 'table' )
                                                                 .addClass( 'compact' )
                                                                 .css( 'font-size', 'inherit' );
+
+                                                            $(win.document.body).find('h1').css('font-size', '20pt');
                                                         },
                                                         footer: true
                                                     }
@@ -950,6 +960,7 @@
 						role =  data.data[0].role;
                         $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")  Pending Salary: ₱"+total);
 
+                        $('#view_dtr_name').val(fname + " " + mname + " " +lname + " ("+ role + ")  Pending Salary: ₱"+total);
                     dtr_info= $('#view_dtr_table').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {
                                 var api = this.api(), data;
@@ -1004,6 +1015,7 @@
                                     exportOptions: {
                                         columns: [ 0, 1, 2, 3, 4, 5, 6 ]
                                     },
+                                    title: $('#view_dtr_name').val(),
                                     customize: function ( win ) {
                                         $(win.document.body)
                                             .css( 'font-size', '10pt' );
@@ -1011,6 +1023,8 @@
                                         $(win.document.body).find( 'table' )
                                             .addClass( 'compact' )
                                             .css( 'font-size', 'inherit' );
+
+                                        $(win.document.body).find('h1').css('font-size', '15pt');
                                     },
                                     footer: true
                                 }
