@@ -407,7 +407,7 @@
                                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <input type="number" id="bal" name="bal" class="form-control" placeholder="Enter customer's cash advance">
+                                                        <input type="number" id="bal" name="bal" onkeyup="amtpay(this)" class="form-control" placeholder="Enter customer's cash advance">
                                                     </div>
                                                 </div>
                                             </div>
@@ -535,6 +535,19 @@
                                                <div class="form-group">
                                                     <div class="form-line">
                                                          <input type="number" id="amount1" name="amount1" readonly="readonly" value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
+
+                                     <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Amount to pay</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="number" id="amtpay1" name="amtpay1" readonly="readonly" value="" class="form-control" required>
                                                     </div>
                                                </div>
                                           </div>
@@ -687,6 +700,22 @@
         var purchase_date_to;
         var id;
         //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
+        function amtpay(value) {
+        if($('#tare2').val()!=""){
+        tare3(this);
+        }
+        if($('#moist2').val()!=""){
+        moist3(this);
+        }
+        if($('#kilos1').val()!=""){
+        kilos2(this);
+        }
+        var b = parseFloat($('#bal').val());
+        var t = parseFloat($('#amount1').val());
+        var x = t+b;
+        console.log(x);
+        $('#amtpay1').val(x);
+        }
         function tare1(value) {
             //alert();
 
@@ -827,8 +856,6 @@
             //test
 
             if( $('#moist2').val() == "" ){
-
-                var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
                 var tare = parseFloat($('#tare2').val());
@@ -856,8 +883,6 @@
 
 
             if( $('#moist2').val() != "" ){
-
-                var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
                 var moist =  0;
@@ -888,7 +913,13 @@
                 $('#total1').val(x);
                 $('#net2').val(temp3);
             }
-
+            
+           // moist3(this);
+            //kilos2(this);
+            var b = parseFloat($('#bal').val());
+            var t = parseFloat($('#amount1').val());
+            var x = t+b;
+            $('#amtpay1').val(x);
 
         }
         function moist3(value) {
@@ -957,6 +988,10 @@
                 $('#total1').val(x3);
                 $('#net2').val(x5);
             }
+            var b = parseFloat($('#bal').val());
+            var t = parseFloat($('#amount1').val());
+            var x = t+b;
+            $('#amtpay1').val(x);
         }
         $(document).ready(function () {
             document.title = "M-Agri - Purchases";
@@ -2390,8 +2425,13 @@
                     $('#amount').val(temp3);
                 }
             }
+            if($('#moist').val()!=""){
             moist1(this);
+            }
+            if($('#tare').val()!=""){
             tare1(this);
+            }
+            
         }
 
         function partial1(value) {
@@ -2559,9 +2599,19 @@
                     $('#amount1').val(temp3);
                 }
             }
-
-            tare3(this);
-            moist3(this);
+            if($('#tare2').val()!=""){
+                tare3(this);
+            }
+            if($('#moist2').val()!=""){
+                moist3(this);
+            }
+            
+            var b = parseFloat($('#bal').val());
+            var t = parseFloat($('#amount1').val());
+            var x = t+b;
+            console.log(x);
+            $('#amtpay1').val(x);
+           
         }
 
         function partial2(value) {
@@ -2616,8 +2666,11 @@
                 $("#customer").val('').trigger('change');
                 $("#commodity").val('').trigger('change');
 
-                $('#purchase_modal').modal('hide');
-
+                //$('#purchase_modal').modal('hide');
+                $("#amtpay1").val("");
+                $("#bal").val("");
+                $("#contacts").val("");
+                $("#address").val("");
                 $("#sacks").val("");
                 $("#kilo").val("");
                 $("#price").val("");
@@ -2887,8 +2940,13 @@
                         }
                     }
                 });
+                if($('#moist').val()!=""){
                 moist1(this);
+                }
+                if($('#tare').val()!=""){
                 tare1(this);
+                }
+                
             });
             $('#type1').on('select2:select', function (e) {
                 var id = $(e.currentTarget).val()
@@ -2994,8 +3052,14 @@
                         }
                     }
                 });
-                moist3(this);
-                tare3(this);
+                if($('#moist2').val()!=""){
+                  moist3(this);  
+                }
+                if($('#tare2').val()!=""){
+                    tare3(this); 
+                }
+                
+             
             });
         });
     </script>
