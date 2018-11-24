@@ -114,7 +114,7 @@ class purchasesController extends Controller
                 $purchases->status = "On-Hand";
                 $purchases->released_by='';
                 $purchases->save();
-
+                $balance = balance::where('customer_id', $request->customer)->increment('balance',$request->cash);
                 $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
                
 
@@ -180,8 +180,8 @@ class purchasesController extends Controller
                 $purchases->commodity_id= $request->commodity1;
                 $purchases->sacks = $request->sacks1;
                 $purchases->ca_id = $request->customerid;
-                $purchases->balance_id = 0;
-                $purchases->partial = 0;
+                $purchases->balance_id = $request->bal;
+                $purchases->partial = $request->partialpayment;
                 $purchases->kilo = $request->kilo1;
                 $purchases->type = $request->type2;
                 $purchases->tare = $request->tare2;
@@ -189,13 +189,13 @@ class purchasesController extends Controller
                 $purchases->moist = $request->moist2;
                 $purchases->price = $request->price1;
                 $purchases->total = $request->amount1;
-                $purchases->amtpay= $request->amount1;
+                $purchases->amtpay= $request->amountpay1;
                 $purchases->remarks= $request->remarks1;
                 $purchases->status = "On-Hand";
                 $purchases->released_by='';
                 $purchases->save();
             
-                
+                $balance = balance::where('customer_id', $request->customerid)->decrement('balance',$request->partialpayment);
             
         }
       

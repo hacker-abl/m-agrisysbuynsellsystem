@@ -208,7 +208,7 @@
 
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Cash Advance</label>
+                                            <label for="name">Previous Balance (Cash Advance)</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -218,6 +218,19 @@
                                             </div>
                                        </div>
                                   </div>
+                                  
+                                  <div class="row clearfix">
+                                      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                           <label for="name">Cash Advance</label>
+                                      </div>
+                                      <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                           <div class="form-group">
+                                                <div class="form-line">
+                                                     <input type="number" id="cash" name="cash"  class="form-control"   required>
+                                                </div>
+                                           </div>
+                                      </div>
+                                 </div>
 
                                   <div class="row clearfix">
                                       <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -525,7 +538,33 @@
                                              </div>
                                         </div>
                                    </div>
-                                       </div>   
+                                       </div>
+
+                                    <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Partial Payment</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="number" id="partialpayment" name="partialpayment" onkeyup="tare3(this)"  value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>   
+
+                                    <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Amount to pay</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="number" id="amountpay1" name="amountpay1" readonly="readonly" value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>   
 
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -831,6 +870,7 @@
                 var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
+                var partialpayment = parseFloat($('#partialpayment').val());
                 var tare = parseFloat($('#tare2').val());
                 var partial = 0;
                 if($('#partial1').val()!=""){
@@ -846,6 +886,13 @@
                 var z = parseFloat(temp1).toFixed(2);
                 $('#amount1').val(x);
                 $('#total1').val(x);
+                if($('#partialpayment').val()!=""){
+                    x = x-partialpayment;
+                    $('#amountpay1').val(x);
+                }
+                else{
+                $('#amountpay1').val(x);
+                }
                 if($('#tare2').val() != "") {
                     $('#net2').val(temp3);
                 }
@@ -860,6 +907,7 @@
                 var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
+                var partialpayment = parseFloat($('#partialpayment').val());
                 var moist =  0;
                 if($('#moist2').val()!=""){
                     moist = parseFloat($('#moist2').val());
@@ -886,6 +934,14 @@
                 var z = parseFloat(temp1).toFixed(2);
                 $('#amount1').val(x);
                 $('#total1').val(x);
+
+                if($('#partialpayment').val()!=""){
+                    x = x-partialpayment;
+                    $('#amountpay1').val(x);
+                }
+                else{
+                $('#amountpay1').val(x);
+                }
                 $('#net2').val(temp3);
             }
 
@@ -896,6 +952,7 @@
 
                 var total = parseFloat($('#total1').val());
                 var moist = 0;
+                var partialpayment = parseFloat($('#partialpayment').val());
                 if($('#moist2').val()!=""){
                     moist = parseFloat($('#moist2').val());
                 }
@@ -922,10 +979,17 @@
                 var x1 = parseFloat(temp4).toFixed(2);
                 $('#amount1').val(x4);
                 $('#total1').val(x3);
+                if($('#partialpayment').val()!=""){
+                    x4 = x4-partialpayment;
+                    $('#amountpay1').val(x4);
+                }
+                else{
+                $('#amountpay1').val(x4);
+                }
                 $('#net2').val(x5);
             }
             if( $('#tare2').val() != ""  ){
-
+                var partialpayment = parseFloat($('#partialpayment').val());
                 var total = parseFloat($('#total1').val());
                 var moist = 0
                 if($('#moist2').val()!=""){
@@ -955,6 +1019,13 @@
                 var x1 = parseFloat(temp4).toFixed(2);
                 $('#amount1').val(x4);
                 $('#total1').val(x3);
+                if($('#partialpayment').val()!=""){
+                    x4 = x4-partialpayment;
+                    $('#amountpay1').val(x4);
+                }
+                else{
+                $('#amountpay1').val(x4);
+                }
                 $('#net2').val(x5);
             }
         }
@@ -1244,8 +1315,8 @@
                     {data:'lname', name: 'customer.lname',visible:false  },
                     {data: 'commname', name: 'commodity.name'},
                     {data: 'sacks'},
-                    {data: 'partial'},
                     {data: 'balance_id'},
+                    {data: 'partial'},
                     {data: 'balance', name: 'balance.balance'},
                     {data: 'kilo'},
                     {data: 'type'},
@@ -1439,8 +1510,8 @@
                             {data:'lname', name: 'customer.lname',visible:false  },
                             {data: 'commname', name: 'commodity.name'},
                             {data: 'sacks'},
-                            {data: 'partial'},
                             {data: 'balance_id'},
+                            {data: 'partial'},
                             {data: 'balance', name: 'balance.balance'},
                             {data: 'kilo'},
                             {data: 'type'},
@@ -1614,8 +1685,8 @@
                     {data:'lname', name: 'customer.lname',visible:false  },
                     {data: 'commname', name: 'commodity.name'},
                     {data: 'sacks'},
-                    {data: 'partial'},
                     {data: 'balance_id'},
+                    {data: 'partial'},
                     {data: 'balance', name: 'balance.balance'},
                     {data: 'kilo'},
                     {data: 'type'},
@@ -1811,8 +1882,8 @@
                             {data:'lname', name: 'customer.lname',visible:false  },
                             {data: 'commname', name: 'commodity.name'},
                             {data: 'sacks'},
-                            {data: 'partial'},
                             {data: 'balance_id'},
+                            {data: 'partial'},
                             {data: 'balance', name: 'balance.balance'},
                             {data: 'kilo'},
                             {data: 'type'},
@@ -1987,8 +2058,8 @@
                     {data:'lname', name: 'customer.lname',visible:false  },
                     {data: 'commname', name: 'commodity.name'},
                     {data: 'sacks'},
-                    {data: 'partial'},
                     {data: 'balance_id'},
+                    {data: 'partial'},
                     {data: 'balance', name: 'balance.balance'},
                     {data: 'kilo'},
                     {data: 'type'},
@@ -2175,6 +2246,7 @@
                     dataType:'text',
                     data: $('#purchase_form1').serialize(),
                     success:function(data){
+                        console.log($("#partialpayment").val());
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#sacks1").val("");
@@ -2182,6 +2254,7 @@
                         $("#price1").val("");
                         $("#fname").val("");
                         $("#tare2").val("");
+                        $("#cash").val("");
                         $("#moist2").val("");
                         $("#net2").val("");
                         $("#mname").val("");
@@ -2509,6 +2582,7 @@
                         var temp2 = t+r;
                         var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount1').val(temp3);
+                        $('#amountpay1').val(temp3);
                     }
                     else{
                         $('#amount1').val("");
@@ -2521,23 +2595,27 @@
                     $('#total1').val(tempo);
                     var temp3 =  parseFloat(temp).toFixed(2);
                     $('#amount1').val(temp3);
+                    $('#amountpay1').val(temp3);
                     if($('#partial1').val()!=""){
                         r = parseFloat($('#partial1').val());
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount1').val(temp3);
+                        $('#amountpay1').val(temp3);
                     }
                     if($('#total1').val()!=""){
                         t = parseFloat($('#total1').val());
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount1').val(temp3);
+                        $('#amountpay1').val(temp3);
                     }
                     if($('#sacks1').val()=="")
                     {
                         temp = c + r;
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount1').val(temp3);
+                        $('#amountpay1').val(temp3);
                     }
                 }
                 if($('#sacks1').val()!=""){
@@ -2549,6 +2627,7 @@
                     $('#total1').val(tempo);
                     var temp3 =  parseFloat(i).toFixed(2);
                     $('#amount1').val(temp3);
+                    $('#amountpay1').val(temp3);
                 }
             }
 
@@ -2609,12 +2688,17 @@
                 $("#commodity").val('').trigger('change');
 
                 $('#purchase_modal').modal('hide');
-
+                $("#cash").val("");
                 $("#sacks").val("");
                 $("#kilo").val("");
                 $("#price").val("");
                 $("#sacks1").val("");
                 $("#kilo1").val("");
+                $("#amountpay1").val("");
+                $("#partialpayment").val("");
+                $("#address").val("");
+                $("#contacts").val("");
+                $("#bal").val("");
                 $("#price1").val("");
                 $("#fname").val("");
                 $("#mname").val("");
@@ -2884,6 +2968,7 @@
                                 $('#total1').val(tempo);
                                 var temp3 =  parseFloat(z).toFixed(2);
                                 $('#amount1').val(temp3);
+                                $('#amountpay1').val(temp3);
                             }
                         }
                         else{
@@ -2917,6 +3002,7 @@
                                 $('#total1').val(tempo);
                                 var temp3 =  parseFloat(z).toFixed(2);
                                 $('#amount1').val(temp3);
+                                $('#amountpay1').val(temp3);
                             }
                         }
                     }
