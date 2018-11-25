@@ -208,7 +208,7 @@
 
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Previous Balance (Cash Advance)</label>
+                                            <label for="name">Balance</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -553,19 +553,6 @@
                                           </div>
                                      </div>   
 
-                                    <div class="row clearfix">
-                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                               <label for="name">Amount to pay</label>
-                                          </div>
-                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                               <div class="form-group">
-                                                    <div class="form-line">
-                                                         <input type="number" id="amountpay1" name="amountpay1" readonly="readonly" value="" class="form-control" required>
-                                                    </div>
-                                               </div>
-                                          </div>
-                                     </div>   
-
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                <label for="name">Total</label>
@@ -578,6 +565,19 @@
                                                </div>
                                           </div>
                                      </div>
+
+                                    <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Amount to pay</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="number" id="amountpay1" name="amountpay1" readonly="readonly" value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>   
 
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
