@@ -12,6 +12,7 @@ use App\balance;
 use App\purchases;
 use App\employee;
 use Auth;
+use App\paymentlogs;
 use App\Notification;
 use App\UserPermission;
 use App\User;
@@ -126,7 +127,7 @@ class purchasesController extends Controller
             $ca->status = "On-Hand";
             $ca->released_by = '';
             $ca->save();
-    
+            
             if($ca) {
                 $notification = new Notification;
                 $notification->notification_type = "Cash Advance";
@@ -151,8 +152,15 @@ class purchasesController extends Controller
     
                 event(new \App\Events\NewNotification($notification));
             }
-    
-            
+        if( $request->partial != 0){
+            $paymentlogs = new paymentlogs;
+            $paymentlogs->logs_id = $request->customer;
+            $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+            $paymentlogs->checknumber = "Not Specified";
+            $paymentlogs->paymentamount = $request->partial;
+            $paymentlogs->save();
+            event(new BalanceUpdated($paymentlogs));
+        }
         }
         if($request->get('button_action1') == 'update'){
             $purchases=  Purchases::find($request->get('id'));
@@ -240,7 +248,16 @@ class purchasesController extends Controller
             $ca->status = "On-Hand";
             $ca->released_by = '';
             $ca->save();
-    
+            
+            if( $request->partialpayment != 0){
+                $paymentlogs = new paymentlogs;
+                $paymentlogs->logs_id = $request->customerid;
+                $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+                $paymentlogs->checknumber = "Not Specified";
+                $paymentlogs->paymentamount = $request->partialpayment;
+                $paymentlogs->save();
+                event(new BalanceUpdated($paymentlogs));
+            }
             if($ca) {
                 $notification = new Notification;
                 $notification->notification_type = "Cash Advance";
