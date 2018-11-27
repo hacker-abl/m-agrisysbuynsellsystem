@@ -1224,9 +1224,10 @@
                         'Total: <br>' + number_format(pageTotal7,2) + ' kg'
                     );
                 },
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [{
                     extend: 'print',
+                    pageSize: 'LEGAL',
                     exportOptions: {
                         columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                     },
@@ -1259,7 +1260,22 @@
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
-                }],
+                },
+                { 
+                    extend: 'pdfHtml5', 
+                    footer: true, 
+                    orientation: 'landscape', 
+                    pageSize: 'LEGAL' , 
+                    exportOptions: { 
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;  
+                        doc.styles.tableFooter.fontSize = 8;   
+                        doc.defaultStyle.fontSize = 8; 
+                    }  
+                }
+                ],
 
                 scrollX: true,
                 order:[],
@@ -1419,9 +1435,10 @@
                                 'Total: <br>' + number_format(pageTotal7,2) + ' kg'
                             );
                         },
-                        dom: 'Bfrtip',
+                        dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         buttons: [{
                             extend: 'print',
+                            pageSize: 'LEGAL',
                             exportOptions: {
                                 columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                             },
@@ -1454,7 +1471,22 @@
                                     .css( 'font-size', 'inherit' );
                             },
                             footer: true
-                        }],
+                        },
+                        { 
+                            extend: 'pdfHtml5', 
+                            footer: true, 
+                            orientation: 'landscape', 
+                            pageSize: 'LEGAL' , 
+                            exportOptions: { 
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                            },
+                            customize: function(doc) {
+                                doc.styles.tableHeader.fontSize = 8;  
+                                doc.styles.tableFooter.fontSize = 8;   
+                                doc.defaultStyle.fontSize = 8; 
+                            }  
+                        }
+                    ],
                         scrollX: true,
                         processing: true,
 
@@ -1594,9 +1626,10 @@
                         'Total: <br>₱' + number_format(pageTotal6,2)
                     );
                 },
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [{
                     extend: 'print',
+                    pageSize: 'LEGAL',
                     exportOptions: {
                         columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
                     },
@@ -1629,7 +1662,22 @@
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
-                }],
+                },
+                { 
+                    extend: 'pdfHtml5', 
+                    footer: true, 
+                    orientation: 'landscape', 
+                    pageSize: 'LEGAL' , 
+                    exportOptions: { 
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;  
+                        doc.styles.tableFooter.fontSize = 8;   
+                        doc.defaultStyle.fontSize = 8; 
+                    }  
+                }
+                ],
 
                 scrollX: true,
                 order:[],
@@ -1791,9 +1839,10 @@
                                 'Total: <br>' + number_format(pageTotal7,2) + ' kg'
                             );
                         },
-                        dom: 'Bfrtip',
+                        dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         buttons: [{
                             extend: 'print',
+                            pageSize: 'LEGAL',
                             exportOptions: {
                                 columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                             },
@@ -1826,7 +1875,22 @@
                                     .css( 'font-size', 'inherit' );
                             },
                             footer: true
-                        }],
+                        },
+                        { 
+                            extend: 'pdfHtml5', 
+                            footer: true, 
+                            orientation: 'landscape', 
+                            pageSize: 'LEGAL' , 
+                            exportOptions: { 
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                            },
+                            customize: function(doc) {
+                                doc.styles.tableHeader.fontSize = 8;  
+                                doc.styles.tableFooter.fontSize = 8;   
+                                doc.defaultStyle.fontSize = 8; 
+                            }  
+                        }
+                ],
                         scrollX: true,
                         processing: true,
 
@@ -1967,9 +2031,10 @@
                         'Total: <br>₱' + number_format(pageTotal6,2)
                     );
                 },
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [{
                     extend: 'print',
+                    pageSize: 'LEGAL',  
                     exportOptions: {
                         columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
                     },
@@ -2002,7 +2067,22 @@
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
-                }],
+                },
+                { 
+                    extend: 'pdfHtml5', 
+                    footer: true, 
+                    orientation: 'landscape', 
+                    pageSize: 'LEGAL' , 
+                    exportOptions: { 
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;   
+                        doc.styles.tableFooter.fontSize = 8;    
+                        doc.defaultStyle.fontSize = 8; 
+                    }  
+                }
+                ],
 
                 scrollX: true,
                 order:[],

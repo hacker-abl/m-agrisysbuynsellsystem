@@ -355,7 +355,7 @@
                     .end()
             })
             var usertable = $('#usertable').DataTable({
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
                         extend: 'print',
@@ -371,7 +371,20 @@
                                 .css( 'font-size', 'inherit' );
                         },
                         footer: true
-                    }
+                    },
+					{ 
+						extend: 'pdfHtml5', 
+                        title: "Cash History - " + $('.modal_title_cash').text(),
+						footer: true,
+						exportOptions: { 
+							columns: [ 0, 1, 2, 3]
+						},
+						customize: function(doc) {
+							doc.styles.tableHeader.fontSize = 8;  
+							doc.styles.tableFooter.fontSize = 8;   
+							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+						}  
+					}
                 ],
                 processing: true,
                 columnDefs: [
@@ -572,7 +585,7 @@
                         $('.modal_title_cash').text(data.data[0].user.username);
 
                         $('#cash_history_table').DataTable({
-                            dom: 'Bfrtip',
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             destroy: true,
                             buttons: [
                                 {
@@ -589,6 +602,19 @@
                                             .css( 'font-size', 'inherit' );
                                     },
                                     footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    title: "Cash History - " + $('.modal_title_cash').text(),
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3, 4, 5]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
                                 }
                             ],
                             data:data.data,
