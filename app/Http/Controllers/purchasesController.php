@@ -118,7 +118,8 @@ class purchasesController extends Controller
                 $purchases->save();
                 $balance = balance::where('customer_id', $request->customer)->increment('balance',$request->cash);
                 $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
-               
+            
+            if($request->cash > 0){    
             $ca = new ca;
             $ca->customer_id = $request->customer;
             $ca->reason = "FROM PURCHASE (Cash Advance)";
@@ -127,6 +128,7 @@ class purchasesController extends Controller
             $ca->status = "On-Hand";
             $ca->released_by = '';
             $ca->save();
+            
             
             if($ca) {
                 $notification = new Notification;
@@ -152,7 +154,8 @@ class purchasesController extends Controller
     
                 event(new \App\Events\NewNotification($notification));
             }
-        if( $request->partial != 0){
+        }
+        if( $request->partial > 0){
             $paymentlogs = new paymentlogs;
             $paymentlogs->logs_id = $request->customer;
             $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
@@ -239,7 +242,7 @@ class purchasesController extends Controller
             
                 $balance = balance::where('customer_id',  $request->customerid)->decrement('balance',$request->partialpayment);
                 $balance = balance::where('customer_id',  $request->customerid)->increment('balance',$request->bal);
-            
+            if($request->bal > 0){
             $ca = new ca;
             $ca->customer_id = $request->customerid;
             $ca->reason = "FROM PURCHASE (Cash Advance)";
@@ -248,8 +251,8 @@ class purchasesController extends Controller
             $ca->status = "On-Hand";
             $ca->released_by = '';
             $ca->save();
-            
-            if( $request->partialpayment != 0){
+            }
+            if( $request->partialpayment > 0){
                 $paymentlogs = new paymentlogs;
                 $paymentlogs->logs_id = $request->customerid;
                 $paymentlogs->paymentmethod = 'FROM PURCHASE CA';

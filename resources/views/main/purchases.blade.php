@@ -226,7 +226,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group">
                                                 <div class="form-line">
-                                                     <input type="number" id="cash" name="cash"  class="form-control"   required>
+                                                     <input type="number" id="cash" name="cash" onkeyup="totalbalance(this)"  class="form-control"   required>
                                                 </div>
                                            </div>
                                       </div>
@@ -725,6 +725,25 @@
         var purchase_date_from;
         var purchase_date_to;
         var id;
+        function totalbalance(value) {
+            if($('#cash').val() !=""){
+                var x =  parseFloat($('#cash').val());
+                var y =  parseFloat($('#ca').val());
+                if($('#partial').val() == "" || $('#partial').val() == "0"){
+                    x = x + y;
+                    $('#balance').val(x);
+                }
+                else{
+                    var t =  parseFloat($('#partial').val());
+                    x = (x + y) - t;
+                    $('#balance').val(x);
+                }
+            }
+            if($('#cash').val() ==""){
+                var y =  parseFloat($('#ca').val());
+                $('#balance').val(y);
+            }
+        }
         //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
         function tare1(value) {
             //alert();
@@ -2467,22 +2486,45 @@
                     var d = parseFloat($('#ca').val());
                     var c = 0;
                     var e =0;
+               
                     if($('#partial').val()!=""){
                         a = parseFloat($('#partial').val());
 
                         if($('#total').val()!=""){
                             e = parseFloat($('#total').val());
                         }
+                        
                         x = a+e;
                         var temp3 =  parseFloat(x).toFixed(2);
                         $('#amount').val(temp3)
                     }
-                    c = d-a;
-                    $('#balance').val(c);
+                    else{
+                        if($('#cash').val() != "" ){
+                            var t = parseFloat($('#cash').val());
+                            c = b+a;
+                            $('#balance').val(c);
+                        }
+                    }
+                  
+                    if($('#cash').val() != "" ){
+                        var t = parseFloat($('#cash').val());
+                        c = (d-a) + t;
+                        $('#balance').val(c);
+                    }
+                    else{
+                        if($('#partial').val() != "0"){
+                            c = d-a;
+                        }
+                        else{
+                            c = d-0;
+                        }
+                        $('#balance').val(c);
+                    }
 
                     if($('#total').val()!=""){
                         e = parseFloat($('#total').val());
                     }
+                
                     x = e-a;
                     var temp3 =  parseFloat(x).toFixed(2);
                     $('#amount').val(temp3)
@@ -2809,6 +2851,11 @@
                             a = parseFloat($('#partial').val());
                             c = b-a;
                             $('#balance').val(c);
+                            if($('#cash').val() != "" || $('#cash').val() != "0"){
+                                var t = parseFloat($('#cash').val());
+                                c = (b-a) + t;
+                                $('#balance').val(c);
+                            }
                         }
 
                     }
