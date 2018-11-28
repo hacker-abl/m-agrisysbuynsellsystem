@@ -542,6 +542,19 @@
 
                                      <div class="row clearfix">
                                           <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                               <label for="name">Amount to pay</label>
+                                          </div>
+                                          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                               <div class="form-group">
+                                                    <div class="form-line">
+                                                         <input type="number" id="amtpay1" name="amtpay1" readonly="readonly" value="" class="form-control" required>
+                                                    </div>
+                                               </div>
+                                          </div>
+                                     </div>
+
+                                     <div class="row clearfix">
+                                          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                <label for="type">Remarks</label>
                                           </div>
                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
@@ -602,7 +615,7 @@
                         <h2>List of Purchases as of {{ date('Y-m-d ') }}</h2>
                              <ul class="header-dropdown m-r--5">
                                   <li class="dropdown">
-                                    @if(isAdmin())
+                                    @if(isAdmin() || isPurchaser())
                                        <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_purchase_modal"><i class="material-icons">library_add</i></button>
                                     @endif
                                   </li>
@@ -687,6 +700,22 @@
         var purchase_date_to;
         var id;
         //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
+        function amtpay(value) {
+        if($('#tare2').val()!=""){
+        tare3(this);
+        }
+        if($('#moist2').val()!=""){
+        moist3(this);
+        }
+        if($('#kilos1').val()!=""){
+        kilos2(this);
+        }
+        var b = parseFloat($('#bal').val());
+        var t = parseFloat($('#amount1').val());
+        var x = t+b;
+        console.log(x);
+        $('#amtpay1').val(x);
+        }
         function tare1(value) {
             //alert();
 
@@ -827,8 +856,6 @@
             //test
 
             if( $('#moist2').val() == "" ){
-
-                var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
                 var tare = parseFloat($('#tare2').val());
@@ -856,8 +883,6 @@
 
 
             if( $('#moist2').val() != "" ){
-
-                var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
                 var moist =  0;
@@ -963,6 +988,10 @@
                 $('#total1').val(x3);
                 $('#net2').val(x5);
             }
+            var b = parseFloat($('#bal').val());
+            var t = parseFloat($('#amount1').val());
+            var x = t+b;
+            $('#amtpay1').val(x);
         }
         $(document).ready(function () {
             document.title = "M-Agri - Purchases";
@@ -983,8 +1012,16 @@
                             method: "get",
                             data:{id:id},
                             success:function(data){
+                              if(data!='OK'){
+                                var ObjData = JSON.parse(data);
+                                 $('#curCashOnHand').html(ObjData.cashOnHand.toFixed(2));
+                                  swal("Data Deleted !", "Cash On Hand: ₱"+ObjData.cashOnHand.toFixed(2)+" | Transaction ID: "+ObjData.cashHistory, "success")
+                                refresh_purchase_table();
+                              }else{    
                                 swal("Deleted!", "The record has been deleted.", "success");
                                 refresh_purchase_table();
+                              }
+                             
                             }
                         })
                       }
@@ -1187,9 +1224,10 @@
                         'Total: <br>' + number_format(pageTotal7,2) + ' kg'
                     );
                 },
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [{
                     extend: 'print',
+                    pageSize: 'LEGAL',
                     exportOptions: {
                         columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                     },
@@ -1222,7 +1260,22 @@
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
-                }],
+                },
+                { 
+                    extend: 'pdfHtml5', 
+                    footer: true, 
+                    orientation: 'landscape', 
+                    pageSize: 'LEGAL' , 
+                    exportOptions: { 
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;  
+                        doc.styles.tableFooter.fontSize = 8;   
+                        doc.defaultStyle.fontSize = 8; 
+                    }  
+                }
+                ],
 
                 scrollX: true,
                 order:[],
@@ -1382,9 +1435,10 @@
                                 'Total: <br>' + number_format(pageTotal7,2) + ' kg'
                             );
                         },
-                        dom: 'Bfrtip',
+                        dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         buttons: [{
                             extend: 'print',
+                            pageSize: 'LEGAL',
                             exportOptions: {
                                 columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                             },
@@ -1417,7 +1471,22 @@
                                     .css( 'font-size', 'inherit' );
                             },
                             footer: true
-                        }],
+                        },
+                        { 
+                            extend: 'pdfHtml5', 
+                            footer: true, 
+                            orientation: 'landscape', 
+                            pageSize: 'LEGAL' , 
+                            exportOptions: { 
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                            },
+                            customize: function(doc) {
+                                doc.styles.tableHeader.fontSize = 8;  
+                                doc.styles.tableFooter.fontSize = 8;   
+                                doc.defaultStyle.fontSize = 8; 
+                            }  
+                        }
+                    ],
                         scrollX: true,
                         processing: true,
 
@@ -1557,9 +1626,10 @@
                         'Total: <br>₱' + number_format(pageTotal6,2)
                     );
                 },
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [{
                     extend: 'print',
+                    pageSize: 'LEGAL',
                     exportOptions: {
                         columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
                     },
@@ -1592,7 +1662,22 @@
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
-                }],
+                },
+                { 
+                    extend: 'pdfHtml5', 
+                    footer: true, 
+                    orientation: 'landscape', 
+                    pageSize: 'LEGAL' , 
+                    exportOptions: { 
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;  
+                        doc.styles.tableFooter.fontSize = 8;   
+                        doc.defaultStyle.fontSize = 8; 
+                    }  
+                }
+                ],
 
                 scrollX: true,
                 order:[],
@@ -1754,9 +1839,10 @@
                                 'Total: <br>' + number_format(pageTotal7,2) + ' kg'
                             );
                         },
-                        dom: 'Bfrtip',
+                        dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         buttons: [{
                             extend: 'print',
+                            pageSize: 'LEGAL',
                             exportOptions: {
                                 columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
                             },
@@ -1789,7 +1875,22 @@
                                     .css( 'font-size', 'inherit' );
                             },
                             footer: true
-                        }],
+                        },
+                        { 
+                            extend: 'pdfHtml5', 
+                            footer: true, 
+                            orientation: 'landscape', 
+                            pageSize: 'LEGAL' , 
+                            exportOptions: { 
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                            },
+                            customize: function(doc) {
+                                doc.styles.tableHeader.fontSize = 8;  
+                                doc.styles.tableFooter.fontSize = 8;   
+                                doc.defaultStyle.fontSize = 8; 
+                            }  
+                        }
+                ],
                         scrollX: true,
                         processing: true,
 
@@ -1930,9 +2031,10 @@
                         'Total: <br>₱' + number_format(pageTotal6,2)
                     );
                 },
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [{
                     extend: 'print',
+                    pageSize: 'LEGAL',  
                     exportOptions: {
                         columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,15,16,17,18 ]
                     },
@@ -1965,7 +2067,22 @@
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
-                }],
+                },
+                { 
+                    extend: 'pdfHtml5', 
+                    footer: true, 
+                    orientation: 'landscape', 
+                    pageSize: 'LEGAL' , 
+                    exportOptions: { 
+                        columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;   
+                        doc.styles.tableFooter.fontSize = 8;    
+                        doc.defaultStyle.fontSize = 8; 
+                    }  
+                }
+                ],
 
                 scrollX: true,
                 order:[],
@@ -2037,6 +2154,7 @@
                     dataType:'text',
                     data: $('#purchase_form').serialize(),
                     success:function(data){
+                      if(data!="Not"){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#customer").val('').trigger('change');
@@ -2066,7 +2184,13 @@
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
-                        //refresh_delivery_table();
+                      }else{
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        swal("Oh no!", "You are not authorized to edit this. try again.", "error")
+                      }
+                       
+                        
                     },
                     error: function(data){
                         button.disabled = false;
@@ -2388,8 +2512,13 @@
                     $('#amount').val(temp3);
                 }
             }
+            if($('#moist').val()!=""){
             moist1(this);
+            }
+            if($('#tare').val()!=""){
             tare1(this);
+            }
+            
         }
 
         function partial1(value) {
@@ -2557,9 +2686,19 @@
                     $('#amount1').val(temp3);
                 }
             }
-
-            tare3(this);
-            moist3(this);
+            if($('#tare2').val()!=""){
+                tare3(this);
+            }
+            if($('#moist2').val()!=""){
+                moist3(this);
+            }
+            
+            var b = parseFloat($('#bal').val());
+            var t = parseFloat($('#amount1').val());
+            var x = t+b;
+            console.log(x);
+            $('#amtpay1').val(x);
+           
         }
 
         function partial2(value) {
@@ -2823,8 +2962,13 @@
                         }
                     }
                 });
+                if($('#moist').val()!=""){
                 moist1(this);
+                }
+                if($('#tare').val()!=""){
                 tare1(this);
+                }
+                
             });
             $('#type1').on('select2:select', function (e) {
                 var id = $(e.currentTarget).val()
@@ -2930,8 +3074,14 @@
                         }
                     }
                 });
-                moist3(this);
-                tare3(this);
+                if($('#moist2').val()!=""){
+                  moist3(this);  
+                }
+                if($('#tare2').val()!=""){
+                    tare3(this); 
+                }
+                
+             
             });
         });
     </script>

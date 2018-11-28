@@ -435,7 +435,7 @@
 					<h2>List of cash advances as of {{ date('Y-m-d ') }}</h2>
 						<ul class="header-dropdown m-r--5">
 							<li class="dropdown">
-								@if(isAdmin())
+								@if(isAdmin() || isPurchaser())
                                 <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_modal"><i class="material-icons">library_add</i></button>
                                 @endif()
                             </li>
@@ -624,7 +624,7 @@
                     'Total: <br>₱' + number_format(pageTotal1,2)
                 );
               },
-      				dom: 'Bfrtip',
+      				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
       				buttons: [
                     {
                         extend: 'print',
@@ -640,6 +640,18 @@
                                 .css( 'font-size', 'inherit' );
                         },
                         footer: true
+                    },
+                    { 
+                        extend: 'pdfHtml5', 
+                        footer: true,
+                        exportOptions: { 
+                            columns: [ 0, 3, 4, 5 ]
+                        },
+                        customize: function(doc) {
+                            doc.styles.tableHeader.fontSize = 8;  
+                            doc.styles.tableFooter.fontSize = 8;   
+                            doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                        }  
                     }
                 ],
       				processing: true,
@@ -696,7 +708,7 @@
                               'Total: <br>₱' + number_format(pageTotal,2)
                           );
                       },
-                      dom: 'Bfrtip',
+                      dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                       buttons: [
                           {
                               extend: 'print',
@@ -712,7 +724,19 @@
                                       .css( 'font-size', 'inherit' );
                               },
                               footer: true
-                          }
+                          },
+                            { 
+                                extend: 'pdfHtml5', 
+                                footer: true,
+                                exportOptions: { 
+                                    columns: [ 0, 1 ]
+                                },
+                                customize: function(doc) {
+                                    doc.styles.tableHeader.fontSize = 8;  
+                                    doc.styles.tableFooter.fontSize = 8;   
+                                    doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                }  
+                            }
                       ],
                        processing: true,
 
@@ -893,7 +917,7 @@
                                           'Total: <br>₱' + number_format(pageTotal,2)
                                       );
                                   },
-                                  dom: 'Bfrtip',
+                                  dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                                   buttons: [
                                       {
                                           extend: 'print',
@@ -909,7 +933,19 @@
                                                   .css( 'font-size', 'inherit' );
                                           },
                                           footer: true
-                                      }
+                                      },
+                                        { 
+                                            extend: 'pdfHtml5', 
+                                            footer: true,
+                                            exportOptions: { 
+                                                columns: [ 0, 1, 2, 3, 4 ]
+                                            },
+                                            customize: function(doc) {
+                                                doc.styles.tableHeader.fontSize = 8;  
+                                                doc.styles.tableFooter.fontSize = 8;   
+                                                doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                            }  
+                                        }
                                   ],
                                   order: [[ 2, "desc" ]],
                                   bDestroy: true,
@@ -1007,7 +1043,7 @@
                                           'Total: <br>₱' + number_format(pageTotal,2)
                                       );
                                   },
-                                  dom: 'Bfrtip',
+                                  dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                                   buttons: [
                                       {
                                           extend: 'print',
@@ -1023,7 +1059,19 @@
                                                   .css( 'font-size', 'inherit' );
                                           },
                                           footer: true
-                                      }
+                                      },
+                                        { 
+                                            extend: 'pdfHtml5', 
+                                            footer: true,
+                                            exportOptions: { 
+                                                columns: [ 0, 1, 2, 3, 4 ]
+                                            },
+                                            customize: function(doc) {
+                                                doc.styles.tableHeader.fontSize = 8;  
+                                                doc.styles.tableFooter.fontSize = 8;   
+                                                doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                            }  
+                                        }
                                   ],
                                   order: [[ 2, "desc" ]],
                                   bDestroy: true,
@@ -1154,7 +1202,7 @@
                                     'Total: <br>₱' + number_format(pageTotal,2)
                                 );
                             },
-                            dom: 'Bfrtip',
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             buttons: [
                                 {
                                     extend: 'print',
@@ -1170,6 +1218,18 @@
                                             .css( 'font-size', 'inherit' );
                                     },
                                     footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3 ]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
                                 }
                             ],
                            order: [[ 0, "desc" ]],
@@ -1241,7 +1301,7 @@
                                     'Total: <br>₱' + number_format(pageTotal,2)
                                 );
                             },
-                            dom: 'Bfrtip',
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             buttons: [
                                 {
                                     extend: 'print',
@@ -1257,6 +1317,18 @@
                                             .css( 'font-size', 'inherit' );
                                     },
                                     footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3, 4 ]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
                                 }
                             ],
                             order: [[ 2, "desc" ]],
@@ -1364,7 +1436,7 @@
                                           'Total: <br>₱' + number_format(pageTotal,2)
                                       );
                                   },
-                                  dom: 'Bfrtip',
+                                  dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                                   buttons: [
                                       {
                                           extend: 'print',
@@ -1380,7 +1452,19 @@
                                                   .css( 'font-size', 'inherit' );
                                           },
                                           footer: true
-                                      }
+                                      },
+                                        { 
+                                            extend: 'pdfHtml5', 
+                                            footer: true,
+                                            exportOptions: { 
+                                                columns: [ 0, 1, 2, 3, 4 ]
+                                            },
+                                            customize: function(doc) {
+                                                doc.styles.tableHeader.fontSize = 8;  
+                                                doc.styles.tableFooter.fontSize = 8;   
+                                                doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                            }  
+                                        }
                                   ],
                                   order: [[ 2, "desc" ]],
                                   bDestroy: true,
@@ -1483,7 +1567,7 @@
                                                                 'Total: <br>₱' + number_format(pageTotal,2)
                                                             );
                                                         },
-                                                        dom: 'Bfrtip',
+                                                        dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                                                         buttons: [
                                                             {
                                                                 extend: 'print',
@@ -1499,6 +1583,18 @@
                                                                         .css( 'font-size', 'inherit' );
                                                                 },
                                                                 footer: true
+                                                            },
+                                                            { 
+                                                                extend: 'pdfHtml5', 
+                                                                footer: true,
+                                                                exportOptions: { 
+                                                                    columns: [ 0, 1, 2, 3, 4 ]
+                                                                },
+                                                                customize: function(doc) {
+                                                                    doc.styles.tableHeader.fontSize = 8;  
+                                                                    doc.styles.tableFooter.fontSize = 8;   
+                                                                    doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                                                }  
                                                             }
                                                         ],
                                                         order: [[ 2, "desc" ]],

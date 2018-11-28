@@ -26,7 +26,7 @@
                                     <div class="form-group">
                                         <select id="emp_id" name="emp_id" class="form-control" placeholder="Enter employee" required style="width:100%;">
                                             @foreach($employee as $key => $emp)
-                                                @if(strcasecmp($employee[$key]->cashier->role, 'cashier') == 0 || strcasecmp($employee[$key]->cashier->role, 'manager') == 0 || strcasecmp($employee[$key]->cashier->role, 'secretary') == 0)
+                                                @if(strcasecmp($employee[$key]->cashier->role, 'cashier') == 0 || strcasecmp($employee[$key]->cashier->role, 'manager') == 0 || strcasecmp($employee[$key]->cashier->role, 'secretary') == 0 || strcasecmp($employee[$key]->cashier->role, 'purchaser') == 0)
                                                 <option value="{{ $emp->id }}">{{ $emp->lname.", ".$emp->fname." ".$emp->mname }}</option>
                                                 @endif
                                             @endforeach
@@ -170,7 +170,7 @@
                         @csrf
                         <input type="hidden" name="id" value="">
                         <div class="header">
-                            <h2 class="modal_title">Permissions</h2>
+                            <h2 class="modal_title" id="permit_name"></h2>
                         </div>
                         <div class="body">
                             <div class="col-md-12 text-center">
@@ -355,7 +355,7 @@
                     .end()
             })
             var usertable = $('#usertable').DataTable({
-                dom: 'Bfrtip',
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
                         extend: 'print',
@@ -371,7 +371,20 @@
                                 .css( 'font-size', 'inherit' );
                         },
                         footer: true
-                    }
+                    },
+					{ 
+						extend: 'pdfHtml5', 
+                        title: "Cash History - " + $('.modal_title_cash').text(),
+						footer: true,
+						exportOptions: { 
+							columns: [ 0, 1, 2, 3]
+						},
+						customize: function(doc) {
+							doc.styles.tableHeader.fontSize = 8;  
+							doc.styles.tableFooter.fontSize = 8;   
+							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+						}  
+					}
                 ],
                 processing: true,
                 columnDefs: [
@@ -572,7 +585,7 @@
                         $('.modal_title_cash').text(data.data[0].user.username);
 
                         $('#cash_history_table').DataTable({
-                            dom: 'Bfrtip',
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             destroy: true,
                             buttons: [
                                 {
@@ -589,6 +602,19 @@
                                             .css( 'font-size', 'inherit' );
                                     },
                                     footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    title: "Cash History - " + $('.modal_title_cash').text(),
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3, 4, 5]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
                                 }
                             ],
                             data:data.data,
@@ -627,7 +653,8 @@
                     $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
                 },
                 success: function(data) {
-                    console.log(data);
+                    var name = $('#permit_name');
+                    name.html("Permission for Username: "+data.username);
                     $.each(data.userpermission, function(i, val){
                         
                         if(val.permit != 0)
@@ -670,7 +697,7 @@
                 method:'POST',
                 data: data,
                 dataType: 'json',
-                success: function(data) {
+                success: function(data) { 
                     console.log(data);
                     if(data) {
                         swal("Success!", "Permission has been updated!", "success");
