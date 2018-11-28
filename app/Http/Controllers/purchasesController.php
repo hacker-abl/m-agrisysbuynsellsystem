@@ -12,6 +12,8 @@ use App\balance;
 use App\purchases;
 use App\employee;
 use Auth;
+use App\paymentlogs;
+use App\Notification;
 use App\UserPermission;
 use App\User;
 use App\Cash_History;
@@ -94,31 +96,74 @@ class purchasesController extends Controller
         
         if($request->get('button_action1') == 'add' && $request->get('stat1') == 'old'){
             
-                $purchases= new Purchases;
-                $purchases->trans_no = $request->ticket;
-                $purchases->customer_id = $request->customer;
-                $purchases->commodity_id= $request->commodity;
-                $purchases->sacks = $request->sacks;
-                $purchases->ca_id = $request->customer;
-                $purchases->balance_id = $request->balance;
-                $purchases->partial = $request->partial;
-                $purchases->kilo = $request->kilo;
-                $purchases->price = $request->price;
-                $purchases->type = $request->type1;
-                $purchases->tare = $request->tare;
-                $purchases->moist = $request->moist;
-                $purchases->net = $request->net;
-                $purchases->total = $request->total;
-                $purchases->amtpay= $request->amount;
-                $purchases->remarks= $request->remarks;
-                $purchases->status = "On-Hand";
-                $purchases->released_by='';
-                $purchases->save();
-
-                $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
-               
-
+            $purchases= new Purchases;
+            $purchases->trans_no = $request->ticket;
+            $purchases->customer_id = $request->customer;
+            $purchases->commodity_id= $request->commodity;
+            $purchases->sacks = $request->sacks;
+            $purchases->ca_id = $request->customer;
+            $purchases->balance_id = $request->balance;
+            $purchases->partial = $request->partial;
+            $purchases->kilo = $request->kilo;
+            $purchases->price = $request->price;
+            $purchases->type = $request->type1;
+            $purchases->tare = $request->tare;
+            $purchases->moist = $request->moist;
+            $purchases->net = $request->net;
+            $purchases->total = $request->total;
+            $purchases->amtpay= $request->amount;
+            $purchases->remarks= $request->remarks;
+            $purchases->status = "On-Hand";
+            $purchases->released_by='';
+            $purchases->save();
+            $balance = balance::where('customer_id', $request->customer)->increment('balance',$request->cash);
+            $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
+        
+            if($request->cash > 0){    
+                $ca = new ca;
+                $ca->customer_id = $request->customer;
+                $ca->reason = "FROM PURCHASE (Cash Advance)";
+                $ca->amount =   $request->cash;
+                $ca->balance = ($request->balance + $request->cash) - $request->partial;
+                $ca->status = "On-Hand";
+                $ca->released_by = '';
+                $ca->save();
             
+            
+                if($ca) {
+                    $notification = new Notification;
+                    $notification->notification_type = "Cash Advance";
+                    $notification->message = "Cash Advance";
+                    $notification->status = "Pending";
+                    $notification->admin_id = Auth::id();
+                    $notification->table_source = "cash_advance";
+                    $notification->cash_advance_id = $ca->id;
+                    $notification->save();
+        
+                    $datum = Notification::where('id', $notification->id)
+                        ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                        ->get()[0];
+        
+                    $notification = array();
+        
+                    $notification = array(
+                        'notifications' => $datum,
+                        'customer' => $datum->cash_advance->customer,
+                        'time' => time_elapsed_string($datum->updated_at),
+                    );
+
+                    event(new \App\Events\NewNotification($notification));
+                }
+            }
+            if( $request->partial > 0){
+                $paymentlogs = new paymentlogs;
+                $paymentlogs->logs_id = $request->customer;
+                $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+                $paymentlogs->checknumber = "Not Specified";
+                $paymentlogs->paymentamount = $request->partial;
+                $paymentlogs->save();
+                event(new BalanceUpdated($paymentlogs));
+            }
         }
         if($request->get('button_action1') == 'update'){
             $check_admin =Auth::user()->access_id;
@@ -176,58 +221,99 @@ class purchasesController extends Controller
         }
 
         if( $request->get('stat') == 'new'){
-                $customer = new Customer;
-                $customer->fname = $request->fname;
-                $customer->mname = $request->mname;
-                $customer->lname = $request->lname;
+            $customer = new Customer;
+            $customer->fname = $request->fname;
+            $customer->mname = $request->mname;
+            $customer->lname = $request->lname;
 
-                if($request->contacts == ""){
-                    $customer->contacts ="Not Specified";
-                }
-                else{
-                    $customer->contacts = $request->contacts;
-                }
-                if($request->address == ""){
-                    $customer->address ="Not Specified";
-                }
-                else{
-                    $customer->address = $request->address;
-                }
+            if($request->contacts == ""){
+                $customer->contacts ="Not Specified";
+            }
+            else{
+                $customer->contacts = $request->contacts;
+            }
+            if($request->address == ""){
+                $customer->address ="Not Specified";
+            }
+            else{
+                $customer->address = $request->address;
+            }
 
-                $customer->suki_type = 0;
-                $customer->save();
+            $customer->suki_type = 0;
+            $customer->save();
 
-                $balance = new balance;
-                $balance->customer_id = $customer->id;
-                $balance->balance = $request->bal;
-                $balance->logs_ID = $customer->id;
-                $balance->save();
+            $balance = new balance;
+            $balance->customer_id = $customer->id;
+            $balance->balance = $request->bal - $request->partialpayment;
+            $balance->logs_ID = $customer->id;
+            $balance->save();
 
-                $purchases= new Purchases;
-                $purchases->trans_no = $request->ticket1;
-                $purchases->customer_id = $request->customerid;
-                $purchases->commodity_id= $request->commodity1;
-                $purchases->sacks = $request->sacks1;
-                $purchases->ca_id = $request->customerid;
-                $purchases->balance_id = 0;
-                $purchases->partial = 0;
-                $purchases->kilo = $request->kilo1;
-                $purchases->type = $request->type2;
-                $purchases->tare = $request->tare2;
-                $purchases->net = $request->net2;
-                $purchases->moist = $request->moist2;
-                $purchases->price = $request->price1;
-                $purchases->total = $request->amount1;
-                $purchases->amtpay= $request->amtpay1;
-                $purchases->remarks= $request->remarks1;
-                $purchases->status = "On-Hand";
-                $purchases->released_by='';
-                $purchases->save();
+            $purchases= new Purchases;
+            $purchases->trans_no = $request->ticket1;
+            $purchases->customer_id = $request->customerid;
+            $purchases->commodity_id= $request->commodity1;
+            $purchases->sacks = $request->sacks1;
+            $purchases->ca_id = $request->customerid;
+            $purchases->balance_id = $request->bal ;
+            $purchases->partial = $request->partialpayment;
+            $purchases->kilo = $request->kilo1;
+            $purchases->type = $request->type2;
+            $purchases->tare = $request->tare2;
+            $purchases->net = $request->net2;
+            $purchases->moist = $request->moist2;
+            $purchases->price = $request->price1;
+            $purchases->total = $request->amount1;
+            $purchases->amtpay= $request->amtpay1;
+            $purchases->remarks= $request->remarks1;
+            $purchases->status = "On-Hand";
+            $purchases->released_by='';
+            $purchases->save();
             
+            if($request->bal > 0){
+                $ca = new ca;
+                $ca->customer_id = $request->customerid;
+                $ca->reason = "FROM PURCHASE (Cash Advance)";
+                $ca->amount =   $request->bal;
+                $ca->balance = $request->bal - $request->partialpayment ;
+                $ca->status = "On-Hand";
+                $ca->released_by = '';
+                $ca->save();
+            }
+            if( $request->partialpayment > 0){
+                $paymentlogs = new paymentlogs;
+                $paymentlogs->logs_id = $request->customerid;
+                $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+                $paymentlogs->checknumber = "Not Specified";
+                $paymentlogs->paymentamount = $request->partialpayment;
+                $paymentlogs->save();
+                event(new BalanceUpdated($paymentlogs));
+            }
                 
-            
+            if($ca) {
+                $notification = new Notification;
+                $notification->notification_type = "Cash Advance";
+                $notification->message = "Cash Advance";
+                $notification->status = "Pending";
+                $notification->admin_id = Auth::id();
+                $notification->table_source = "cash_advance";
+                $notification->cash_advance_id = $ca->id;
+                $notification->save();
+    
+                $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->get()[0];
+    
+                $notification = array();
+    
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->cash_advance->customer,
+                    'time' => time_elapsed_string($datum->updated_at),
+                );
+    
+                event(new \App\Events\NewNotification($notification));
+            }
         }
-      
     }
 
     public function release_purchase(Request $request){
@@ -311,24 +397,24 @@ class purchasesController extends Controller
         $to = $request->date_to;    
 
         if($to==""&&$from==""){
-          $ultimatesickquery= DB::table('purchases')
-            ->join('customer', 'customer.id', '=', 'purchases.customer_id')
-            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
-            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
-            //->orderBy('purchases.id', 'desc')
-            ->latest();
-        }else{
             $ultimatesickquery= DB::table('purchases')
-            ->join('customer', 'customer.id', '=', 'purchases.customer_id')
-            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
-            ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
-            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
-            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-            //->orderBy('purchases.id', 'desc')
-            ->latest();        
-        }
+              ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+              ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+              ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
+              //->orderBy('purchases.id', 'desc')
+              ->latest();
+          }else{
+              $ultimatesickquery= DB::table('purchases')
+              ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+              ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+              ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
+              ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+              ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+              //->orderBy('purchases.id', 'desc')
+              ->latest();        
+          }
        
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function($ultimatesickquery){
