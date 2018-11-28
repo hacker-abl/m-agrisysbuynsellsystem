@@ -420,7 +420,7 @@
                                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <input type="number" id="bal" name="bal" class="form-control" placeholder="Enter customer's cash advance">
+                                                        <input type="number" id="bal" name="bal" class="form-control" onkeyup="compute(this)" placeholder="Enter customer's cash advance">
                                                     </div>
                                                 </div>
                                             </div>
@@ -725,6 +725,17 @@
         var purchase_date_from;
         var purchase_date_to;
         var id;
+        function compute(value){
+            if($('#bal').val() != ""){
+                var t = parseFloat($('#bal').val());
+                var x = 0;
+                if($('#partialpayment').val() != ""){
+                    x = parseFloat($('#partialpayment').val());
+                }
+                t = t - x;
+                $('#bal').val(t);
+            }
+        }
         function totalbalance(value) {
             if($('#cash').val() !=""){
                 var x =  parseFloat($('#cash').val());
@@ -883,7 +894,6 @@
 
         function tare3(value) {
             //test
-
             if( $('#moist2').val() == "" ){
 
                 var t = parseFloat($('#total1').val());
@@ -892,6 +902,7 @@
                 var partialpayment = parseFloat($('#partialpayment').val());
                 var tare = parseFloat($('#tare2').val());
                 var partial = 0;
+                
                 if($('#partial1').val()!=""){
                     partial =  parseFloat($('#partial1').val());
                 }
@@ -911,6 +922,14 @@
                 }
                 else{
                 $('#amountpay1').val(x);
+                }
+                if($('#bal').val() != "" && $('#bal').val() != "0"){
+                    if($('#partialpayment').val() != ""){
+                    var t = parseFloat($('#bal').val());
+                    t = t - partialpayment;
+                
+                    $('#bal').val(t);
+                    }
                 }
                 if($('#tare2').val() != "") {
                     $('#net2').val(temp3);
@@ -963,8 +982,6 @@
                 }
                 $('#net2').val(temp3);
             }
-
-
         }
         function moist3(value) {
             if( $('#tare2').val() == ""  ){
