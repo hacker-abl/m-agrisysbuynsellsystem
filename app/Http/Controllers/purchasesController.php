@@ -121,7 +121,9 @@ class purchasesController extends Controller
             
         }
         if($request->get('button_action1') == 'update'){
+            $check_admin =Auth::user()->access_id;
             $purchases=  Purchases::find($request->get('id'));
+            if($purchases->status=="Released"&&$check_admin==1){
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customerID;
             $purchases->commodity_id= $request->commodityID;
@@ -142,7 +144,34 @@ class purchasesController extends Controller
             $purchases->released_by='';
             $purchases->save();
 
-            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial);
+            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
+            return "Released Admin Update";    
+            }else if($purchases->status=="On-Hand"){
+            $purchases->trans_no = $request->ticket;
+            $purchases->customer_id = $request->customerID;
+            $purchases->commodity_id= $request->commodityID;
+            $purchases->sacks = $request->sacks;
+            $purchases->ca_id = $request->caID;
+            $purchases->balance_id = $request->balance;
+            $purchases->partial = $request->partial;
+            $purchases->kilo = $request->kilo;
+            $purchases->type = $request->type1;
+            $purchases->tare = $request->tare;
+            $purchases->moist = $request->moist;
+            $purchases->net = $request->net;
+            $purchases->price = $request->price;
+            $purchases->total = $request->total;
+            $purchases->amtpay= $request->amount;
+            $purchases->remarks= $request->remarks;
+            $purchases->status = "On-Hand";
+            $purchases->released_by='';
+            $purchases->save();
+
+            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial);   
+            }else if($purchases->status=="Released"&&$check_admin!=1){
+             return "Not";  
+            }
+            
                
         }
 
@@ -321,6 +350,10 @@ class purchasesController extends Controller
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
             }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete==1 && $edit==0){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $ultimatesickquery->status=="Released" && $delete==1 && $edit==1){
+                return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $ultimatesickquery->status=="Released" && $delete==0 && $edit==1){
+                return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
             }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete==0 && $edit==0){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>';
             }else{

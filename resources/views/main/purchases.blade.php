@@ -2074,6 +2074,7 @@
                     dataType:'text',
                     data: $('#purchase_form').serialize(),
                     success:function(data){
+                      if(data!="Not"){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#customer").val('').trigger('change');
@@ -2103,7 +2104,13 @@
                         $("#commodity").val('').trigger('change');
                         $("#commodity1").val('').trigger('change');
                         $("#customer").val('').trigger('change');
-                        //refresh_delivery_table();
+                      }else{
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        swal("Oh no!", "You are not authorized to edit this. try again.", "error")
+                      }
+                       
+                        
                     },
                     error: function(data){
                         button.disabled = false;
