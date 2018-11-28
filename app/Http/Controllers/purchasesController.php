@@ -263,7 +263,7 @@ class purchasesController extends Controller
             $purchases->moist = $request->moist2;
             $purchases->price = $request->price1;
             $purchases->total = $request->amount1;
-            $purchases->amtpay= $request->amtpay1;
+            $purchases->amtpay= $request->amountpay1;
             $purchases->remarks= $request->remarks1;
             $purchases->status = "On-Hand";
             $purchases->released_by='';
