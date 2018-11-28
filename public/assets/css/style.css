@@ -17,6 +17,25 @@ hr {
   top:19px;
 }
 
+.dataTables_length .bootstrap-select .input-sm{
+  visibility: visible !important;
+  width: 60px;
+  position: relative;
+  right: 55px;
+  bottom: 16px;
+}
+
+.dataTables_length .bootstrap-select{
+  visibility: hidden !important;
+  width: 70px;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.dataTables_length .dropdown-toggle, {
+  display: none;
+}
 
 .form-container{
   padding:10px;
