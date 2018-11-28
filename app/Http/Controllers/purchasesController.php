@@ -12,6 +12,8 @@ use App\balance;
 use App\purchases;
 use App\employee;
 use Auth;
+use App\paymentlogs;
+use App\Notification;
 use App\UserPermission;
 use App\User;
 use App\Cash_History;
@@ -114,11 +116,54 @@ class purchasesController extends Controller
                 $purchases->status = "On-Hand";
                 $purchases->released_by='';
                 $purchases->save();
-
+                $balance = balance::where('customer_id', $request->customer)->increment('balance',$request->cash);
                 $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
-               
-
             
+            if($request->cash > 0){    
+            $ca = new ca;
+            $ca->customer_id = $request->customer;
+            $ca->reason = "FROM PURCHASE (Cash Advance)";
+            $ca->amount =   $request->cash;
+            $ca->balance = ($request->balance + $request->cash) - $request->partial;
+            $ca->status = "On-Hand";
+            $ca->released_by = '';
+            $ca->save();
+            
+            
+            if($ca) {
+                $notification = new Notification;
+                $notification->notification_type = "Cash Advance";
+                $notification->message = "Cash Advance";
+                $notification->status = "Pending";
+                $notification->admin_id = Auth::id();
+                $notification->table_source = "cash_advance";
+                $notification->cash_advance_id = $ca->id;
+                $notification->save();
+    
+                $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->get()[0];
+    
+                $notification = array();
+    
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->cash_advance->customer,
+                    'time' => time_elapsed_string($datum->updated_at),
+                );
+    
+                event(new \App\Events\NewNotification($notification));
+            }
+        }
+        if( $request->partial > 0){
+            $paymentlogs = new paymentlogs;
+            $paymentlogs->logs_id = $request->customer;
+            $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+            $paymentlogs->checknumber = "Not Specified";
+            $paymentlogs->paymentamount = $request->partial;
+            $paymentlogs->save();
+            event(new BalanceUpdated($paymentlogs));
+        }
         }
         if($request->get('button_action1') == 'update'){
             $check_admin =Auth::user()->access_id;
@@ -208,9 +253,9 @@ class purchasesController extends Controller
                 $purchases->customer_id = $request->customerid;
                 $purchases->commodity_id= $request->commodity1;
                 $purchases->sacks = $request->sacks1;
-                $purchases->ca_id = $request->customerid;
-                $purchases->balance_id = 0;
-                $purchases->partial = 0;
+                $purchases->ca_id =  $request->customerid;
+                $purchases->balance_id = $request->bal;
+                $purchases->partial = $request->partialpayment;
                 $purchases->kilo = $request->kilo1;
                 $purchases->type = $request->type2;
                 $purchases->tare = $request->tare2;
@@ -218,14 +263,57 @@ class purchasesController extends Controller
                 $purchases->moist = $request->moist2;
                 $purchases->price = $request->price1;
                 $purchases->total = $request->amount1;
-                $purchases->amtpay= $request->amtpay1;
+                $purchases->amtpay= $request->amountpay1;
                 $purchases->remarks= $request->remarks1;
                 $purchases->status = "On-Hand";
                 $purchases->released_by='';
                 $purchases->save();
             
-                
-            
+                $balance = balance::where('customer_id',  $request->customerid)->decrement('balance',$request->partialpayment);
+                $balance = balance::where('customer_id',  $request->customerid)->increment('balance',$request->bal);
+            if($request->bal > 0){
+            $ca = new ca;
+            $ca->customer_id = $request->customerid;
+            $ca->reason = "FROM PURCHASE (Cash Advance)";
+            $ca->amount =   $request->bal;
+            $ca->balance = $request->bal - $request->partialpayment ;
+            $ca->status = "On-Hand";
+            $ca->released_by = '';
+            $ca->save();
+            }
+            if( $request->partialpayment > 0){
+                $paymentlogs = new paymentlogs;
+                $paymentlogs->logs_id = $request->customerid;
+                $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+                $paymentlogs->checknumber = "Not Specified";
+                $paymentlogs->paymentamount = $request->partialpayment;
+                $paymentlogs->save();
+                event(new BalanceUpdated($paymentlogs));
+            }
+            if($ca) {
+                $notification = new Notification;
+                $notification->notification_type = "Cash Advance";
+                $notification->message = "Cash Advance";
+                $notification->status = "Pending";
+                $notification->admin_id = Auth::id();
+                $notification->table_source = "cash_advance";
+                $notification->cash_advance_id = $ca->id;
+                $notification->save();
+    
+                $datum = Notification::where('id', $notification->id)
+                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                    ->get()[0];
+    
+                $notification = array();
+    
+                $notification = array(
+                    'notifications' => $datum,
+                    'customer' => $datum->cash_advance->customer,
+                    'time' => time_elapsed_string($datum->updated_at),
+                );
+    
+                event(new \App\Events\NewNotification($notification));
+            }
         }
       
     }
