@@ -97,8 +97,8 @@
                     <img src="{{ asset('assets/images/user1.png') }}" width="50" height="50" alt="User" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{!! getName()->fname !!}</div>
-                    <div class="email">{{ Auth::user()->username }} &nbsp;  ₱<span id="curCashOnHand">{{ Auth::user()->cashOnHand }}</span></div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{!! getName()->fname !!} &nbsp; &nbsp;₱<span id="curCashOnHand">{{ Auth::user()->cashOnHand }}</span></div>
+                    <div class="email">{{ Auth::user()->username }}</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">

@@ -312,7 +312,7 @@
                         'Total: <br>' + number_format(pageTotal1,2) + ' kg'
                     );
                 },
-                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                dom: 'Bfrtip',
                 buttons: [
                     {
                         extend: 'print',
@@ -328,19 +328,7 @@
                                 .css( 'font-size', 'inherit' );
                         },
                         footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');  
-						}  
-					}
+                    }
                 ],
 				processing: true,
 				
@@ -392,7 +380,7 @@
                   sales_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
                   $('#salestable').dataTable().fnDestroy();
                   salestable = $('#salestable').DataTable({
-					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					dom: 'Bfrtip',
 					buttons: [
                     {
 						extend: 'print',
@@ -408,19 +396,7 @@
 								.css( 'font-size', 'inherit' );
 						},
 						footer: true
-						},
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');  
-						}  
-					}
+						}
 					],
 					processing: true,
 				
@@ -459,7 +435,7 @@
               	sales_date_from="";
                $('#salestable').dataTable().fnDestroy();
                  salestable = $('#salestable').DataTable({
-					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					dom: 'Bfrtip',
 					buttons: [
                     {
                         extend: 'print',
@@ -475,19 +451,7 @@
                                 .css( 'font-size', 'inherit' );
                         },
                         footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');  
-						}  
-					}
+                    }
                 	],	
 					processing: true,
 			
@@ -534,7 +498,7 @@
                    sales_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
                   $('#salestable').dataTable().fnDestroy();
                  salestable = $('#salestable').DataTable({
-					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					dom: 'Bfrtip',
 					buttons: [
                     {
                         extend: 'print',
@@ -550,19 +514,7 @@
                                 .css( 'font-size', 'inherit' );
                         },
                         footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');  
-						}  
-					}
+                    }
                 	],
 					processing: true,
 	
@@ -601,7 +553,7 @@
               	sales_date_to="";
                 $('#salestable').dataTable().fnDestroy();
                  salestable = $('#salestable').DataTable({
-					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					dom: 'Bfrtip',
 					buttons: [
                     {
                         extend: 'print',
@@ -617,19 +569,7 @@
                                 .css( 'font-size', 'inherit' );
                         },
                         footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6,7,8]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');  
-						}  
-					}
+                    }
                 	],
 					processing: true,
 				

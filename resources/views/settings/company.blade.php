@@ -100,7 +100,7 @@
             })
               
             var companytable = $('#companytable').DataTable({
-                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                dom: 'Bfrtip',
                 buttons: [
                 {
                     extend: 'print',
@@ -116,18 +116,6 @@
                             .css( 'font-size', 'inherit' );
                     },
                     footer: true
-                },
-                { 
-                    extend: 'pdfHtml5', 
-                    footer: true,
-                    exportOptions: { 
-                        columns: [ 0 ]
-                    },
-                    customize: function(doc) {
-                        doc.styles.tableHeader.fontSize = 8;  
-                        doc.styles.tableFooter.fontSize = 8;   
-                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                    }  
                 }
                 ],	
                 processing: true,

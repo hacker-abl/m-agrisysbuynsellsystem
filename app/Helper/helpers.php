@@ -58,12 +58,6 @@ function isAdmin() {
     return ($user->name == 'admin' ? true : false);
 }
 
-function isPurchaser(){
-    $user = \App\User::with('emp_name.cashier')->find(Auth::id());
-
-    return (strcasecmp($user->emp_name->cashier->role, 'purchaser') == 0 ? true : false);
-}
-
 function getName(){
     $id = Auth::user()->emp_id;
     $employee = \App\Employee::find($id);
