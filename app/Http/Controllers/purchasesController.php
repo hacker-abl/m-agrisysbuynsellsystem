@@ -166,9 +166,7 @@ class purchasesController extends Controller
         }
         }
         if($request->get('button_action1') == 'update'){
-            $check_admin =Auth::user()->access_id;
             $purchases=  Purchases::find($request->get('id'));
-            if($purchases->status=="Released"&&$check_admin==1){
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customerID;
             $purchases->commodity_id= $request->commodityID;
@@ -189,34 +187,7 @@ class purchasesController extends Controller
             $purchases->released_by='';
             $purchases->save();
 
-            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
-            return "Released Admin Update";    
-            }else if($purchases->status=="On-Hand"){
-            $purchases->trans_no = $request->ticket;
-            $purchases->customer_id = $request->customerID;
-            $purchases->commodity_id= $request->commodityID;
-            $purchases->sacks = $request->sacks;
-            $purchases->ca_id = $request->caID;
-            $purchases->balance_id = $request->balance;
-            $purchases->partial = $request->partial;
-            $purchases->kilo = $request->kilo;
-            $purchases->type = $request->type1;
-            $purchases->tare = $request->tare;
-            $purchases->moist = $request->moist;
-            $purchases->net = $request->net;
-            $purchases->price = $request->price;
-            $purchases->total = $request->total;
-            $purchases->amtpay= $request->amount;
-            $purchases->remarks= $request->remarks;
-            $purchases->status = "On-Hand";
-            $purchases->released_by='';
-            $purchases->save();
-
-            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial);   
-            }else if($purchases->status=="Released"&&$check_admin!=1){
-             return "Not";  
-            }
-            
+            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial);
                
         }
 
@@ -426,23 +397,16 @@ class purchasesController extends Controller
                  $delete=$permit[0]->permit_delete;  
                  $edit = $permit[0]->permit_edit;  
             }
-            if($userid==1 && $ultimatesickquery->status=="On-Hand"){
+            if($userid===1 && $ultimatesickquery->status=="On-Hand"){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }
-            if($userid==1 && $ultimatesickquery->status=="Released"){
-                return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }           
-            if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete==1 && $edit==1){
+            }        
+            if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete===1 && $edit===1){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete==0 && $edit==1){
+            }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete===0 && $edit===1){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
-            }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete==1 && $edit==0){
+            }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete===1 && $edit===0){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }if($userid!=1 && $ultimatesickquery->status=="Released" && $delete==1 && $edit==1){
-                return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }if($userid!=1 && $ultimatesickquery->status=="Released" && $delete==0 && $edit==1){
-                return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
-            }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete==0 && $edit==0){
+            }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete===0 && $edit===0){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>';
             }else{
               return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>';
@@ -501,41 +465,7 @@ class purchasesController extends Controller
 
     function deletedata(Request $request){
         $purchases = Purchases::find($request->input('id'));
-        if($purchases->status=="Released"){
-            $user = User::find(Auth::user()->id);
-            $userGet = User::where('id', '=', $user->id)->first();
-            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-            $cash_history = new Cash_History;
-            $cash_history->user_id = $userGet->id;
-
-            $getDate = Carbon::now();
-            
-            if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
-            }
-            else{
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-            }
-
-            $cash_history->trans_no = $dateTime;
-            $cash_history->previous_cash = $user->cashOnHand;
-            $cash_history->cash_change = $purchases->amtpay;
-            $cash_history->total_cash = $user->cashOnHand + $purchases->amtpay;
-            $cash_history->type = "Released Purchase Deleted";
-            $cash_history->save();
-
-            $user->cashOnHand += $purchases->amtpay;
-            $user->save();
-             $output = array(
-                'cashOnHand' => $user->cashOnHand,
-                'cashHistory' => $dateTime
-            );
         $purchases->delete();
-        return  json_encode($output);
-        }
-       
-        $purchases->delete();
-        return  "OK";
     }
 
     function updatedata(Request $request){

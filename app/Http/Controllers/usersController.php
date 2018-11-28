@@ -287,13 +287,12 @@ class usersController extends Controller
                 //      // UserPermission::find(['permission_id'=>$authorized_edit[$key], 'user_id'=>$authorized_edit[$key]],['permit'=>1,'permit_edit'=>1]);
                 // } 
                 foreach ($authorized_delete as $key => $value) {
-                      $per_delete = UserPermission::where('permission_id',$authorized_delete[$key])->where('permit',1)->where('user_id',$request->id)->first();
+                      $per_delete = UserPermission::where('permission_id',$authorized_delete[$key])->where('permit',1)->first();
                       $per_delete->permit_delete = 1;
                       $per_delete->save();
-
                 } 
                 foreach ($authorized_edit as $key => $value) {
-                      $per_edit = UserPermission::where('permission_id',$authorized_edit[$key])->where('permit',1)->where('user_id',$request->id)->first();
+                      $per_edit = UserPermission::where('permission_id',$authorized_edit[$key])->where('permit',1)->first();
                       $per_edit->permit_edit = 1;
                       $per_edit->save();
                 } 
@@ -314,7 +313,7 @@ class usersController extends Controller
           
                 
         
-            return $request->id;
+            return "true";
         }
     }
 }
