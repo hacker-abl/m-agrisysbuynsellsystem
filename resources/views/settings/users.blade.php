@@ -170,7 +170,7 @@
                         @csrf
                         <input type="hidden" name="id" value="">
                         <div class="header">
-                            <h2 class="modal_title">Permissions</h2>
+                            <h2 class="modal_title" id="permit_name"></h2>
                         </div>
                         <div class="body">
                             <div class="col-md-12 text-center">
@@ -627,7 +627,8 @@
                     $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
                 },
                 success: function(data) {
-                    console.log(data);
+                    var name = $('#permit_name');
+                    name.html("Permission for Username: "+data.username);
                     $.each(data.userpermission, function(i, val){
                         
                         if(val.permit != 0)
@@ -670,7 +671,7 @@
                 method:'POST',
                 data: data,
                 dataType: 'json',
-                success: function(data) {
+                success: function(data) { 
                     console.log(data);
                     if(data) {
                         swal("Success!", "Permission has been updated!", "success");
