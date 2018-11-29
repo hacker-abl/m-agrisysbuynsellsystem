@@ -289,7 +289,7 @@ class purchasesController extends Controller
                 event(new BalanceUpdated($paymentlogs));
             }
                 
-            if($ca > 0) {
+            if($request->cash > 0) {
                 $notification = new Notification;
                 $notification->notification_type = "Cash Advance";
                 $notification->message = "Cash Advance";
