@@ -39,6 +39,95 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
+
+    <!-- Styles -->
+    @if (App::isLocal())
+        <!-- Sweet Alert Css -->
+        <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+
+        <!-- Select2 Css -->
+        <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
+        <!-- Jquery-ui Css -->
+        <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
+
+        <!-- Bootstrap Core Css -->
+        <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Waves Effect Css -->
+        <link href="{{ asset('assets/plugins/node-waves/waves.css') }}" rel="stylesheet" />
+
+        <!-- Animation Css -->
+        <link href="{{ asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
+
+        <!-- Morris Chart Css-->
+        <link href="{{ asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
+
+        <!-- JQuery DataTable Css -->
+        <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Custom Css -->
+        <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    @else
+        @if (Request::server('HTTP_X_FORWARDED_PROTO') == 'http')
+        <!-- Sweet Alert Css -->
+        <link href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+
+        <!-- Select2 Css -->
+        <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
+        <!-- Jquery-ui Css -->
+        <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
+
+        <!-- Bootstrap Core Css -->
+        <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Waves Effect Css -->
+        <link href="{{ asset('assets/plugins/node-waves/waves.css') }}" rel="stylesheet" />
+
+        <!-- Animation Css -->
+        <link href="{{ asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
+
+        <!-- Morris Chart Css-->
+        <link href="{{ asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
+
+        <!-- JQuery DataTable Css -->
+        <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Custom Css -->
+        <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+        @else
+        <!-- Sweet Alert Css -->
+        <link href="{{ secure_asset('assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" />
+
+        <!-- Select2 Css -->
+        <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
+        <!-- Jquery-ui Css -->
+        <link href="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet" />
+
+        <!-- Bootstrap Core Css -->
+        <link href="{{ secure_asset('assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Waves Effect Css -->
+        <link href="{{ secure_asset('assets/plugins/node-waves/waves.css') }}" rel="stylesheet" />
+
+        <!-- Animation Css -->
+        <link href="{{ secure_asset('assets/plugins/animate-css/animate.css') }}" rel="stylesheet" />
+
+        <!-- Morris Chart Css-->
+        <link href="{{ secure_asset('assets/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
+        <link href="{{ secure_asset('assets/css/themes/all-themes.css') }}" rel="stylesheet" />
+
+        <!-- JQuery DataTable Css -->
+        <link href="{{ secure_asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+
+        <!-- Custom Css -->
+        <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
+        @endif
+    @endif
 </head>
 <body  id="b"  class="theme-grey">
     <!-- Page Loader -->
