@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Commodity extends Model
 {
+    use SoftDeletes;
+
     protected $primaryKey = 'id';
     protected $table = 'commodity';
     protected $fillable = array(
@@ -15,4 +18,5 @@ class Commodity extends Model
     );
 
     public $timestamps = true;
+    protected $dates = ['deleted_at'];
 }
