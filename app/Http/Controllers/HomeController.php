@@ -56,6 +56,11 @@ class HomeController extends Controller
             ->orderBy(DB::raw('SUM(total)'), 'desc')
             ->limit(6)
             ->get(['commodity_id', DB::raw('SUM(total) AS total')]);
+        $topCommoditiesToday = purchases::groupBy('commodity_id')
+            ->orderBy(DB::raw('SUM(total)'), 'desc')
+            ->limit(6)
+            ->whereDate('created_at', Carbon::today())
+            ->get(['commodity_id', DB::raw('SUM(total) AS total')]);
         $latestCustomer = customer::latest()->first();
 
         $totalSalesYear = sales::whereYear('created_at', Carbon::today()->year)->get([DB::raw('SUM(amount) AS total_sales')]);
@@ -98,7 +103,7 @@ class HomeController extends Controller
         $finalTotalExpenseToday = $totalExpenseToday[0]->total_expense + $totalTripExpenseToday[0]->total_trip_expense + $totalOdExpenseToday[0]->total_od_expense;
 
         if($user->role->name == "admin") {
-            return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'latestCustomer', 'totalSalesYear', 'totalPurchasesYear', 'totalBalanceYear', 'finalTotalExpenseYear', 'totalSalesToday', 'totalPurchasesToday', 'totalBalanceToday', 'finalTotalExpenseToday', 'totalSalesMonth', 'totalPurchasesMonth', 'totalBalanceMonth', 'finalTotalExpenseMonth'));
+            return view('main.home', compact('paymentLogs', 'commodityList', 'truckList', 'latestPurchases', 'topCommodities', 'topCommoditiesToday', 'latestCustomer', 'totalSalesYear', 'totalPurchasesYear', 'totalBalanceYear', 'finalTotalExpenseYear', 'totalSalesToday', 'totalPurchasesToday', 'totalBalanceToday', 'finalTotalExpenseToday', 'totalSalesMonth', 'totalPurchasesMonth', 'totalBalanceMonth', 'finalTotalExpenseMonth'));
         } else if($user->role->name == "user") {
             $permissions = UserPermission::with('permission')->where('user_id', $id)->orderBy('permission_id')->get();
             

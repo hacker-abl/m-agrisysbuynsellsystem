@@ -69,6 +69,19 @@
         </div>
         <!-- #END# Visitors -->
         
+        <!-- Latest Social Trends -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="card">
+                <div class="body bg-teal" style="height:291px;">
+                    <div class="font-bold m-b--35">TOTAL PURCHASES - TODAY</div>
+                    <section class="totalPurchases">
+                    @include('home_content.total_purchases_today')
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Latest Social Trends -->
+        
         <!-- Commodity List -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             <div class="card">
@@ -81,19 +94,6 @@
             </div>
         </div>
         <!-- #END# Commodity List -->
-
-        <!-- Latest Social Trends -->
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <div class="card">
-                <div class="body bg-teal" style="height:291px;">
-                    <div class="font-bold m-b--35">TRUCK LIST</div>
-                    <section class="truckList">
-                    @include('home_content.truck_list')
-                    </section>
-                </div>
-            </div>
-        </div>
-        <!-- #END# Latest Social Trends -->
 
     </div>
 
