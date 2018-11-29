@@ -102,7 +102,7 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodity;
             $purchases->sacks = $request->sacks;
             $purchases->ca_id = $request->customer;
-            $purchases->balance_id = $request->balance;
+            $purchases->balance_id = $request->cash;
             $purchases->partial = $request->partial;
             $purchases->kilo = $request->kilo;
             $purchases->price = $request->price;
@@ -174,7 +174,7 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodityID;
             $purchases->sacks = $request->sacks;
             $purchases->ca_id = $request->caID;
-            $purchases->balance_id = $request->balance;
+            $purchases->balance_id = $request->cash;
             $purchases->partial = $request->partial;
             $purchases->kilo = $request->kilo;
             $purchases->type = $request->type1;
@@ -197,7 +197,7 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodityID;
             $purchases->sacks = $request->sacks;
             $purchases->ca_id = $request->caID;
-            $purchases->balance_id = $request->balance;
+            $purchases->balance_id = $request->cash;
             $purchases->partial = $request->partial;
             $purchases->kilo = $request->kilo;
             $purchases->type = $request->type1;
