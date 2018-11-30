@@ -2337,8 +2337,8 @@
                     $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
                     $("#commodity_clone").val($("#commodity1 option:selected").text());
                     $("#sacks_clone").val($("#sacks1").val());
-                    $("#ca_clone").val("bal");
-                    $("#balance_clone").val($("#bal").val());
+                    $("#ca_clone").val("bal").val();
+                    $("#balance_clone").val($("#bal").val()-$('#partialpayment').val());
                     $("#partial_clone").val($("partialpayment").val());
                     $("#kilos_clone").val($("#kilo1").val());
                     $("#price_clone").val($("#price1").val());
