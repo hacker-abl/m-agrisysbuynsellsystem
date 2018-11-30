@@ -2320,7 +2320,7 @@
                     $("#customer_clone").val($("#customer option:selected").text());
                     $("#commodity_clone").val($("#commodity option:selected").text());
                     $("#sacks_clone").val($("#sacks").val());
-                    $("#ca_clone").val($("#ca").val());
+                    $("#ca_clone").val($("#cash").val());
                     $("#balance_clone").val($("#balance").val());
                     $("#partial_clone").val($("#partial").val());
                     $("#kilos_clone").val($("#kilo").val());
@@ -2337,9 +2337,9 @@
                     $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
                     $("#commodity_clone").val($("#commodity1 option:selected").text());
                     $("#sacks_clone").val($("#sacks1").val());
-                    $("#ca_clone").val("0");
+                    $("#ca_clone").val("bal");
                     $("#balance_clone").val($("#bal").val());
-                    $("#partial_clone").val("0");
+                    $("#partial_clone").val($("partialpayment").val());
                     $("#kilos_clone").val($("#kilo1").val());
                     $("#price_clone").val($("#price1").val());
                     $("#total_clone").val($("#amount1").val());
