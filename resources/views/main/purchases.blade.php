@@ -2343,7 +2343,7 @@
                     $("#kilos_clone").val($("#kilo1").val());
                     $("#price_clone").val($("#price1").val());
                     $("#total_clone").val($("#amount1").val());
-                    $("#amount_clone").val($("#amount1").val());
+                    $("#amount_clone").val($("#amountpay1").val());
                     $("#remarks_clone").val($("#remarks1").val());
                     $("#type_clone").val($("#type2").val());
                     $("#moist_clone").val($("#moist2").val());
