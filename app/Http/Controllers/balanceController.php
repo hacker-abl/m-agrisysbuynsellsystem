@@ -25,7 +25,7 @@ class balanceController extends Controller
           $ultimatesickquery= DB::table('balance')
               ->join('customer', 'customer.id', '=', 'balance.customer_id')
 			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname')
-			  ->where('balance.balance' ,'!=','0')
+			  //->where('balance.balance' ,'!=','0')
             //  ->orderBy('purchases.id', 'desc')
               ->get();
 		    return \DataTables::of($ultimatesickquery)

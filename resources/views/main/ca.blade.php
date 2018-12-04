@@ -139,8 +139,8 @@
                      </div>
                      <div class="body">
                      <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" id ="homeclick" href="#home">Customer Purchases</a></li>
-                                <li><a data-toggle="tab" id="homeclick1" href="#home1">Walk-in Purchases</a></li>
+                                <li class="active"><a data-toggle="tab" id ="homeclick" href="#home">Customer Cash Advance</a></li>
+                                <li><a data-toggle="tab" id="homeclick1" href="#home1">Walk-in Cash Advance</a></li>
                              </ul>
                              <div class="clearfix"></div>
                              <br>
