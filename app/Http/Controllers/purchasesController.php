@@ -21,7 +21,8 @@ use Carbon\Carbon;
 use App\Events\PurchasesUpdated;
 use App\Events\BalanceUpdated;
 use App\Events\CashierCashUpdated;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
 class purchasesController extends Controller
 {
     /**
@@ -222,10 +223,17 @@ class purchasesController extends Controller
 
         if( $request->get('stat') == 'new'){
             $customer = new Customer;
+            $customer1 = $customer->where('fname', '=', $request->fname)
+            ->where('mname', '=', $request->mname)
+            ->where('lname', '=', $request->lname)
+            ->count();
             $customer->fname = $request->fname;
             $customer->mname = $request->mname;
             $customer->lname = $request->lname;
-
+             
+            if($customer1 > 0){
+                return response('Customer already exists!', 500);
+            }
             if($request->contacts == ""){
                 $customer->contacts ="Not Specified";
             }

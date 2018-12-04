@@ -2387,10 +2387,10 @@
                         refresh_purchase_table();
                         //refresh_delivery_table();
                     },
-                    error: function(data){
+                    error:  function(xhr, textStatus, error){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                        swal("Oh no!", xhr.responseText, "error")
                     }
                 })
             });
