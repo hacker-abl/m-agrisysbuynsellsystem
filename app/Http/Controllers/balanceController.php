@@ -65,7 +65,7 @@ class balanceController extends Controller
 	    $paymentlogs->paymentamount = $request->amount1;
 	    $paymentlogs->save();
 	    if($request->balance2 == $request->amount1){
-			$balance = balance::find($request->customer_id1);
+			$balance = balance::where('customer_id', $request->customer_id1)->first();
 			$balance->balance = 0;
 			$balance->save();
 		}
