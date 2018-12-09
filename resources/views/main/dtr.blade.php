@@ -458,7 +458,7 @@
 					 render:function (value) {
 						   var ts = new Date(value);
 
-						  return ts.toDateString()}
+						  return ts.toDateString()+" "+ts.toLocaleTimeString()}
 					},
                     {data: 'bonus', name: 'bonus'},
 					{data: 'salary', name: 'salary'},
@@ -700,7 +700,7 @@
                                                         render:function (value) {
                                                             var ts = new Date(value);
 
-                                                            return ts.toDateString()}
+                                                            return ts.toDateString()+" "+ts.toLocaleTimeString()}
                                                     },
                                                     {data: 'bonus', name: 'bonus'},
                                                     {data: 'salary', name: 'salary'},
@@ -847,7 +847,7 @@
                                                     render:function (value) {
                                                         var ts = new Date(value);
 
-                                                        return ts.toDateString()}
+                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
                                                     },
                                                     {data: 'bonus', name: 'bonus'},
                                                     {data: 'salary', name: 'salary'},
@@ -1022,7 +1022,7 @@
                                                     render:function (value) {
                                                         var ts = new Date(value);
 
-                                                        return ts.toDateString()}
+                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
                                                     },
                                                     {data: 'bonus', name: 'bonus'},
                                                     {data: 'salary', name: 'salary'},
