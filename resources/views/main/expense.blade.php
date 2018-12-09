@@ -938,7 +938,12 @@
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
                 },
+                createdRow: function( row, data, dataIndex ) {
+                    $( row ).find('td:eq(5)')
+                        .attr('data-order', data.created_at);
+                },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], 
+
                 buttons: [
                     {
                         extend: 'print', text: 'PRINT',
@@ -998,7 +1003,12 @@
                     {data: 'type'},
                     {data: 'amount'},
                     {data: 'status'},
-                    {data: 'created_at'},
+                    {data:'created_at',
+                        render: function(data, type, full, meta){
+                            var d = new Date(data).toDateString(); 
+                            return d;
+                        }
+                    },
                     {data: 'released_by'},
                     {data: "action", orderable:false,searchable:false}
                 ]
@@ -1045,6 +1055,10 @@
                             $( api.column( 3 ).footer() ).html(
                                 'Total: <br>₱' + number_format(pageTotal,2)
                             );
+                        },
+                        createdRow: function( row, data, dataIndex ) {
+                            $( row ).find('td:eq(5)')
+                                .attr('data-order', data.created_at);
                         },
                         dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], 
                         buttons: [
@@ -1103,7 +1117,12 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data: 'created_at'},
+                            {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                            },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
                         ]
@@ -1144,6 +1163,10 @@
                         $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
+                    },
+                    createdRow: function( row, data, dataIndex ) {
+                        $( row ).find('td:eq(5)')
+                            .attr('data-order', data.created_at);
                     },
                     dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], 
                     buttons: [
@@ -1201,7 +1224,12 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data: 'created_at' },
+                        {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                        },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}
                     ]
@@ -1250,6 +1278,10 @@
                                 'Total: <br>₱' + number_format(pageTotal,2)
                             );
                         },
+                        createdRow: function( row, data, dataIndex ) {
+                            $( row ).find('td:eq(5)')
+                                .attr('data-order', data.created_at);
+                        },
                         dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], 
                         buttons: [
                             {
@@ -1307,7 +1339,12 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data: 'created_at'},
+                            {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                            },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
                         ]
@@ -1348,6 +1385,10 @@
                         $( api.column( 3 ).footer() ).html(
                             'Total: <br>₱' + number_format(pageTotal,2)
                         );
+                    },
+                    createdRow: function( row, data, dataIndex ) {
+                        $( row ).find('td:eq(5)')
+                            .attr('data-order', data.created_at);
                     },
                     dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], 
                     buttons: [
@@ -1405,7 +1446,12 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data: 'created_at' },
+                        {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                        },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}
                     ]
@@ -1513,7 +1559,12 @@
                     {data: 'type'},
                     {data: 'amount'},
                     {data: 'status'},
-                    {data: 'created_at'},
+                    {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                    },
                     {data: 'released_by'},
                     {data: "action", orderable:false,searchable:false}
                 ]
@@ -1618,7 +1669,12 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data: 'created_at'},
+                            {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                            },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
                         ]
@@ -1716,7 +1772,12 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data: 'created_at' },
+                        {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                        },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}
                     ]
@@ -1822,7 +1883,12 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data: 'created_at'},
+                            {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                            },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
                         ]
@@ -1920,7 +1986,12 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data: 'created_at' },
+                        {data:'created_at',
+                                render: function(data, type, full, meta){
+                                    var d = new Date(data).toDateString(); 
+                                    return d;
+                                }
+                        },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}
                     ]

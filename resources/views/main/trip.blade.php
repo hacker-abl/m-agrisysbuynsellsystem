@@ -866,15 +866,16 @@
                     data: { temp: 'temp' },
                     dataType:'json',
                     success:function(data){
+                        console.log(data);
                         var t=0;
                         if(data[0].temp!=null){
                              t = data[0].temp;
                         }
                         var stringticket= t.toString();
 
-                        var e=stringticket;
+                        var e=stringticket; 
                         if(stringticket!="0"){
-                            e= stringticket.substr(7, 7);
+                            e = stringticket.substr(stringticket.length-1);
                         }
                         var a = parseInt(e);
                         var b = a + 1;

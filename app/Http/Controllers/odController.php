@@ -283,7 +283,7 @@ class odController extends Controller
           $od_expense = DB::table('deliveries')
             ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
             ->select('od_expense.id','deliveries.outboundTicket AS od_id','od_expense.description AS description','od_expense.type AS type','od_expense.amount AS amount','od_expense.status AS status','od_expense.released_by as released_by','od_expense.created_at as created_at')
-            ->get();
+            ->get()->sortByDesc('created_at');
         }else{
            
              $od_expense = DB::table('deliveries')
@@ -291,7 +291,7 @@ class odController extends Controller
             ->select('od_expense.id','deliveries.outboundTicket AS od_id','od_expense.description AS description','od_expense.type AS type','od_expense.amount AS amount','od_expense.status AS status','od_expense.released_by as released_by','od_expense.created_at as created_at')
                 ->where('od_expense.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
                 ->where('od_expense.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-                ->get();
+                ->get()->sortByDesc('created_at');
         }
       
         return \DataTables::of($od_expense)
@@ -307,7 +307,7 @@ class odController extends Controller
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
          ->editColumn('created_at', function ($data) {
-            return date('F d, Y g:i a', strtotime($data->created_at));
+            return $data->created_at;
         })
         ->editColumn('released_by', function ($data) {
             if($data->released_by==""){
