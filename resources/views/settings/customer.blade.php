@@ -39,7 +39,7 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" id="mname" name="mname" class="form-control" placeholder="Enter customer's middle name"  required>
+                                            <input type="text" id="mname" name="mname" class="form-control" placeholder="Enter customer's middle name">
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                               <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                    <div class="form-group">
                                       <div class="form-line">
-                                           <input type="text" id="address" name="address" class="form-control" placeholder="Enter customer's address"  >
+                                           <input type="text" id="address" name="address" class="form-control" placeholder="Enter customer's address" required>
                                       </div>
                                    </div>
                               </div>
@@ -76,7 +76,7 @@
                               <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                   <div class="form-group">
                                       <div class="form-line">
-                                          <input type="number" id="contacts" name="contacts" class="form-control" placeholder="Enter customer's contact number">
+                                          <input type="number" id="contacts" name="contacts" class="form-control" placeholder="Enter customer's contact number" required>
                                       </div>
                                   </div>
                               </div>
@@ -259,20 +259,23 @@
             });
 
             //Add Customer
-            $("#add_customer").click(function(event) {
+            $("#customer_form").submit(function(event) {
                 event.preventDefault();
-                var input = $(this);
-                var button =this;
+                var input = $("#add_customer");
+                var button = $("#add_customer");
+                var data = $(this).serialize();
+
                 button.disabled = true;
-                input.html('SAVING...'); 
+                input.html('SAVING...');
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     type: "POST",
                     url: "{{ route('add_customer') }}",
-                    dataType: "text",
-                    data: $('#customer_form').serialize(),
+                    dataType: "json",
+                    data: data,
                     success: function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -281,8 +284,23 @@
                         $('#customer_modal').modal('hide');
                         refresh_customer_table();
                     },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    error: function(err){
+                        if(err.statusText === 'abort') return;
+                        var errorMessage = "";
+                        
+                        $.each(err.responseJSON.errors, function(key, val) {
+                            errorMessage += '<li>'+val[0]+'</li>';
+                        });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = errorMessage;
+
+                        swal({
+                            title: "Something went wrong!", 
+                            content: wrapper,
+                            icon: 'error'
+                        });
+
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }

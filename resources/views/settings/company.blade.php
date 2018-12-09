@@ -157,10 +157,11 @@
             });
             
             //Add Company
-            $(document).on('click', '#add_company', function(event){
+            $(document).on('submit', '#company_form', function(event){
                 event.preventDefault();
-                var input = $(this);
-                var button =this;
+                var data = $(this).serialize();
+                var input = $('#add_company');
+                var button = $('#add_company');
                 button.disabled = true;
                 input.html('SAVING...'); 
                 $.ajax({
@@ -169,8 +170,8 @@
                     },
                     url:"{{ route('add_company') }}",
                     method: 'POST',
-                    dataType:'text',
-                    data: $('#company_form').serialize(),
+                    dataType:'json',
+                    data: data,
                     success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -178,8 +179,23 @@
                         $('#company_modal').modal('hide');
                         refresh_company_table();
                     },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    error: function(err){
+                        if(err.statusText === 'abort') return;
+                        var errorMessage = "";
+                        
+                        $.each(err.responseJSON.errors, function(key, val) {
+                            errorMessage += '<li>'+val[0]+'</li>';
+                        });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = errorMessage;
+
+                        swal({
+                            title: "Something went wrong!", 
+                            content: wrapper,
+                            icon: 'error'
+                        });
+
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }

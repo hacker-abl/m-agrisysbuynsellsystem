@@ -9,6 +9,8 @@ use App\Roles;
 use App\Employee_Benefits;
 Use App\UserPermission;
 use Auth;
+use Validator;
+
 class employeeController extends Controller
 {
     /**
@@ -51,15 +53,14 @@ class employeeController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->get('button_action') == 'add'){
+        if($request->get('button_action') == 'add'){            
             $employee = new Employee;
+            $employee->validation('create', $request->all());
             $employee->fname = $request->fname;
             $employee->mname = $request->mname;
             $employee->lname = $request->lname;
             $employee->role_id = $request->role_id;
             $employee->save();
-
-            $employee = Employee::orderBy('id', 'DESC')->first();
             
             for($x = 0; $x < 3; $x++){
                 $employee_benefits = new Employee_Benefits;
@@ -76,19 +77,21 @@ class employeeController extends Controller
                     $employee_benefits->benefits_id = 3;
                     $employee_benefits->id_number = $request->pagibig;
                 }
+
                 $employee_benefits->save();
             }
+
+            return response()->json('success');
         }
 
         if($request->get('button_action') == 'update'){
-            $employee = Employee::find($request->get('id'));
+            $employee = new Employee;
+            $employee = $employee->validation('update', $request->all());
             $employee->fname = $request->get('fname');
             $employee->mname = $request->get('mname');
             $employee->lname = $request->get('lname');
             $employee->role_id = $request->get('role_id');
             $employee->save();
-
-            $employee = Employee::orderBy('id', 'DESC')->first();
 
             for($x = 0; $x < 3; $x++){
                 $employee_benefits = Employee_Benefits::where('emp_id', $employee->id)
@@ -105,8 +108,11 @@ class employeeController extends Controller
                     $employee_benefits->benefits_id = 3;
                     $employee_benefits->id_number = $request->pagibig;
                 }
-                $employee_benefits->save();
+
+                $employee_benefits->update();
             }
+
+            return response()->json('success');
         }
     }
 
