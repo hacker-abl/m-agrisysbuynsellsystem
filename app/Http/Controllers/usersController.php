@@ -117,6 +117,7 @@ class usersController extends Controller
     {
         if($request->get('button_action') == 'add'){
             $user = new User;
+            $user->validation('create', $request->all());
             $user->emp_id = $request->emp_id;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
@@ -147,11 +148,14 @@ class usersController extends Controller
         }
 
         if($request->get('button_action') == 'update'){
-            $user = User::find($request->get('id'));
+            $user = new User;
+            $user = $user->validation('update', $request->all());
             $user->emp_id = $request->emp_id;
             $user->username = $request->username;
             $user->save();
         }
+
+        return response()->json('success');
     }
 
     /**

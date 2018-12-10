@@ -38,7 +38,7 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" id="mname" name="mname" class="form-control" placeholder="Enter employee's middle name"  required>
+                                            <input type="text" id="mname" name="mname" class="form-control" placeholder="Enter employee's middle name">
                                         </div>
                                     </div>
                                 </div>
@@ -249,20 +249,21 @@
             });
 
             //Add Employee
-            $(document).on('click', '#add_employee', function(event){
+            $(document).on('submit', '#employee_form', function(event){
                 event.preventDefault();
-                var input = $(this);
-                var button =this;
+                var input = $('#add_employee');
+                var button = $('#add_employee');
+                var data = $(this).serialize();
                 button.disabled = true;
-                input.html('SAVING...'); 
+                input.html('SAVING...');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url:"{{ route('add_employee') }}",
                     method: 'POST',
-                    dataType:'text',
-                    data: $('#employee_form').serialize(),
+                    dataType:'json',
+                    data: data,
                     success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -270,8 +271,23 @@
                         $('#employee_modal').modal('hide');
                         refresh_employee_table();
                     },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    error: function(err){
+                        if(err.statusText === 'abort') return;
+                        var errorMessage = "";
+                        
+                        $.each(err.responseJSON.errors, function(key, val) {
+                            errorMessage += '<li>'+val[0]+'</li>';
+                        });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = errorMessage;
+
+                        swal({
+                            title: "Something went wrong!", 
+                            content: wrapper,
+                            icon: 'error'
+                        });
+                        
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }

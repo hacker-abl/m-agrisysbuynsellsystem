@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Company;
 use App\UserPermission;
 use Auth;
+use Validator;
+
 class companyController extends Controller
 {
 
@@ -45,24 +48,27 @@ class companyController extends Controller
         //
     }
 
-    /**
+    /**  
      * Store a newly created resource in storage.
-     *
+     *  
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {;
-        if($request->get('button_action') == 'add'){
+    {
+        if($request->button_action == 'add'){
             $company = new Company;
+            $company->validation('create', $request->all());
             $company->name = $request->name;
             $company->save();
-        }
-        if($request->get('button_action') == 'update'){
-            $company = Company::find($request->get('id'));
+        }else if($request->button_action == 'update'){
+            $company = new Company;
+            $company = $company->validation('update', $request->all());
             $company->name = $request->get('name');
             $company->save();
         }
+
+        return response()->json('success');
     }
 
     public function refresh()

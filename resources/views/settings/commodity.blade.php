@@ -40,7 +40,7 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" id="price" name="price" class="form-control" placeholder="Enter price" required>
+                                            <input type="number" step="any" id="price" name="price" class="form-control" placeholder="Enter price" required>
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +53,7 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" id="suki_price" name="suki_price" class="form-control" placeholder="Enter suki price" required>
+                                            <input type="number" step="any" id="suki_price" name="suki_price" class="form-control" placeholder="Enter suki price" required>
                                         </div>
                                     </div>
                                 </div>
@@ -191,20 +191,23 @@
             });
             
             //Add Commodity
-            $(document).on('click', '#add_commodity', function(event){
+            $(document).on('submit', '#commodity_form', function(event){
                 event.preventDefault();
-                var input = $(this);
-                var button =this;
+                var input = $('#add_commodity');
+                var button = $('#add_commodity');
+                var data = $(this).serialize();
+
                 button.disabled = true;
                 input.html('SAVING...'); 
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url:"{{ route('add_commodity') }}",
                     method: 'POST',
-                    dataType:'text',
-                    data: $('#commodity_form').serialize(),
+                    dataType:'json',
+                    data: data,
                     success:function(data){
                         swal("Success!", "Record has been added to database", "success")
                         $('#commodity_modal').modal('hide');
@@ -212,8 +215,23 @@
                         input.html('SAVE CHANGES');
                         refresh_commodity_table();
                     },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    error: function(err){
+                        if(err.statusText === 'abort') return;
+                        var errorMessage = "";
+                        
+                        $.each(err.responseJSON.errors, function(key, val) {
+                            errorMessage += '<li>'+val[0]+'</li>';
+                        });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = errorMessage;
+
+                        swal({
+                            title: "Something went wrong!", 
+                            content: wrapper,
+                            icon: 'error'
+                        });
+                        
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }

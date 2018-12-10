@@ -169,10 +169,12 @@
                 $('#button_action').val('add');
             });
 
-            $(document).on('click', '#add_trucks', function(event){
+            $(document).on('submit', '#trucks_form', function(event){
                 event.preventDefault();
-                var input = $(this);
-                var button =this;
+                var input = $('#add_trucks');
+                var button = $('#add_trucks');
+                var data = $(this).serialize();
+
                 button.disabled = true;
                 input.html('SAVING...'); 
                 $.ajax({
@@ -181,8 +183,8 @@
                     },
                     url:"{{ route('add_trucks') }}",
                     method: 'POST',
-                    dataType:'text',
-                    data: $('#trucks_form').serialize(),
+                    dataType:'json',
+                    data: data,
                     success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -190,8 +192,23 @@
                         $('#trucks_modal').modal('hide');
                         refresh_trucks_table();
                     },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    error: function(err){
+                        if(err.statusText === 'abort') return;
+                        var errorMessage = "";
+                        
+                        $.each(err.responseJSON.errors, function(key, val) {
+                            errorMessage += '<li>'+val[0]+'</li>';
+                        });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = errorMessage;
+
+                        swal({
+                            title: "Something went wrong!", 
+                            content: wrapper,
+                            icon: 'error'
+                        });
+                        
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }

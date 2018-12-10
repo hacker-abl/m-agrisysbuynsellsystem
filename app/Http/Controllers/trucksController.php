@@ -50,16 +50,20 @@ class trucksController extends Controller
     {
         if($request->get('button_action') == 'add'){
             $trucks = new Trucks;
+            $trucks->validation('create', $request->all());
             $trucks->name = $request->name;
             $trucks->plate_no = $request->plate_no;
             $trucks->save();
         }
         if($request->get('button_action') == 'update'){
-            $trucks = Trucks::find($request->get('id'));
+            $trucks = new Trucks;
+            $trucks = $trucks->validation('update', $request->all());
             $trucks->name = $request->get('name');
             $trucks->plate_no = $request->get('plate_no');
             $trucks->save();
         }
+
+        return response()->json('success');
     }
 
     public function refresh()

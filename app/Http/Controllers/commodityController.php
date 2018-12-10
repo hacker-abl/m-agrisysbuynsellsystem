@@ -52,13 +52,15 @@ class commodityController extends Controller
     {
         if($request->get('button_action') == 'add'){
             $commodity = new Commodity;
+            $commodity->validation('create', $request->all());
             $commodity->name = $request->name;
             $commodity->price = $request->price;
             $commodity->suki_price = $request->suki_price;
             $commodity->save();
         }
         if($request->get('button_action') == 'update'){
-            $commodity = Commodity::find($request->get('id'));
+            $commodity = new Commodity;
+            $commodity = $commodity->validation('update', $request->all());
             $commodity->name = $request->get('name');
             $commodity->price = $request->get('price');
             $commodity->suki_price = $request->get('suki_price');
@@ -69,6 +71,7 @@ class commodityController extends Controller
             event(new \App\Events\CommodityUpdated($commodityUpdate));
         }
 
+        return response()->json('success');
     }
 
     public function refresh()

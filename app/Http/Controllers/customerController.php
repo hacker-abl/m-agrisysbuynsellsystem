@@ -53,6 +53,7 @@ class customerController extends Controller
     {
         if($request->get('button_action') == 'add'){
             $customer = new Customer;
+            $customer->validation('create', $request->all());
             $customer->fname = $request->fname;
             $customer->mname = $request->mname;
             $customer->lname = $request->lname;
@@ -78,10 +79,13 @@ class customerController extends Controller
             $balance->balance = 0;
             $balance->logs_ID = $customer->id;
             $balance->save();
+
+            return response()->json('success');
         }
 
         if($request->get('button_action') == 'update'){
-            $customer = Customer::find($request->get('id'));
+            $customer = new Customer;
+            $customer = $customer->validation('update', $request->all());
             $customer->fname = $request->get('fname');
             $customer->mname = $request->get('mname');
             $customer->lname = $request->get('lname');
@@ -106,6 +110,8 @@ class customerController extends Controller
                 $customer->suki_type = 0;
             }
             $customer->save();
+            
+            return response()->json('success');
         }
     }
 

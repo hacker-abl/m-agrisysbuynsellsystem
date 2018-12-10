@@ -493,10 +493,12 @@
             });
 
             //Add User
-            $(document).on('click', '#add_user', function(event){
+            $(document).on('submit', '#user_form', function(event){
                 event.preventDefault();
-                var input = $(this);
-                var button =this;
+                var input = $('#add_user');
+                var button = $('#add_user');
+                var data = $(this).serialize();
+
                 button.disabled = true;
                 input.html('SAVING...'); 
                 $.ajax({
@@ -505,8 +507,8 @@
                     },
                     url:"{{ route('add_user') }}",
                     method: 'POST',
-                    dataType:'text',
-                    data: $('#user_form').serialize(),
+                    dataType:'json',
+                    data: data,
                     success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -514,8 +516,23 @@
                         $('#user_modal').modal('hide');
                         refresh_user_table();
                     },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    error: function(err){
+                        if(err.statusText === 'abort') return;
+                        var errorMessage = "";
+                        
+                        $.each(err.responseJSON.errors, function(key, val) {
+                            errorMessage += '<li>'+val[0]+'</li>';
+                        });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = errorMessage;
+
+                        swal({
+                            title: "Something went wrong!", 
+                            content: wrapper,
+                            icon: 'error'
+                        });
+                        
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }

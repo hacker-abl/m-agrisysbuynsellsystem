@@ -32,17 +32,21 @@ class RolesController extends Controller
   {
       if($request->get('button_action') == 'add'){
           $role = new Roles;
+          $role->validation('create', $request->all());
           $role->role = $request->role;
           $role->rate = $request->rate;
           $role->save();
       }
 
       if($request->get('button_action') == 'update'){
-          $role = Roles::find($request->get('id'));
+          $role = new Roles;
+          $role = $role->validation('update', $request->all());
           $role->role = $request->role;
           $role->rate = $request->rate;
           $role->save();
       }
+
+      return response()->json('success');
   }
 
   public function refresh()

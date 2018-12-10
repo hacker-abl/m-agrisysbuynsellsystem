@@ -40,7 +40,7 @@
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" id="rate" name="rate" class="form-control" placeholder="Enter rate"  required>
+                                            <input type="number" step="any" id="rate" name="rate" class="form-control" placeholder="Enter rate"  required>
                                         </div>
                                     </div>
                                 </div>
@@ -173,10 +173,12 @@
             });
 
             //Add Role
-            $(document).on('click', '#add_role', function(event){
+            $(document).on('submit', '#role_form', function(event){
                 event.preventDefault();
-                var input = $(this);
-                var button =this;
+                var input = $('#add_role');
+                var button = $('#add_role');
+                var data = $(this).serialize();
+
                 button.disabled = true;
                 input.html('SAVING...'); 
                 $.ajax({
@@ -185,8 +187,8 @@
                     },
                     url:"{{ route('add_role') }}",
                     method: 'POST',
-                    dataType:'text',
-                    data: $('#role_form').serialize(),
+                    dataType:'json',
+                    data: data,
                     success:function(data){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -194,8 +196,23 @@
                         $('#role_modal').modal('hide');
                         refresh_role_table();
                     },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
+                    error: function(err){
+                        if(err.statusText === 'abort') return;
+                        var errorMessage = "";
+                        
+                        $.each(err.responseJSON.errors, function(key, val) {
+                            errorMessage += '<li>'+val[0]+'</li>';
+                        });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = errorMessage;
+
+                        swal({
+                            title: "Something went wrong!", 
+                            content: wrapper,
+                            icon: 'error'
+                        });
+
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }
