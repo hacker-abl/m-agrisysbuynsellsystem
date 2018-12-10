@@ -258,7 +258,7 @@ class tripController extends Controller
           $trip_expense = DB::table('trips')
             ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
             ->select('trip_expense.id','trips.trip_ticket AS trip_id','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
-            ->get();
+            ->get()->sortByDesc('created_at');
         }else{
            
              $trip_expense = DB::table('trips')
@@ -266,7 +266,7 @@ class tripController extends Controller
             ->select('trip_expense.id','trips.trip_ticket AS trip_id','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
                 ->where('trip_expense.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
                 ->where('trip_expense.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-                      ->get();
+                      ->get()->sortByDesc('created_at');
         }
       
         return \DataTables::of($trip_expense)
@@ -276,13 +276,13 @@ class tripController extends Controller
             }else{
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$trip_expense->id.'"><i class="material-icons">done_all</i></button>';
             }
-           
+            
         })
         ->editColumn('amount', function ($data) {
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
          ->editColumn('created_at', function ($data) {
-            return date('F d, Y g:i a', strtotime($data->created_at));
+            return $data->created_at;
         })
         ->editColumn('released_by', function ($data) {
             if($data->released_by==""){
