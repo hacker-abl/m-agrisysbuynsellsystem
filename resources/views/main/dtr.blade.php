@@ -7,6 +7,154 @@
         </div>
     </div>
 
+<div class="modal fade" id="employee_ca_view" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="row">            
+              <div class="card">
+                   <div class="header">
+                       <h2> Cash Advance Logs
+                   </div>
+                   <div class="body">
+                       <div class="table-responsive">
+                       <br>
+                            <table id="view_employee_ca_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                               <thead>
+                                    <tr>
+                                        <th>Reason</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+                                        <th>Date/Time</th>
+                                        <th>Status</th>
+                                        <th>Released By</th>
+                                        <th>Releasing</th>
+                                    </tr>
+                               </thead>
+                               <tfoot>
+                                  <tr>
+                                      <th></th>
+                                      <th></th>
+                                      <th></th>
+                                      <th></th>
+                                      <th></th>
+                                      <th></th>
+                                  </tr>
+                              </tfoot>
+                            </table>
+                       </div>
+                       <div class="modal-footer">
+                               <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                       </div>
+                   </div>
+               </div>
+        </div>
+      </div>
+ </div>
+
+ <!-- Add CA modal -->
+    <div class="modal fade" id="employee_ca_modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+               <div class="card">
+                     <div class="header">
+                          <h2 class="modal_title">Add Employee Cash Advance</h2>
+                   <ul class="header-dropdown m-r--5">
+                       <li class="dropdown">
+                            <button id="print_ca" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                       </li>
+                       <li class="dropdown">
+                            <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
+                            <input type="hidden" id="customer_id_clone" name="customer_id_clone">
+                            <input type="hidden" id="reason_clone" name="reason_clone">
+                            <input type="hidden" id="amount_clone" name="amount_clone">
+                            <input type="hidden" id="balance_clone" name="balance_clone">
+                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            </form>
+                       </li>
+                   </ul>
+                     </div>
+                     <div class="body">
+                             <div class="clearfix"></div>
+                             <br>
+
+                              <div class="tab-content">
+                             <div id="home" class="tab-pane fade in active">
+                          <form class="form-horizontal " id="ca_emp_form">
+                               <input type="hidden"  name="id_ca" id="id_ca" value="">
+                               <input type="hidden"  name="button_action_ca" id="button_action_ca" value="">
+
+                               <div class="row clearfix">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                         <label for="name">Name</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                         <div class="form-group">
+                                              <div id="c" class="form-line">
+                                                   <select type="text" id="employee_ca" name="employee_id" class="form-control" required style="width: 100%;">
+                                                        @foreach($employee as $a)
+                                                        <option></option>
+                                                        <option value="{{ $a->id }}">{{ $a->lname.", ".$a->fname." ".$a->mname}}</option>
+                                                        @endforeach
+                                                    </select>
+                                              </div>
+                                         </div>
+                                    </div>
+                               </div>
+
+                       <div class="row clearfix">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                         <label for="name">Reason</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                         <div class="form-group">
+                                              <div class="form-line">
+                                                   <input type="text" id="reason" name="reason" class="form-control" required>
+                                              </div>
+                                         </div>
+                                    </div>
+                               </div>
+
+                       <div class="row clearfix">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                         <label for="name">Amount</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                         <div class="form-group">
+                                              <div class="form-line">
+                                                   <input type="number" id="amount" min="0" name="amount" class="form-control" required>
+                                              </div>
+                                         </div>
+                                    </div>
+                               </div>
+
+                       <div class="row clearfix">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                         <label for="name">Balance</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                         <div class="form-group">
+                                              <div class="form-line">
+                                                   <input type="number" id="balance" name="balance" class="form-control" readonly>
+                                              </div>
+                                         </div>
+                                    </div>
+                               </div>
+
+                               <div class="row clearfix">
+                                    <div class="modal-footer">
+                                         <button type="submit" id="add_cash_advance" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                    </div>
+                               </div>
+                          </form>
+                          </div>
+                          </div>
+                     </div>
+               </div>
+          </div>
+      </div>
+</div>
+
+
     <!-- Add DTR Modal -->
     <div class="modal fade" id="dtr_modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -164,6 +312,7 @@
                             <div class="table-responsive">
                             <br>
                                 <table id="view_dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                                <h5 id="balance_view"></h5>
                                     <thead>
                                         <tr>
                                             <th>Overtime</th>
@@ -209,6 +358,7 @@
 							<li class="dropdown">
                                 @if(isAdmin() || isPurchaser())
 								<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_dtr_modal"><i class="material-icons">library_add</i></button>
+                                <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 add_ca"><i class="material-icons">attach_money</i></button>
                                 @endif
                             </li>
 						</ul>
@@ -285,12 +435,12 @@
     var id;
     var dtr_info;
     var person_id;
-	var fname;
-	var lname;
-	var mname;
-	var idmain
-	var total;
-	var role;
+  	var fname;
+  	var lname;
+  	var mname;
+  	var idmain
+  	var total;
+  	var role;
     var bonus;
  
     var start = moment();
@@ -315,12 +465,162 @@
 
     cb(start, end);
 
- 
- 
+     $(document).on('click','.add_ca', function(){
+             $('#c').removeClass('focused');
+            $("#customer_id").val('').trigger('change');
+            $("#reason").val('').trigger('change');
+            $("#amount").val('').trigger('change');
+            $("#balance").val('').trigger('change');
+            $('#employee_ca_modal').modal('show');
+        });
 
-  
+  $(document).on('click', '.view_ca', function(){
+                  person_id = $(this).attr("id");
+                console.log(person_id);
+                //Datatable for each person
+                $.ajax({
+                    url: "{{ route('employee_view_ca') }}",
+                    method: 'get',
+                    data:{id:person_id},
+                    dataType: 'json',
+                    success:function(data){
+                      console.log(data);
+                     var  cash_advance_release =  $('#view_employee_ca_table').DataTable({
+                            "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                     
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i == 'string' ?
+                                        i.replace(/[\₱,]/g, '')*1 :
+                                        typeof i == 'number' ?
+                                            i : 0;
+                                };
+                     
+                                // Total over all pages
+                                total = api
+                                    .column( 1 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 1, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // // Update footer
+                                // $( api.column( 1 ).footer() ).html(
+                                //     'Total: <br>₱' + number_format(pageTotal,2)
+                                // );
+                            },
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3, 4 ]
+                                    },
+                                    customize: function ( win ) {
+                                        $(win.document.body)
+                                            .css( 'font-size', '10pt' );
+                     
+                                        $(win.document.body).find( 'table' )
+                                            .addClass( 'compact' )
+                                            .css( 'font-size', 'inherit' );
+                                    },
+                                    footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3, 4 ]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
+                                }
+                            ],
+                            order: [[ 2, "desc" ]],
+                            bDestroy: true,
+                            data: data.data,
+                            columns:[
+                                {data: 'reason', name: 'reason'},
+                                {data: 'amount', name: 'amount'},
+                                {data: 'balance', name: 'balance'},
+                                {data: 'created_at', name: 'created_at'},
+                                {data: 'status', name: 'status'},
+                                {data: 'released_by', name: 'released_by'},
+                                {data: "action", orderable:false,searchable:false}
+                            ]
+                        }); 
+                        $('#employee_ca_view').modal('show');
+                    }
+                });
+            });
 
-    
+ 
+ $('#employee_ca').change(function(){
+                   var id = $(this).val();
+                   console.log(id);
+                   $.ajax({
+                       url:"{{ route('check_emp_balance') }}",
+                       method: 'get',
+                       data:{id:id},
+                       dataType:'json',
+                       success:function(data){
+                        console.log(data);
+                           if(data==null){
+                              $('#balance').val(0.00);
+                           }
+                           else{
+                              $('#balance').val(data.balance);
+                           }
+                       }
+                   })
+               });
+
+  $("#add_cash_advance").click(function(event){
+                event.preventDefault();
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('SAVING...');   
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('emp_add_cashadvance') }}",
+                    method: 'POST',
+                    dataType: 'text',
+                    data: $('#ca_emp_form').serialize(),
+                    success:function(data){
+                        console.log(data);
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        $("#employee_ca").val('').trigger('change');
+                        $("#reason").val('').trigger('change');
+                        $("#amount").val('').trigger('change');
+                        $("#balance").val('').trigger('change');
+                        swal("Success!", "Record has been added to database", "success");
+                                    $('#employee_ca_modal').modal('hide');
+                        refresh_cash_advance_table();
+                         },
+                    error: function(data){
+                        swal("Oh no!", "Something went wrong, try again.", "error");
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                    }
+                });
+            });
+          
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -1099,6 +1399,7 @@
                         $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")  Pending Salary: ₱"+total);
 
                         $('#view_dtr_name').val(fname + " " + mname + " " +lname + " ("+ role + ")  Pending Salary: ₱"+total);
+                        $('#balance_view').html('Balance: ₱'+data.data[0].balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                     dtr_info= $('#view_dtr_table').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {
                                 var api = this.api(), data;
@@ -1211,12 +1512,28 @@
                     }
                 });
             });
+
+            $('#employee_ca_modal').on('hidden.bs.modal', function (e) {
+ 
+                $(this)
+                .find("input,textarea,select")
+                    .val('')
+                    .end();
+
+            })
+
             //CASH ADVANCE datatable ends here
 
             $('#employee_id').select2({
                dropdownParent: $('#dtr_modal'),
                placeholder: 'Select an employee'
             });
+              $('#employee_ca').select2({
+               dropdownParent: $('#employee_ca_modal'),
+               placeholder: 'Select a customer'
+            });
+
+    
         });
     </script>
 @endsection

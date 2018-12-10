@@ -795,7 +795,7 @@
 
 
                //check balance of customer
-               $('#customer_id1').change(function(){
+               $('#customer_id1').change(function(){ 
                    var id = $(this).val();
                    $.ajax({
                        url:"{{ route('check_balance') }}",

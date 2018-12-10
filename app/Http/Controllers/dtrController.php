@@ -14,8 +14,10 @@ use App\employee;
 use App\User;
 use App\Notification;
 use App\Cash_History;
+use App\employee_ca;
 use Carbon\Carbon;
 use Auth;
+use App\UserPermission;
 use App\Events\CashierCashUpdated;
 
 class dtrController extends Controller
@@ -183,6 +185,23 @@ class dtrController extends Controller
             return 1;
         }
     }
+    public function check_emp_balance(Request $request){
+        $balance = employee_ca::where('employee_id', '=', $request->id)->latest()->first();
+        return json_encode($balance);
+    }
+
+    public function add_emp_ca(Request $request){
+            $ca = new employee_ca;
+            $ca->employee_id = $request->employee_id;
+            $ca->reason = $request->reason;
+            $ca->amount = $request->amount;
+            $ca->balance = $request->balance + $request->amount;
+            $ca->status = "On-Hand";
+            $ca->released_by = '';
+            $ca->save();
+
+        return json_encode("maoni");
+    }
     function updatedata(Request $request){
          $id = $request->input('id');
         $dtr_view = DB::table('dtr')
@@ -257,7 +276,7 @@ class dtrController extends Controller
             ->get();
         return \DataTables::of($dtr)
         ->addColumn('action', function($dtr){
-            return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+            return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>&nbsp<button class="btn btn-xs btn-warning view_ca waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">ballot</i></button>';//info/visibility
         })
         ->addColumn('wholename', function ($data){
             return $data->fname." ".$data->mname." ".$data->lname;
@@ -275,7 +294,11 @@ class dtrController extends Controller
         $id = $request->input('id');
         $dtr_view = DB::table('dtr')
             ->join('employee', 'employee.id', '=', 'dtr.employee_id')
-            ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname')
+            ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname','employee_cas.balance')
+            ->leftJoin('employee_cas', function($query) {
+                     $query->on('employee.id','=','employee_cas.employee_id')
+                        ->whereRaw('employee_cas.id IN (select MAX(a2.id) from employee_cas as a2 join employee as u2 on u2.id = a2.employee_id group by u2.id)');
+            })
             ->where('dtr.employee_id', $id)
             ->latest();
         return \DataTables::of($dtr_view)
@@ -308,6 +331,61 @@ class dtrController extends Controller
         })
         ->make(true);
        // echo json_encode($dtr_view);
+    }
+
+     public function employee_view_ca(Request $request){
+         
+        $id = $request->input('id');
+        $cash_advance = DB::table('employee_cas')
+            ->join('employee', 'employee.id', '=', 'employee_cas.employee_id')
+            ->select('employee_cas.id','employee_cas.employee_id', 'employee.fname', 'employee.mname', 'employee.lname', 'employee_cas.reason', 'employee_cas.amount', 'employee_cas.created_at','employee_cas.balance','employee_cas.status','employee_cas.released_by')
+            ->where('employee_cas.employee_id', $id)
+            ->latest();
+        return \DataTables::of($cash_advance)
+         ->addColumn('action', function($cash_advance){
+            $userid= Auth::user()->id;
+            $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',5)->get();   
+            if($userid!=1){
+                $delete=$permit[0]->permit_delete;  
+                $edit = $permit[0]->permit_edit;  
+           }
+            if($cash_advance->status=="On-Hand" && isAdmin()==1){
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
+            }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==1){
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
+            }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==0){
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
+            }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==1){
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>';
+            }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==0){
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
+            }
+            else{
+                 return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>';
+            }
+           
+        })
+         ->editColumn('released_by', function ($data) {
+            if($data->released_by==""){
+                return 'None';
+            }else{
+                return $data->released_by;
+            }
+             
+        })
+        ->editColumn('balance', function ($data) {
+           return '₱'.number_format($data->balance, 2, '.', ',');
+        })
+        ->editColumn('amount', function ($data) { 
+            return '₱'.number_format($data->amount, 2, '.', ',');
+        })
+         ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
+        })
+
+        ->make(true);
+
+        echo json_encode($cash_advance);
     }
 
     public function check_employee(Request $request){

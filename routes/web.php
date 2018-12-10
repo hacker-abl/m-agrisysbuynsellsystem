@@ -108,7 +108,7 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
 
     //SEARCH AUTOCOMPLETE NAME FOR EXPENSES
     Route::get('autocomplete_name',array('as'=>'autocomplete_name','uses'=>'expenseController@autoComplete'));
-});
+}); 
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {
     //TRIPS
@@ -189,6 +189,9 @@ Route::group(['middleware'=>['auth', 'user:dtr']], function() {
     Route::post('/check_balance5', 'dtrController@check_balance5')->name('check_balance5');
     Route::get('/update_dtr', 'dtrController@updatedata')->name('update_dtr');
     Route::get('/delete_dtr', 'dtrController@deletedata')->name('delete_dtr');
+    Route::get('/check_emp_balance', 'dtrController@check_emp_balance')->name('check_emp_balance');
+    Route::post('/emp_add_cashadvance', 'dtrController@add_emp_ca')->name('emp_add_cashadvance');
+    Route::get('/employee_view_ca', 'dtrController@employee_view_ca')->name('employee_view_ca');
 });
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {
