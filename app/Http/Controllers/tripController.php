@@ -112,7 +112,14 @@ class tripController extends Controller
         $trip->truck_id = $request->plateno;
         $trip->num_liters = $request->num_liters;
         $trip->save();
-        echo json_encode("update");
+        $trip_expenses =trip_expense::find($request->id);
+        $trip_expenses->description = $request->destination;
+        $trip_expenses->type ="TRIP EXPENSE";
+        $trip_expenses->amount = $request->expense;
+        $trip_expenses->status = "On-Hand";
+        $trip_expenses->released_by = '';
+        $trip_expenses->save();
+        return json_encode($trip);
     }
      public function release_update(Request $request){
          $check_admin =Auth::user()->id;

@@ -609,7 +609,7 @@
                       </div>
                         </div>
                    </div>
-              </div>
+              </div> 
          </div>
     </div>
     <div class="modal fade" id="release_purchase_modal" tabindex="-1" role="dialog">

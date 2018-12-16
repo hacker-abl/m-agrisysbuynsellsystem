@@ -25,6 +25,9 @@ class Dtr extends Migration
             $table->decimal('num_hours');
             $table->decimal('rate', 14,2);
             $table->decimal('salary');
+            $table->decimal('dtr_balance');
+            $table->decimal('r_balance');
+            $table->decimal('p_payment');
             $table->decimal('bonus');
             $table->string('status');
             $table->string('released_by');
