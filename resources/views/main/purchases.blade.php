@@ -61,6 +61,8 @@
                                   <input type="hidden" name="customerID" id="customerID" value="">
                                   <input type="hidden" name="commodityID" id="commodityID" value="">
                                   <input type="hidden" name="caID" id="caID" value="">
+                                  <input type="hidden" name="cashLAST" id="cashLAST" value="">
+                                  <input type="hidden" name="partialLAST" id="partialLAST" value="">
                                   <input type="hidden" name="button_action1" id="button_action1" value="">
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -208,7 +210,7 @@
 
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name">Balance</label>
+                                            <label for="name">Previous Balance</label>
                                        </div>
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -217,6 +219,7 @@
                                                  </div>
                                             </div>
                                        </div>
+                                    
                                   </div>
                                   
                                   <div class="row clearfix">
@@ -224,10 +227,13 @@
                                            <label for="name">Cash Advance</label>
                                       </div>
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                           <div class="form-group">
+                                           <div class="form-group input-group">
                                                 <div class="form-line">
-                                                     <input type="number" id="cash" name="cash" onkeyup="totalbalance(this)"  class="form-control"   required>
+                                                    <input type="number" id="cash" name="cash" onkeyup="totalbalance(this)"  class="form-control"   required>
                                                 </div>
+                                                <span class="input-group-btn">
+                                                    <button type="button" id="resetNiCash" class="btn btn-primary waves-effect">Reset</button>
+                                                </span>
                                            </div>
                                       </div>
                                  </div>
@@ -237,10 +243,13 @@
                                            <label for="name">Partial Payment</label>
                                       </div>
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                           <div class="form-group">
+                                           <div class="form-group input-group">
                                                 <div class="form-line">
                                                      <input type="number" id="partial" name="partial" onkeyup="partial1(this)" class="form-control"   required>
                                                 </div>
+                                                <span class="input-group-btn">
+                                                    <button type="button" id="resetNiPartial" class="btn btn-primary waves-effect">Reset</button>
+                                                </span>
                                            </div>
                                       </div>
                                  </div>
@@ -721,6 +730,25 @@
 
 @section('script')
     <script>
+        $("#resetNiCash").click(function(){
+            var t = parseFloat($('#ca').val())
+            var y = parseFloat($('#cash').val())
+            t = t - y;
+            $('#ca').val(t)
+            $('#balance').val(t)
+            $('#cash').val(0)
+        });
+        $("#resetNiPartial").click(function(){
+            var t = parseFloat($('#ca').val())
+            var y = parseFloat($('#partial').val())
+            var x = parseFloat($('#amount').val())
+            t = t + y;
+            x = x + y
+            $('#ca').val(t)
+            $('#balance').val(t)
+            $('#partial').val(0)
+            $('#amount').val(x)
+        });
         var purchasestable;
         var purchase_date_from;
         var purchase_date_to;
@@ -1116,6 +1144,10 @@
                         $('#sacks').val(data.sacks);
                         $('#tare').val(data.tare);
                         $('#net').val(data.net);
+                        $('#partial').val(data.partial);
+                        $('#partialLAST').val(data.partial);
+                        $('#cashLAST').val(data.partial);
+                        $('#cash').val(data.balance_id);
                         $('#moist').val(data.moist);
                         $("#type").val(data.type).trigger('change');
                         $('#kilo').val(data.kilo);

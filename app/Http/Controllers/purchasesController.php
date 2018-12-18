@@ -189,8 +189,14 @@ class purchasesController extends Controller
             $purchases->status = "On-Hand";
             $purchases->released_by='';
             $purchases->save();
-
+            if($request->partial == 0){
+                $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->partialLAST); 
+            }
+            if($request->cash == 0){
+                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partialLAST); 
+            }
             $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
+            $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash); 
             return "Released Admin Update";    
             }else if($purchases->status=="On-Hand"){
             $purchases->trans_no = $request->ticket;
@@ -213,7 +219,14 @@ class purchasesController extends Controller
             $purchases->released_by='';
             $purchases->save();
 
-            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial);   
+            if($request->partial == 0){
+                $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->partialLAST); 
+            }
+            if($request->cash == 0){
+                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partialLAST); 
+            }
+            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
+            $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash);    
             }else if($purchases->status=="Released"&&$check_admin!=1){
              return "Not";  
             }
