@@ -196,6 +196,7 @@ Route::group(['middleware'=>['auth', 'user:dtr']], function() {
     Route::post('/add_payment_emp', 'dtrController@emp_payment')->name('add_payment_emp');
     Route::post('/check_balance_user', 'dtrController@check_balance_user')->name('check_balance_user');
     Route::post('/release_ca_employee', 'dtrController@release_ca_employee')->name('release_ca_employee');
+    Route::get('/delete_ca_employee', 'dtrController@delete_ca_employee')->name('delete_ca_employee');
 });
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {
