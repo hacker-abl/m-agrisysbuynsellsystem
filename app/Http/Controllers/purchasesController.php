@@ -193,7 +193,7 @@ class purchasesController extends Controller
                 $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->partialLAST); 
             }
             if($request->cash == 0){
-                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partialLAST); 
+                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->cashLAST); 
             }
             $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
             $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash); 
@@ -223,7 +223,7 @@ class purchasesController extends Controller
                 $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->partialLAST); 
             }
             if($request->cash == 0){
-                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partialLAST); 
+                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->cashLAST); 
             }
             $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
             $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash);    
@@ -535,7 +535,7 @@ class purchasesController extends Controller
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
             }
-
+            
             $cash_history->trans_no = $dateTime;
             $cash_history->previous_cash = $user->cashOnHand;
             $cash_history->cash_change = $purchases->amtpay;
@@ -549,6 +549,8 @@ class purchasesController extends Controller
                 'cashOnHand' => $user->cashOnHand,
                 'cashHistory' => $dateTime
             );
+        $balance = balance::where('customer_id', $purchases->customerID)->increment('balance',$purchases->partial); 
+        $balance = balance::where('customer_id', $purchases->customerID)->decrement('balance',$purchases->balance_id); 
         $purchases->delete();
         return  json_encode($output);
         }
