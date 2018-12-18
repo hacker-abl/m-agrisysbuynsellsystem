@@ -731,7 +731,6 @@
                button.disabled = true;
                input.html('SAVING...');  
 
-                console.log($('#balanceform').serialize());
                $.ajax({
                    headers: {
                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -741,7 +740,7 @@
                    dataType: 'text',
                    data: $('#balanceform').serialize(),
                    success:function(data){
-                    console.log(data);
+                  
                     if(data==1){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -780,7 +779,7 @@
                        data:{id:id},
                        dataType:'json',
                        success:function(data){
-                        console.log(data);
+                      
                            if(data==null){
                               $('#balancepayment').val(0.00);
                            }
@@ -794,7 +793,7 @@
 
   $(document).on('click', '.view_ca', function(){
                   person_id = $(this).attr("id");
-                console.log(person_id);
+              
                 //Datatable for each person
                 $.ajax({
                     url: "{{ route('employee_view_ca') }}",
@@ -802,7 +801,7 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-                      console.log(data);
+                   
                        // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
                 cash_advance_release =  $('#view_employee_ca_table').DataTable({
@@ -896,7 +895,7 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-                      console.log(data);
+                    
                  payment_table =  $('#payment_table').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {
                                 var api = this.api(), data;
@@ -989,14 +988,14 @@
  
  $('#employee_ca').change(function(){
                    var id = $(this).val();
-                   console.log(id);
+                 
                    $.ajax({
                        url:"{{ route('check_emp_balance') }}",
                        method: 'get',
                        data:{id:id},
                        dataType:'json',
                        success:function(data){
-                        console.log(data);
+                     
                            if(data==null){
                               $('#balance').val(0.00);
                            }
@@ -1022,7 +1021,7 @@
                     dataType: 'text',
                     data: $('#ca_emp_form').serialize(),
                     success:function(data){
-                        console.log(data);
+                     
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#employee_ca").val('').trigger('change');
@@ -1253,7 +1252,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                      console.log(data);
+                     
                         $('#role').val(data[0].role);
                         $('#rate').val(data[0].rate);
                         if(trig_update!=1){
@@ -1480,7 +1479,7 @@
               button.disabled = true;
               input.html('SAVING...');    
               event.preventDefault();
-              if(parseInt($('#p_payment').val())<=parseInt($('#emp_balance').val())){
+              if(parseInt($('#p_payment').val())<=parseInt($('#emp_balance').val())&&parseInt($('#salary').val())>0){
                 
                 $.ajax({
                     headers: {
@@ -1491,7 +1490,7 @@
                     dataType: 'text',
                     data: $('#dtr_form').serialize(),
                     success:function(data){     
-                      console.log(data);
+                     
                         $('#dtr_modal').modal('hide');
                         $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
@@ -1627,7 +1626,7 @@
 					}
                 });
    }else{
-          swal("Denied! Can't Partial Payment", "Payment is greater than Balance", "error");
+          swal("Denied! Can't Partial Payment", "Payment is greater than Balance or greater than Salary", "error");
           button.disabled = false;
           input.html('SAVE CHANGES');
    }
@@ -1643,7 +1642,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                      console.log(data);
+                     
                       trig_update=1;
                         $('#button_action').val('update');
                         $('#add_id').val(id);
@@ -1686,9 +1685,9 @@
                         method: "get",
                         data:{id:id},
                         success:function(data){
-                          console.log(data);
+                         
                             ObjData = JSON.parse(data);
-                            console.log(ObjData);
+                          
                              $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
                                         method: 'get',
@@ -1835,113 +1834,121 @@
                 if (willDelete) {
 
                      $.ajax({
-                        url:"{{ route('delete_ca') }}",
+                        url:"{{ route('delete_ca_employee') }}",
                         method: "get",
                         data:{id:id},
                         success:function(data){
-                          console.log(data);
-                //           $.ajax({
-                //     url: "{{ route('employee_view_ca') }}",
-                //     method: 'get',
-                //     data:{id:person_id},
-                //     dataType: 'json',
-                //     success:function(data){
-                //       console.log(data);
-                //        // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
-                // cash_advance_release =  $('#view_employee_ca_table').DataTable({
-                //             "footerCallback": function ( row, data, start, end, display ) {
-                //                 var api = this.api(), data;
-                     
-                //                 // Remove the formatting to get integer data for summation
-                //                 var intVal = function ( i ) {
-                //                     return typeof i == 'string' ?
-                //                         i.replace(/[\₱,]/g, '')*1 :
-                //                         typeof i == 'number' ?
-                //                             i : 0;
-                //                 };
-                     
-                //                 // Total over all pages
-                //                 total = api
-                //                     .column( 1 )
-                //                     .data()
-                //                     .reduce( function (a, b) {
-                //                         return intVal(a) + intVal(b);
-                //                     }, 0 );
-                     
-                //                 // Total over this page
-                //                 pageTotal = api
-                //                     .column( 1, { page: 'current'} )
-                //                     .data()
-                //                     .reduce( function (a, b) {
-                //                         return intVal(a) + intVal(b);
-                //                     }, 0 );
-                     
-                //                 // // Update footer
-                //                 // $( api.column( 1 ).footer() ).html(
-                //                 //     'Total: <br>₱' + number_format(pageTotal,2)
-                //                 // );
-                //             },
-                //             dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                //             buttons: [
-                //                 {
-                //                     extend: 'print',
-                //                     exportOptions: {
-                //                         columns: [ 0, 1, 2, 3, 4 ]
-                //                     },
-                //                     customize: function ( win ) {
-                //                         $(win.document.body)
-                //                             .css( 'font-size', '10pt' );
-                     
-                //                         $(win.document.body).find( 'table' )
-                //                             .addClass( 'compact' )
-                //                             .css( 'font-size', 'inherit' );
-                //                     },
-                //                     footer: true
-                //                 },
-                //                 { 
-                //                     extend: 'pdfHtml5', 
-                //                     footer: true,
-                //                     exportOptions: { 
-                //                         columns: [ 0, 1, 2, 3, 4 ]
-                //                     },
-                //                     customize: function(doc) {
-                //                         doc.styles.tableHeader.fontSize = 8;  
-                //                         doc.styles.tableFooter.fontSize = 8;   
-                //                         doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                //                     }  
-                //                 }
-                //             ],
-                //             order: [[ 2, "desc" ]],
-                //             bDestroy: true,
-                //             data: data.data,
-                //             columns:[
-                //                 {data: 'reason', name: 'reason'},
-                //                 {data: 'amount', name: 'amount'},
-                //                  {data: 'created_at', name: 'created_at',
-                //                                         type: "date",
-                //                                         render:function (value) {
-                //                                             var ts = new Date(value);
+                         var data2=JSON.parse(data);
+                         if(data2=="No"){
+                            swal("Denied! Can't Delete CA", "Amount is greater than Balance", "error");
+                         }else if(data2.cashOnHand!=undefined){    
+                         swal("Data Deleted! Employee Balance : ₱"+data2.balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
+                        $('#curCashOnHand').html(data2.username+" ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                      }
+                        else{
+                          swal("Data Deleted", " Employee Balance : ₱"+data2.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "success");
+                      }
+                          $.ajax({
+                    url: "{{ route('employee_view_ca') }}",
+                    method: 'get',
+                    data:{id:person_id},
+                    dataType: 'json',
+                    success:function(data){
+                   
 
-                //                                             return ts.toDateString()}
-                //                                     },
-                //                 {data: 'status', name: 'status'},
-                //                 {data: 'released_by', name: 'released_by'},
-                //                 {data: "action", orderable:false,searchable:false}
-                //             ]
-                //         }); 
+                     
+                       // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+
+                cash_advance_release =  $('#view_employee_ca_table').DataTable({
+                            "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                     
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i == 'string' ?
+                                        i.replace(/[\₱,]/g, '')*1 :
+                                        typeof i == 'number' ?
+                                            i : 0;
+                                };
+                     
+                                // Total over all pages
+                                total = api
+                                    .column( 1 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 1, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // // Update footer
+                                // $( api.column( 1 ).footer() ).html(
+                                //     'Total: <br>₱' + number_format(pageTotal,2)
+                                // );
+                            },
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3, 4 ]
+                                    },
+                                    customize: function ( win ) {
+                                        $(win.document.body)
+                                            .css( 'font-size', '10pt' );
+                     
+                                        $(win.document.body).find( 'table' )
+                                            .addClass( 'compact' )
+                                            .css( 'font-size', 'inherit' );
+                                    },
+                                    footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3, 4 ]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
+                                }
+                            ],
+                            order: [[ 2, "desc" ]],
+                            bDestroy: true,
+                            data: data.data,
+                            columns:[
+                                {data: 'reason', name: 'reason'},
+                                {data: 'amount', name: 'amount'},
+                                 {data: 'created_at', name: 'created_at',
+                                                        type: "date",
+                                                        render:function (value) {
+                                                            var ts = new Date(value);
+
+                                                            return ts.toDateString()}
+                                                    },
+                                {data: 'status', name: 'status'},
+                                {data: 'released_by', name: 'released_by'},
+                                {data: "action", orderable:false,searchable:false}
+                            ]
+                        }); 
                         
-                //     }
-                // });
-                //       swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
-                //         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
+                    }
+                });
+                      
                           
-                //                         }
+                                        }
 
-                                    });
-                               }                              
-                        }
-                    })                   
+                                    });                 
                 }
             })
             });
@@ -1999,7 +2006,7 @@
 						lname = data.data[0].lname;
 						role =  data.data[0].role;
                         $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")  Pending Salary: ₱"+total);
-                        console.log(data.data[0].balance);
+                       
                         $('#view_dtr_name').val(fname + " " + mname + " " +lname + " ("+ role + ")  Pending Salary: ₱"+total);
                         if(data.data[0].balance==0||data.data[0].balance==null){
                           $('#balance_view').html('Balance: ₱ 0.00'); 
@@ -2179,7 +2186,7 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-                      console.log(data);
+                    
                        // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
                 cash_advance_release =  $('#view_employee_ca_table').DataTable({
