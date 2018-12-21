@@ -558,6 +558,10 @@
             });
 
             $(document).on('click', '.release_expense_dtr', function(event){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('Releasing...');   
                 event.preventDefault();
                 id = $(this).attr("id");
                 $.ajax({

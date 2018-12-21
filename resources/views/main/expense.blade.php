@@ -2076,6 +2076,10 @@
             });
 
             $(document).on('click', '#release_money', function(){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('Releasing...');   
                 var button =this;
                 button.disabled = true;
                 $.ajax({
@@ -2096,6 +2100,10 @@
                 })
             });
             $(document).on('click', '#release_money_od', function(){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('Releasing...');   
                 var button =this;
                 button.disabled = true;
                 $.ajax({
@@ -2117,6 +2125,10 @@
             });
 
             $(document).on('click', '#release_money_normal', function(){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('Releasing...');   
                 var button =this;
                 button.disabled = true;
                 $.ajax({

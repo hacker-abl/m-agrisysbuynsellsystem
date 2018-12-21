@@ -1487,6 +1487,10 @@
                  });
 
             $(document).on('click', '.release_ca', function(event){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('Releasing...');   
                 event.preventDefault();
                 id = $(this).attr("id");
                 $.ajax({
@@ -1616,7 +1620,7 @@
                                                             {data: "action", orderable:false,searchable:false}
                                                         ]
                                                     }); 
-                                                }
+                                                } 
                                             });    
                                         }
                                     });
