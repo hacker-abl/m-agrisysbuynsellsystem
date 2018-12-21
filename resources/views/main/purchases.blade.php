@@ -2285,6 +2285,10 @@
             });
 
             $(document).on('click', '#release_purchase_normal', function(){
+                var input = $(this);
+                var button =this;
+                button.disabled = true;
+                input.html('Releasing...');   
                 $.ajax({
                     url:"{{ route('release_purchase') }}",
                     method: 'POST',
