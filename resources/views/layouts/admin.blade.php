@@ -171,7 +171,7 @@ ul {
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</div>
-                    <div class="name"><span id="curCashOnHand">{{ Auth::user()->username }} &nbsp; ₱ {{ Auth::user()->cashOnHand }}</span></div>
+                    <div class="email">{{ Auth::user()->username }} &nbsp; ₱ <span id="curCashOnHand">{{ Auth::user()->cashOnHand }}</span></div>
                     <!--<div class="email"></div>-->
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
