@@ -2298,6 +2298,8 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                       button.disabled = false;
+                        input.html('CONTINUE');
                         swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                         $('#release_purchase_modal').modal('hide');
                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));

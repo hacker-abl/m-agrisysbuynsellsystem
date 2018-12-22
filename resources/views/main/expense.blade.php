@@ -2095,6 +2095,7 @@
                         $('#release_modal').modal('hide');
                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                          button.disabled = false;
+                        input.html('CONTINUE');
                         trip_expensetable.ajax.reload(); //reload datatable ajax
                     }
                 })
@@ -2119,6 +2120,7 @@
                         $('#release_modal_od').modal('hide');
                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                         button.disabled = false;
+                        input.html('CONTINUE');
                         od_expensetable.ajax.reload(); //reload datatable ajax
                     }
                 })
@@ -2144,6 +2146,7 @@
                         $('#release_modal_normal').modal('hide');
                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                         button.disabled = false;
+                        input.html('CONTINUE');
                         expensetable.ajax.reload(); //reload datatable ajax
                     }
                 })
