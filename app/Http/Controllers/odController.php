@@ -182,7 +182,10 @@ class odController extends Controller
            return 0;
        }
        else{
-           return 1;
+            if($expense->status == 'Released'){
+                return 2;
+            }
+            return 1;
        }
    }
 

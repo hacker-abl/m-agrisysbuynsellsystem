@@ -2022,6 +2022,10 @@
                             swal("Insufficient Balance!", "Contact Boss", "warning")
                             return;
                         }
+                        else if(data == 2){
+                            swal("Money already released for this!", "Please refresh the page", "info")
+                            return;
+                        }
                         else{
                             $('#release_modal_normal').modal('show');
                         }
@@ -2045,6 +2049,10 @@
                             swal("Insufficient Balance!", "Contact Boss", "warning")
                             return;
                         }
+                        else if(data == 2){
+                            swal("Money already released for this!", "Please refresh the page", "info")
+                            return;
+                        }
                         else{
                             $('#release_modal').modal('show');
                         }
@@ -2066,6 +2074,10 @@
                     success:function(data){
                         if(data == 0){
                             swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else if(data == 2){
+                            swal("Money already released for this!", "Please refresh the page", "info")
                             return;
                         }
                         else{

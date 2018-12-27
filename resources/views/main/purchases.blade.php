@@ -2277,6 +2277,10 @@
                             swal("Insufficient Balance!", "Contact Boss", "warning")
                             return;
                         }
+                        else if(data == 2){
+                            swal("Money already released for this!", "Please refresh the page", "info")
+                            return;
+                        }
                         else{
                             $('#release_purchase_modal').modal('show');
                         }

@@ -130,6 +130,9 @@ class expenseController extends Controller
             return 0;
         }
         else{
+            if($expense->status == 'Released'){
+                return 2;
+            }
             return 1;
         }
     }
@@ -142,6 +145,9 @@ class expenseController extends Controller
             return 0;
         }
         else{
+            if($expense->status == 'Released'){
+                return 2;
+            }
             return 1;
         }
     }

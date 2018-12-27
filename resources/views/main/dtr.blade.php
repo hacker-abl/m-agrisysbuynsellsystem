@@ -561,7 +561,6 @@
                 var input = $(this);
                 var button =this;
                 button.disabled = true;
-                input.html('Releasing...');   
                 event.preventDefault();
                 id = $(this).attr("id");
                 $.ajax({
@@ -575,6 +574,11 @@
                     success:function(data){
                         if(data == 0){
                             swal("Insufficient Balance!", "Contact Boss", "warning")
+                            return;
+                        }
+                        else if(data == 2){
+                            swal("Money already released for this!", "Please refresh the page", "info")
+                            button.disabled = false;
                             return;
                         }
                         else{
