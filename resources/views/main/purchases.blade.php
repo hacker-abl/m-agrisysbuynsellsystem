@@ -754,17 +754,20 @@
         var purchase_date_to;
         var id;
         function compute(value){
-            if($('#bal').val() != ""){
-                var t = parseFloat($('#bal').val());
-                var x = 0;
-                if($('#partialpayment').val() != ""){
-                    x = parseFloat($('#partialpayment').val());
+             if (value.which != 9) { 
+                if($('#bal').val() != ""){
+                    var t = parseFloat($('#bal').val());
+                    var x = 0;
+                    if($('#partialpayment').val() != ""){
+                        x = parseFloat($('#partialpayment').val());
+                    }
+                    t = t - x;
+                    $('#bal').val(t);
                 }
-                t = t - x;
-                $('#bal').val(t);
             }
         }
         function totalbalance(value) {
+            if (value.which != 9) { 
             if($('#cash').val() !=""){
                 var x =  parseFloat($('#cash').val());
                 var y =  parseFloat($('#ca').val());
@@ -783,16 +786,19 @@
                 $('#balance').val(y);
             }
         }
+        }
         //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
         function tare1(value) {
             //alert();
-
+            if (value.which != 9) { 
                 if( $('#moist').val() == "" ){
-
                     var t = parseFloat($('#total').val());
                     var kilo = parseFloat($('#kilo').val());
                     var amount = parseFloat($('#amount').val());
-                    var tare = parseFloat($('#tare').val());
+                    var tare = 0;
+                    if($('#tare').val() != ""){
+                        tare = parseFloat($('#tare').val())
+                    }
                     var partial = 0;
                     if($('#partial').val()!=""){
                         partial =  parseFloat($('#partial').val());
@@ -850,9 +856,11 @@
                     $('#net').val(temp3);
                 }
 
-
+            }
         }
         function moist1(value) {
+    
+            if (value.which != 9) { 
             if( $('#tare').val() == ""  ){
 
                 var total = parseFloat($('#total').val());
@@ -919,8 +927,10 @@
                 $('#net').val(x5);
             }
         }
+        }
 
         function tare3(value) {
+            if (value.which != 9) { 
             //test
             if( $('#moist2').val() == "" ){
 
@@ -928,7 +938,10 @@
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
                 var partialpayment = parseFloat($('#partialpayment').val());
-                var tare = parseFloat($('#tare2').val());
+                var tare = 0;
+                if($('#tare2').val()){
+                    tare =  parseFloat($('#tare2').val())
+                }
                 var partial = 0;
                 
                 if($('#partial1').val()!=""){
@@ -1011,7 +1024,9 @@
                 $('#net2').val(temp3);
             }
         }
+        }
         function moist3(value) {
+            if (value.which != 9) { 
             if( $('#tare2').val() == ""  ){
 
                 var total = parseFloat($('#total1').val());
@@ -1092,6 +1107,7 @@
                 }
                 $('#net2').val(x5);
             }
+        }
         }
         $(document).ready(function () {
             document.title = "M-Agri - Purchases";
@@ -2428,6 +2444,7 @@
             });
 
             $('#partial').on('keyup keydown', function (e) {
+                if (e.which != 9) { 
                 if (e.which == 8) {
 
                     if($('#balance').val()!=""){
@@ -2470,10 +2487,12 @@
                         $('#balance').val(d);
                     }
                 }
+            }
             });
         });
 
         function sacks1(value) {
+            if (value.which != 9) { 
             var a = 0;
             var b = parseFloat($('#price').val());
             var d = 0;
@@ -2541,8 +2560,10 @@
                 }
             }
         }
+        }
 
         function kilos1(value) {
+            if (value.which != 9) { 
             var a = 0;
             var b = parseFloat($('#price').val());
             var c = 0;
@@ -2611,9 +2632,10 @@
             moist1(this);
             tare1(this);
         }
+        }
 
         function partial1(value) {
-            if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
+            if(value.which !=9 && value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance').val()!=""){
                     var a = 0;
                     var b = parseFloat($('#balance').val());
@@ -2667,6 +2689,7 @@
         }
 
         function sacks2(value) {
+            if (value.which != 9) { 
             var a = 0;
             var b = parseFloat($('#price1').val());
             var d = 0;
@@ -2732,8 +2755,10 @@
                 }
             }
         }
+        }
 
         function kilos2(value) {
+        if (value.which != 9) { 
             var a = 0;
             var b = parseFloat($('#price1').val());
             var c = 0;
@@ -2810,9 +2835,10 @@
             tare3(this);
             moist3(this);
         }
+        }
 
         function partial2(value) {
-            if(value.which != 8 && isNaN(String.fromCharCode(value.which))){
+            if( value.which != 9 && value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance1').val()!=""){
                     var a = 0;
                     var b = parseFloat($('#balance1').val());
