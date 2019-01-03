@@ -298,7 +298,7 @@ class dtrController extends Controller
 
     function deletedata(Request $request){
         $dtr = dtr::find($request->input('id'));
-        if($dtr->status=="Released"){
+        if($dtr->status == "Released"){
             $user = User::find(Auth::user()->id);
             $userGet = User::where('id', '=', $user->id)->first();
             $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
@@ -339,20 +339,20 @@ class dtrController extends Controller
                    $balance->save();  
                 }
                     $delete_dtr->delete();   
-            return  json_encode($delete_dtr);
+            echo json_encode($delete_dtr);
         }else{
-        $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->id)->count();
-        $delete_dtr = emp_payment::firstOrFail()->where('dtr_id',$request->id);
-        if($paymentlogs>0){
-             $recent = emp_payment::where('dtr_id', '=', $request->id)->latest()->first();
-             $recent_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first();
-            $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
-               $balance->balance = $recent->paymentamount+$balance->balance;
-               $balance->save();  
+            $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->id)->count();
+            $delete_dtr = emp_payment::firstOrFail()->where('dtr_id',$request->id);
+            if($paymentlogs>0){
+                $recent = emp_payment::where('dtr_id', '=', $request->id)->latest()->first();
+                $recent_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first();
+                $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
+                $balance->balance = $recent->paymentamount+$balance->balance;
+                $balance->save();  
             }
-         $delete_dtr->delete();
-         $dtr->delete();
-        return  json_encode("deleted"); 
+            $delete_dtr->delete();
+            $dtr->delete();
+            echo json_encode("deleted"); 
         }
         
     }

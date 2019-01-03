@@ -1308,6 +1308,8 @@
             $(document).on('click', '.release_expense_dtr', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
+                var button =this;
+                button.disabled = true;
                 $.ajax({
                     url:"{{ route('check_balance5') }}",
                     method: 'POST',
@@ -1319,6 +1321,7 @@
                     success:function(data){
                         if(data == 0){
                             swal("Insufficient Balance!", "Contact Boss", "warning")
+                            button.disabled = false;
                             return;
                         }
                         else{
@@ -1340,7 +1343,6 @@
                                         success:function(data){
                                             total = addCommas(data);
                                             $('.modal_title_dtr').text(fname + " " + mname + " " + lname + " ("+role + ") Pending Salary: ₱"+total);
-
                                         }
                                     });
                                     $.ajax({
@@ -1464,8 +1466,10 @@
                                             dtr.ajax.reload();
                                         }
                                         });
+                                        button.disabled = true;
                                         swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                                         $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
+
                                     }
                             });
                         }
@@ -1809,7 +1813,8 @@
                                         }
                                     });
                                 refresh_dtr_table();
-                                if(ObjData!="deleted"){
+                                if(ObjData != "deleted"){
+                                    console.log(ObjData);
                                    $('#curCashOnHand').html(ObjData.cashOnHand.toFixed(2));
                                 swal("Data Deleted !", "Cash On Hand: ₱"+ObjData.cashOnHand.toFixed(2)+" | Transaction ID: "+ObjData.cashHistory, "success")
                                 }
@@ -2293,12 +2298,12 @@
             });
               $('#employee_ca').select2({
                dropdownParent: $('#employee_ca_modal'),
-               placeholder: 'Select a customer'
+               placeholder: 'Select an employee'
             });
 
              $('#employee_payment_id').select2({
               dropdownParent: $('#payment_modal'),
-                  placeholder: 'Select a customer'
+                  placeholder: 'Select an employee'
               });
               $('#paymentmethod').select2({
               dropdownParent: $('#payment_modal'),
