@@ -116,6 +116,13 @@ class odController extends Controller
           $commodity->kilos = $request->kilos;
           $commodity->allowance = $request->allowance;
           $commodity->save();
+          $od_expenses =od_expense::find($request->get('id'));
+          $od_expenses->description = $request->destination;
+          $od_expenses->type ="Outbound Expense";
+          $od_expenses->amount = $request->allowance;
+          $od_expenses->status = "On-Hand";
+          $od_expenses->released_by = '';
+          $od_expenses->save();
         }
     }
 

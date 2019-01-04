@@ -106,8 +106,18 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodity;
             $purchases->sacks = $request->sacks;
             $purchases->ca_id = $request->customer;
-            $purchases->balance_id = $request->cash;
-            $purchases->partial = $request->partial;
+            if ($request->cash != ""){
+                $purchases->balance_id = $request->cash;
+            }
+            else if ($request->cash == ""){
+                $purchases->balance_id = 0;
+            }
+            if ($request->partial != ""){
+                $purchases->partial = $request->partial;
+            }
+            else if ($request->partial == ""){
+                $purchases->partial = 0;
+            }
             $purchases->kilo = $request->kilo;
             $purchases->price = $request->price;
             $purchases->type = $request->type1;
@@ -120,9 +130,12 @@ class purchasesController extends Controller
             $purchases->status = "On-Hand";
             $purchases->released_by='';
             $purchases->save();
-            $balance = balance::where('customer_id', $request->customer)->increment('balance',$request->cash);
-            $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
-        
+            if ($request->cash != ""){
+                $balance = balance::where('customer_id', $request->customer)->increment('balance',$request->cash);
+            }
+            if ($request->partial != ""){
+                $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
+            }
             if($request->cash > 0){    
                 $ca = new ca;
                 $ca->customer_id = $request->customer;
@@ -178,8 +191,18 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodityID;
             $purchases->sacks = $request->sacks;
             $purchases->ca_id = $request->caID;
-            $purchases->balance_id = $request->cash;
-            $purchases->partial = $request->partial;
+            if ($request->cash != ""){
+                $purchases->balance_id = $request->cash;
+            }
+            else if ($request->cash == ""){
+                $purchases->balance_id = 0;
+            }
+            if ($request->partial != ""){
+                $purchases->partial = $request->partial;
+            }
+            else if ($request->partial == ""){
+                $purchases->partial = 0;
+            }
             $purchases->kilo = $request->kilo;
             $purchases->type = $request->type1;
             $purchases->tare = $request->tare;
@@ -192,8 +215,18 @@ class purchasesController extends Controller
             $purchases->status = "On-Hand";
             $purchases->released_by='';
             $purchases->save();
-
-            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
+            if($request->partial == 0){
+                $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->partialLAST); 
+            }
+            if($request->cash == 0){
+                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->cashLAST); 
+            }
+            if ($request->partial != ""){
+                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
+            }
+            if ($request->cash != ""){
+                $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash); 
+            }
             return "Released Admin Update";    
             }else if($purchases->status=="On-Hand"){
             $purchases->trans_no = $request->ticket;
@@ -216,7 +249,14 @@ class purchasesController extends Controller
             $purchases->released_by='';
             $purchases->save();
 
-            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial);   
+            if($request->partial == 0){
+                $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->partialLAST); 
+            }
+            if($request->cash == 0){
+                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->cashLAST); 
+            }
+            $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
+            $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash);    
             }else if($purchases->status=="Released"&&$check_admin!=1){
              return "Not";  
             }
@@ -265,8 +305,18 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodity1;
             $purchases->sacks = $request->sacks1;
             $purchases->ca_id = $request->customerid;
-            $purchases->balance_id = $request->bal ;
-            $purchases->partial = $request->partialpayment;
+            if ($request->bal != ""){
+                $purchases->balance_id = $request->bal;
+            }
+            else if ($request->bal == ""){
+                $purchases->balance_id = 0;
+            }
+            if ($request->partialpayment != ""){
+                $purchases->partial = $request->partialpayment;
+            }
+            else if ($request->partialpayment == ""){
+                $purchases->partial = 0;
+            }
             $purchases->kilo = $request->kilo1;
             $purchases->type = $request->type2;
             $purchases->tare = $request->tare2;
@@ -284,8 +334,19 @@ class purchasesController extends Controller
                 $ca = new ca;
                 $ca->customer_id = $request->customerid;
                 $ca->reason = "FROM PURCHASE (Cash Advance)";
-                $ca->amount =   $request->bal;
-                $ca->balance = $request->bal - $request->partialpayment ;
+                if ($request->bal != ""){
+                    $ca->amount =   $request->bal;
+                }   
+                else if ($request->bal == ""){
+                    $ca->amount = 0;
+                    $ca->balance = 0;
+                }
+                if ($request->partialpayment == ""){
+                    $ca->balance = $request->bal;
+                }
+                if ($request->bal != "" && $request->partialpayment != ""){
+                    $ca->balance = $request->bal - $request->partialpayment ;
+                }
                 $ca->status = "On-Hand";
                 $ca->released_by = '';
                 $ca->save();
@@ -525,7 +586,7 @@ class purchasesController extends Controller
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
             }
-
+            
             $cash_history->trans_no = $dateTime;
             $cash_history->previous_cash = $user->cashOnHand;
             $cash_history->cash_change = $purchases->amtpay;
@@ -539,6 +600,8 @@ class purchasesController extends Controller
                 'cashOnHand' => $user->cashOnHand,
                 'cashHistory' => $dateTime
             );
+        $balance = balance::where('customer_id', $purchases->customerID)->increment('balance',$purchases->partial); 
+        $balance = balance::where('customer_id', $purchases->customerID)->decrement('balance',$purchases->balance_id); 
         $purchases->delete();
         return  json_encode($output);
         }

@@ -910,6 +910,7 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        console.log(data);
                         $('#id').val(id);
                         $("#ticket").val(data[0].trip_ticket);
                         $("#expense").val(data[0].expense);
