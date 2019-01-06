@@ -1703,9 +1703,9 @@
                         method: "get",
                         data:{id:id},
                         success:function(data){
-                         
-                            ObjData = JSON.parse(data);
                           
+                            ObjData = JSON.parse(data);
+                            
                              $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
                                         method: 'get',
@@ -1827,8 +1827,8 @@
                                         }
                                     });
                                 refresh_dtr_table();
-                                if(ObjData != "deleted"){
-                                    console.log(ObjData);
+                            if(ObjData != "deleted"){
+                                     
                                    $('#curCashOnHand').html(ObjData.cashOnHand.toFixed(2));
                                 swal("Data Deleted !", "Cash On Hand: ₱"+ObjData.cashOnHand.toFixed(2)+" | Transaction ID: "+ObjData.cashHistory, "success")
                                 }

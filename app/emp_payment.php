@@ -11,6 +11,7 @@ class emp_payment extends Model
 	protected $fillable = array(
 		'logs_id',
 		'paymentmethod',
+		'dtr_id',
 		'checknumber',
 		'paymentamount',
 	);

@@ -332,8 +332,8 @@ class dtrController extends Controller
             );
             $dtr->delete();
 
-            $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->id)->count();
-            $delete_dtr = emp_payment::firstOrFail()->where('dtr_id',$request->id);
+            $paymentlogs = emp_payment::where('dtr_id',$request->id)->count();
+            $delete_dtr = emp_payment::where('dtr_id',$request->id);
             if($paymentlogs>0){
                  $recent = emp_payment::where('dtr_id', '=', $request->id)->latest()->first();
                  $recent_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first();
@@ -341,11 +341,11 @@ class dtrController extends Controller
                    $balance->balance = $recent->paymentamount+$balance->balance;
                    $balance->save();  
                 }
-                    $delete_dtr->delete();   
-            echo json_encode($delete_dtr);
+            $delete_dtr->delete();   
+            echo json_encode($output);
         }else{
-            $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->id)->count();
-            $delete_dtr = emp_payment::firstOrFail()->where('dtr_id',$request->id);
+            $paymentlogs = emp_payment::where('dtr_id',$request->id)->count();
+            $delete_dtr = emp_payment::where('dtr_id',$request->id);
             if($paymentlogs>0){
                 $recent = emp_payment::where('dtr_id', '=', $request->id)->latest()->first();
                 $recent_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first();
@@ -355,7 +355,7 @@ class dtrController extends Controller
             }
             $delete_dtr->delete();
             $dtr->delete();
-            echo json_encode("deleted"); 
+            echo  json_encode("deleted"); 
         }
         
     }
