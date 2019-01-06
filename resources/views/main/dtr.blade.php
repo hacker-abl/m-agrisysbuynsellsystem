@@ -801,7 +801,11 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-                   
+
+                    if(data.data[0] != undefined){
+                        $('#view_dtr_name').val(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " - CASH ADVANCE");
+                    }
+                    
                        // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
                 cash_advance_release =  $('#view_employee_ca_table').DataTable({
@@ -832,15 +836,16 @@
                                         return intVal(a) + intVal(b);
                                     }, 0 );
                      
-                                // // Update footer
-                                // $( api.column( 1 ).footer() ).html(
-                                //     'Total: <br>₱' + number_format(pageTotal,2)
-                                // );
+                                // Update footer
+                                $( api.column( 1 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
                             },
                             dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             buttons: [
                                 {
                                     extend: 'print',
+                                    title: $('#view_dtr_name').val(),
                                     exportOptions: {
                                         columns: [ 0, 1, 2, 3, 4 ]
                                     },
@@ -856,6 +861,7 @@
                                 },
                                 { 
                                     extend: 'pdfHtml5', 
+                                    title: $('#view_dtr_name').val(),
                                     footer: true,
                                     exportOptions: { 
                                         columns: [ 0, 1, 2, 3, 4 ]
@@ -1901,15 +1907,16 @@
                                         return intVal(a) + intVal(b);
                                     }, 0 );
                      
-                                // // Update footer
-                                // $( api.column( 1 ).footer() ).html(
-                                //     'Total: <br>₱' + number_format(pageTotal,2)
-                                // );
+                                // Update footer
+                                $( api.column( 1 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
                             },
                             dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             buttons: [
                                 {
                                     extend: 'print',
+                                    title: $('#view_dtr_name').val(),
                                     exportOptions: {
                                         columns: [ 0, 1, 2, 3, 4 ]
                                     },
@@ -1925,6 +1932,7 @@
                                 },
                                 { 
                                     extend: 'pdfHtml5', 
+                                    title: $('#view_dtr_name').val(),
                                     footer: true,
                                     exportOptions: { 
                                         columns: [ 0, 1, 2, 3, 4 ]
@@ -2230,15 +2238,16 @@
                                         return intVal(a) + intVal(b);
                                     }, 0 );
                      
-                                // // Update footer
-                                // $( api.column( 1 ).footer() ).html(
-                                //     'Total: <br>₱' + number_format(pageTotal,2)
-                                // );
+                                // Update footer
+                                $( api.column( 1 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
                             },
                             dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             buttons: [
                                 {
                                     extend: 'print',
+                                    title: $('#view_dtr_name').val(),
                                     exportOptions: {
                                         columns: [ 0, 1, 2, 3, 4 ]
                                     },
@@ -2254,6 +2263,7 @@
                                 },
                                 { 
                                     extend: 'pdfHtml5', 
+                                    title: $('#view_dtr_name').val(),
                                     footer: true,
                                     exportOptions: { 
                                         columns: [ 0, 1, 2, 3, 4 ]
