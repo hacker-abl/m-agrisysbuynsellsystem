@@ -510,13 +510,13 @@ class dtrController extends Controller
                 $edit = $permit[0]->permit_edit;  
            }
             if($cash_advance->status=="On-Hand" && isAdmin()==1){
-                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
             }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==1){
-                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
             }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==0){
                  return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
             }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==1){
-                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>';
+                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
             }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==0){
                  return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
             }
@@ -687,5 +687,32 @@ class dtrController extends Controller
         
         echo json_encode($output);
         //return $user->cashOnHand;
+    }
+
+    public function employee_balance(){
+          
+        $dtr_view = DB::table('dtr')
+            ->join('employee', 'employee.id', '=', 'dtr.employee_id')
+            ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname','employee_cas.balance')
+            ->leftJoin('employee_cas', function($query) {
+                     $query->on('employee.id','=','employee_cas.employee_id')
+                        ->whereRaw('employee_cas.id IN (select MAX(a2.id) from employee_cas as a2 join employee as u2 on u2.id = a2.employee_id group by u2.id)');
+            })
+            ->groupBy('employee_id')
+            ->where('balance','!=',null)
+            ->get();
+        return \DataTables::of($dtr_view)
+        ->editColumn('balance', function ($data) {
+            return '₱ '.number_format($data->salary, 2, '.', ',');
+        })
+        ->editColumn('name', function ($data) {
+            return $data->fname." ".$data->fname;
+        })
+         ->editColumn('role', function ($data) {
+            return $data->role; 
+
+        })
+        ->make(true);
+     return json_encode($dtr_view);
     }
 }
