@@ -120,10 +120,13 @@ class dtrController extends Controller
                 }
                 }
                 return json_encode($balance);        
+            }else{
+                $dtr->save();
+                return json_encode($paymentlogs);         
             }
             
             
-            return json_encode($paymentlogs);        
+            
     }
 }
 
