@@ -780,6 +780,8 @@
                 $("#balance").val('').trigger('change');
                 $('#ca_modal').modal('show');
                 $( "#homeclick1" ).show();
+                $('#homeclick').trigger('click');
+                $('.modal_title').text('Add Cash Advance');
 			});
 
                $(document).on('click','.open_balancemodal', function(){
@@ -1359,7 +1361,9 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        $('#homeclick').trigger('click');
                         $( "#homeclick1" ).hide();
+                        // $( "#home1" ).hide();
                         $("#button_action_ca").val('update');
                         $("#id_ca").val(id);
                         $("#customer_id").val(data.customer_id).trigger('change');
