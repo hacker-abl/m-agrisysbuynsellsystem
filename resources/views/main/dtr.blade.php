@@ -108,10 +108,10 @@
                        <li class="dropdown">
                             <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
                             <input type="hidden" id="customer_id_clone" name="customer_id_clone">
-                            <input type="hidden" id="reason_clone" name="reason_clone">
-                            <input type="hidden" id="amount_clone" name="amount_clone">
-                            <input type="hidden" id="balance_clone" name="balance_clone">
-                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            <input type="hidden" id="reason1_clone" name="reason1_clone">
+                            <input type="hidden" id="amount1_clone" name="amount1_clone">
+                            <input type="hidden" id="balance1_clone" name="balance1_clone">
+                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li>
                    </ul>
@@ -214,8 +214,9 @@
                             <input type="hidden" id="customer_id1_clone" name="customer_id1_clone">
                             <input type="hidden" id="paymentmethod_clone" name="paymentmethod_clone">
                             <input type="hidden" id="checknumber_clone" name="checknumber_clone">
-                            <input type="hidden" id="amount1_clone" name="amount1_clone">
+                            <input type="hidden" id="amount2_clone" name="amount2_clone">
                             <input type="hidden" id="balance2_clone" name="balance2_clone">
+                            <input type="hidden" id="remarks_clone" name="remarks_clone">
                             <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li> 
@@ -346,6 +347,10 @@
                                 <input type="hidden" id="rate_clone" name="rate_clone">
                                 <input type="hidden" id="num_hours_clone" name="num_hours_clone">
                                 <input type="hidden" id="salary_clone" name="salary_clone">
+                                <input type="hidden" id="bonus_clone" name="bonus_clone">
+                                <input type="hidden" id="balance_clone" name="balance_clone">
+                                <input type="hidden" id="partial_payment_clone" name="partial_payment_clone">
+                                <input type="hidden" id="remaining_balance_clone" name="remaining_balance_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
@@ -433,7 +438,7 @@
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 									<div class="form-group">
 										<div class="form-line">
-											<input type="" id="bonus" min="0" name="bonus" class="form-control" required>
+											<input type="number" id="bonus" min="0" name="bonus" class="form-control" required>
 										</div>
 									</div>
 								</div>
@@ -445,7 +450,7 @@
                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="" id="emp_balance" min="0" name="emp_balance" class="form-control" required readonly>
+                      <input type="number" id="emp_balance" min="0" name="emp_balance" class="form-control" required readonly>
                     </div>
                   </div>
                 </div>
@@ -457,7 +462,7 @@
                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="" id="p_payment" min="0" name="p_payment" class="form-control" required>
+                      <input type="number" id="p_payment" min="0" name="p_payment" class="form-control" required>
                     </div>
                   </div>
                 </div>
@@ -682,14 +687,14 @@
 
     cb(start, end);
 
-     $(document).on('click','.add_ca', function(){
-             $('#c').removeClass('focused');
-            $("#customer_id").val('').trigger('change');
-            $("#reason").val('').trigger('change');
-            $("#amount").val('').trigger('change');
-            $("#balance").val('').trigger('change');
-            $('#employee_ca_modal').modal('show');
-        });
+    //  $(document).on('click','.add_ca', function(){
+    //          $('#c').removeClass('focused');
+    //         $("#customer_id").val('').trigger('change');
+    //         $("#reason").val('').trigger('change');
+    //         $("#amount").val('').trigger('change');
+    //         $("#balance").val('').trigger('change');
+    //         $('#employee_ca_modal').modal('show');
+    //     });
 
     $(document).on('click','.add_ca', function(){
              $('#c').removeClass('focused');
@@ -1974,6 +1979,8 @@
             })
             });
 
+            // PRINT DTR
+
             $("#print_dtr").click(function(event) {
                 event.preventDefault();
                 $("#add_dtr").trigger("click");
@@ -1987,7 +1994,51 @@
                 $("#rate_clone").val($("#rate").val());
                 $("#num_hours_clone").val($("#num_hours").val());
                 $("#salary_clone").val($("#salary").val());
+                $("#bonus_clone").val($("#bonus").val());
+                $("#balance_clone").val($("#emp_balance").val());
+                $("#partial_payment_clone").val($("#p_payment").val());
+                $("#remaining_balance_clone").val($("#emp_rbalance").val());
             });
+
+            // END PRINT DTR
+
+            // PRINT CA 
+
+            $("#print_ca").click(function(event) {
+                event.preventDefault();
+                $("#add_cash_advance").trigger("click");
+                $("#print_form1").trigger("click");
+            });
+
+            $("#print_form1").click(function(event) {
+                $("#customer_id_clone").val($("#employee_ca option:selected").text());
+                $("#reason1_clone").val($("#reason").val());
+                $("#amount1_clone").val($("#amount").val());
+                $("#balance1_clone").val($("#balance").val());
+            });
+
+            // END PRINT CA
+
+            // PRINT PAYMENT 
+
+            $("#print_balance_payment").click(function(event) {
+                event.preventDefault();
+                $("#add_payment").trigger("click");
+                $("#print_balance_form").trigger("click");
+            });
+
+            $("#print_balance_form").click(function(event) {
+                $("#customer_id1_clone").val($("#employee_payment_id option:selected").text());
+                $("#paymentmethod_clone").val($("#paymentmethod option:selected").text());
+                $("#checknumber_clone").val($("#checknumber").val());
+                $("#amount2_clone").val($("#amount_payment").val());
+                $("#balance2_clone").val($("#balancepayment").val());
+                $("#remarks_clone").val($("#remarks").val());
+            });
+
+            // END PRINT PAYMENT
+
+
 			function addCommas(nStr) {
     		nStr += '';
 		    x = nStr.split('.');
