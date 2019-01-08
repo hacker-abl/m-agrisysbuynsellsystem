@@ -731,17 +731,32 @@
 @section('script')
     <script>
         $("#resetNiCash").click(function(){
-            var t = parseFloat($('#ca').val())
-            var y = parseFloat($('#cash').val())
+            var t = 0;
+            var y = 0;
+            if ($('#ca').val() != ""){
+                t = parseFloat($('#ca').val());
+            }
+            if ($('#cash').val() != ""){
+                t = parseFloat($('#cash').val());
+            }
             t = t - y;
             $('#ca').val(t)
             $('#balance').val(t)
             $('#cash').val(0)
         });
         $("#resetNiPartial").click(function(){
-            var t = parseFloat($('#ca').val())
-            var y = parseFloat($('#partial').val())
-            var x = parseFloat($('#amount').val())
+            var t = 0;
+            var y = 0;
+            var x = 0;
+            if ($('ca').val() != ""){
+                t = parseFloat($('#ca').val())
+            }
+            if ($('#partial').val() != ""){
+                y = parseFloat($('#partial').val())
+            }
+            if ($('#amount').val() != ""){
+                x = parseFloat($('#amount').val())
+            }
             t = t + y;
             x = x + y
             $('#ca').val(t)
