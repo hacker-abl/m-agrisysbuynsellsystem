@@ -1286,7 +1286,6 @@
                   overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
                  p_payment=$('#p_payment').val();
                   bonus=parseFloat($('#bonus').val());
-                 $('#emp_rbalance').val(emp_balance-p_payment);
                  $('#salary').val(overtime*salary+bonus-p_payment);
             });
             $('#p_payment').change(function(){
