@@ -709,7 +709,7 @@ class dtrController extends Controller
             return '₱ '.number_format($data->salary, 2, '.', ',');
         })
         ->editColumn('name', function ($data) {
-            return $data->fname." ".$data->fname;
+            return $data->fname." ".$data->lname;
         })
          ->editColumn('role', function ($data) {
             return $data->role; 

@@ -93,4 +93,8 @@ class Employee extends Model
     public function cashier(){
         return $this->hasOne('App\Roles', 'id', 'role_id');
     }
+
+    public function role_id(){
+        return $this->hasOne('App\Roles', 'id', 'role_id');
+    }
 }
