@@ -108,10 +108,10 @@
                        <li class="dropdown">
                             <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
                             <input type="hidden" id="customer_id_clone" name="customer_id_clone">
-                            <input type="hidden" id="reason1_clone" name="reason1_clone">
-                            <input type="hidden" id="amount1_clone" name="amount1_clone">
-                            <input type="hidden" id="balance1_clone" name="balance1_clone">
-                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            <input type="hidden" id="reason_clone" name="reason_clone">
+                            <input type="hidden" id="amount_clone" name="amount_clone">
+                            <input type="hidden" id="balance_clone" name="balance_clone">
+                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li>
                    </ul>
@@ -214,9 +214,8 @@
                             <input type="hidden" id="customer_id1_clone" name="customer_id1_clone">
                             <input type="hidden" id="paymentmethod_clone" name="paymentmethod_clone">
                             <input type="hidden" id="checknumber_clone" name="checknumber_clone">
-                            <input type="hidden" id="amount2_clone" name="amount2_clone">
+                            <input type="hidden" id="amount1_clone" name="amount1_clone">
                             <input type="hidden" id="balance2_clone" name="balance2_clone">
-                            <input type="hidden" id="remarks_clone" name="remarks_clone">
                             <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li> 
@@ -333,7 +332,7 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h2 class="modal_title">Add DTR</h2>
+						<h2 class="dtr_modal_title">Add DTR</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
                                 <button id="print_dtr" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
@@ -347,10 +346,6 @@
                                 <input type="hidden" id="rate_clone" name="rate_clone">
                                 <input type="hidden" id="num_hours_clone" name="num_hours_clone">
                                 <input type="hidden" id="salary_clone" name="salary_clone">
-                                <input type="hidden" id="bonus_clone" name="bonus_clone">
-                                <input type="hidden" id="balance_clone" name="balance_clone">
-                                <input type="hidden" id="partial_payment_clone" name="partial_payment_clone">
-                                <input type="hidden" id="remaining_balance_clone" name="remaining_balance_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
@@ -438,7 +433,7 @@
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 									<div class="form-group">
 										<div class="form-line">
-											<input type="number" id="bonus" min="0" name="bonus" class="form-control" required>
+											<input type="" id="bonus" min="0" name="bonus" class="form-control" required>
 										</div>
 									</div>
 								</div>
@@ -450,7 +445,7 @@
                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="number" id="emp_balance" min="0" name="emp_balance" class="form-control" required readonly>
+                      <input type="" id="emp_balance" min="0" name="emp_balance" class="form-control" required readonly>
                     </div>
                   </div>
                 </div>
@@ -462,7 +457,7 @@
                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="number" id="p_payment" min="0" name="p_payment" class="form-control" required>
+                      <input type="" id="p_payment" min="0" name="p_payment" class="form-control" required>
                     </div>
                   </div>
                 </div>
@@ -567,6 +562,51 @@
 		</div>
 	</div>
 
+  <!-- view all CA table-->
+
+    <div class="modal fade" id="ca_view_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+            <div class="row">
+                 
+                    <div class="card">
+                        <div class="header">
+                            <h2> Employees with Balances</span></h2>
+                        </div>
+                        <div class="body">
+                         
+                            <div class="table-responsive">
+                            <br>
+                                <table id="view_balance_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                                <h5 id="balance_view"></h5>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th>Balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                            </div>
+                        </div>
+                    </div>
+             
+            </div>
+    </div>
+  </div>
+
+
+  <!-- end of view all CA table -->
+
     <div class="row clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="card">
@@ -578,8 +618,9 @@
 							<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_dtr_modal" title="Add DTR"><i class="material-icons">library_add</i></button>
               <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 add_ca" title="Add Cash Advance"><i class="material-icons">attach_money</i></button>
               <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 add_payment" title="Add Payment"><i class="material-icons">playlist_add</i></button>
+              <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_list" title="Employee CA List"><i class="material-icons">subject</i></button>
                                 @endif
-                            </li>
+              </li>
 						</ul>
 					</div>
 					<div class="body">
@@ -687,14 +728,14 @@
 
     cb(start, end);
 
-    //  $(document).on('click','.add_ca', function(){
-    //          $('#c').removeClass('focused');
-    //         $("#customer_id").val('').trigger('change');
-    //         $("#reason").val('').trigger('change');
-    //         $("#amount").val('').trigger('change');
-    //         $("#balance").val('').trigger('change');
-    //         $('#employee_ca_modal').modal('show');
-    //     });
+     $(document).on('click','.add_ca', function(){
+             $('#c').removeClass('focused');
+            $("#customer_id").val('').trigger('change');
+            $("#reason").val('').trigger('change');
+            $("#amount").val('').trigger('change');
+            $("#balance").val('').trigger('change');
+            $('#employee_ca_modal').modal('show');
+        });
 
     $(document).on('click','.add_ca', function(){
              $('#c').removeClass('focused');
@@ -726,6 +767,95 @@
                    $("#amount").val('').trigger('change');
                    $("#balance").val('').trigger('change');
                    $('#payment_modal').modal('show');
+        });
+
+
+      $(document).on('click','.open_ca_list', function(){
+                   $('#ca_view_modal').modal('show');
+                  $.ajax({
+                       url:"{{ route('employee_balance') }}",
+                       method: 'get',
+                       dataType:'json',
+                       success:function(data){
+                        console.log(data);
+                         employee_balace_view =  $('#view_balance_table').DataTable({
+                            "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                     
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i == 'string' ?
+                                        i.replace(/[\₱,]/g, '')*1 :
+                                        typeof i == 'number' ?
+                                            i : 0;
+                                };
+                     
+                                // Total over all pages
+                                total = api
+                                    .column( 1 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 2, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Update footer
+                                $( api.column( 2 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
+                            },
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    title: 'Employees With Balances',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2,]
+                                    },
+                                    customize: function ( win ) {
+                                        $(win.document.body)
+                                            .css( 'font-size', '10pt' );
+                     
+                                        $(win.document.body).find( 'table' )
+                                            .addClass( 'compact' )
+                                            .css( 'font-size', 'inherit' );
+                                    },
+                                    footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    title: 'Employees With Balances',
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2 ]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
+                                }
+                            ],
+                            order: [[ 2, "desc" ]],
+                            bDestroy: true,
+                            data: data.data,
+                            columns:[
+                                {data: 'name', name: 'name'},
+                                {data: 'role', name: 'role'},
+                                {data: 'balance', name: 'balance'},
+                                
+                            ]
+                        }); 
+                       }
+                   })
+
         });
 
 
@@ -1654,6 +1784,10 @@
    }
             });
 
+      $('#dtr_modal').on('hidden.bs.modal', function () {
+          $('.dtr_modal_title').text('Add DTR');
+      })
+
             $(document).on('click', '.update_dtr', function(event){
                  $('#dtr_view_modal').modal('hide'); 
                 event.preventDefault();
@@ -1682,7 +1816,7 @@
                         $("#bonus").val(data.bonus);
                         $('#salary').val(data.salary);
                         $('#dtr_modal').modal('show');
-                        $('.modal_title').text('Update DTR');
+                        $('.dtr_modal_title').text('Update DTR');
                         //refresh_expense_table();
 
                     }
@@ -2036,7 +2170,6 @@
             });
 
             // END PRINT PAYMENT
-
 
 			function addCommas(nStr) {
     		nStr += '';
