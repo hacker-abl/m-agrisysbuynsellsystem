@@ -17,6 +17,7 @@ use App\Notification;
 use App\UserPermission;
 use App\User;
 use App\Cash_History;
+use App\Roles;
 use Carbon\Carbon;
 use App\Events\PurchasesUpdated;
 use App\Events\BalanceUpdated;
@@ -491,6 +492,10 @@ class purchasesController extends Controller
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function($ultimatesickquery){
             $userid= Auth::user()->id;
+            if($userid != 1){
+                $u = User::with('emp_name.cashier')->where('id', Auth::user()->id)->first();
+                $userRole = $u->emp_name->cashier->role;
+            }
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',6)->get();
             if($userid!=1){
                  $delete=$permit[0]->permit_delete;  
@@ -498,6 +503,11 @@ class purchasesController extends Controller
             }
             if($userid==1 && $ultimatesickquery->status=="On-Hand"){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            }
+            if($userid != 1){
+                if($userRole == 'PURCHASER' && $ultimatesickquery->status=='Released'){
+                    return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>';
+                }
             }
             if($userid==1 && $ultimatesickquery->status=="Released"){
                 return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>&nbsp;<button class="btn btn-xs btn-warning edit_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;<button class="btn btn-xs btn-danger delete_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';

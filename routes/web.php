@@ -113,7 +113,6 @@ Route::group(['middleware'=>['auth', 'user:expenses']], function() {
 Route::group(['middleware'=>['auth', 'user:trips']], function() {
     //TRIPS
     Route::get('/trips', 'tripController@index')->name('trips');
-    Route::post('/release_update_dtr', 'dtrController@release_update_dtr')->name('release_update_dtr');
     Route::post('/print_trip', 'pdfController@trips')->name('print_trip');
 });
 
@@ -157,7 +156,6 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
     Route::post('/check_balance4', 'caController@check_balance4')->name('check_balance4');
     Route::get('/update_ca', 'caController@updatedata')->name('update_ca');
     Route::get('/delete_ca', 'caController@deletedata')->name('delete_ca');
-    Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
 });
 
 Route::group(['middleware'=>['auth', 'user:purchases']], function() {
@@ -198,6 +196,8 @@ Route::group(['middleware'=>['auth', 'user:dtr']], function() {
     Route::post('/release_ca_employee', 'dtrController@release_ca_employee')->name('release_ca_employee');
     Route::get('/delete_ca_employee', 'dtrController@delete_ca_employee')->name('delete_ca_employee');
     Route::get('/employee_balance', 'dtrController@employee_balance')->name('employee_balance');
+    Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
+    Route::post('/release_update_dtr', 'dtrController@release_update_dtr')->name('release_update_dtr');
 });
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {

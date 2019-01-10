@@ -36,7 +36,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,200);
+			$customPaper = array(0,0,200,210);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
@@ -44,7 +44,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,220);
+			$customPaper = array(0,0,200,330);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "sales"){
 			// (Optional) Setup the paper size and orientation
@@ -56,7 +56,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "balance_payment"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,200);
+			$customPaper = array(0,0,200,210);
 			$dompdf->set_paper($customPaper);
 		}
 		
@@ -263,6 +263,22 @@ class pdfController extends Controller
 				<td align='right'><span>".$request->num_hours_clone."</span></td>
 				</tr>
 				<tr>
+				<td><span>Bonus: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->bonus_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>Balance: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->balance_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>Partial payment: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->partial_payment_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>Remaining balance: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->remaining_balance_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
 				<td><span>Salary: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->salary_clone, 2, '.', ',')."</span></td>
 				</tr>
@@ -353,6 +369,22 @@ class pdfController extends Controller
     }
 
     public function ca(Request $request){
+
+		if(isset($request->customer_id1_clone)){
+			$request->customer_id_clone = $request->customer_id1_clone;
+		}
+
+		if(isset($request->reason1_clone)){
+			$request->reason_clone = $request->reason1_clone;
+		}
+
+		if(isset($request->amount1_clone)){
+			$request->amount_clone = $request->amount1_clone;
+		}
+
+		if(isset($request->balance1_clone)){
+			$request->balance_clone = $request->balance1_clone;
+		}
 
     	$generator = new BarcodeGeneratorPNG();
 
@@ -591,6 +623,10 @@ class pdfController extends Controller
 
     public function balance_payment(Request $request){
 
+		if(isset($request->amount2_clone)){
+			$request->amount1_clone = $request->amount2_clone;
+		}
+
     	$generator = new BarcodeGeneratorPNG();
 
 	    $pdf = "<html>
@@ -641,7 +677,15 @@ class pdfController extends Controller
 				<tr>
 				<td><span>Balance: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->balance2_clone, 2, '.', ',')."</span></td>
-				</tr>
+				</tr>";
+		if(isset($request->remarks_clone)){
+			$pdf .= "
+			<tr>
+			<td width='40%'><span>Remarks: </span></td>
+			<td width='60%' align='right'><span>".$request->remarks_clone."</span></td>
+			</tr>";
+		}
+		$pdf .= "
 				</table>
 		        </div>";
 

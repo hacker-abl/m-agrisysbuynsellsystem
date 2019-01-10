@@ -520,17 +520,23 @@
 
 @section('script')
     <script>
+        var print_checker = '';
+
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
         $("#homeclick").on('click', function() {
                $('#stat').val("old");
                 //$('#stat1').val("old");
+
+                print_checker = 'old';
             });
 
             $("#homeclick1").on('click', function() {
                $('#stat').val("new");
                 //$('#stat1').val("new");
+
+                print_checker = 'new';
             });
 
         $(document).ready(function() {
@@ -780,6 +786,8 @@
                 $("#balance").val('').trigger('change');
                 $('#ca_modal').modal('show');
                 $( "#homeclick1" ).show();
+                $('#homeclick').trigger('click');
+                $('.modal_title').text('Add Cash Advance');
 			});
 
                $(document).on('click','.open_balancemodal', function(){
@@ -1138,10 +1146,19 @@
             });
 
             $("#print_form").click(function(event) {
-                $("#customer_id_clone").val($("#customer_id option:selected").text());
-                $("#reason_clone").val($("#reason").val());
-                $("#amount_clone").val($("#amount").val());
-                $("#balance_clone").val($("#balance").val());
+                console.log(print_checker);
+                if(print_checker == 'new'){
+                    $("#customer_id_clone").val($("#fname").val() + ' ' + $("#mname").val() + ' ' + $("#lname").val());
+                    $("#reason_clone").val($("#reason1").val());
+                    $("#amount_clone").val($("#bal").val());
+                    $("#balance_clone").val('0');
+                }else{
+                    $("#customer_id_clone").val($("#customer_id option:selected").text());
+                    $("#reason_clone").val($("#reason").val());
+                    $("#amount_clone").val($("#amount").val());
+                    $("#balance_clone").val($("#balance").val());
+                }
+                
             });
 
             $("#print_balance_payment").click(function(event) {
@@ -1359,7 +1376,9 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
+                        $('#homeclick').trigger('click');
                         $( "#homeclick1" ).hide();
+                        // $( "#home1" ).hide();
                         $("#button_action_ca").val('update');
                         $("#id_ca").val(id);
                         $("#customer_id").val(data.customer_id).trigger('change');

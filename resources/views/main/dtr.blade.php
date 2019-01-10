@@ -2112,6 +2112,8 @@
             })
             });
 
+            // PRINT DTR
+
             $("#print_dtr").click(function(event) {
                 event.preventDefault();
                 $("#add_dtr").trigger("click");
@@ -2125,7 +2127,50 @@
                 $("#rate_clone").val($("#rate").val());
                 $("#num_hours_clone").val($("#num_hours").val());
                 $("#salary_clone").val($("#salary").val());
+                $("#bonus_clone").val($("#bonus").val());
+                $("#balance_clone").val($("#emp_balance").val());
+                $("#partial_payment_clone").val($("#p_payment").val());
+                $("#remaining_balance_clone").val($("#emp_rbalance").val());
             });
+
+            // END PRINT DTR
+
+            // PRINT CA 
+
+            $("#print_ca").click(function(event) {
+                event.preventDefault();
+                $("#add_cash_advance").trigger("click");
+                $("#print_form1").trigger("click");
+            });
+
+            $("#print_form1").click(function(event) {
+                $("#customer_id_clone").val($("#employee_ca option:selected").text());
+                $("#reason1_clone").val($("#reason").val());
+                $("#amount1_clone").val($("#amount").val());
+                $("#balance1_clone").val($("#balance").val());
+            });
+
+            // END PRINT CA
+
+            // PRINT PAYMENT 
+
+            $("#print_balance_payment").click(function(event) {
+                event.preventDefault();
+                $("#add_payment").trigger("click");
+                $("#print_balance_form").trigger("click");
+            });
+
+            $("#print_balance_form").click(function(event) {
+                $("#customer_id1_clone").val($("#employee_payment_id option:selected").text());
+                $("#paymentmethod_clone").val($("#paymentmethod option:selected").text());
+                $("#checknumber_clone").val($("#checknumber").val());
+                $("#amount2_clone").val($("#amount_payment").val());
+                $("#balance2_clone").val($("#balancepayment").val());
+                $("#remarks_clone").val($("#remarks").val());
+            });
+
+            // END PRINT PAYMENT
+
 			function addCommas(nStr) {
     		nStr += '';
 		    x = nStr.split('.');
