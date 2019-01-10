@@ -69,15 +69,19 @@ class dtrController extends Controller
             $paymentlogs->dtr_id = $dtr_id->id;
             $paymentlogs->paymentmethod = "From ADD DTR Form";
             $balance = employee_ca::where('employee_id', '=', $request->employee_id)->latest()->first();
+            $empbalance = employee_bal::where('employee_id', '=', $request->employee_id)->first();
             if($balance!=null){
                 $paymentlogs->r_balance=$balance->balance-$request->p_payment;
                 $paymentlogs->remarks = "Partial Payment";
-                $balance->balance = $balance->balance-$request->p_payment;     
+                $balance->balance = $balance->balance-$request->p_payment;
+                $empbalance->balance = $balance->balance;
+                
                 $paymentlogs->checknumber = "Not Specified";
                 $paymentlogs->paymentamount = $request->p_payment;
                 if($request->p_payment!=0){
                     $paymentlogs->save();
                     $balance->save();  
+                    $empbalance->save();     
                 }
                 }
         
@@ -106,14 +110,18 @@ class dtrController extends Controller
             $new_payment->paymentmethod = "From ADD DTR Form";
             $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
             $r_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first(); 
+            $empbalance = employee_bal::where('employee_id', '=', $request->logs_id)->latest()->first();
             $r_balance->r_balance = $recent->paymentamount+$recent->r_balance; 
             if( $request->p_payment!=$recent->paymentamount){
+                
                 $new_payment->r_balance=$r_balance->r_balance-$request->p_payment;
                 $new_payment->remarks = "Edited Partial Payment from DTR FORM";
                 $balance->balance = $r_balance->r_balance-$request->p_payment;
+                $empbalance->balance = $balance->balance;
                 $new_payment->checknumber = "Not Specified";
                 $new_payment->paymentamount = $request->p_payment;
                 if($request->p_payment!=0){
+                    $empbalance->save();   
                     $new_payment->save();
                     $balance->save();  
                     $dtr->save(); 
@@ -278,6 +286,9 @@ class dtrController extends Controller
         }
         $paymentlogs->paymentamount = $request->amount;
         $paymentlogs->remarks = $request->remarks;
+        $empbalance = employee_bal::where('employee_id', '=', $request->employee_payment_id)->latest()->first();
+        $empbalance->balance = $request->balance - $request->amount;
+        $empbalance->save();
         $paymentlogs->save();
         $balance->save();
         return 1;    
