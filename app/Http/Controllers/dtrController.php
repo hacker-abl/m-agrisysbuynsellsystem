@@ -249,6 +249,11 @@ class dtrController extends Controller
             $ca->balance = $request->balance + $request->amount;
             $ca->status = "On-Hand";
             $ca->released_by = '';
+            $balance = new employee_bal;
+            $balance->employee_id = $request->employee_id;
+            $balance->logs_id = $request->employee_id;
+            $balance->balance = $request->balance + $request->amount;
+            $balance->save();
             $ca->save();
 
         return json_encode("maoni");
@@ -694,19 +699,16 @@ class dtrController extends Controller
 
     public function employee_balance(){
           
-        $dtr_view = DB::table('dtr')
-            ->join('employee', 'employee.id', '=', 'dtr.employee_id')
-            ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname','employee_cas.balance')
-            ->leftJoin('employee_cas', function($query) {
-                     $query->on('employee.id','=','employee_cas.employee_id')
-                        ->whereRaw('employee_cas.id IN (select MAX(a2.id) from employee_cas as a2 join employee as u2 on u2.id = a2.employee_id group by u2.id)');
-            })
-            ->groupBy('employee_id')
-            ->where('balance','!=',null)
+        $dtr_view = DB::table('employee_bal')
+            ->join('employee', 'employee.id', '=', 'employee_bal.employee_id')
+            ->join('dtr', 'employee.id', '=', 'dtr.employee_id')
+            ->select('employee_bal.balance','dtr.role','employee.fname','employee.lname')
+            ->groupBy('employee_bal.employee_id')
             ->get();
+             
         return \DataTables::of($dtr_view)
         ->editColumn('balance', function ($data) {
-            return '₱ '.number_format($data->salary, 2, '.', ',');
+            return '₱ '.number_format($data->balance, 2, '.', ',');
         })
         ->editColumn('name', function ($data) {
             return $data->fname." ".$data->lname;
