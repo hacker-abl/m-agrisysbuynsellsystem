@@ -152,7 +152,7 @@ class expenseController extends Controller
         }
     }
     function updatedata(Request $request){
-        $id = $request->input('id');
+        $id = $request->input('id'); 
         $expense = Expense::find($id);
         $output = array(
             'trans_number' => $expense->trans_number,
