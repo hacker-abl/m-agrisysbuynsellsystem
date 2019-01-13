@@ -355,6 +355,7 @@
 						<form class="form-horizontal " id="dtr_form">
 							<input type="hidden" name="add_id" id="add_id" value="">
 							<input type="hidden" name="button_action" id="button_action" value="">
+              <input type="hidden" name="last_payment" id="last_payment" value="">
 
 							<div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -1162,7 +1163,7 @@
                     dataType: 'text',
                     data: $('#ca_emp_form').serialize(),
                     success:function(data){
-                     
+                        console.log(data);
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#employee_ca").val('').trigger('change');
@@ -1527,10 +1528,7 @@
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
                                          
-                                                    // Update footer
-                                                    $( api.column( 4 ).footer() ).html(
-                                                        'Total: <br>₱' + number_format(pageTotal,2)
-                                                    );
+                                                    
 
                                                     // Total over this page
                                                     pageTotal1 = api
@@ -1540,10 +1538,7 @@
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
                                          
-                                                    // Update footer
-                                                    $( api.column( 3 ).footer() ).html(
-                                                        'Total: <br>₱' + number_format(pageTotal1,2)
-                                                    );
+                                                   
                                                 },
                                                 dom: 'Blfrtip',
                                                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -1678,11 +1673,7 @@
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
                                          
-                                                    // Update footer
-                                                    $( api.column( 4 ).footer() ).html(
-                                                        'Total: <br>₱' + number_format(pageTotal,2)
-                                                    );
-
+                                                  
                                                     // Total over this page
                                                     pageTotal1 = api
                                                         .column( 3, { page: 'current'} )
@@ -1690,11 +1681,7 @@
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
-                                         
-                                                    // Update footer
-                                                    $( api.column( 3 ).footer() ).html(
-                                                        'Total: <br>₱' + number_format(pageTotal1,2)
-                                                    );
+                                          
                                                 },
                                                 dom: 'Blfrtip',
                                                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -1761,11 +1748,12 @@
                                                     {data: "action", orderable:false,searchable:false}
                                                 ]
                                             });
+  
                                             dtr.ajax.reload();
                                         }
                                     });
                                
-                                  
+                         console.log(data);         
                         swal("Success!", "Record has been added to database", "success");
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -1801,6 +1789,7 @@
                      
                       trig_update=1;
                         $('#button_action').val('update');
+                        $('#last_payment').val(data.p_payment);
                         $('#add_id').val(id);
                         $('#employee_id').select2('enable',false);
                         $("#employee_id").val(data.employee_id).trigger('change');
@@ -1877,12 +1866,7 @@
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
-                                         
-                                                    // Update footer
-                                                    $( api.column( 4 ).footer() ).html(
-                                                        'Total: <br>₱' + number_format(pageTotal,2)
-                                                    );
-
+                                          
                                                     // Total over this page
                                                     pageTotal1 = api
                                                         .column( 3, { page: 'current'} )
@@ -1891,10 +1875,7 @@
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
                                          
-                                                    // Update footer
-                                                    $( api.column( 3 ).footer() ).html(
-                                                        'Total: <br>₱' + number_format(pageTotal1,2)
-                                                    );
+                                                  
                                                 },
                                                 dom: 'Blfrtip',
                                                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -1969,6 +1950,8 @@
                                      
                                    $('#curCashOnHand').html(ObjData.cashOnHand.toFixed(2));
                                 swal("Data Deleted !", "Cash On Hand: ₱"+ObjData.cashOnHand.toFixed(2)+" | Transaction ID: "+ObjData.cashHistory, "success")
+                                }else{
+                                  swal("Data Deleted !", "success")
                                 }
                                
                         }
@@ -2246,10 +2229,7 @@
                                         return intVal(a) + intVal(b);
                                     }, 0 );
                      
-                                // Update footer
-                                $( api.column( 7 ).footer() ).html(
-                                    'Total: <br>₱' + number_format(pageTotal,2)
-                                );
+                                
 
                                 // Total over this page
                                 pageTotal1 = api
@@ -2259,10 +2239,7 @@
                                     return intVal(a) + intVal(b);
                                 }, 0 );
                     
-                                // Update footer
-                                $( api.column( 6 ).footer() ).html(
-                                    'Total: <br>₱' + number_format(pageTotal1,2)
-                                );
+                               
                             },
                             dom: 'Blfrtip',
                             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],

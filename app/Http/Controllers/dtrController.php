@@ -98,39 +98,40 @@ class dtrController extends Controller
             $dtr->dtr_balance = $request->emp_balance;
             $dtr->r_balance = $request->emp_rbalance;
             $dtr->p_payment = $request->p_payment;
-            $dtr->salary = $request->salary;   
-            
+            $dtr->salary = $request->salary; 
+            $checkpayment = emp_payment::all();
+            if($checkpayment!==null){                      
             $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->add_id)->count();
             if($paymentlogs>0){
-                $recent = emp_payment::where('dtr_id', '=', $request->add_id)->first();
-                //$recent->save(); 
+               $recent = emp_payment::where('dtr_id', '=', $request->add_id)->latest()->first();
+                         //$recent->save(); 
             $new_payment = new emp_payment;
             $new_payment->logs_id = $recent->logs_id;
             $new_payment->dtr_id = $recent->dtr_id;
             $new_payment->paymentmethod = "From ADD DTR Form";
             $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
             $r_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first(); 
-            $empbalance = employee_bal::where('employee_id', '=', $request->logs_id)->latest()->first();
-            $r_balance->r_balance = $recent->paymentamount+$recent->r_balance; 
-            if( $request->p_payment!=$recent->paymentamount){
-                
+            $empbalance = employee_bal::where('employee_id', '=', $recent->logs_id)->first();
+            
+            
+                $r_balance->r_balance = $request->last_payment+$empbalance->balance; 
                 $new_payment->r_balance=$r_balance->r_balance-$request->p_payment;
                 $new_payment->remarks = "Edited Partial Payment from DTR FORM";
-                $balance->balance = $r_balance->r_balance-$request->p_payment;
+                $balance->balance = $new_payment->r_balance;
                 $empbalance->balance = $balance->balance;
                 $new_payment->checknumber = "Not Specified";
                 $new_payment->paymentamount = $request->p_payment;
-                if($request->p_payment!=0){
-                    $empbalance->save();   
-                    $new_payment->save();
-                    $balance->save();  
-                    $dtr->save(); 
+                if($request->p_payment!=0){                   
+                    $new_payment->save();                                     
                 }
-                }
-                return json_encode($balance);        
+                $balance->save();  
+                $empbalance->save();   
+                $dtr->save(); 
+                return json_encode($recent->r_balance);       
+                 }
             }else{
                 $dtr->save();
-                return json_encode($paymentlogs);         
+                return json_encode($checkpayment);         
             }
             
             
@@ -257,14 +258,22 @@ class dtrController extends Controller
             $ca->balance = $request->balance + $request->amount;
             $ca->status = "On-Hand";
             $ca->released_by = '';
-            $balance = new employee_bal;
-            $balance->employee_id = $request->employee_id;
-            $balance->logs_id = $request->employee_id;
-            $balance->balance = $request->balance + $request->amount;
-            $balance->save();
+            $check_ca= employee_bal::all()->first();
+
+            if($check_ca!=null){
+                $balance = employee_bal::where('employee_id', '=', $request->employee_id)->first();
+                $balance->balance = $request->balance + $request->amount;
+                $balance->save();     
+            }else{
+                $balance = new employee_bal;
+                $balance->employee_id=$request->employee_id;
+                $balance->logs_id=$request->employee_id;
+                $balance->balance = $request->balance + $request->amount;
+                $balance->save();   
+            }
             $ca->save();
 
-        return json_encode("maoni");
+        return json_encode($balance);
     }
 
     public function emp_payment(Request $request){
@@ -368,8 +377,11 @@ class dtrController extends Controller
             if($paymentlogs>0){
                 $recent = emp_payment::where('dtr_id', '=', $request->id)->latest()->first();
                 $recent_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first();
+                $empbalance = employee_bal::where('employee_id', '=', $recent->logs_id)->first();
                 $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
                 $balance->balance = $recent->paymentamount+$balance->balance;
+                $empbalance->balance = $balance->balance;
+                $empbalance->save();  
                 $balance->save();  
             }
             $delete_dtr->delete();
@@ -406,6 +418,9 @@ class dtrController extends Controller
             
             $recent_ca= employee_ca::where('employee_id',$ca->employee_id)->latest()->first();
             $recent_ca->balance = $recent_ca->balance-$amount_ca;
+            $empbalance = employee_bal::where('employee_id', '=', $ca->employee_id)->first();
+            $empbalance->balance =$recent_ca->balance;
+            $empbalance->save();  
             $recent_ca->save();
             $ca->delete();
             $cash_history->trans_no = $dateTime;
@@ -429,9 +444,12 @@ class dtrController extends Controller
             $amount_ca = $ca->amount;
             $recent_ca= employee_ca::where('employee_id',$ca->employee_id)->latest()->first();
             $recent_ca->balance = $recent_ca->balance-$amount_ca;
+            $empbalance = employee_bal::where('employee_id', '=', $ca->employee_id)->first();
+            $empbalance->balance = $recent_ca->balance;
+            $empbalance->save();  
             $recent_ca->save();
             $ca->delete();
-            return json_encode($recent_ca->balance);
+            return json_encode("deleted");
         }   
             }
         
