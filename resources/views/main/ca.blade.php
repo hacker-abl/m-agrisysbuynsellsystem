@@ -132,6 +132,8 @@
                             <input type="hidden" id="reason_clone" name="reason_clone">
                             <input type="hidden" id="amount_clone" name="amount_clone">
                             <input type="hidden" id="balance_clone" name="balance_clone">
+                            <input type="hidden" id="month_clone" name="month_clone">
+                            <input type="hidden" id="received_clone" name="received_clone">
                             <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li>
@@ -152,10 +154,10 @@
                                <input type="hidden"  name="button_action_ca" id="button_action_ca" value="">
 
                                <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Name</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div id="c" class="form-line">
                                                    <select type="text" id="customer_id" name="customer_id" class="form-control" required style="width: 100%;">
@@ -170,10 +172,10 @@
                                </div>
 
                        <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Reason</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div class="form-line">
                                                    <input type="text" id="reason" name="reason" class="form-control" required>
@@ -183,10 +185,10 @@
                                </div>
 
                        <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Amount</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div class="form-line">
                                                    <input type="number" id="amount" min="0" name="amount" class="form-control" required>
@@ -194,12 +196,52 @@
                                          </div>
                                     </div>
                                </div>
+                        
+                        <div class="row clearfix">
+                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="month">To be paid on</label>
+                            </div>
+                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select id="month" name="month" class="form-control"  style="width: 100%;" required>
+                                            <option></option>
+                                            <option>January</option>
+                                            <option>February</option>
+                                            <option>March</option>
+                                            <option>April</option>
+                                            <option>May</option>
+                                            <option>June</option>
+                                            <option>July</option>
+                                            <option>August</option>
+                                            <option>September</option>
+                                            <option>October</option>
+                                            <option>November</option>
+                                            <option>December</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="received">Received by</label>
+                            </div>
+                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="received" name="received" class="form-control" required>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
 
                        <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Balance</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div class="form-line">
                                                    <input type="number" id="balance" name="balance" class="form-control" readonly>
@@ -223,8 +265,8 @@
                           <input type="hidden" name="button_action" id="button_action" value="">
                                     
 
-                                     <div class="row clearfix">
-                                          <div class="col-md-4">
+                                     <div class="row clearfix" style="margin-left:5%;">
+                                        <div class="col-lg-4">
                                           <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
 
                                           </div>
@@ -232,12 +274,12 @@
                                                <div class="form-group">
                                                     <label for="name">First Name</label>
                                                     <div class="form-line">
-                                                         <input type="text" id="fname"   name="fname" class="form-control"   required>
+                                                         <input type="text" id="fname"   name="fname" class="form-control" placeholder="First" required>
                                                     </div>
                                                </div>
                                           </div>
-                                     </div>
-                                           <div class="col-md-4">
+                                        </div>
+                                        <div class="col-lg-4">
                                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5 form-control-label">
 
                                                </div>
@@ -245,12 +287,12 @@
                                                     <div class="form-group">
                                                          <label for="name">Middle Name</label>
                                                          <div class="form-line">
-                                                              <input type="text" id="mname" name="mname"  class="form-control"   required>
+                                                              <input type="text" id="mname" name="mname"  class="form-control" placeholder="Middle"  required>
                                                          </div>
                                                     </div>
                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
+                                        </div>
+                                        <div class="col-lg-4">
                                             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 
                                            </div>
@@ -258,18 +300,19 @@
                                                 <div class="form-group">
                                                      <label for="name">Last Name</label>
                                                      <div class="form-line">
-                                                          <input type="text" id="lname" name="lname"  value="" class="form-control" required>
+                                                          <input type="text" id="lname" name="lname"  value="" class="form-control" placeholder="Last" required>
                                                      </div>
                                                 </div>
                                            </div>
-                                      </div>
-                                          </div>
+                                        </div>
+
+                                        </div>
 
                                           <div class="row clearfix">
-                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                  <label for="lname">Address</label>
                                             </div>
-                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                                  <div class="form-group">
                                                     <div class="form-line">
                                                          <input type="text" id="address" name="address" class="form-control" placeholder="Enter customer's address"  >
@@ -279,10 +322,10 @@
                                         </div>
 
                                         <div class="row clearfix">
-                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                  <label for="lname">Reason</label>
                                             </div>
-                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                                  <div class="form-group">
                                                     <div class="form-line">
                                                          <input type="text" id="reason1" name="reason1" class="form-control" placeholder="Enter customer's reason"  >
@@ -292,10 +335,10 @@
                                         </div>
                                   
                                         <div class="row clearfix">
-                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                 <label for="lname">Contacts</label>
                                             </div>
-                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         <input type="number" id="contacts" name="contacts" class="form-control" placeholder="Enter customer's contact number">
@@ -305,15 +348,55 @@
                                         </div>
 
                                         <div class="row clearfix">
-                                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                                 <label for="lname">Amount</label>
                                             </div>
-                                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         <input type="number" id="bal" name="bal" class="form-control" placeholder="Enter customer's cash advance">
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row clearfix">
+                                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                    <label for="month1">To be paid on</label>
+                                            </div>
+                                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <select id="month1" name="month1" class="form-control"  style="width: 100%;" required>
+                                                            <option></option>
+                                                            <option>January</option>
+                                                            <option>February</option>
+                                                            <option>March</option>
+                                                            <option>April</option>
+                                                            <option>May</option>
+                                                            <option>June</option>
+                                                            <option>July</option>
+                                                            <option>August</option>
+                                                            <option>September</option>
+                                                            <option>October</option>
+                                                            <option>November</option>
+                                                            <option>December</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row clearfix">
+                                            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                                    <label for="received1">Received by</label>
+                                            </div>
+                                            <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <input type="text" id="received1" name="received1" class="form-control" required>
+                                                        </div>
+                                                    </div>
                                             </div>
                                         </div>
                                      <div class="row clearfix">
@@ -1152,11 +1235,15 @@
                     $("#reason_clone").val($("#reason1").val());
                     $("#amount_clone").val($("#bal").val());
                     $("#balance_clone").val('0');
+                    $("#received_clone").val($("#received1").val());
+                    $("#month_clone").val($("#month1 option:selected").text());
                 }else{
                     $("#customer_id_clone").val($("#customer_id option:selected").text());
                     $("#reason_clone").val($("#reason").val());
                     $("#amount_clone").val($("#amount").val());
                     $("#balance_clone").val($("#balance").val());
+                    $("#received_clone").val($("#received").val());
+                    $("#month_clone").val($("#month option:selected").text());
                 }
                 
             });
@@ -1662,14 +1749,26 @@
                placeholder: 'Select a customer'
             });
 
+            $('#month').select2({
+               dropdownParent: $('#ca_modal'),
+               placeholder: 'Select month'
+            });
+
             $('#customer_id1').select2({
-              dropdownParent: $('#balancemodal'),
-              placeholder: 'Select a customer'
-          });
-          $('#paymentmethod').select2({
-          dropdownParent: $('#balancemodal'),
-          placeholder: 'Select a type of payment'
-       });
+                dropdownParent: $('#balancemodal'),
+                placeholder: 'Select a customer'
+            });
+
+            $('#month1').select2({
+               dropdownParent: $('#ca_modal'),
+               placeholder: 'Select month'
+            });
+
+
+            $('#paymentmethod').select2({
+                dropdownParent: $('#balancemodal'),
+                placeholder: 'Select a type of payment'
+            });
         });
     </script>
 @endsection
