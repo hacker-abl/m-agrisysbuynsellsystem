@@ -430,7 +430,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>To be paid within the month of: </span></td>
-				<td align='right'><span>".""."</span></td>
+				<td align='right'><span>".$request->month_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Balance: </span></td>
@@ -438,7 +438,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Received by: </span></td>
-				<td align='right'><span>".""."</span></td>
+				<td align='right'><span>".$request->received_clone."</span></td>
 				</tr>
 				<tr>
 				<td height='25px'><span>Signature: </span></td>
