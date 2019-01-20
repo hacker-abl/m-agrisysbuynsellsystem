@@ -36,7 +36,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,210);
+			$customPaper = array(0,0,200,300);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
@@ -429,8 +429,24 @@ class pdfController extends Controller
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
+				<td><span>To be paid within the month of: </span></td>
+				<td align='right'><span>".""."</span></td>
+				</tr>
+				<tr>
 				<td><span>Balance: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->balance_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>Received by: </span></td>
+				<td align='right'><span>".""."</span></td>
+				</tr>
+				<tr>
+				<td height='25px'><span>Signature: </span></td>
+				<td align='right'><span>".""."</span></td>
+				</tr>
+				<tr>
+				<td><span>Total balance: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount_clone + $request->balance_clone, 2, '.', ',')."</span></td>
 				</tr>
 				</table>
 		        </div>";
@@ -527,7 +543,7 @@ class pdfController extends Controller
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->total_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
-				<td><span>Deducted: </span></td>
+				<td><span>Amount to Pay: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->amount_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
