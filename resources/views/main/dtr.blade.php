@@ -464,7 +464,7 @@
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 									<div class="form-group">
 										<div class="form-line">
-											<input type="" id="num_hours" min="0" name="num_hours" class="form-control" required>
+											<input type="number" id="num_hours" min="0" name="num_hours" class="form-control" required>
 										</div>
 									</div>
 								</div>
