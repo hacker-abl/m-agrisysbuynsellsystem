@@ -110,8 +110,10 @@
                             <input type="hidden" id="customer_id_clone" name="customer_id_clone">
                             <input type="hidden" id="reason_clone" name="reason_clone">
                             <input type="hidden" id="amount_clone" name="amount_clone">
-                            <input type="hidden" id="balance_clone" name="balance_clone">
-                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            <input type="hidden" id="balance1_clone" name="balance1_clone">
+                            <input type="hidden" id="month_clone" name="month_clone">
+                            <input type="hidden" id="received_clone" name="received_clone">
+                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li>
                    </ul>
@@ -127,10 +129,10 @@
                                <input type="hidden"  name="button_action_ca" id="button_action_ca" value="">
 
                                <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Name</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div id="c" class="form-line">
                                                    <select type="text" id="employee_ca" name="employee_id" class="form-control" required style="width: 100%;">
@@ -145,10 +147,10 @@
                                </div>
 
                        <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Reason</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div class="form-line">
                                                    <input type="text" id="reason" name="reason" class="form-control" required>
@@ -158,10 +160,10 @@
                                </div>
 
                        <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Amount</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div class="form-line">
                                                    <input type="number" id="amount" min="0" name="amount" class="form-control" required>
@@ -171,10 +173,10 @@
                                </div>
 
                        <div class="row clearfix">
-                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                          <label for="name">Balance</label>
                                     </div>
-                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                          <div class="form-group">
                                               <div class="form-line">
                                                    <input type="number" id="balance" name="balance" class="form-control" readonly>
@@ -182,6 +184,46 @@
                                          </div>
                                     </div>
                                </div>
+
+                               <div class="row clearfix">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="month">To be paid on</label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <select id="month" name="month" class="form-control"  style="width: 100%;" required>
+                                                    <option></option>
+                                                    <option>January</option>
+                                                    <option>February</option>
+                                                    <option>March</option>
+                                                    <option>April</option>
+                                                    <option>May</option>
+                                                    <option>June</option>
+                                                    <option>July</option>
+                                                    <option>August</option>
+                                                    <option>September</option>
+                                                    <option>October</option>
+                                                    <option>November</option>
+                                                    <option>December</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <div class="row clearfix">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="received">Received by</label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <input type="text" id="received" name="received" class="form-control" required>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
 
                                <div class="row clearfix">
                                     <div class="modal-footer">
@@ -214,8 +256,9 @@
                             <input type="hidden" id="customer_id1_clone" name="customer_id1_clone">
                             <input type="hidden" id="paymentmethod_clone" name="paymentmethod_clone">
                             <input type="hidden" id="checknumber_clone" name="checknumber_clone">
-                            <input type="hidden" id="amount1_clone" name="amount1_clone">
+                            <input type="hidden" id="amount2_clone" name="amount2_clone">
                             <input type="hidden" id="balance2_clone" name="balance2_clone">
+                            <input type="hidden" id="remarks_clone" name="remarks_clone">
                             <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                             </form>
                        </li> 
@@ -421,7 +464,7 @@
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 									<div class="form-group">
 										<div class="form-line">
-											<input type="" id="num_hours" min="0" name="num_hours" class="form-control" required>
+											<input type="number" id="num_hours" min="0" name="num_hours" class="form-control" required>
 										</div>
 									</div>
 								</div>
@@ -2128,9 +2171,11 @@
 
             $("#print_form1").click(function(event) {
                 $("#customer_id_clone").val($("#employee_ca option:selected").text());
-                $("#reason1_clone").val($("#reason").val());
-                $("#amount1_clone").val($("#amount").val());
+                $("#reason_clone").val($("#reason").val());
+                $("#amount_clone").val($("#amount").val());
                 $("#balance1_clone").val($("#balance").val());
+                $("#received_clone").val($("#received").val());
+                $("#month_clone").val($("#month option:selected").text());
             });
 
             // END PRINT CA
@@ -2474,19 +2519,23 @@
                dropdownParent: $('#dtr_modal'),
                placeholder: 'Select an employee'
             });
-              $('#employee_ca').select2({
+            $('#employee_ca').select2({
                dropdownParent: $('#employee_ca_modal'),
                placeholder: 'Select an employee'
             });
+            $('#month').select2({
+               dropdownParent: $('#employee_ca_modal'),
+               placeholder: 'Select month'
+            });
 
-             $('#employee_payment_id').select2({
-              dropdownParent: $('#payment_modal'),
-                  placeholder: 'Select an employee'
-              });
-              $('#paymentmethod').select2({
-              dropdownParent: $('#payment_modal'),
-              placeholder: 'Select a type of payment'
-           });
+            $('#employee_payment_id').select2({
+                dropdownParent: $('#payment_modal'),
+                placeholder: 'Select an employee'
+            });
+            $('#paymentmethod').select2({
+                dropdownParent: $('#payment_modal'),
+                placeholder: 'Select a type of payment'
+            });
 
     
         });
