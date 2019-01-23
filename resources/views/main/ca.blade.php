@@ -204,21 +204,7 @@
                             <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <select id="month" name="month" class="form-control"  style="width: 100%;" required>
-                                            <option></option>
-                                            <option>January</option>
-                                            <option>February</option>
-                                            <option>March</option>
-                                            <option>April</option>
-                                            <option>May</option>
-                                            <option>June</option>
-                                            <option>July</option>
-                                            <option>August</option>
-                                            <option>September</option>
-                                            <option>October</option>
-                                            <option>November</option>
-                                            <option>December</option>
-                                            </select>
+                                        <input name="month" id="month" class="date-picker form-control" style="width: 100%;" required/>
                                         </div>
                                     </div>
                             </div>
@@ -367,21 +353,7 @@
                                             <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                                     <div class="form-group">
                                                         <div class="form-line">
-                                                            <select id="month1" name="month1" class="form-control"  style="width: 100%;" required>
-                                                            <option></option>
-                                                            <option>January</option>
-                                                            <option>February</option>
-                                                            <option>March</option>
-                                                            <option>April</option>
-                                                            <option>May</option>
-                                                            <option>June</option>
-                                                            <option>July</option>
-                                                            <option>August</option>
-                                                            <option>September</option>
-                                                            <option>October</option>
-                                                            <option>November</option>
-                                                            <option>December</option>
-                                                            </select>
+                                                        <input name="month1" id="month1" class="date-picker form-control" style="width: 100%;" required/>
                                                         </div>
                                                     </div>
                                             </div>
@@ -600,6 +572,12 @@
 </div>
 </div>
 @endsection
+
+<style>
+.ui-datepicker-calendar {
+    display: none;
+}
+</style>
 
 @section('script')
     <script>
@@ -1236,14 +1214,14 @@
                     $("#amount_clone").val($("#bal").val());
                     $("#balance_clone").val('0');
                     $("#received_clone").val($("#received1").val());
-                    $("#month_clone").val($("#month1 option:selected").text());
+                    $("#month_clone").val($("#month1").val());
                 }else{
                     $("#customer_id_clone").val($("#customer_id option:selected").text());
                     $("#reason_clone").val($("#reason").val());
                     $("#amount_clone").val($("#amount").val());
                     $("#balance_clone").val($("#balance").val());
                     $("#received_clone").val($("#received").val());
-                    $("#month_clone").val($("#month option:selected").text());
+                    $("#month_clone").val($("#month").val());
                 }
                 
             });
@@ -1749,9 +1727,17 @@
                placeholder: 'Select a customer'
             });
 
-            $('#month').select2({
-               dropdownParent: $('#ca_modal'),
-               placeholder: 'Select month'
+            $("#month").datepicker( {
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'MM, yy',
+                beforeShow: function(){
+                    $(".ui-datepicker").css('font-size', 18);
+                },
+                onClose: function(dateText, inst) { 
+                    $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                }
             });
 
             $('#customer_id1').select2({
@@ -1759,9 +1745,17 @@
                 placeholder: 'Select a customer'
             });
 
-            $('#month1').select2({
-               dropdownParent: $('#ca_modal'),
-               placeholder: 'Select month'
+            $("#month1").datepicker( {
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'MM, yy',
+                beforeShow: function(){
+                    $(".ui-datepicker").css('font-size', 18);
+                },
+                onClose: function(dateText, inst) { 
+                    $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                }
             });
 
 

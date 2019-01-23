@@ -192,21 +192,7 @@
                                     <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <select id="month" name="month" class="form-control"  style="width: 100%;" required>
-                                                    <option></option>
-                                                    <option>January</option>
-                                                    <option>February</option>
-                                                    <option>March</option>
-                                                    <option>April</option>
-                                                    <option>May</option>
-                                                    <option>June</option>
-                                                    <option>July</option>
-                                                    <option>August</option>
-                                                    <option>September</option>
-                                                    <option>October</option>
-                                                    <option>November</option>
-                                                    <option>December</option>
-                                                    </select>
+                                                    <input name="month" id="month" class="date-picker form-control" style="width: 100%;" required/>
                                                 </div>
                                             </div>
                                     </div>
@@ -728,6 +714,12 @@
     </div>
 	</div>
 @endsection
+
+<style>
+.ui-datepicker-calendar {
+    display: none;
+}
+</style>
 
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -2175,7 +2167,7 @@
                 $("#amount_clone").val($("#amount").val());
                 $("#balance1_clone").val($("#balance").val());
                 $("#received_clone").val($("#received").val());
-                $("#month_clone").val($("#month option:selected").text());
+                $("#month_clone").val($("#month").val());
             });
 
             // END PRINT CA
@@ -2523,9 +2515,18 @@
                dropdownParent: $('#employee_ca_modal'),
                placeholder: 'Select an employee'
             });
-            $('#month').select2({
-               dropdownParent: $('#employee_ca_modal'),
-               placeholder: 'Select month'
+
+            $("#month").datepicker( {
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'MM, yy',
+                beforeShow: function(){
+                    $(".ui-datepicker").css('font-size', 18);
+                },
+                onClose: function(dateText, inst) { 
+                    $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                }
             });
 
             $('#employee_payment_id').select2({
