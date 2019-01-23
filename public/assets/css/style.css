@@ -17,6 +17,10 @@ hr {
   top:19px;
 }
 
+#ui-datepicker-div .ui-datepicker-calendar {
+  display: none !important;
+}
+
 .dataTables_length .bootstrap-select .input-sm{
   visibility: visible !important;
   width: 60px;
@@ -2439,7 +2443,7 @@ hr {
 
 /* General ===================================== */
 body {
-  /*background-color: #e9e9e9*/;
+  /*background-color: #e9e9e9*/
   -moz-transition: all 0.5s;
   -o-transition: all 0.5s;
   -webkit-transition: all 0.5s;

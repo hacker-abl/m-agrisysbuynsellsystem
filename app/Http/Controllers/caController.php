@@ -274,11 +274,40 @@ class caController extends Controller
         $customer= $ca->customer_id; 
         $amount= $ca->amount;
         $balance = balance::find($customer);
-        $balance->balance = ($balance->balance-$amount);
-        $balance->save();
-        echo json_encode($balance->balance);
-        $ca->delete();
-        
+        if($balance->balance < $amount){
+            return 0;
+        }else{
+            if($ca->status == "Released"){
+                $user = User::find(Auth::user()->id);
+                $userGet = User::where('id', '=', $user->id)->first();
+                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                $cash_history = new Cash_History;
+                $cash_history->user_id = $userGet->id;
+
+                $getDate = Carbon::now();
+                
+                if($cashLatest != null){
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                }
+                else{
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                }
+
+                $cash_history->trans_no = $dateTime;
+                $cash_history->previous_cash = $user->cashOnHand;
+                $cash_history->cash_change = $ca->amount;
+                $cash_history->total_cash = $user->cashOnHand + $ca->amount;
+                $cash_history->type = "Released CA Deleted";
+                $cash_history->save();
+
+                $user->cashOnHand += $ca->amount;
+                $user->save();
+                echo json_encode($user->cashOnHand);
+            }
+            $balance->balance = ($balance->balance-$amount);
+            $balance->save();
+            $ca->delete();
+        }
     }
 
     public function refresh(){
@@ -342,6 +371,8 @@ class caController extends Controller
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>';
             }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==0){
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
+            }else if($cash_advance->status=="Released" && isAdmin()==1){
+                return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
             }
             else{
                 return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>';

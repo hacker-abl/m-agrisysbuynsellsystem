@@ -715,12 +715,6 @@
 	</div>
 @endsection
 
-<style>
-.ui-datepicker-calendar {
-    display: none;
-}
-</style>
-
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>

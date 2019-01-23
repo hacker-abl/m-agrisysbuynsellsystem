@@ -573,12 +573,6 @@
 </div>
 @endsection
 
-<style>
-.ui-datepicker-calendar {
-    display: none;
-}
-</style>
-
 @section('script')
     <script>
         var print_checker = '';
@@ -1062,25 +1056,25 @@
                         $("#amount").val('').trigger('change');
                         $("#balance").val('').trigger('change');
                         swal("Success!", "Record has been added to database", "success");
-            						$('#ca_modal').modal('hide');
-            						refresh_cash_advance_table();
-                       $.ajax({
-                          url: "{{ route('refresh_view_cashadvance') }}",
-                          method: 'get',
-                          data:{id:person_id},
-                          dataType: 'json',
-                          success:function(data){
-                            $.ajax({
-                          url: "{{ route('getCustomer') }}",
-                          method: 'get',
-                          data:{id:person_id},
-                          dataType: 'json',
-                          success:function(data){
-                              $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
-                          }
-                        });
-                             cash_advance_release =  $('#view_cash_advancetable').DataTable({
-                                  "footerCallback": function ( row, data, start, end, display ) {
+                        $('#ca_modal').modal('hide');
+                        refresh_cash_advance_table();
+                        $.ajax({
+                            url: "{{ route('refresh_view_cashadvance') }}",
+                            method: 'get',
+                            data:{id:person_id},
+                            dataType: 'json',
+                            success:function(data){
+                                $.ajax({
+                                    url: "{{ route('getCustomer') }}",
+                                    method: 'get',
+                                    data:{id:person_id},
+                                    dataType: 'json',
+                                    success:function(data){
+                                        $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                                    }
+                                });
+                                cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                    "footerCallback": function ( row, data, start, end, display ) {
                                       var api = this.api(), data;
                            
                                       // Remove the formatting to get integer data for summation
@@ -1154,7 +1148,7 @@
                                       {data: "action", orderable:false,searchable:false}
                                   ]
                               }); 
-                              $('#ca_view_modal').modal('show');
+                              //$('#ca_view_modal').modal('show');
                           }
                       });
                     },
@@ -1171,7 +1165,13 @@
                var input = $(this);
                var button =this;
                button.disabled = true;
-               input.html('SAVING...');  
+               input.html('SAVING...');
+               if($("#amount1").val() > $("#balance2").val()){
+                    swal("Hold on!", "Payment more than balance.", "warning");
+                    button.disabled = false;
+                    input.html('SAVE CHANGES');
+                    return;
+               }
                $.ajax({
                    headers: {
                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1466,28 +1466,35 @@
                     buttons: true,
                 }).then((willDelete) => {
                 if (willDelete) {
-                  $.ajax({
-                      url:"{{ route('delete_ca') }}",
-                      method: "get",
-                      data:{id:id},
-                      success:function(data){                            
+                    $.ajax({
+                        url:"{{ route('delete_ca') }}",
+                        method: "get",
+                        data:{id:id},
+                        success:function(data){
+                            if(data == 0){
+                                swal("Hold On!", "Record to delete is higher than balance.", "warning");
+                                return;
+                            }                   
                             swal("Deleted!", "The record has been deleted.", "success");
-                                    $.ajax({
-                          url: "{{ route('refresh_view_cashadvance') }}",
-                          method: 'get',
-                          data:{id:person_id},
-                          dataType: 'json',
-                          success:function(data){
-                              $.ajax({
-                                url: "{{ route('getCustomer') }}",
+                            if(data){
+                                $('#curCashOnHand').html(data);
+                            }
+                            $.ajax({
+                                url: "{{ route('refresh_view_cashadvance') }}",
                                 method: 'get',
                                 data:{id:person_id},
                                 dataType: 'json',
                                 success:function(data){
-                                    $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
-                                }
-                              });
-                             cash_advance_release =  $('#view_cash_advancetable').DataTable({
+                                    $.ajax({
+                                        url: "{{ route('getCustomer') }}",
+                                        method: 'get',
+                                        data:{id:person_id},
+                                        dataType: 'json',
+                                        success:function(data){
+                                            $('.modal_title_ca').text(data.fname + " " + data.mname + " " + data.lname);
+                                        }
+                                    });
+                                cash_advance_release =  $('#view_cash_advancetable').DataTable({
                                   "footerCallback": function ( row, data, start, end, display ) {
                                       var api = this.api(), data;
                            
