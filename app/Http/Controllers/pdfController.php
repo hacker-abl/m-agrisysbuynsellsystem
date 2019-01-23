@@ -28,11 +28,11 @@ class pdfController extends Controller
 
 		if($name == "trips"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,360);
+			$customPaper = array(0,0,200,330);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "expense"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,330);
+			$customPaper = array(0,0,200,300);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
@@ -40,23 +40,23 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,380);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,350);
+			$customPaper = array(0,0,200,330);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "sales"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,350);
+			$customPaper = array(0,0,200,320);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "purchases"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,505);
+			$customPaper = array(0,0,200,475);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "balance_payment"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,240);
+			$customPaper = array(0,0,200,210);
 			$dompdf->set_paper($customPaper);
 		}
 		
@@ -105,7 +105,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h1 align='center'>M-AGRI</h1>
+		
 		<h2 align='center'>TRIPS</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen<br>
 		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
@@ -177,7 +177,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h1 align='center'>M-AGRI</h1>
+		
 		<h2 align='center'>EXPENSE</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen<br>
 		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
@@ -238,7 +238,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h1 align='center'>M-AGRI</h1>
+		
 		<h2 align='center'>DAILY TIME RECORD</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen<br>
 		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
@@ -318,7 +318,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h1 align='center'>M-AGRI</h1>
+		
 		<h2 align='center'>OUTBOUND DELIVERIES</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen<br>
 		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
@@ -485,7 +485,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h1 align='center'>M-AGRI</h1>
+		
 		<h2 align='center'>PURCHASE</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen<br>
 		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
@@ -592,7 +592,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h1 align='center'>M-AGRI</h1>
+		
 		<h2 align='center'>SALES</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen<br>
 		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
@@ -674,7 +674,7 @@ class pdfController extends Controller
 		</head>
 		<body>
 		<basefont size='4'>
-		<h1 align='center'>M-AGRI</h1>
+		
 		<h2 align='center'>BALANCE PAYMENT</h2>
 		<p align='center'><b>P-1B Sto. Niño Carmen<br>
 		Davao del Norte</b> <br> ".Carbon::now()->toDayDateTimeString()."</p>
