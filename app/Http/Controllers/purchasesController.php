@@ -213,7 +213,7 @@ class purchasesController extends Controller
             $purchases->total = $request->total;
             $purchases->amtpay= $request->amount;
             $purchases->remarks= $request->remarks;
-            $purchases->status = "On-Hand";
+            // $purchases->status = "On-Hand";
             $purchases->released_by='';
             $purchases->save();
             if($request->partial == 0){
@@ -228,6 +228,25 @@ class purchasesController extends Controller
             if ($request->cash != ""){
                 $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash); 
             }
+            $ca = new ca;
+            $ca->customer_id = $request->customerID;
+            $ca->reason = "FROM PURCHASE UPDATE (Cash Advance)";
+            if($request->cash != ""){
+                $ca->amount =   $request->cash;
+            }
+            if($request->cash == ""){
+                $ca->amount =   $request->cashLAST;
+            }
+            if($request->cash != ""){
+                $ca->balance = ($request->balance_id + $request->cash) - $request->partial;
+            }
+            else{
+                $ca->balance = $request->cashLAST;
+            }
+            $ca->status = "On-Hand";
+            $ca->released_by = '';
+            $ca->save();
+        
             return "Released Admin Update";    
             }else if($purchases->status=="On-Hand"){
             $purchases->trans_no = $request->ticket;
@@ -606,9 +625,16 @@ class purchasesController extends Controller
                 'cashOnHand' => $user->cashOnHand,
                 'cashHistory' => $dateTime
             );
-        $balance = balance::where('customer_id', $purchases->customerID)->increment('balance',$purchases->partial); 
-        $balance = balance::where('customer_id', $purchases->customerID)->decrement('balance',$purchases->balance_id); 
+        $balance = balance::where('customer_id', $purchases->customer_id)->increment('balance',$purchases->partial); 
+        $balance = balance::where('customer_id', $purchases->customer_id)->decrement('balance',$purchases->balance_id); 
         $purchases->delete();
+        $ca = new ca;
+            $ca->customer_id = $purchases->customer_id;
+            $ca->reason = "REVERT FROM PURCHASE DELETE (Cash Advance)";
+            $ca->amount =   $purchases->balance_id;
+            $ca->status = "On-Hand";
+            $ca->released_by = '';
+            $ca->save();
         return  json_encode($output);
         }
        

@@ -229,7 +229,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-                                                    <input type="number" id="cash" name="cash" onkeyup="totalbalance(this)"  class="form-control"   required>
+                                                    <input type="number"  id="cash" name="cash" onkeyup="totalbalance(this)"  class="form-control"   required>
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiCash" class="btn btn-primary waves-effect">Reset</button>
@@ -731,13 +731,15 @@
 @section('script')
     <script>
         $("#resetNiCash").click(function(){
+            $("#cash").prop("disabled", false) ;
+            $("#partial").prop("disabled", false) ;
             var t = 0;
             var y = 0;
             if ($('#ca').val() != ""){
                 t = parseFloat($('#ca').val());
             }
             if ($('#cash').val() != ""){
-                t = parseFloat($('#cash').val());
+                y = parseFloat($('#cash').val());
             }
             t = t - y;
             $('#ca').val(t)
@@ -745,6 +747,8 @@
             $('#cash').val(0)
         });
         $("#resetNiPartial").click(function(){
+            $("#cash").prop("disabled", false) ;
+            $("#partial").prop("disabled", false) ;
             var t = 0;
             var y = 0;
             var x = 0;
@@ -1179,6 +1183,8 @@
                         $('#partialLAST').val(data.partial);
                         $('#cashLAST').val(data.partial);
                         $('#cash').val(data.balance_id);
+                        $("#cash").prop("disabled", true) ;
+                        $("#partial").prop("disabled", true) ;
                         $('#moist').val(data.moist);
                         $("#type").val(data.type).trigger('change');
                         $('#kilo').val(data.kilo);
@@ -2264,7 +2270,7 @@
             $(document).on('click', '#add_purchase', function(event){
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
-
+                
                 event.preventDefault();
                 var input = $(this);
                 var button =this;
@@ -2913,7 +2919,8 @@
                 $('#customer').select2('enable');
                 $("#customer").val('').trigger('change');
                 $("#commodity").val('').trigger('change');
-
+                $("#cash").prop("disabled", false) ;
+                $("#partial").prop("disabled", false) ;
                 $('#purchase_modal').modal('hide');
                 $("#cash").val("");
                 $("#sacks").val("");
