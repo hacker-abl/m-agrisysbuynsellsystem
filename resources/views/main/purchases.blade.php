@@ -1412,7 +1412,7 @@
 
                 scrollX: true,
                 fixedColumns: {
-                    leftColumns: 0,
+                    leftColumns: 2,
                     rightColumns: 1
                 },
                 order:[],
@@ -1626,7 +1626,7 @@
                         ],
                         scrollX: true,
                         fixedColumns: {
-                            leftColumns: 0,
+                            leftColumns: 2,
                             rightColumns: 1
                         },
                         processing: true,
@@ -1822,7 +1822,7 @@
                 ],
                 scrollX: true,
                 fixedColumns: {
-                    leftColumns: 0,
+                    leftColumns: 2,
                     rightColumns: 1
                 },
                 order:[],
@@ -2037,7 +2037,7 @@
                         ],
                         scrollX: true,
                         fixedColumns: {
-                            leftColumns: 0,
+                            leftColumns: 2,
                             rightColumns: 1
                         },
                         processing: true,
@@ -2232,7 +2232,7 @@
                 ],
                 scrollX: true,
                 fixedColumns: {
-                    leftColumns: 0,
+                    leftColumns: 2,
                     rightColumns: 1
                 },
                 order:[],
