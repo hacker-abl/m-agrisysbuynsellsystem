@@ -1411,6 +1411,10 @@
                 ],
 
                 scrollX: true,
+                fixedColumns: {
+                    leftColumns: 0,
+                    rightColumns: 1
+                },
                 order:[],
                 columnDefs: [{
                     "targets": "_all", // your case first column
@@ -1621,6 +1625,10 @@
                         }
                         ],
                         scrollX: true,
+                        fixedColumns: {
+                            leftColumns: 0,
+                            rightColumns: 1
+                        },
                         processing: true,
 
                         order:[],
@@ -1812,8 +1820,11 @@
                     }  
                 }
                 ],
-
                 scrollX: true,
+                fixedColumns: {
+                    leftColumns: 0,
+                    rightColumns: 1
+                },
                 order:[],
                 columnDefs: [{
                     "targets": "_all", // your case first column
@@ -2025,6 +2036,10 @@
                         }
                         ],
                         scrollX: true,
+                        fixedColumns: {
+                            leftColumns: 0,
+                            rightColumns: 1
+                        },
                         processing: true,
 
                         order:[],
@@ -2216,6 +2231,10 @@
                 }
                 ],
                 scrollX: true,
+                fixedColumns: {
+                    leftColumns: 0,
+                    rightColumns: 1
+                },
                 order:[],
                 columnDefs: [{
                     "targets": "_all", // your case first column

@@ -17,6 +17,25 @@ hr {
   top:19px;
 }
 
+.DTFC_RightBodyLiner>.DTFC_Cloned, .DTFC_LeftBodyLiner>.DTFC_Cloned{
+  margin: 0 !important;
+  border-top: 0 !important;
+}
+
+.DTFC_RightHeadWrapper>.DTFC_Cloned, .DTFC_RightHeadWrapper>.DTFC_Cloned>thead>tr>th,
+.DTFC_LeftHeadWrapper>.DTFC_Cloned, .DTFC_LeftHeadWrapper>.DTFC_Cloned>thead>tr>th{
+  margin-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.even{
+  background-color: white;
+}
+
+.DTFC_RightFootWrapper{
+  display: none;
+}
+
 #ui-datepicker-div .ui-datepicker-calendar {
   display: none !important;
 }

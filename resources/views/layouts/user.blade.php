@@ -67,6 +67,9 @@
         <!-- JQuery DataTable Css -->
         <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
 
+        <!-- DataTable Fixed Columns Css -->
+        <link href="{{ asset('assets/css/fixedColumn.min.css') }}" rel="stylesheet">
+        
         <!-- Custom Css -->
         <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     @else
@@ -96,6 +99,9 @@
         <!-- JQuery DataTable Css -->
         <link href="{{ asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
 
+        <!-- DataTable Fixed Columns Css -->
+        <link href="{{ asset('assets/css/fixedColumn.min.css') }}" rel="stylesheet">
+
         <!-- Custom Css -->
         <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
         @else
@@ -124,6 +130,9 @@
         <!-- JQuery DataTable Css -->
         <link href="{{ secure_asset('assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
 
+        <!-- DataTable Fixed Columns Css -->
+        <link href="{{ asset('assets/css/fixedColumn.min.css') }}" rel="stylesheet">
+        
         <!-- Custom Css -->
         <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
         @endif
@@ -414,6 +423,7 @@
     <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/js/fixedColumn.min.js') }}"></script>
 
     <!-- Jquery Validation Plugin Css -->
     <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.js') }}"></script>
