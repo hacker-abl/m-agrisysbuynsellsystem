@@ -188,8 +188,20 @@ class purchasesController extends Controller
             $check_admin =Auth::user()->access_id;
             $purchases=  Purchases::find($request->get('id'));
             $ca =  ca::where('pid',$request->get('id'))->first();
-            $ca->amount = $request->cash - $request->partial;
+            $ca->amount = $request->cashLAST - $request->partialLAST + $request->cash - $request->partial;
             $ca->save();
+            $ca =  ca::where('pid',$request->get('id'))->first();
+            if($ca->status = 'Released'){
+                $balance1 = balance::where('customer_id', $ca->customer_id)->first();   
+                $balance1->balance =  $request->balance;
+                $balance1->save();
+                $user = User::find(Auth::user()->id);
+                
+                    $user->cashOnHand = $user->cashOnHand + ($request->ca  - $request->balance);
+                
+               
+                $user->save();
+            }
             if($purchases->status=="Released"&&$check_admin==1){
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customerID;
@@ -220,18 +232,6 @@ class purchasesController extends Controller
             // $purchases->status = "On-Hand";
             $purchases->released_by='';
             $purchases->save();
-            if($request->partial == 0){
-                $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->partialLAST); 
-            }
-            if($request->cash == 0){
-                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->cashLAST); 
-            }
-            if ($request->partial != ""){
-                $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
-            }
-            if ($request->cash != ""){
-                $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash); 
-            }
            
             return "Released Admin Update";    
             }else if($purchases->status=="On-Hand"){
@@ -267,7 +267,9 @@ class purchasesController extends Controller
              return "Not";  
             }
             
-               
+            $user = User::find(Auth::user()->id);
+            $output =  $user->cashOnHand;
+            return $output; 
         }
 
         if( $request->get('stat') == 'new'){
@@ -584,6 +586,12 @@ class purchasesController extends Controller
     function deletedata(Request $request){
         $purchases = Purchases::find($request->input('id'));
         $ca =  ca::where('pid',$request->get('id'))->first();
+        if($ca->status = 'Released'){
+            $balance = balance::where('customer_id', $ca->customer_id)->decrement('balance',$ca->amount); 
+        }
+        $user = User::find(Auth::user()->id);
+        $user->cashOnHand += $ca->amount;
+        $user->save();
         $ca->delete();
         if($purchases->status=="Released"){
             $user = User::find(Auth::user()->id);
@@ -614,15 +622,16 @@ class purchasesController extends Controller
                 'cashOnHand' => $user->cashOnHand,
                 'cashHistory' => $dateTime
             );
-        $balance = balance::where('customer_id', $purchases->customer_id)->increment('balance',$purchases->partial); 
-        $balance = balance::where('customer_id', $purchases->customer_id)->decrement('balance',$purchases->balance_id); 
+        
         $purchases->delete();
         
         return  json_encode($output);
         }
        
         $purchases->delete();
-        return  "OK";
+        $user = User::find(Auth::user()->id);
+        $output =  $user->cashOnHand;
+        return  $output;
     }
 
     function updatedata(Request $request){

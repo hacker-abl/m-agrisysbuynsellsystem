@@ -191,6 +191,7 @@ class caController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $released->save();
+            $balance = balance::where('customer_id', $released->customer_id)->increment('balance',$released->amount);
             event(new BalanceUpdated($released));
         }else{
             $logged_id = Auth::user()->emp_id;

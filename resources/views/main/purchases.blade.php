@@ -732,7 +732,6 @@
     <script>
         $("#resetNiCash").click(function(){
             $("#cash").prop("disabled", false) ;
-            $("#partial").prop("disabled", false) ;
             var t = 0;
             var y = 0;
             if ($('#ca').val() != ""){
@@ -747,22 +746,26 @@
             $('#cash').val(0)
         });
         $("#resetNiPartial").click(function(){
-            $("#cash").prop("disabled", false) ;
+
             $("#partial").prop("disabled", false) ;
             var t = 0;
             var y = 0;
             var x = 0;
+            var z = 0;
             if ($('ca').val() != ""){
                 t = parseFloat($('#ca').val())
             }
             if ($('#partial').val() != ""){
                 y = parseFloat($('#partial').val())
             }
+            if ($('#cash').val() != ""){
+                z = parseFloat($('#cash').val())
+            }
             if ($('#amount').val() != ""){
                 x = parseFloat($('#amount').val())
             }
-            t = t + y;
-            x = x + y
+            t = t + y - z;
+            x = x + y;
             $('#ca').val(t)
             $('#balance').val(t)
             $('#partial').val(0)
@@ -1148,6 +1151,7 @@
                             data:{id:id},
                             success:function(data){
                                 swal("Deleted!", "The record has been deleted.", "success");
+                                $('#curCashOnHand').html(data);
                                 refresh_purchase_table();
                             }
                         })
@@ -2315,6 +2319,8 @@
                             $("#commodity").val('').trigger('change');
                             $("#commodity1").val('').trigger('change');
                             $("#customer").val('').trigger('change');
+                            console.log(data)
+                            $('#curCashOnHand').html(data);
                             //refresh_delivery_table();
                         }
                         else{
