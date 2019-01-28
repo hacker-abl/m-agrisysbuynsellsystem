@@ -266,10 +266,7 @@ class purchasesController extends Controller
             }else if($purchases->status=="Released"&&$check_admin!=1){
              return "Not";  
             }
-            
-            $user = User::find(Auth::user()->id);
-            $output =  $user->cashOnHand;
-            return $output; 
+           
         }
 
         if( $request->get('stat') == 'new'){
@@ -394,7 +391,11 @@ class purchasesController extends Controller
     
                 event(new \App\Events\NewNotification($notification));
             }
+            
         }
+        $user = User::find(Auth::user()->id);
+        $output =  $user->cashOnHand;
+        return $output; 
     }
 
     public function release_purchase(Request $request){
