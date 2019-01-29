@@ -638,8 +638,10 @@ class purchasesController extends Controller
     function updatedata(Request $request){
         $id = $request->input('id');
         $commodity = Purchases::find($id);
+        $customer = Customer::find($commodity->customer_id);
         $output = array(
             'customer_id' => $commodity->customer_id,
+            'name' => $customer->lname .', '.$customer->fname.' '.$customer->mname,
             'trans_no' => $commodity->trans_no,
             'commodity_id' => $commodity->commodity_id,
             'sacks' => $commodity->sacks,

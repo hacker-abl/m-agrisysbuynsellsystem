@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth', 'user:manage_employee']], function() {
 
 Route::group(['middleware' => ['auth', 'user:manage_customer']], function() {
     Route::get('/customer', 'customerController@index')->name('customer');
+    Route::get('/customerAll', 'customerController@all')->name('customerAll');
     Route::post('/add_customer', 'customerController@store')->name('add_customer');
     Route::get('/refresh_customer', 'customerController@refresh')->name('refresh_customer');
     Route::get('/update_customer', 'customerController@updatedata')->name('update_customer');
