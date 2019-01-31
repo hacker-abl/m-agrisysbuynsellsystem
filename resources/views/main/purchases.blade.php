@@ -36,6 +36,7 @@
                                 <input type="hidden" id="total_clone" name="total_clone">
                                 <input type="hidden" id="amount_clone" name="amount_clone">
                                 <input type="hidden" id="remarks_clone" name="remarks_clone">
+                                <input type="hidden" id="previous_balance_clone" name="previous_balance_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
@@ -2405,6 +2406,7 @@
                     $("#moist_clone").val($("#moist").val());
                     $("#tare_clone").val($("#tare").val());
                     $("#net_clone").val($("#net").val());
+                    $("#previous_balance_clone").val($("#ca").val());
                 }else if($('#stat').val()=="new"){
                     $("#ticket_clone").val($("#ticket1").val());
                     $("#customer_clone").val($("#fname").val()+" "+$("#mname").val()+" "+$("#lname").val());
@@ -2422,6 +2424,7 @@
                     $("#moist_clone").val($("#moist2").val());
                     $("#tare_clone").val($("#tare2").val());
                     $("#net_clone").val($("#net2").val());
+                    $("#previous_balance_clone").val(null);
                 }
             });
 
