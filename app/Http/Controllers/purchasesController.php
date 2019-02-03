@@ -233,7 +233,9 @@ class purchasesController extends Controller
             $purchases->released_by='';
             $purchases->save();
            
-            return "Released Admin Update";    
+            $user = User::find(Auth::user()->id);
+            $output =  $user->cashOnHand;
+            return  $output; 
             }else if($purchases->status=="On-Hand"){
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customerID;
@@ -264,7 +266,9 @@ class purchasesController extends Controller
             // $balance = balance::where('customer_id', $request->customerID)->decrement('balance',$request->partial); 
             // $balance = balance::where('customer_id', $request->customerID)->increment('balance',$request->cash);    
             }else if($purchases->status=="Released"&&$check_admin!=1){
-             return "Not";  
+                $user = User::find(Auth::user()->id);
+                $output =  $user->cashOnHand;
+                return  $output; 
             }
            
         }
