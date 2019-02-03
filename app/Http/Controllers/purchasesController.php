@@ -188,20 +188,19 @@ class purchasesController extends Controller
             $check_admin =Auth::user()->access_id;
             $purchases=  Purchases::find($request->get('id'));
             $ca =  ca::where('pid',$request->get('id'))->first();
-            $ca->amount = $request->cashLAST - $request->partialLAST + $request->cash - $request->partial;
-            $ca->save();
-            $ca =  ca::where('pid',$request->get('id'))->first();
-            if($ca->status = 'Released'){
+            if($ca->status == 'Released'){
                 $balance1 = balance::where('customer_id', $ca->customer_id)->first();   
                 $balance1->balance =  $request->balance;
                 $balance1->save();
+              
                 $user = User::find(Auth::user()->id);
+                $user->cashOnHand = $user->cashOnHand  - $request->cash + $request->partial + $ca->amount;
                 
-                    $user->cashOnHand = $user->cashOnHand + ($request->ca  - $request->balance);
-                
-               
                 $user->save();
             }
+            $ca->amount = $request->cashLAST - $request->partialLAST + $request->cash - $request->partial;
+            $ca->save();
+        
             if($purchases->status=="Released"&&$check_admin==1){
             $purchases->trans_no = $request->ticket;
             $purchases->customer_id = $request->customerID;
