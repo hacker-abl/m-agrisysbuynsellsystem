@@ -137,6 +137,13 @@
         <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
         @endif
     @endif
+    @if(Request::path() == 'purchases' || Request::path() == 'outbound' || Request::path() == 'sales')
+    <style>
+        #ui-datepicker-div .ui-datepicker-calendar {
+            display: table !important;
+        }
+    </style>
+    @endif
 </head>
 <body  id="b"  class="theme-grey">
     <!-- Page Loader -->

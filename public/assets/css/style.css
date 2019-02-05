@@ -32,7 +32,7 @@ hr {
   background-color: white;
 }
 
-.DTFC_RightFootWrapper{
+.DTFC_RightFootWrapper, .DTFC_LeftFootWrapper{
   display: none;
 }
 

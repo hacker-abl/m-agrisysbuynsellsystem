@@ -3269,5 +3269,6 @@
                 tare3(this);
             });
         });
+
     </script>
 @endsection
