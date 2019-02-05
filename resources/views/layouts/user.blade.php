@@ -137,7 +137,7 @@
         <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
         @endif
     @endif
-    @if(Request::path() == 'purchases' || Request::path() == 'outbound' || Request::path() == 'sales')
+    @if(Request::path() == 'purchases' || Request::path() == 'outbound' || Request::path() == 'sales' || Request::path() == 'expense')
     <style>
         #ui-datepicker-div .ui-datepicker-calendar {
             display: table !important;

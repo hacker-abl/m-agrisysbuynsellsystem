@@ -215,7 +215,7 @@ class purchasesController extends Controller
                 
                 $cash_history->trans_no = $dateTime;
                 $cash_history->previous_cash = $previousCash;
-                $cash_history->cash_change = abs($previousCash - $user->cashOnHand);
+                $cash_history->cash_change = $previousCash - $user->cashOnHand;
                 $cash_history->total_cash = $user->cashOnHand;
                 $cash_history->type = "Adjustment - Purchases";
                 $cash_history->save();
