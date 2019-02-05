@@ -1158,6 +1158,7 @@
                             data:{id:id},
                             success:function(data){
                                 swal("Deleted!", "The record has been deleted.", "success");
+                                console.log(data);
                                 $('#curCashOnHand').html(data);
                                 refresh_purchase_table();
                             }

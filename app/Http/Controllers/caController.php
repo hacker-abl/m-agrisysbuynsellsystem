@@ -274,9 +274,9 @@ class caController extends Controller
         $ca = ca::find($request->input('id'));
         $customer= $ca->customer_id; 
         $amount= $ca->amount;
-        $balance = balance::find($customer);
+        $balance = balance::where('customer_id', $customer)->first();
         if($balance->balance < $amount){
-            return 0;
+            return 2;
         }else{
             if($ca->status == "Released"){
                 $user = User::find(Auth::user()->id);

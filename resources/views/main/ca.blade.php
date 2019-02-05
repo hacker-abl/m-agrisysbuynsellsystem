@@ -1471,10 +1471,12 @@
                         method: "get",
                         data:{id:id},
                         success:function(data){
-                            if(data == 0){
+                            if(data == 2){
+                                console.log(data);
                                 swal("Hold On!", "Record to delete is higher than balance.", "warning");
                                 return;
-                            }                   
+                            }      
+                            console.log("mao ni")             
                             swal("Deleted!", "The record has been deleted.", "success");
                             if(data){
                                 $('#curCashOnHand').html(data);
