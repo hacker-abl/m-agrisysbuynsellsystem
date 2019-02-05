@@ -531,8 +531,14 @@ class pdfController extends Controller
 				<tr>
 				<td><span>Price: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->price_clone, 2, '.', ',')."</span></td>
-				</tr>
-				<tr>
+				</tr>";
+		if(isset($request->previous_balance_clone)){
+		$pdf .= "<tr>
+				<td><span>Previous Balance: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->previous_balance_clone, 2, '.', ',')."</span></td>
+				</tr>";
+		}
+		$pdf .= "<tr>
 				<td><span>Cash Advance: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->ca_clone, 2, '.', ',')."</span></td>
 				</tr>
