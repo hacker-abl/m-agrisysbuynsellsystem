@@ -82,15 +82,22 @@
                                   <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                         <label for="type">Customer</label>
                                   </div>
-                                  <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                  <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 " id="flagupdate1">
                                         <div class="form-group">
                                              <select type="text" id="customer" name="customer" class="form-control" placeholder="Select company" required style="width:100%;">
-                                                  @foreach($customer as $a)
+                                                  <!-- @foreach($customer as $a)
                                                   <option value="{{ $a->id }}">{{ $a->lname }}, {{ $a->fname }} {{ $a->mname }}</option>
-                                                  @endforeach
+                                                  @endforeach -->
                                              </select>
                                         </div>
                                   </div>
+                                  <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 " id="flagupdate">
+                                            <div class="form-group">
+                                                 <div class="form-line">
+                                                      <input type="text" id="customerName" name="customerName" disabled="disabled"  name="customer" class="form-control"   required>
+                                                 </div>
+                                            </div>
+                                    </div>
                                  </div>
 
                                   <div class="row clearfix">
@@ -733,7 +740,6 @@
     <script>
         $("#resetNiCash").click(function(){
             $("#cash").prop("disabled", false) ;
-            $("#partial").prop("disabled", false) ;
             var t = 0;
             var y = 0;
             if ($('#ca').val() != ""){
@@ -748,22 +754,26 @@
             $('#cash').val(0)
         });
         $("#resetNiPartial").click(function(){
-            $("#cash").prop("disabled", false) ;
+
             $("#partial").prop("disabled", false) ;
             var t = 0;
             var y = 0;
             var x = 0;
+            var z = 0;
             if ($('ca').val() != ""){
                 t = parseFloat($('#ca').val())
             }
             if ($('#partial').val() != ""){
                 y = parseFloat($('#partial').val())
             }
+            if ($('#cash').val() != ""){
+                z = parseFloat($('#cash').val())
+            }
             if ($('#amount').val() != ""){
                 x = parseFloat($('#amount').val())
             }
-            t = t + y;
-            x = x + y
+            t = t + y - z;
+            x = x + y;
             $('#ca').val(t)
             $('#balance').val(t)
             $('#partial').val(0)
@@ -1149,6 +1159,8 @@
                             data:{id:id},
                             success:function(data){
                                 swal("Deleted!", "The record has been deleted.", "success");
+                                console.log(data);
+                                $('#curCashOnHand').html(data);
                                 refresh_purchase_table();
                             }
                         })
@@ -1159,6 +1171,7 @@
 
             $(document).on('click', '.edit_purchase', function(){
                 $("#homeclick1").hide();
+                $('#homeclick').trigger('click');
                 var id = $(this).attr('id');
                 $('.modal_title').text('Update Purchases');
                 $.ajax({
@@ -1169,9 +1182,10 @@
                     success:function(data){
                         $('#button_action1').val('update');
                         $('#id').val(id);
-                        $('#customer').select2('enable',false);
-
-                        $("#customer").val(data.customer_id).trigger('change');
+                        // $('#customer').select2('enable',false);
+                        $("#flagupdate1").hide();
+                        $("#flagupdate").show();
+                        $("#customerName").val(data.name);
                         $('#customerID').val(data.customer_id);
                         $('#commodityID').val(data.commodity_id);
                         $('#caID').val(data.ca_id);
@@ -2335,6 +2349,8 @@
                             $("#commodity").val('').trigger('change');
                             $("#commodity1").val('').trigger('change');
                             $("#customer").val('').trigger('change');
+                            console.log(data)
+                            $('#curCashOnHand').html(data);
                             //refresh_delivery_table();
                         }
                         else{
@@ -2926,7 +2942,6 @@
 
         $(document).ready(function() {
 
-
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
                     processing: 'Loading.. Please wait'
@@ -2937,6 +2952,8 @@
                 $("#homeclick1").show();
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
+                $("#flagupdate1").show();
+                $("#flagupdate").hide();
                 $('#button_action1').val('add');
                 $('#customer').select2('enable');
                 $("#customer").val('').trigger('change');
@@ -3021,10 +3038,28 @@
                 placeholder: 'Select an item'
             });
 
-
+        
             $('#customer').select2({
                 dropdownParent: $('#purchase_modal'),
-                placeholder: 'Select a customer'
+                placeholder: 'Select a customer',
+                ajax: {
+                    url: "{{ route('customerAll') }}",
+                    dataType: 'json',
+                    
+                    data: function (params) {
+                        return {
+                            name: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results:data.results
+                        }
+                      
+                    },
+                    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                }
             });
 
             $('#remarks').select2({

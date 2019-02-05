@@ -114,7 +114,17 @@ class customerController extends Controller
             return response()->json('success');
         }
     }
-
+    public function all(Request $request){
+        $customer = Customer::where('fname','like', '%'.$request->name.'%')->orWhere('mname','like', '%'.$request->name.'%')->orWhere('lname','like', '%'.$request->name.'%')->get()->toArray();
+        $array1 = [];
+        foreach ($customer as $key => $value) {
+            $array1[] = [
+                'id' => 1,
+                'text' => $value['lname'].', '.$value['fname'].' '.$value['mname']
+            ];
+        }
+        return json_encode(['results' =>$array1]);
+    }
     public function refresh()
     {
         $customer = Customer::all();
