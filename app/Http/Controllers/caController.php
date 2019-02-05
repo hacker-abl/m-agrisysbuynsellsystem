@@ -350,7 +350,7 @@ class caController extends Controller
         $id = $request->input('id');
         $cash_advance = DB::table('cash_advance')
             ->join('customer', 'customer.id', '=', 'cash_advance.customer_id')
-            ->select('cash_advance.id','cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at','cash_advance.balance','cash_advance.status','cash_advance.released_by')
+            ->select('cash_advance.id','cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at','cash_advance.balance','cash_advance.status','cash_advance.released_by', 'cash_advance.pid')
             ->where('cash_advance.customer_id', $id)
             ->latest();
         return \DataTables::of($cash_advance)
@@ -361,17 +361,21 @@ class caController extends Controller
                 $delete=$permit[0]->permit_delete;  
                 $edit = $permit[0]->permit_edit;  
            }
-            if($cash_advance->status=="On-Hand" && isAdmin()==1){
+
+            if($cash_advance->status=="On-Hand" && isAdmin()==1 && $cash_advance->pid == null){
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
-            }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==1){
+            }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==1 && $cash_advance->pid == null){
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
-            }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==0){
+            }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==0 && $cash_advance->pid == null){
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
-            }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==1){
+            }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==1 && $cash_advance->pid == null){
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>';
-            }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==0){
+            }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==0 && $cash_advance->pid == null){
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
-            }else if($cash_advance->status=="Released" && isAdmin()==1){
+            }else if($cash_advance->status=="On-Hand" && $cash_advance->pid != null){
+                return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
+            }
+            else if($cash_advance->status=="Released" && isAdmin()==1 && $cash_advance->pid == null){
                 return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
             }
             else{
