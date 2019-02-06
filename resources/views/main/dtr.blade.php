@@ -905,26 +905,29 @@
                    dataType: 'text',
                    data: $('#balanceform').serialize(),
                    success:function(data){
-                  
-                    if(data==1){
+                    var data2= JSON.parse(data);
+                    console.log(JSON.parse(data)); 
+                    if(data2.cashOnHand==0){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#employee_payment_id").val('').trigger('change');
                         $("#paymentmethod").val('').trigger('change');
                         $("#amount_payment").val('');
                         $("#checknumber").val('');
-                        $("#balance").val('');
-                        swal("Success!", "Record has been added to database", "success");
-                        $('#payment_modal').modal('hide');
-                    }else if(data==0){
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        $("#employee_payment_id").val('').trigger('change');
-                        $("#paymentmethod").val('').trigger('change');
-                        $("#amount_payment").val('');
-                        $("#checknumber").val('');
+                        $("#remarks").val('');
                         $("#balance").val('');
                          swal("Denied!", "This employee has no balance to pay", "error");
+                    }else if(data2.cashHistory){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        $("#employee_payment_id").val('').trigger('change');
+                        $("#paymentmethod").val('').trigger('change');
+                        $("#amount_payment").val('');
+                        $("#checknumber").val('');
+                        $("#balance").val('');
+                        swal("Payment Success!", "Cash on Hand: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
+                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
+                        $('#payment_modal').modal('hide');
                     }
                        
                    },
@@ -1543,7 +1546,7 @@
                                          
                                                     // Total over all pages
                                                     total = api
-                                                        .column( 4 )
+                                                        .column( 7 )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -1551,7 +1554,7 @@
                                          
                                                     // Total over this page
                                                     pageTotal = api
-                                                        .column( 4, { page: 'current'} )
+                                                        .column( 7, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -1561,13 +1564,17 @@
 
                                                     // Total over this page
                                                     pageTotal1 = api
-                                                        .column( 3, { page: 'current'} )
+                                                        .column( 7, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
-                                         
-                                                   
+
+                                                    // Update footer
+                                                      $( api.column( 7 ).footer() ).html( 
+                                                          'Total: <br>₱' + number_format(pageTotal,2)
+                                                      );
+                                                                                     
                                                 },
                                                 dom: 'Blfrtip',
                                                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -1665,8 +1672,9 @@
                     method: 'POST',
                     dataType: 'text',
                     data: $('#dtr_form').serialize(),
-                    success:function(data){     
-                     
+                    success:function(data){  
+                    var data2 = JSON.parse(data);   
+                        console.log(data)
                         $('#dtr_modal').modal('hide');
                         $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",
@@ -1688,7 +1696,7 @@
                                          
                                                     // Total over all pages
                                                     total = api
-                                                        .column( 4 )
+                                                        .column( 7 )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -1696,7 +1704,7 @@
                                          
                                                     // Total over this page
                                                     pageTotal = api
-                                                        .column( 4, { page: 'current'} )
+                                                        .column( 7, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -1705,13 +1713,15 @@
                                                   
                                                     // Total over this page
                                                     pageTotal1 = api
-                                                        .column( 3, { page: 'current'} )
+                                                        .column( 7, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
-                                          
-                                                },
+                                                     $( api.column( 7 ).footer() ).html( 
+                                                        'Total: <br>₱' + number_format(pageTotal,2)
+                                                    );
+                                                                    },
                                                 dom: 'Blfrtip',
                                                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                                                 bDestroy: true,
@@ -1781,9 +1791,13 @@
                                             dtr.ajax.reload();
                                         }
                                     });
-                               
-                         console.log(data);         
-                        swal("Success!", "Record has been added to database", "success");
+                         if(data2.cashHistory){
+                          swal("Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
+                            $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
+                         }else{
+                            swal("Success!", "Record has been added to database", "success");
+                         }      
+                         
                         button.disabled = false;
                         input.html('SAVE CHANGES');
 						refresh_dtr_table();
@@ -1882,7 +1896,7 @@
                                          
                                                     // Total over all pages
                                                     total = api
-                                                        .column( 4 )
+                                                        .column( 7 )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -1890,7 +1904,7 @@
                                          
                                                     // Total over this page
                                                     pageTotal = api
-                                                        .column( 4, { page: 'current'} )
+                                                        .column( 7, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
@@ -1898,12 +1912,17 @@
                                           
                                                     // Total over this page
                                                     pageTotal1 = api
-                                                        .column( 3, { page: 'current'} )
+                                                        .column( 7, { page: 'current'} )
                                                         .data()
                                                         .reduce( function (a, b) {
                                                             return intVal(a) + intVal(b);
                                                         }, 0 );
-                                         
+
+                                                                                              // Update footer
+                                                        $( api.column( 7 ).footer() ).html( 
+                                                            'Total: <br>₱' + number_format(pageTotal,2)
+                                                        );
+                                                                 
                                                   
                                                 },
                                                 dom: 'Blfrtip',
@@ -2013,7 +2032,7 @@
                             swal("Denied! Can't Delete CA", "Amount is greater than Balance", "error");
                          }else if(data2.cashOnHand!=undefined){    
                          swal("Data Deleted! Employee Balance : ₱"+data2.balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
-                        $('#curCashOnHand').html(data2.username+" ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                        $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                       }
                         else{
                           swal("Data Deleted", " Employee Balance : ₱"+data2.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "success");
@@ -2246,7 +2265,7 @@
                      
                                 // Total over all pages
                                 total = api
-                                    .column( 8 )
+                                    .column( 7 )
                                     .data()
                                     .reduce( function (a, b) {
                                         return intVal(a) + intVal(b);
@@ -2264,13 +2283,16 @@
 
                                 // Total over this page
                                 pageTotal1 = api
-                                .column( 6, { page: 'current'} )
+                                .column( 7, { page: 'current'} )
                                 .data()
                                 .reduce( function (a, b) {
                                     return intVal(a) + intVal(b);
                                 }, 0 );
                     
-                               
+                                             // Update footer
+                                $( api.column( 7 ).footer() ).html( 
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
                             },
                             dom: 'Blfrtip',
                             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
