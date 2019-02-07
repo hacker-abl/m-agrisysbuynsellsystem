@@ -119,7 +119,7 @@ class customerController extends Controller
         $array1 = [];
         foreach ($customer as $key => $value) {
             $array1[] = [
-                'id' => 1,
+                'id' => $value['id'],
                 'text' => $value['lname'].', '.$value['fname'].' '.$value['mname']
             ];
         }

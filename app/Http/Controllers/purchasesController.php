@@ -616,37 +616,39 @@ class purchasesController extends Controller
     function deletedata(Request $request){
         $purchases = Purchases::find($request->input('id'));
         $ca =  ca::where('pid',$request->get('id'))->first();
-        if($ca->status == 'Released'){
-            $balance = balance::where('customer_id', $ca->customer_id)->first();
-            $balance->balance -= $ca->amount;
-            $balance->save();
-            $user = User::find(Auth::user()->id);
-
-            $userGet = User::where('id', '=', $user->id)->first();
-            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-            $cash_history = new Cash_History;
-            $cash_history->user_id = $userGet->id;
-
-            $getDate = Carbon::now();
-            
-            if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        if($ca){
+            if($ca->status == 'Released'){
+                $balance = balance::where('customer_id', $ca->customer_id)->first();
+                $balance->balance -= $ca->amount;
+                $balance->save();
+                $user = User::find(Auth::user()->id);
+    
+                $userGet = User::where('id', '=', $user->id)->first();
+                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                $cash_history = new Cash_History;
+                $cash_history->user_id = $userGet->id;
+    
+                $getDate = Carbon::now();
+                
+                if($cashLatest != null){
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                }
+                else{
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                }
+                
+                $cash_history->trans_no = $dateTime;
+                $cash_history->previous_cash = $user->cashOnHand;
+                $cash_history->cash_change = $ca->amount;
+                $cash_history->total_cash = $user->cashOnHand + $ca->amount;
+                $cash_history->type = "Released Purchase(CA) Deleted";
+                $cash_history->save();
+    
+                $user->cashOnHand += $ca->amount;
+                $user->save();
             }
-            else{
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-            }
-            
-            $cash_history->trans_no = $dateTime;
-            $cash_history->previous_cash = $user->cashOnHand;
-            $cash_history->cash_change = $ca->amount;
-            $cash_history->total_cash = $user->cashOnHand + $ca->amount;
-            $cash_history->type = "Released Purchase(CA) Deleted";
-            $cash_history->save();
-
-            $user->cashOnHand += $ca->amount;
-            $user->save();
+            $ca->delete();
         }
-        $ca->delete();
         if($purchases->status=="Released"){
             $user = User::find(Auth::user()->id);
             $userGet = User::where('id', '=', $user->id)->first();
