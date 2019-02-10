@@ -534,7 +534,7 @@
 
     <!-- View Person DTR Modal -->
     <div class="modal fade" id="dtr_view_modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-lg" role="document" style="width: 1100px;">
             <div class="row">
                  
                     <div class="card">

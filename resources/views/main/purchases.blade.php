@@ -2432,7 +2432,12 @@
             $("#print_form").click(function(event) {
                 if($('#stat1').val()=="old"){
                     $("#ticket_clone").val($("#ticket").val());
-                    $("#customer_clone").val($("#customer option:selected").text());
+                    if($("#customerName").val()){
+                        $("#customer_clone").val($("#customerName").val());
+                    }
+                    else{
+                        $("#customer_clone").val($("#customer option:selected").text());
+                    }
                     $("#commodity_clone").val($("#commodity option:selected").text());
                     $("#sacks_clone").val($("#sacks").val());
                     $("#ca_clone").val($("#cash").val());
@@ -2955,6 +2960,7 @@
                 $("#flagupdate1").show();
                 $("#flagupdate").hide();
                 $('#button_action1').val('add');
+                $("#customerName").val("");
                 $('#customer').select2('enable');
                 $("#customer").val('').trigger('change');
                 $("#commodity").val('').trigger('change');
