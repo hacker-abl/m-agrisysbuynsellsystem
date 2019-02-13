@@ -194,9 +194,35 @@ class purchasesController extends Controller
                 $balance1->save();
               
                 $user = User::find(Auth::user()->id);
+                
+                $userGet = User::where('id', '=', $user->id)->first();
+                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                $cash_history = new Cash_History;
+                $cash_history->user_id = $userGet->id;
+
+                $getDate = Carbon::now();
+
+                if($cashLatest != null){
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                }
+                else{
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                }
+
+                $previousCash = $user->cashOnHand;
+
                 $user->cashOnHand = $user->cashOnHand  - $request->cash + $request->partial + $ca->amount;
                 
+                $cash_history->trans_no = $dateTime;
+                $cash_history->previous_cash = $previousCash;
+                $cash_history->cash_change = abs($previousCash - $user->cashOnHand);
+                $cash_history->total_cash = $user->cashOnHand;
+                $cash_history->type = "Adjustment - Purchases";
+                $cash_history->save();
+                
                 $user->save();
+
+                
             }
             $ca->amount = $request->cashLAST - $request->partialLAST + $request->cash - $request->partial;
             $ca->save();
@@ -307,7 +333,7 @@ class purchasesController extends Controller
 
             $balance = new balance;
             $balance->customer_id = $customer->id;
-            $balance->balance = $request->bal - $request->partialpayment;
+            $balance->balance = 0;
             $balance->logs_ID = $customer->id;
             $balance->save();
 
@@ -594,12 +620,36 @@ class purchasesController extends Controller
     function deletedata(Request $request){
         $purchases = Purchases::find($request->input('id'));
         $ca =  ca::where('pid',$request->get('id'))->first();
-        if($ca->status = 'Released'){
-            $balance = balance::where('customer_id', $ca->customer_id)->decrement('balance',$ca->amount); 
+        if($ca->status == 'Released'){
+            $balance = balance::where('customer_id', $ca->customer_id)->first();
+            $balance->balance -= $ca->amount;
+            $balance->save();
+            $user = User::find(Auth::user()->id);
+
+            $userGet = User::where('id', '=', $user->id)->first();
+            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+            $cash_history = new Cash_History;
+            $cash_history->user_id = $userGet->id;
+
+            $getDate = Carbon::now();
+            
+            if($cashLatest != null){
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            }
+            else{
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+            }
+            
+            $cash_history->trans_no = $dateTime;
+            $cash_history->previous_cash = $user->cashOnHand;
+            $cash_history->cash_change = $ca->amount;
+            $cash_history->total_cash = $user->cashOnHand + $ca->amount;
+            $cash_history->type = "Released Purchase(CA) Deleted";
+            $cash_history->save();
+
+            $user->cashOnHand += $ca->amount;
+            $user->save();
         }
-        $user = User::find(Auth::user()->id);
-        $user->cashOnHand += $ca->amount;
-        $user->save();
         $ca->delete();
         if($purchases->status=="Released"){
             $user = User::find(Auth::user()->id);
@@ -626,20 +676,17 @@ class purchasesController extends Controller
 
             $user->cashOnHand += $purchases->amtpay;
             $user->save();
-             $output = array(
-                'cashOnHand' => $user->cashOnHand,
-                'cashHistory' => $dateTime
-            );
+            $output = $user->cashOnHand;
         
         $purchases->delete();
         
-        return  json_encode($output);
+        return $output;
         }
        
         $purchases->delete();
         $user = User::find(Auth::user()->id);
         $output =  $user->cashOnHand;
-        return  $output;
+        return $output;
     }
 
     function updatedata(Request $request){
