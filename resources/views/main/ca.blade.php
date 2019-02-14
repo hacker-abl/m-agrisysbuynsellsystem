@@ -1166,7 +1166,7 @@
                var button =this;
                button.disabled = true;
                input.html('SAVING...');
-               if($("#amount1").val() > $("#balance2").val()){
+               if(parseFloat($("#amount1").val()) > parseFloat($("#balance2").val())){
                     swal("Hold on!", "Payment more than balance.", "warning");
                     button.disabled = false;
                     input.html('SAVE CHANGES');
