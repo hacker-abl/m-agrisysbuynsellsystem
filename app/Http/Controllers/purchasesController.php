@@ -267,8 +267,12 @@ class purchasesController extends Controller
             $purchases->commodity_id= $request->commodityID;
             $purchases->sacks = $request->sacks;
             $purchases->ca_id = $request->caID;
-            $purchases->balance_id = $request->cash;
-            $purchases->partial = $request->partial;
+            if($request->cash != "" && $request->cash != $purchases->balance_id){
+                $purchases->balance_id = $request->cash;
+            }
+            if($request->partial != "" && $request->partial != $purchases->partial){
+                $purchases->partial = $request->partial;
+            }
             $purchases->kilo = $request->kilo;
             $purchases->type = $request->type1;
             $purchases->tare = $request->tare;

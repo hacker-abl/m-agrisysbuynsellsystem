@@ -741,17 +741,20 @@
         $("#resetNiCash").click(function(){
             $("#cash").prop("disabled", false) ;
             var t = 0;
-            var y = 0;
+            var x = 0;
+            var flag = false;
             if ($('#ca').val() != ""){
                 t = parseFloat($('#ca').val());
             }
-            if ($('#cash').val() != ""){
-                y = parseFloat($('#cash').val());
+            if ($('#cashLAST').val() != ""){
+                x = parseFloat($('#cashLAST').val());
             }
-            t = t - y;
+            t = t + x ;
             $('#ca').val(t)
             $('#balance').val(t)
-            $('#cash').val(0)
+            $('#cash').val(0)    
+            $("#resetNiCash").hide();
+          
         });
         $("#resetNiPartial").click(function(){
 
@@ -1174,6 +1177,8 @@
                 $('#homeclick').trigger('click');
                 var id = $(this).attr('id');
                 $('.modal_title').text('Update Purchases');
+                $("#resetNiCash").show();
+                $("#resetNiPartial").show();
                 $.ajax({
                     url:"{{ route('update_purchases') }}",
                     method: 'get',
@@ -1196,7 +1201,7 @@
                         $('#net').val(data.net);
                         $('#partial').val(data.partial);
                         $('#partialLAST').val(data.partial);
-                        $('#cashLAST').val(data.partial);
+                        $('#cashLAST').val(data.balance_id);
                         $('#cash').val(data.balance_id);
                         $("#cash").prop("disabled", true) ;
                         $("#partial").prop("disabled", true) ;
@@ -2304,6 +2309,7 @@
             $(document).on('click', '#add_purchase', function(event){
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
+               
                 
                 event.preventDefault();
                 var input = $(this);
@@ -2956,6 +2962,8 @@
             $(document).on('click','.open_purchase_modal', function(){
                 $("#homeclick1").show();
                 $('.modal_title').text('Add Purchase');
+                $("#resetNiCash").hide();
+                $("#resetNiPartial").hide();
                 $('#button_action').val('add');
                 $("#flagupdate1").show();
                 $("#flagupdate").hide();
