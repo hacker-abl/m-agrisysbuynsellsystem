@@ -375,6 +375,10 @@
                                 <input type="hidden" id="rate_clone" name="rate_clone">
                                 <input type="hidden" id="num_hours_clone" name="num_hours_clone">
                                 <input type="hidden" id="salary_clone" name="salary_clone">
+				<input type="hidden" id="bonus_clone" name="bonus_clone">
+				<input type="hidden" id="balance_clone" name="balance_clone">
+				<input type="hidden" id="partial_payment_clone" name="partial_payment_clone">
+				<input type="hidden" id="remaining_balance_clone" name="remaining_balance_clone">
                                 <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
                                 </form>
                             </li>
