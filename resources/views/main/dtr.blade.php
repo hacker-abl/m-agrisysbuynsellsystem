@@ -929,9 +929,9 @@
                         $("#amount_payment").val('');
                         $("#checknumber").val('');
                         $("#balance").val('');
-                        swal("Payment Success!", "Cash on Hand: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
-                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
                         $('#payment_modal').modal('hide');
+                        swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
+                        $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
                     }
                        
                    },

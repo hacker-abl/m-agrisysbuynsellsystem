@@ -1172,7 +1172,7 @@
                     input.html('SAVE CHANGES');
                     return;
                }
-               $.ajax({
+               $.ajax({ 
                    headers: {
                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                    },
@@ -1181,6 +1181,8 @@
                    dataType: 'text',
                    data: $('#balanceform').serialize(),
                    success:function(data){
+                    var data2= JSON.parse(data);
+                    console.log(data2);
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                        $("#customer_id1").val('').trigger('change');
@@ -1188,9 +1190,10 @@
                        $("#amount1").val('');
                         $("#checknumber").val('');
                        $("#balance2").val('');
-                       swal("Success!", "Record has been added to database", "success");
-                            $('#balancemodal').modal('hide');
-                            refresh_balance_table();
+                      $('#balancemodal').modal('hide');
+                       swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
+                        $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
+                         refresh_balance_table();
                    },
                    error: function(data){
                             swal("Oh no!", "Something went wrong, try again.", "error");
