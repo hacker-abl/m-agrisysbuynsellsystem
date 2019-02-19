@@ -114,7 +114,8 @@ class dtrController extends Controller
 
                     $output = array(
                         'cashOnHand' => $user->cashOnHand,
-                        'cashHistory' => $dateTime
+                        'cashHistory'=> $dateTime,
+                        'user'       => Auth::user()->id,
                     );
                     
                    return json_encode($output);    
@@ -373,7 +374,8 @@ class dtrController extends Controller
 
         $output = array(
             'cashOnHand' => $user->cashOnHand,
-            'cashHistory' => $dateTime
+            'cashHistory'=> $dateTime,
+            'user'       => Auth::user()->id,
         );
         
         echo json_encode($output);    

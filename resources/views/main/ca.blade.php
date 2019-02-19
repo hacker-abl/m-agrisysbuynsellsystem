@@ -1190,10 +1190,14 @@
                        $("#amount1").val('');
                         $("#checknumber").val('');
                        $("#balance2").val('');
-                      $('#balancemodal').modal('hide');
-                       swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
+                        $('#balancemodal').modal('hide');
+                        if(data2.user==1){
+                          swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
                         $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
+                      }else if(data2.user!=1){
+                          swal("Payment Success!", "Payment Received By the Admin.", "success")
                          refresh_balance_table();
+                      }
                    },
                    error: function(data){
                             swal("Oh no!", "Something went wrong, try again.", "error");

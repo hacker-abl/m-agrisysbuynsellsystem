@@ -921,7 +921,7 @@
                         $("#remarks").val('');
                         $("#balance").val('');
                          swal("Denied!", "This employee has no balance to pay", "error");
-                    }else if(data2.cashHistory){
+                    }else if(data2.cashHistory&&data2.user==1){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#employee_payment_id").val('').trigger('change');
@@ -932,7 +932,17 @@
                         $('#payment_modal').modal('hide');
                         swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
                         $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
-                    }
+                    }else if(data2.cashHistory&&data2.user!=1){
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                        $("#employee_payment_id").val('').trigger('change');
+                        $("#paymentmethod").val('').trigger('change');
+                        $("#amount_payment").val('');
+                        $("#checknumber").val('');
+                        $("#balance").val('');
+                        $('#payment_modal').modal('hide');
+                        swal("Payment Success!", "Payment Recieved by Admin.", "success")
+                      }
                        
                    },
                    error: function(data){
@@ -1795,9 +1805,11 @@
                                             dtr.ajax.reload();
                                         }
                                     });
-                         if(data2.cashHistory){
+                         if(data2.cashHistory&&data2.user==1){
                           swal("Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
                             $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
+                         }else if(data2.cashHistory&&data2.user!=1){
+                          swal("Success!", "Partial Payment Received by Admin.", "success")
                          }else{
                             swal("Success!", "Record has been added to database", "success");
                          }      
