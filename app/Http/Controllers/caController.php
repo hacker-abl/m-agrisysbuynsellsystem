@@ -155,8 +155,6 @@ class caController extends Controller
                 event(new \App\Events\NewNotification($notification));
             }
     
-            $balance = balance::where('customer_id', '=',$request->customer_id)
-                     ->increment('balance',  $request->amount);
             }
     }
         if($request->get('button_action_ca') == 'update'){
