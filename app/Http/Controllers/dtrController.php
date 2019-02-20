@@ -90,7 +90,7 @@ class dtrController extends Controller
                     $user_current =  $user->cashOnHand;
                     $user->cashOnHand += $request->p_payment;
                     $user->save();
-
+ 
                     $userGet = User::where('id', '=', 1)->first();
                     $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
                     $cash_history = new Cash_History;
@@ -114,7 +114,8 @@ class dtrController extends Controller
 
                     $output = array(
                         'cashOnHand' => $user->cashOnHand,
-                        'cashHistory' => $dateTime
+                        'cashHistory'=> $dateTime,
+                        'user'       => Auth::user()->id,
                     );
                     
                    return json_encode($output);    
@@ -368,12 +369,13 @@ class dtrController extends Controller
         $cash_history->previous_cash = $user_current;
         $cash_history->cash_change = $request->amount;
         $cash_history->total_cash = $user->cashOnHand;
-        $cash_history->type = "Employee CA Payment (".$employeeName->fname." ".$employeeName->fname.")";
+        $cash_history->type = "Employee CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
         $cash_history->save();
 
         $output = array(
             'cashOnHand' => $user->cashOnHand,
-            'cashHistory' => $dateTime
+            'cashHistory'=> $dateTime,
+            'user'       => Auth::user()->id,
         );
         
         echo json_encode($output);    

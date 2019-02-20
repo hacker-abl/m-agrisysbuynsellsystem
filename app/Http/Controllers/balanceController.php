@@ -9,6 +9,10 @@ use App\Customer;
 use App\balance;
 use App\paymentlogs;
 use App\Events\BalanceUpdated;
+use App\User;
+use Auth;
+use App\Cash_History;
+use Carbon\Carbon;
 
 class balanceController extends Controller
 {
@@ -50,7 +54,7 @@ class balanceController extends Controller
 
 		->make(true);
 		echo json_encode($balance);
-	}
+	} 
 
 	public function store(Request $request){
 	    $paymentlogs = new paymentlogs;
@@ -69,11 +73,43 @@ class balanceController extends Controller
 			$balance->balance = 0;
 			$balance->save();
 		}
-	
 	    else{
 		    $balance = balance::where('customer_id', '=',$request->customer_id1)
 				->decrement('balance', $request->amount1);
-			}
+		}
+		$user = User::find(1);
+        $user_current =  $user->cashOnHand;
+        $user->cashOnHand += $request->amount1;
+        $user->save();
+
+        $userGet = User::where('id', '=', 1)->first();
+        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        $cash_history = new Cash_History;
+        $cash_history->user_id = $userGet->id;
+
+        $getDate = Carbon::now();
+        
+        if($cashLatest != null){
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        }
+        else{
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+        }
+        $employeeName= Customer::where('id', '=', $request->customer_id1)->first();
+        $cash_history->trans_no = $dateTime;
+        $cash_history->previous_cash = $user_current;
+        $cash_history->cash_change = $request->amount1;
+        $cash_history->total_cash = $user->cashOnHand;
+        $cash_history->type = "Customer CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
+        $cash_history->save();
+
+        $output = array(
+            'cashOnHand' => $user->cashOnHand,
+            'cashHistory'=> $dateTime,
+            'user'       => Auth::user()->id,
+        );
+        
+        echo json_encode($output);    
 			
 			event(new BalanceUpdated($paymentlogs));
 	}
