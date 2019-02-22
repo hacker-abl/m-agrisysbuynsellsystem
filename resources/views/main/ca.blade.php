@@ -1185,25 +1185,28 @@
                     console.log(data2);
                         button.disabled = false;
                         input.html('SAVE CHANGES');
-                       $("#customer_id1").val('').trigger('change');
+                        $("#customer_id1").val('').trigger('change');
                         $("#paymentmethod").val('').trigger('change');
-                       $("#amount1").val('');
+                        $("#amount1").val('');
                         $("#checknumber").val('');
-                       $("#balance2").val('');
+                        $("#balance2").val('');
                         $('#balancemodal').modal('hide');
                         if(data2.user==1){
-                          swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
+                            swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
                         $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
-                      }else if(data2.user!=1){
-                          swal("Payment Success!", "Payment Received By the Admin.", "success")
-                         refresh_balance_table();
-                      }
+                            refresh_cash_advance_table();
+                            refresh_balance_table();
+                        }else if(data2.user!=1){
+                            swal("Payment Success!", "Payment Received By the Admin.", "success")
+                            refresh_cash_advance_table();
+                            refresh_balance_table();
+                        }
                    },
                    error: function(data){
-                            swal("Oh no!", "Something went wrong, try again.", "error");
-                            button.disabled = false;
-                            input.html('SAVE CHANGES');
-                       }
+                        swal("Oh no!", "Something went wrong, try again.", "error");
+                        button.disabled = false;
+                        input.html('SAVE CHANGES');
+                    }
                });
            });
 
@@ -1483,7 +1486,8 @@
                                 swal("Hold On!", "Record to delete is higher than balance.", "warning");
                                 return;
                             }      
-                            console.log("mao ni")             
+                            refresh_cash_advance_table();
+                            refresh_balance_table();          
                             swal("Deleted!", "The record has been deleted.", "success");
                             if(data){
                                 $('#curCashOnHand').html(data);
@@ -1728,8 +1732,11 @@
                                             });    
                                         }
                                     });
+                                    refresh_cash_advance_table();
+                                    refresh_balance_table();
                                     swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
                                     $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
+                                    
                                 }
                             })
                         }
