@@ -1182,7 +1182,6 @@
                    data: $('#balanceform').serialize(),
                    success:function(data){
                     var data2= JSON.parse(data);
-                    console.log(data2);
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#customer_id1").val('').trigger('change');
@@ -1217,7 +1216,6 @@
             });
 
             $("#print_form").click(function(event) {
-                console.log(print_checker);
                 if(print_checker == 'new'){
                     $("#customer_id_clone").val($("#fname").val() + ' ' + $("#mname").val() + ' ' + $("#lname").val());
                     $("#reason_clone").val($("#reason1").val());
@@ -1482,7 +1480,6 @@
                         data:{id:id},
                         success:function(data){
                             if(data == 2){
-                                console.log(data);
                                 swal("Hold On!", "Record to delete is higher than balance.", "warning");
                                 return;
                             }      
