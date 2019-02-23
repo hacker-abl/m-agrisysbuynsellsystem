@@ -581,7 +581,7 @@ class dtrController extends Controller
             if($dtr_view->status=="On-Hand" && isAdmin()==1){
                  return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';
             }else if($dtr_view->status=="On-Hand" && isAdmin()!=1){
-                return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>';    
+                return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">mode_edit</i></button>';    
             }
             else if($dtr_view->status=="Released" && isAdmin()==1){
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';
