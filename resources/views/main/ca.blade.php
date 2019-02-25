@@ -1057,6 +1057,9 @@
                         $("#balance").val('').trigger('change');
                         swal("Success!", "Record has been added to database", "success");
                         $('#ca_modal').modal('hide');
+                        if(data){ // if Released
+                            $('#curCashOnHand').html(parseFloat(data).toFixed(2));
+                        }
                         refresh_cash_advance_table();
                         $.ajax({
                             url: "{{ route('refresh_view_cashadvance') }}",
@@ -1451,7 +1454,6 @@
                     success:function(data){
                         $('#homeclick').trigger('click');
                         $( "#homeclick1" ).hide();
-                        // $( "#home1" ).hide();
                         $("#button_action_ca").val('update');
                         $("#id_ca").val(id);
                         $("#customer_id").val(data.customer_id).trigger('change');

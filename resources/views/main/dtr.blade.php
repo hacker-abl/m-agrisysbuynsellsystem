@@ -811,7 +811,6 @@
                        method: 'get',
                        dataType:'json',
                        success:function(data){
-                        console.log(data);
                          employee_balace_view =  $('#view_balance_table').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {
                                 var api = this.api(), data;
@@ -910,7 +909,6 @@
                    data: $('#balanceform').serialize(),
                    success:function(data){
                     var data2= JSON.parse(data);
-                    console.log(JSON.parse(data)); 
                     if(data2.cashOnHand==0){
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -1209,7 +1207,6 @@
                     dataType: 'text',
                     data: $('#ca_emp_form').serialize(),
                     success:function(data){
-                        console.log(data);
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#employee_ca").val('').trigger('change');
@@ -1687,9 +1684,7 @@
                     dataType: 'text',
                     data: $('#dtr_form').serialize(),
                     success:function(data){  
-                      console.log(data)
-                    var data2 = JSON.parse(data);   
-                        console.log(data)
+                    var data2 = JSON.parse(data);  
                         $('#dtr_modal').modal('hide');
                         $.ajax({
                                         url: "{{ route('refresh_view_dtr') }}",

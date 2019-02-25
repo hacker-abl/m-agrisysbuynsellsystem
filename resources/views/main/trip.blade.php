@@ -866,7 +866,6 @@
                     data: { temp: 'temp' },
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
                         var t=0;
                         if(data[0].temp!=null){
                              t = data[0].temp;
@@ -910,7 +909,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data);
                         $('#id').val(id);
                         $("#ticket").val(data[0].trip_ticket);
                         $("#expense").val(data[0].expense);

@@ -715,7 +715,6 @@
                 data: data,
                 dataType: 'json',
                 success: function(data) { 
-                    console.log(data);
                     if(data) {
                         swal("Success!", "Permission has been updated!", "success");
                         $('#user-permission').modal('hide');

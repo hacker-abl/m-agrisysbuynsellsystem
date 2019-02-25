@@ -1162,7 +1162,6 @@
                             data:{id:id},
                             success:function(data){
                                 swal("Deleted!", "The record has been deleted.", "success");
-                                console.log(data);
                                 $('#curCashOnHand').html(data);
                                 refresh_purchase_table();
                             }
@@ -2355,7 +2354,6 @@
                             $("#commodity").val('').trigger('change');
                             $("#commodity1").val('').trigger('change');
                             $("#customer").val('').trigger('change');
-                            console.log(data)
                             $('#curCashOnHand').html(data);
                             //refresh_delivery_table();
                         }
@@ -2495,7 +2493,6 @@
                     dataType:'text',
                     data: $('#purchase_form1').serialize(),
                     success:function(data){
-                        console.log($("#partialpayment").val());
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#sacks1").val("");

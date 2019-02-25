@@ -158,26 +158,56 @@ class caController extends Controller
             }
     }
         if($request->get('button_action_ca') == 'update'){
-        $ca = ca::find($request->get('id_ca'));
-        $cash_advance = DB::table('cash_advance')
+            $ca = ca::find($request->get('id_ca'));
+            $cash_advance = DB::table('cash_advance')
             ->join('customer', 'customer.id', '=', 'cash_advance.customer_id')
             ->select('cash_advance.id','cash_advance.customer_id', 'customer.fname', 'customer.mname', 'customer.lname', 'cash_advance.reason', 'cash_advance.amount', 'cash_advance.created_at','cash_advance.balance','cash_advance.status','cash_advance.released_by')
             ->where('cash_advance.id', $request->get('id_ca'))
             ->get();
-        $balance = balance::find($request->customer_id);
-        $balance->balance = ($balance->balance-$cash_advance[0]->amount);
-        $balance->save();
-        $ca->customer_id = $request->customer_id;
-        $ca->reason = $request->reason;
-        $ca->amount = $request->amount;
-        $ca->save();
-        $balance = balance::where('customer_id', '=',$request->customer_id)
-                 ->increment('balance',  $request->amount);    
 
+            $user = User::find(1);
+
+            if($ca->status == 'Released'){
+                $balance = balance::where('customer_id', $request->customer_id)->first();
+
+                $ca->status = "On-Hand";
+                $ca->released_by = '';
+
+                $balance->balance -= $ca->amount;
+                $balance->save();
+
+                $userGet = User::where('id', '=', $user->id)->first();
+                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                $cash_history = new Cash_History;
+                $cash_history->user_id = $userGet->id;
+
+                $getDate = Carbon::now();
+                
+                if($cashLatest != null){
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                }
+                else{
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                }
+
+                $cash_history->trans_no = $dateTime;
+                $cash_history->previous_cash = $user->cashOnHand;
+                $cash_history->cash_change = $ca->amount;
+                $cash_history->total_cash = $user->cashOnHand + $ca->amount;
+                $cash_history->type = "Released CA Edit";
+                $cash_history->save();
+
+                $user->cashOnHand += $ca->amount;
+                $user->save();
+            }
+            
+            $ca->customer_id = $request->customer_id;
+            $ca->reason = $request->reason;
+            $ca->amount = $request->amount;
+            $ca->save();
+            
+            return $user->cashOnHand;
         }
-
-
-      
     }
 
     public function release_update(Request $request){
@@ -375,7 +405,7 @@ class caController extends Controller
                 return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
             }
             else if($cash_advance->status=="Released" && isAdmin()==1 && $cash_advance->pid == null){
-                return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
+                return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
             }
             else{
                 return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>';
