@@ -165,7 +165,7 @@ class caController extends Controller
             ->where('cash_advance.id', $request->get('id_ca'))
             ->get();
 
-            $user = User::find(1);
+            $user = User::find(Auth::user()->id);
 
             if($ca->status == 'Released'){
                 $balance = balance::where('customer_id', $request->customer_id)->first();
