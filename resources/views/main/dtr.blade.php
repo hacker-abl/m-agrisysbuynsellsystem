@@ -389,7 +389,7 @@
 							<input type="hidden" name="add_id" id="add_id" value="">
 							<input type="hidden" name="button_action" id="button_action" value="">
               <input type="hidden" name="last_payment" id="last_payment" value="">
-
+              <input type="hidden" name="employee_ni" id="employee_ni" value="">
 							<div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 									<label for="name">Name</label>
@@ -1687,6 +1687,7 @@
                     dataType: 'text',
                     data: $('#dtr_form').serialize(),
                     success:function(data){  
+                      console.log(data)
                     var data2 = JSON.parse(data);   
                         console.log(data)
                         $('#dtr_modal').modal('hide');
@@ -1852,6 +1853,7 @@
                         $('#add_id').val(id);
                         $('#employee_id').select2('enable',false);
                         $("#employee_id").val(data.employee_id).trigger('change');
+                        $('#employee_ni').val(data.employee_id);
                         $("#role").val(data.role);
                         $("#overtime").val(data.overtime);
                         $("#rate").val(data.rate);
