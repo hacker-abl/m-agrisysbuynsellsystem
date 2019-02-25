@@ -131,6 +131,9 @@ class dtrController extends Controller
         }
         if($request->get('button_action') == 'update'){
             $dtr = dtr::find($request->add_id);
+            $user = User::find(1);
+            $user->cashOnHand -= $dtr->p_payment;
+            $user->save();
             $dtr->role = $request->role;
             $dtr->overtime = $request->overtime;
             $dtr->num_hours = $request->num_hours;
@@ -142,17 +145,52 @@ class dtrController extends Controller
             $dtr->salary = $request->salary; 
             $checkpayment = emp_payment::all();
             if($checkpayment!==null){                      
-            $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->add_id)->count();
+                $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->add_id)->count();
             if($paymentlogs>0){
-               $recent = emp_payment::where('dtr_id', '=', $request->add_id)->latest()->first();
-                         //$recent->save(); 
-            $new_payment = new emp_payment;
-            $new_payment->logs_id = $recent->logs_id;
-            $new_payment->dtr_id = $recent->dtr_id;
-            $new_payment->paymentmethod = "From ADD DTR Form";
-            $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
-            $r_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first(); 
-            $empbalance = employee_bal::where('employee_id', '=', $recent->logs_id)->first();
+                $user1 = User::find(1);
+                $user_current =  $user1->cashOnHand;
+                $user1->cashOnHand += $request->p_payment;
+                $user1->save();
+
+                $userGet = User::where('id', '=', 1)->first();
+                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                $cash_history = new Cash_History;
+                $cash_history->user_id = $userGet->id;
+
+                $getDate = Carbon::now();
+                
+                if($cashLatest != null){
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                }
+                else{
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                }
+                $employeeName= employee::where('id', '=', $request->employee_ni)->first();
+                $cash_history->trans_no = $dateTime;
+                $cash_history->previous_cash = $user_current;
+                $cash_history->cash_change = $request->p_payment;
+                $cash_history->total_cash = $user->cashOnHand;
+                $cash_history->type = "Edit DTR CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
+                $cash_history->save();
+
+                $output = array(
+                    'cashOnHand' => $user->cashOnHand,
+                    'cashHistory'=> $dateTime,
+                    'user'       => Auth::user()->id,
+                );
+                
+
+
+
+
+                $recent = emp_payment::where('dtr_id', '=', $request->add_id)->latest()->first();
+                $new_payment = new emp_payment;
+                $new_payment->logs_id = $recent->logs_id;
+                $new_payment->dtr_id = $recent->dtr_id;
+                $new_payment->paymentmethod = "From ADD DTR Form";
+                $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
+                $r_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first(); 
+                $empbalance = employee_bal::where('employee_id', '=', $recent->logs_id)->first();
             
             
                 $r_balance->r_balance = $request->last_payment+$empbalance->balance; 
@@ -168,9 +206,9 @@ class dtrController extends Controller
                 $balance->save();  
                 $empbalance->save();   
                 $dtr->save(); 
-                return json_encode($recent->r_balance);       
+                return json_encode($output);       
                  }
-            }
+            }  
                 $dtr->save();
                 return json_encode($checkpayment);         
              
