@@ -64,6 +64,7 @@
                                   <input type="hidden" name="caID" id="caID" value="">
                                   <input type="hidden" name="cashLAST" id="cashLAST" value="">
                                   <input type="hidden" name="partialLAST" id="partialLAST" value="">
+                                  <input type="hidden" name="balanceLAST" id="balanceLAST" value="">
                                   <input type="hidden" name="button_action1" id="button_action1" value="">
                                   <div class="row clearfix">
                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -781,6 +782,7 @@
             $('#balance').val(t)
             $('#partial').val(0)
             $('#amount').val(x)
+            $("#resetNiPartial").hide();
         });
         var purchasestable;
         var purchase_date_from;
@@ -822,7 +824,6 @@
         }
         //DIRI NAKO MAGDUNGAG CAUSE WHY NOT EH?
         function tare1(value) {
-            //alert();
             if (value.which != 9) { 
                 if( $('#moist').val() == "" ){
                     var t = parseFloat($('#total').val());
@@ -1221,6 +1222,7 @@
                                 $('#ca').val(data.balance)
                                 $('#balance').val(data.balance)
                                 $('#balance1').val(data.balance)
+                                $('#balanceLAST').val(data.balance)
                                 $('#last').val(data.suki_type)
                             }
                         });
@@ -2526,7 +2528,6 @@
             $('#partial').on('keyup keydown', function (e) {
                 if (e.which != 9) { 
                 if (e.which == 8) {
-
                     if($('#balance').val()!=""){
                         var a = 0;
                         var b = parseFloat($('#balance').val());
@@ -2543,9 +2544,10 @@
                             var temp3 =  parseFloat(x).toFixed(2);
                             $('#amount').val(temp3)
                         }
-                        c = d-a;
+                        c = parseFloat($('#balance').val())+d-a ;
 
                         if(c <= d){
+                            
                             $('#balance').val(c);
 
                             if($('#total').val()!=""){
@@ -2566,6 +2568,7 @@
                         var d = parseFloat($('#ca').val());
                         $('#balance').val(d);
                     }
+                    
                 }
             }
             });
@@ -2715,6 +2718,7 @@
         }
 
         function partial1(value) {
+            
             if(value.which !=9 && value.which != 8 && isNaN(String.fromCharCode(value.which))){
                 if($('#balance').val()!=""){
                     var a = 0;
@@ -2737,9 +2741,10 @@
                     else{
                         if($('#cash').val() != "" ){
                             var t = parseFloat($('#cash').val());
-                            c = b+a;
+                            c = b+t;
                             $('#balance').val(c);
                         }
+                        
                     }
                   
                     if($('#cash').val() != "" ){
