@@ -750,7 +750,7 @@
             if ($('#cashLAST').val() != ""){
                 x = parseFloat($('#cashLAST').val());
             }
-            t = t + x ;
+            t = t - x ;
             $('#ca').val(t)
             $('#balance').val(t)
             $('#cash').val(0)    
@@ -763,20 +763,17 @@
             var t = 0;
             var y = 0;
             var x = 0;
-            var z = 0;
             if ($('ca').val() != ""){
                 t = parseFloat($('#ca').val())
             }
             if ($('#partial').val() != ""){
                 y = parseFloat($('#partial').val())
             }
-            if ($('#cash').val() != ""){
-                z = parseFloat($('#cash').val())
-            }
+
             if ($('#amount').val() != ""){
                 x = parseFloat($('#amount').val())
             }
-            t = t + y - z;
+            t = parseFloat($('#balanceLAST').val()) + y ;
             x = x + y;
             $('#ca').val(t)
             $('#balance').val(t)
