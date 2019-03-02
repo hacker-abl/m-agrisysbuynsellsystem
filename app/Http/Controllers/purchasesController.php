@@ -141,8 +141,13 @@ class purchasesController extends Controller
                 $ca = new ca;
                 $ca->pid = $purchases->id;
                 $ca->customer_id = $request->customer;
-                $ca->reason = "FROM PURCHASE (Cash Advance)";
                 $ca->amount =  $request->cash - $request->partial;
+                if($ca->amount > 0 ){
+                    $ca->reason = "FROM PURCHASE (Cash Advance)";
+                }
+                else{
+                    $ca->reason = "FROM PURCHASE (Cash Advance PHP ".$request->cash.")";
+                }
                 $ca->balance = 0;
                 $ca->status = "On-Hand";
                 $ca->released_by = '';
@@ -372,7 +377,6 @@ class purchasesController extends Controller
                 $ca = new ca;
                 $ca->pid = $purchases->id;
                 $ca->customer_id = $request->customerid;
-                $ca->reason = "FROM PURCHASE (Cash Advance)";
                 if ($request->bal != ""){
                     $ca->amount =   $request->bal;
                 }   
@@ -385,6 +389,12 @@ class purchasesController extends Controller
                 }
                 if ($request->bal != "" && $request->partialpayment != ""){
                     $ca->amount = $request->bal - $request->partialpayment ;
+                }
+                if($ca->amount > 0 ){
+                    $ca->reason = "FROM PURCHASE (Cash Advance)";
+                }
+                else{
+                    $ca->reason = "FROM PURCHASE (Cash Advance PHP ".$ca->bal.")";
                 }
                 $ca->status = "On-Hand";
                 $ca->released_by = '';
