@@ -28,35 +28,35 @@ class pdfController extends Controller
 
 		if($name == "trips"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,330);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "expense"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,300);
+			$customPaper = array(0,0,200,320);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,330);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,350);
+			$customPaper = array(0,0,200,370);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,330);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "sales"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,320);
+			$customPaper = array(0,0,200,340);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "purchases"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,475);
+			$customPaper = array(0,0,200,495);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "balance_payment"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,210);
+			$customPaper = array(0,0,200,230);
 			$dompdf->set_paper($customPaper);
 		}
 		
@@ -98,8 +98,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
@@ -170,8 +175,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
@@ -231,8 +241,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
@@ -311,8 +326,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
@@ -407,8 +427,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
@@ -478,8 +503,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
@@ -591,8 +621,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
@@ -673,8 +708,13 @@ class pdfController extends Controller
 			border: 1px solid black;
 		}
 
+		span {
+			word-wrap: break-word;
+		}
+
 		table {
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 		</style>
 		</head>
