@@ -13,6 +13,33 @@ use Carbon\Carbon;
 
 class pdfController extends Controller
 {
+	protected $style;
+
+	public function __construct(){
+		$this->style = "
+		<style>
+		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
+		body {
+			font-family: Courier, Times, serif;
+		    font-style: normal;
+		    font-size: 13px;
+		}
+
+		td, th {
+			border: 1px solid black;
+		}
+
+		span {
+			word-wrap: break-word;
+		}
+
+		table {
+			border-collapse: collapse;
+			table-layout: fixed;
+		}
+		</style>";
+	}
+
 	function getLength($var){
 		$tmp = explode('.', $var);
 		if(count($tmp)>1){
@@ -28,35 +55,35 @@ class pdfController extends Controller
 
 		if($name == "trips"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,330);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "expense"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,300);
+			$customPaper = array(0,0,200,320);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "ca"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,330);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "od"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,350);
+			$customPaper = array(0,0,200,370);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,330);
+			$customPaper = array(0,0,200,350);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "sales"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,320);
+			$customPaper = array(0,0,200,340);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "purchases"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,475);
+			$customPaper = array(0,0,200,495);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "balance_payment"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,210);
+			$customPaper = array(0,0,200,230);
 			$dompdf->set_paper($customPaper);
 		}
 		
@@ -86,22 +113,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>Trips PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
@@ -158,22 +170,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>Expense PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
@@ -219,22 +216,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>DTR PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
@@ -299,22 +281,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>Outbound Deliveries PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
@@ -395,22 +362,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>Cash Advance PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
@@ -466,22 +418,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>Purchases PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
@@ -579,22 +516,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>Sales PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
@@ -661,22 +583,7 @@ class pdfController extends Controller
 	    $pdf = "<html>
 		<head>
 		<title>Balance Payment PDF</title>
-		<style>
-		@page { margin-top: 20px; margin-bottom: 0px; margin-left: 30px; margin-right: 10px; }
-		body {
-			font-family: Courier, Times, serif;
-		    font-style: normal;
-		    font-size: 13px;
-		}
-
-		td, th {
-			border: 1px solid black;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-		</style>
+		".$this->style."
 		</head>
 		<body>
 		<basefont size='4'>
