@@ -803,6 +803,9 @@
             if($('#cash').val() !=""){
                 var x =  parseFloat($('#cash').val());
                 var y =  parseFloat($('#ca').val());
+                var amount =parseFloat($('#amount').val())
+                amount += x
+                $('#amount').val(amount)
                 if($('#partial').val() == "" || $('#partial').val() == "0"){
                     x = x + y;
                     $('#balance').val(x);
@@ -827,6 +830,7 @@
                     var kilo = parseFloat($('#kilo').val());
                     var amount = parseFloat($('#amount').val());
                     var tare = 0;
+                    var cash = 0
                     if($('#tare').val() != ""){
                         tare = parseFloat($('#tare').val())
                     }
@@ -834,9 +838,11 @@
                     if($('#partial').val()!=""){
                         partial =  parseFloat($('#partial').val());
                     }
-
+                    if($('#cash').val()!=""){
+                        cash =  parseFloat($('#cash').val());
+                    }
                     var price = parseFloat($('#price').val());
-                    var temp = (price * (kilo - tare)) -  partial ;
+                    var temp = (price * (kilo - tare)) + cash -  partial ;
                     var temp1 = price * (kilo - tare) ;
                     var temp3 =kilo - tare ;
                     var x = parseFloat(temp).toFixed(2);
@@ -859,6 +865,7 @@
                     var kilo = parseFloat($('#kilo').val());
                     var amount = parseFloat($('#amount').val());
                     var moist =  0;
+                    var cash = 0
                     if($('#moist').val()!=""){
                         moist = parseFloat($('#moist').val());
                     }
@@ -870,12 +877,15 @@
                     if($('#partial').val()!=""){
                         partial =  parseFloat($('#partial').val());
                     }
+                    if($('#cash').val()!=""){
+                        cash =  parseFloat($('#cash').val());
+                    }
                     var price = parseFloat($('#price').val());
                     var temp4 = moist/100 * kilo;
                     var temp5 = temp4*price;
                     var x2 = parseFloat(temp5).toFixed(2);
                     var x1 = parseFloat(temp4).toFixed(2);
-                    var temp = ((price * (kilo - tare))  - temp5) - partial;
+                    var temp = ((price * (kilo - tare))  - temp5) - partial + cash;
                     var temp1 =(price * (kilo - tare)) - temp5 ;
                     var temp3 = kilo  - temp4 - tare;
 
@@ -893,7 +903,7 @@
     
             if (value.which != 9) { 
             if( $('#tare').val() == ""  ){
-
+                var cash = 0
                 var total = parseFloat($('#total').val());
                 var moist = 0;
                 if($('#moist').val()!=""){
@@ -910,10 +920,13 @@
                 if($('#partial').val()!=""){
                     partial =  parseFloat($('#partial').val());
                 }
+                if($('#cash').val()!=""){
+                    cash =  parseFloat($('#cash').val());
+                }
                 var temp4 = moist/100 * kilo;
                 var temp5 = temp4*price;
                 var temp6 = (kilo * price) - temp5;
-                var temp7 = ((kilo * price) - partial)-temp5 ;
+                var temp7 = ((kilo * price)  + cash - partial)-temp5 ;
                 var temp8 = kilo - temp4;
                 var x5 = parseFloat(temp8).toFixed(2);
                 var x4 = parseFloat(temp7).toFixed(2);
@@ -928,6 +941,7 @@
 
                 var total = parseFloat($('#total').val());
                 var moist = 0
+                var cash = 0
                 if($('#moist').val()!=""){
                   moist = parseFloat($('#moist').val());
                 }
@@ -943,10 +957,13 @@
                 if($('#partial').val()!=""){
                     partial =  parseFloat($('#partial').val());
                 }
+                if($('#cash').val()!=""){
+                    cash =  parseFloat($('#cash').val());
+                }
                 var temp4 = moist/100 * kilo ;
                 var temp5 = temp4*price;
                 var temp6 = (kilo * price) - temp5 - (tare*price);
-                var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
+                var temp7 = ((kilo*price)  + cash - partial)-temp5 - (tare*price);
                 var temp8 = kilo - temp4 -tare;
                 var x5 = parseFloat(temp8).toFixed(2);
                 var x4 = parseFloat(temp7).toFixed(2);
@@ -2654,6 +2671,7 @@
             var z = 0;
             var r = 0;
             var t = 0;
+            var cash = 0;
             if($('#price').val()!=""){
                 a = parseFloat($('#kilo').val());
                 if($('#kilo').val()==""){
@@ -2665,7 +2683,10 @@
                         if($('#total').val()!=""){
                             t = parseFloat($('#total').val());
                         }
-                        var temp2 = t+r;
+                        if($('#cash').val()!=""){
+                            cash = parseFloat($('#cash').val());
+                        }
+                        var temp2 = t + cash - r;
                         var temp3 =  parseFloat(temp2).toFixed(2);
                         $('#amount').val(temp3);
                     }
@@ -2675,34 +2696,46 @@
                 }
                 else{
                     c = a*b;
-                    var temp = c + r;
+                    var temp = c - r;
                     var temporary =  parseFloat(c).toFixed(2);
                     $('#total').val(temporary);
                     var temp3 =  parseFloat(temp).toFixed(2);
                     $('#amount').val(temp3);
                     if($('#partial').val()!=""){
                         r = parseFloat($('#partial').val());
-                        temp = c + r;
+                        if($('#cash').val()!=""){
+                            cash = parseFloat($('#cash').val());
+                        }
+                        temp = c + cash -r;
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount').val(temp3);
                     }
                     if($('#total').val()!=""){
                         t = parseFloat($('#total').val());
-                        temp = c + r;
+                        if($('#cash').val()!=""){
+                            cash = parseFloat($('#cash').val());
+                        }
+                        temp = c  + cash - r;
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount').val(temp3);
                     }
                     if($('#sacks').val()==""){
-                        temp = c + r;
+                        if($('#cash').val()!=""){
+                            cash = parseFloat($('#cash').val());
+                        }
+                        temp = c + cash - r ;
                         var temp3 =  parseFloat(temp).toFixed(2);
                         $('#amount').val(temp3);
                     }
                 }
                 if($('#sacks').val()!=""){
+                    if($('#cash').val()!=""){
+                        cash = parseFloat($('#cash').val());
+                    }
                     e = 0;
                     x = b*(e*50);
                     z = x+c ;
-                    i = x+c+r ;
+                    i = x+c+cash-r ;
                     var temp3 =  parseFloat(i).toFixed(2);
                     var temporary =  parseFloat(z).toFixed(2);
                     $('#total').val(temporary);
@@ -2748,6 +2781,7 @@
                         var t = parseFloat($('#cash').val());
                         c = (d-a) + t;
                         $('#balance').val(c);
+                        
                     }
                     else{
                         if($('#partial').val() != "0"){
@@ -2762,8 +2796,11 @@
                     if($('#total').val()!=""){
                         e = parseFloat($('#total').val());
                     }
-                
-                    x = e-a;
+                    var cash = 0
+                    if($('#cash').val() != "" ){
+                        cash = parseFloat($('#cash').val());                   
+                    }
+                    x = (e+cash)-a;
                     var temp3 =  parseFloat(x).toFixed(2);
                     $('#amount').val(temp3)
                 }

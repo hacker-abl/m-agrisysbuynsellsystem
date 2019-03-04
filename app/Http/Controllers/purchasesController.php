@@ -449,10 +449,13 @@ class purchasesController extends Controller
             $released = purchases::find($request->id);
             $released->status = "Released";
             $released->released_by = $logged_id;
+            $releasedCA = ca::where('pid',$released->id)->first();
+            $releasedCA->status = "Released";
+            $releasedCA->released_by = $logged_id;
+            $releasedCA->save();
             $released->save();
-
-            $balance = balance::where('customer_id', '=',$request->customer)
-            ->decrement('balance', $request->balance1 - $request->balance);
+           
+            $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
 
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
@@ -464,10 +467,13 @@ class purchasesController extends Controller
             $released = purchases::find($request->id);
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $releasedCA = ca::where('pid',$released->id)->first();
+            $releasedCA->status = "Released";
+            $releasedCA->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $releasedCA->save();
             $released->save();
 
-            $balance = balance::where('customer_id', '=',$request->customer)
-            ->decrement('balance', $request->balance1 - $request->balance);
+             $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
 
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
