@@ -799,7 +799,7 @@
             }
         }
         function totalbalance(value) {
-            if (value.which != 9) { 
+            if (value.which != 9 && isNumber(String.fromCharCode(value.keyCode))) { 
             if($('#cash').val() !=""){
                 var x =  parseFloat($('#cash').val());
                 var y =  parseFloat($('#ca').val());

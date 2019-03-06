@@ -450,9 +450,11 @@ class purchasesController extends Controller
             $released->status = "Released";
             $released->released_by = $logged_id;
             $releasedCA = ca::where('pid',$released->id)->first();
-            $releasedCA->status = "Released";
-            $releasedCA->released_by = $logged_id;
-            $releasedCA->save();
+            if($releasedCA){
+                $releasedCA->status = "Released";
+                $releasedCA->released_by = $logged_id;
+                $releasedCA->save();
+            }
             $released->save();
            
             $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
@@ -468,9 +470,11 @@ class purchasesController extends Controller
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $releasedCA = ca::where('pid',$released->id)->first();
-            $releasedCA->status = "Released";
-            $releasedCA->released_by = $name->fname." ".$name->mname." ".$name->lname;
-            $releasedCA->save();
+            if($releasedCA){
+                $releasedCA->status = "Released";
+                $releasedCA->released_by = $name->fname." ".$name->mname." ".$name->lname;
+                $releasedCA->save();
+            }
             $released->save();
 
              $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
