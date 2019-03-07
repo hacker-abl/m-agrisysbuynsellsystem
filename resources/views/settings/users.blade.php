@@ -277,6 +277,10 @@
                         <h2>Cash History - <span class="modal_title_cash"></span> as of {{ date('Y-m-d ') }}</h2>
                     </div>
                     <div class="body">
+                     <div id="reportrange" class="btn btn-lg" style="">
+
+                            <span></span> <b class="caret"></b>
+                          </div>
                         <div class="table-responsive">
                         <br>
                             <table id="cash_history_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -288,7 +292,7 @@
                                         <th>Total Cash</th>
                                         <th>Type</th>
                                         <th>Date/Time</th>
-                                    </tr>
+                                    </tr> 
                                </thead>
                             </table>
                        </div>
@@ -304,7 +308,35 @@
 @endsection
 
 @section('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
     <script>
+    var start = moment();
+    var end = moment();
+    var historytable;
+    function cb(start, end) {
+      $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    $('#reportrange').daterangepicker({
+      startDate: start,
+      endDate: end,
+      ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+    }, cb);
+
+    cb(start, end);
+
+      
+
+
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
@@ -601,7 +633,7 @@
                     success:function(data){
                         $('.modal_title_cash').text(data.data[0].user.username);
 
-                        $('#cash_history_table').DataTable({
+                       historytable = $('#cash_history_table').DataTable({
                             dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             destroy: true,
                             buttons: [
@@ -647,11 +679,56 @@
                                 {data: 'cash_change', name: 'cash_change'},
                                 {data: 'total_cash', name: 'total_cash'},
                                 {data: 'type', name: 'type'},
-                                {data: 'created_at', name: 'created_at'}
+                                {data: 'created_at', name: 'created_at', type: "date",
+                                 render:function (value) {
+                                       var ts = new Date(value);
+
+                                      return ts.toDateString()}
+                                }
                             ]
                         });
                     }
                 })
+                $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD hh:mm') + ' to ' + picker.endDate.format('YYYY-MM-DD hh:mm'));
+              historytable.draw();
+            });
+            $("#reportrange").on('cancel.daterangepicker', function(ev, picker) {
+                  $(this).val('');
+              historytable.draw();
+            });
+         $.fn.dataTableExt.afnFiltering.push(
+            function( oSettings, aData, iDataIndex ) {
+            
+            var grab_daterange = $("#reportrange").val();
+            var give_results_daterange = grab_daterange.split(" to ");
+            var filterstart = give_results_daterange[0];
+            var filterend = give_results_daterange[1];
+            var iStartDateCol = 5; //using column 2 in this instance
+            var iEndDateCol = 5;
+            var tabledatestart = aData[iStartDateCol];
+            var tabledateend= aData[iEndDateCol];
+            
+            if ( !filterstart && !filterend )
+            {
+                return true;
+            }
+            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isBefore(tabledatestart)) && filterend === "")
+            {
+                return true;
+            }
+            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isAfter(tabledatestart)) && filterstart === "")
+            {
+                return true;
+            }
+            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isBefore(tabledatestart)) && (moment(filterend).isSame(tabledateend) || moment(filterend).isAfter(tabledateend)))
+            {
+                return true;
+            }
+            return false;
+        });
+        
+
             });
 
             //CASH History Datatable ends here
