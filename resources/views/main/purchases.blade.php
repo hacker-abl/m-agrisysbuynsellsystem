@@ -2835,21 +2835,7 @@
                         $('#balance').val(data.balance)
                         $('#balance1').val(data.balance)
                         $('#last').val(data.suki_type)
-                        if($('#partial').val()!=""){
-                            var a = 0;
-                            var b = parseFloat($('#balance').val());
-                            var d = parseFloat($('#ca').val());
-                            var c = 0;
-                            a = parseFloat($('#partial').val());
-                            c = b-a;
-                            $('#balance').val(c);
-                            if($('#cash').val() != "" || $('#cash').val() != "0"){
-                                var t = parseFloat($('#cash').val());
-                                c = (b-a) + t;
-                                $('#balance').val(c);
-                            }
-                        }
-
+                        computeAll()
                     }
                 });
        
@@ -2870,70 +2856,11 @@
                         var a = parseFloat($('#last').val());
                         if(a==1){
                             $('#price').val(data.suki_price);
-                            var d = 0;
-                            var e = 0;
-                            var b = parseFloat($('#suki').val());
-                            var c = parseFloat($('#pr').val());
-                            var t = 0;
-                            if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                                var x = 0;
-
-                                if ($('#kilo').val()!=""){
-                                    var x = parseFloat($('#kilo').val());
-                                }
-                                if ($('#sacks').val() == "" ){
-                                    d = 0;
-                                }
-                                else{
-                                    d =  parseFloat($('#sacks').val());
-                                }
-
-                                if ($('#partial').val() != "" ){
-                                    t= parseFloat($('#partial').val());
-                                }
-                                e = b * d;
-                                var y = e + (b*x);
-                                var z = e + (b*x)+t;
-                                //alert(e);
-                                var tempo =  parseFloat(y).toFixed(2);
-                                $('#total').val(tempo);
-                                var temp3 =  parseFloat(z).toFixed(2);
-                                $('#amount').val(temp3);
-                            }
                         }
                         else{
                             $('#price').val(data.price);
-                            var d = 0;
-                            var e = 0;
-                            var b = parseFloat($('#suki').val());
-                            var c = parseFloat($('#pr').val());
-                            var t = 0;
-                            if ($('#sacks').val()!="" || $('#kilo').val()!=""){
-                                var x = 0;
-
-                                if ($('#kilo').val()!=""){
-                                    var x = parseFloat($('#kilo').val());
-                                }
-                                if ($('#sacks').val() == "" ){
-                                    d = 0;
-                                }
-                                else{
-                                    d =  parseFloat($('#sacks').val());
-                                }
-
-                                if ($('#partial').val() != "" ){
-                                    t= parseFloat($('#partial').val());
-                                }
-                                e = c * (d);
-                                var y = e + (c*x);
-                                var z = e + (c*x)+t;
-                                //alert(e);
-                                var tempo =  parseFloat(y).toFixed(2);
-                                $('#total').val(tempo);
-                                var temp3 =  parseFloat(z).toFixed(2);
-                                $('#amount').val(temp3);
-                            }
                         }
+                        computeAll()
                     }
                 });
 
@@ -2974,11 +2901,72 @@
                         var a = parseFloat($('#last1').val());
                         if(a==1){
                             $('#price1').val(data.suki_price);
+                            var d = 0;
+                            var e = 0;
+                            var b = parseFloat($('#suki').val());
+                            var c = parseFloat($('#pr').val());
+                            var t = 0;
+                            if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                                var x = 0;
+
+                                if ($('#kilo1').val()!=""){
+                                    var x = parseFloat($('#kilo').val());
+                                }
+                                if ($('#sacks1').val() == "" ){
+                                    d = 0;
+                                }
+                                else{
+                                    d =  parseFloat($('#sacks1').val());
+                                }
+
+                                if ($('#partial1').val() != "" ){
+                                    t= parseFloat($('#partial1').val());
+                                }
+                                e = b * (d);
+                                var y = e + (b*x);
+                                var z = e + (b*x)+t;
+                                //alert(e);
+                                var tempo =  parseFloat(y).toFixed(2);
+                                $('#total1').val(tempo);
+                                var temp3 =  parseFloat(z).toFixed(2);
+                                $('#amount1').val(temp3);
+                                $('#amountpay1').val(temp3);
+                            }
                         }
                         else{
                             $('#price1').val(data.price);
+                            var d = 0;
+                            var e = 0;
+                            var b = parseFloat($('#suki1').val());
+                            var c = parseFloat($('#pr1').val());
+                            var t = 0;
+                            if ($('#sacks1').val()!="" || $('#kilo1').val()!=""){
+                                var x = 0;
+
+                                if ($('#kilo1').val()!=""){
+                                    var x = parseFloat($('#kilo1').val());
+                                }
+                                if ($('#sacks1').val() == "" ){
+                                    d = 0;
+                                }
+                                else{
+                                    d =  parseFloat($('#sacks1').val());
+                                }
+
+                                if ($('#partial1').val() != "" ){
+                                    t= parseFloat($('#partial1').val());
+                                }
+                                e = c * (d);
+                                var y = e + (c*x);
+                                var z = e + (c*x)+t;
+                                //alert(e);
+                                var tempo =  parseFloat(y).toFixed(2);
+                                $('#total1').val(tempo);
+                                var temp3 =  parseFloat(z).toFixed(2);
+                                $('#amount1').val(temp3);
+                                $('#amountpay1').val(temp3);
+                            }
                         }
-                        computeAll(this)
                     }
                 });
                 moist3(this);
