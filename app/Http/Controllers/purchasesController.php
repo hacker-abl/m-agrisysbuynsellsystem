@@ -137,12 +137,17 @@ class purchasesController extends Controller
             if ($request->partial != "" && intval($request->cash) <= 0 ){
                 $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
             }
-            if($request->cash > 0){    
+            if($request->cash != 0 || $request->cash != ""){    
                 $ca = new ca;
                 $ca->pid = $purchases->id;
                 $ca->customer_id = $request->customer;
-                $ca->reason = "FROM PURCHASE (Cash Advance)";
                 $ca->amount =  $request->cash - $request->partial;
+                if($ca->amount > 0 ){
+                    $ca->reason = "FROM PURCHASE (Cash Advance)";
+                }
+                else{
+                    $ca->reason = "FROM PURCHASE (Cash Advance PHP ".$request->cash.")";
+                }
                 $ca->balance = 0;
                 $ca->status = "On-Hand";
                 $ca->released_by = '';
@@ -372,7 +377,6 @@ class purchasesController extends Controller
                 $ca = new ca;
                 $ca->pid = $purchases->id;
                 $ca->customer_id = $request->customerid;
-                $ca->reason = "FROM PURCHASE (Cash Advance)";
                 if ($request->bal != ""){
                     $ca->amount =   $request->bal;
                 }   
@@ -385,6 +389,12 @@ class purchasesController extends Controller
                 }
                 if ($request->bal != "" && $request->partialpayment != ""){
                     $ca->amount = $request->bal - $request->partialpayment ;
+                }
+                if($ca->amount > 0 ){
+                    $ca->reason = "FROM PURCHASE (Cash Advance)";
+                }
+                else{
+                    $ca->reason = "FROM PURCHASE (Cash Advance PHP ".$ca->bal.")";
                 }
                 $ca->status = "On-Hand";
                 $ca->released_by = '';
@@ -439,10 +449,15 @@ class purchasesController extends Controller
             $released = purchases::find($request->id);
             $released->status = "Released";
             $released->released_by = $logged_id;
+            $releasedCA = ca::where('pid',$released->id)->first();
+            if($releasedCA){
+                $releasedCA->status = "Released";
+                $releasedCA->released_by = $logged_id;
+                $releasedCA->save();
+                $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
+            }
             $released->save();
-
-            $balance = balance::where('customer_id', '=',$request->customer)
-            ->decrement('balance', $request->balance1 - $request->balance);
+           
 
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
@@ -454,10 +469,14 @@ class purchasesController extends Controller
             $released = purchases::find($request->id);
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $releasedCA = ca::where('pid',$released->id)->first();
+            if($releasedCA){
+                $releasedCA->status = "Released";
+                $releasedCA->released_by = $name->fname." ".$name->mname." ".$name->lname;
+                $releasedCA->save();
+                $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
+            }
             $released->save();
-
-            $balance = balance::where('customer_id', '=',$request->customer)
-            ->decrement('balance', $request->balance1 - $request->balance);
 
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
