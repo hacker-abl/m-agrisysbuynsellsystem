@@ -454,10 +454,10 @@ class purchasesController extends Controller
                 $releasedCA->status = "Released";
                 $releasedCA->released_by = $logged_id;
                 $releasedCA->save();
+                $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
             }
             $released->save();
            
-            $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
 
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
@@ -474,10 +474,9 @@ class purchasesController extends Controller
                 $releasedCA->status = "Released";
                 $releasedCA->released_by = $name->fname." ".$name->mname." ".$name->lname;
                 $releasedCA->save();
+                $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
             }
             $released->save();
-
-             $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
 
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
