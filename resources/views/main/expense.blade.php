@@ -2263,8 +2263,17 @@
                         method: "get",
                         data:{id:id},
                         success:function(data){
+                            var dataparsed= JSON.parse(data)
+                            console.log(dataparsed);
                             refresh_expense_table();
-                             swal("Deleted!", "The record has been deleted.", "success");
+                            
+                             if (typeof dataparsed.cashOnHand !== 'undefined') {
+                                   $('#curCashOnHand').html(dataparsed.cashOnHand.toFixed(2));
+                                    swal("Released Expense Deleted!", "Remaining Balance: ₱"+dataparsed.cashOnHand.toFixed(2)+" | Transaction ID: "+dataparsed.cashHistory, "success")
+                            }else{
+                                 swal("Deleted!", "The record has been deleted.", "success");
+                            }
+                           
                         }
                     })
                 }
