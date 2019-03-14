@@ -763,30 +763,33 @@
         var amtpay = 0
         var net = 0
         if ($('#kilo').val() != ""){
-            kilo = parseInt($('#kilo').val())
+            kilo = parseFloat($('#kilo').val())
         }
         if ($('#price').val() != ""){
-            price = parseInt($('#price').val())
+            price = parseFloat($('#price').val())
         }
         if ($('#tare').val() != ""){
-            tare = parseInt($('#tare').val())
+            tare = parseFloat($('#tare').val())
         }
         if ($('#moist').val() != ""){
-            moist = parseInt($('#moist').val())
+            moist = parseFloat($('#moist').val())
         }
         if ($('#cash').val() != ""){
-            ca = parseInt($('#cash').val())
+            ca = parseFloat($('#cash').val())
         }
         if ($('#partial').val() != ""){
-            partial = parseInt($('#partial').val())
+            partial = parseFloat($('#partial').val())
         }
         if ($('#balance').val() != ""){
-            balance = parseInt($('#balance').val())
+            balance = parseFloat($('#balance').val())
         }
         if ($('#ca').val() != ""){
-            prev = parseInt($('#ca').val())
+            prev = parseFloat($('#ca').val())
         }
-        net =   (kilo - tare) -(moist/100 * kilo)
+        if ($('#net').val() != ""){
+            net = parseFloat($('#net').val())
+        }
+        net =   (kilo - tare) - (moist/100 * net)
         total = net * price
         amtpay  = (ca - partial) + total
         balance = prev + ca-partial
