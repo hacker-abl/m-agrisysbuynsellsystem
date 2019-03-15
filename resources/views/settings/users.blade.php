@@ -151,6 +151,19 @@
                             </div>
 
                             <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="remarks">Remarks</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="remarks" name="remarks" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
                                 <div class="modal-footer">
                                     <button type="submit" id="add_cash_submit" class="btn btn-link waves-effect">SAVE CHANGES</button>
                                     <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
@@ -480,6 +493,7 @@
                         $('#add_cash_access_id').val(data.access_id);
                         $('#add_cash_username').val(data.username);
                         $('#current_cash').val(data.cashOnHand);
+                        $('#remarks').val(data.type);
                         $('#add_cash').val("");
                         $('#total_cash').val($('#current_cash').val());
                     },

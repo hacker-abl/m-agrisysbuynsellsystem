@@ -51,7 +51,8 @@ class usersController extends Controller
             'id' => $user->id,
             'access_id' => $user->access_id,
             'username' => $user->username,
-            'cashOnHand' => $user->cashOnHand
+            'cashOnHand' => $user->cashOnHand,
+            'type' => $user->type
         );
         echo json_encode($output);
     }
@@ -79,7 +80,13 @@ class usersController extends Controller
         $cash_history->previous_cash = $request->current_cash;
         $cash_history->cash_change = $request->add_cash;
         $cash_history->total_cash = $request->total_cash;
-        $cash_history->type = "Add Cash";
+        info($request->remarks);
+        if($request->remarks){
+            $cash_history->type = $request->remarks;
+        }
+        else{
+            $cash_history->type = "Add Cash";
+        }
         $cash_history->save();
 
         $output = array(
@@ -143,7 +150,6 @@ class usersController extends Controller
             $cash_history->previous_cash = 0;
             $cash_history->cash_change = 0;
             $cash_history->total_cash = 0;
-            $cash_history->type = "Add Cash";
             $cash_history->save();
         }
 
@@ -152,6 +158,7 @@ class usersController extends Controller
             $user = $user->validation('update', $request->all());
             $user->emp_id = $request->emp_id;
             $user->username = $request->username;
+            $cash_history->type = "Add Cash";
             $user->save();
         }
 
