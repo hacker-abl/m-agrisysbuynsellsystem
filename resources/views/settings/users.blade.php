@@ -493,7 +493,6 @@
                         $('#add_cash_access_id').val(data.access_id);
                         $('#add_cash_username').val(data.username);
                         $('#current_cash').val(data.cashOnHand);
-                        $('#remarks').val(data.type);
                         $('#add_cash').val("");
                         $('#total_cash').val($('#current_cash').val());
                     },
