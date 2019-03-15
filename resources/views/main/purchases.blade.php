@@ -793,10 +793,10 @@
         total = net * price
         amtpay  = (ca - partial) + total
         balance = prev + ca-partial
-        $('#total').val(total)
-        $('#amount').val(amtpay)
-        $('#balance').val(balance)
-        $('#net').val(net)
+        $('#total').val(parseFloat(total).toFixed(2))
+        $('#amount').val(parseFloat(amtpay).toFixed(2))
+        $('#balance').val(parseFloat(balance).toFixed(2))
+        $('#net').val(parseFloat(net).toFixed(2))
 
     }
         $("#resetNiCash").click(function(){
