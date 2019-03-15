@@ -137,7 +137,7 @@ class purchasesController extends Controller
             if ($request->partial != "" && intval($request->cash) <= 0 ){
                 $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
             }
-            if($request->cash != 0 || $request->cash != ""){    
+            if(intval($request->cash) != 0){    
                 $ca = new ca;
                 $ca->pid = $purchases->id;
                 $ca->customer_id = $request->customer;
