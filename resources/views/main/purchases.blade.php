@@ -695,6 +695,7 @@
                                                  <th width="100" style="text-align:center;">No. of Sacks</th>
                                                  <th width="100" style="text-align:center;">Cash Advance</th>
                                                  <th width="100" style="text-align:center;">Partial Payment</th>
+                                                 <th width="100" style="text-align:center;">Previous Balance </th>
                                                  <th width="100" style="text-align:center;">Balance </th>
                                                  <th width="100" style="text-align:center;" >No. of Kilos</th>
                                                  <th width="100" style="text-align:center;" >Moisture</th>
@@ -1362,7 +1363,8 @@
                     {data: 'sacks'},
                     {data: 'balance_id'},
                     {data: 'partial'},
-                    {data: 'balance', name: 'balance.balance'},
+                    {data: 'previous_bal'},
+                    {data: 'balance'},
                     {data: 'kilo'},
                     {data: 'type'},
                     {data: 'tare'},
@@ -1577,7 +1579,8 @@
                             {data: 'sacks'},
                             {data: 'balance_id'},
                             {data: 'partial'},
-                            {data: 'balance', name: 'balance.balance'},
+                            {data: 'previous_bal'},
+                            {data: 'balance'},
                             {data: 'kilo'},
                             {data: 'type'},
                             {data: 'tare'},
@@ -1772,7 +1775,8 @@
                     {data: 'sacks'},
                     {data: 'balance_id'},
                     {data: 'partial'},
-                    {data: 'balance', name: 'balance.balance'},
+                    {data: 'previous_bal'},
+                    {data: 'balance'},
                     {data: 'kilo'},
                     {data: 'type'},
                     {data: 'tare'},
@@ -1988,7 +1992,8 @@
                             {data: 'sacks'},
                             {data: 'balance_id'},
                             {data: 'partial'},
-                            {data: 'balance', name: 'balance.balance'},
+                            {data: 'previous_bal'},
+                            {data: 'balance'},
                             {data: 'kilo'},
                             {data: 'type'},
                             {data: 'tare'},
@@ -2182,7 +2187,8 @@
                     {data: 'sacks'},
                     {data: 'balance_id'},
                     {data: 'partial'},
-                    {data: 'balance', name: 'balance.balance'},
+                    {data: 'previous_bal'},
+                    {data: 'balance'},
                     {data: 'kilo'},
                     {data: 'type'},
                     {data: 'tare'},
