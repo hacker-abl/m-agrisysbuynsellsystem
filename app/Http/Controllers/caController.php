@@ -80,7 +80,7 @@ class caController extends Controller
             $cid =  $customer->id;
             $balance = new balance;
             $balance->customer_id =$cid;
-            $balance->balance = $request->bal;
+            $balance->balance = 0;
             $balance->logs_ID = $cid;
             $balance->save();
 
@@ -88,7 +88,7 @@ class caController extends Controller
             $ca->customer_id = $cid;
             $ca->reason = $request->reason1;
             $ca->amount = $request->bal;
-            $ca->balance = 0 +  $request->bal;
+            $ca->balance = 0;
             $ca->status = "On-Hand";
             $ca->released_by = '';
             $ca->save();
