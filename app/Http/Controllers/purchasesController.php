@@ -450,6 +450,7 @@ class purchasesController extends Controller
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);
             $released = purchases::find($request->id);
+            if($released->status == 'Released'){return false;}
             $released->status = "Released";
             $released->released_by = $logged_id;
             $releasedCA = ca::where('pid',$released->id)->first();
@@ -470,6 +471,7 @@ class purchasesController extends Controller
             $user = User::find(Auth::user()->id);
 
             $released = purchases::find($request->id);
+            if($released->status == 'Released'){return false;}
             $released->status = "Released";
             $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
             $releasedCA = ca::where('pid',$released->id)->first();
@@ -586,7 +588,7 @@ class purchasesController extends Controller
             }if($userid!=1 && $ultimatesickquery->status=="On-Hand" && $delete==0 && $edit==0){
                 return '<button class="btn btn-xs btn-success release_purchase waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">eject</i></button>';
             }else{
-              return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>';
+                return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">done_all</i></button>';
             }
         })
         ->addColumn('wholename', function ($data){

@@ -80,9 +80,8 @@ class usersController extends Controller
         $cash_history->previous_cash = $request->current_cash;
         $cash_history->cash_change = $request->add_cash;
         $cash_history->total_cash = $request->total_cash;
-        info($request->remarks);
         if($request->remarks){
-            $cash_history->type = $request->remarks;
+            $cash_history->type = "Add Cash (".$request->remarks.")";
         }
         else{
             $cash_history->type = "Add Cash";
