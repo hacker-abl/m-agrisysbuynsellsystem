@@ -119,6 +119,7 @@ class purchasesController extends Controller
             else if ($request->partial == ""){
                 $purchases->partial = 0;
             }
+            $purchases->previous_bal = $request->ca;
             $purchases->kilo = $request->kilo;
             $purchases->price = $request->price;
             $purchases->type = $request->type1;
@@ -250,6 +251,7 @@ class purchasesController extends Controller
             else if ($request->partial == ""){
                 $purchases->partial = 0;
             }
+            $purchases->previous_bal = $request->ca;
             $purchases->kilo = $request->kilo;
             $purchases->type = $request->type1;
             $purchases->tare = $request->tare;
@@ -278,6 +280,7 @@ class purchasesController extends Controller
             if($request->partial != "" && $request->partial != $purchases->partial){
                 $purchases->partial = $request->partial;
             }
+            $purchases->previous_bal = $request->ca;
             $purchases->kilo = $request->kilo;
             $purchases->type = $request->type1;
             $purchases->tare = $request->tare;
@@ -535,7 +538,8 @@ class purchasesController extends Controller
               ->join('customer', 'customer.id', '=', 'purchases.customer_id')
               ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
               ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
-              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.previous_bal','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
+              ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
               //->orderBy('purchases.id', 'desc')
               ->latest();
           }else{
@@ -543,7 +547,7 @@ class purchasesController extends Controller
               ->join('customer', 'customer.id', '=', 'purchases.customer_id')
               ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
               ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
-              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.previous_bal','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
               ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
               ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
               //->orderBy('purchases.id', 'desc')
@@ -619,11 +623,19 @@ class purchasesController extends Controller
         })
 
         ->editColumn('balance', function ($data) {
-            return '₱'.number_format($data->balance, 2, '.', ',');
+            return '₱'.number_format($data->balance_id+((float) $data->previous_bal), 2, '.', ',');
         })
 
         ->editColumn('partial', function ($data) {
             return '₱'.number_format($data->partial, 2, '.', ',');
+        })
+        ->editColumn('previous_bal', function ($data) {
+            if($data->previous_bal==null || $data->previous_bal==" "){
+                return '₱ 0.00';
+            }else{
+                return '₱'.number_format($data->previous_bal, 2, '.', ',');
+            }
+            
         })
 
         ->editColumn('total', function ($data) {

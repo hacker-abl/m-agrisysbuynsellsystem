@@ -303,7 +303,7 @@
                                         <th>Previous Amount</th>
                                         <th>Change in Cash</th>
                                         <th>Total Cash</th>
-                                        <th>Type</th>
+                                        <th>Remarks</th>
                                         <th>Date/Time</th>
                                     </tr> 
                                </thead>
@@ -329,6 +329,7 @@
     var end = moment();
     var historytable;
     function cb(start, end) {
+        console.log("Start:"+start.format('MMMM D, YYYY'), "End:"+end.format('MMMM D, YYYY'));
       $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
 
@@ -703,7 +704,7 @@
                     }
                 })
                 $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD hh:mm') + ' to ' + picker.endDate.format('YYYY-MM-DD hh:mm'));
+            $(this).val(picker.startDate.format('MMMM D, YYYY') + ' to ' + picker.endDate.format('MMMM D, YYYY'));
               historytable.draw();
             });
             $("#reportrange").on('cancel.daterangepicker', function(ev, picker) {
