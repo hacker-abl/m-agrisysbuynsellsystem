@@ -834,7 +834,7 @@
                });
 
             $(document).on('click','.open_ca_modal', function(){
-                 $('#c').removeClass('focused');
+                $('#c').removeClass('focused');
                 $("#customer_id").val('').trigger('change');
                 $("#reason").val('').trigger('change');
                 $("#amount").val('').trigger('change');
@@ -848,12 +848,13 @@
                $(document).on('click','.open_balancemodal', function(){
                     $('#pm').removeClass('focused');
                     $('#c1').removeClass('focused');
-                   $("#customer_id1").val('').trigger('change');
-                   $("#paymentmethod").val('').trigger('change');
-                   $("#reason").val('').trigger('change');
-                   $("#amount").val('').trigger('change');
-                   $("#balance").val('').trigger('change');
-                   $('#balancemodal').modal('show');
+                    $("#customer_id1").val('').trigger('change');
+                    $("#paymentmethod").val('').trigger('change');
+                    $("#reason").val('').trigger('change');
+                    $("#amount").val('').trigger('change');
+                    $("#balance").val('').trigger('change');
+                    $('.modal_title').text('Add Payment');
+                    $('#balancemodal').modal('show');
    			});
 
 
