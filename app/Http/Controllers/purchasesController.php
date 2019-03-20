@@ -625,7 +625,7 @@ class purchasesController extends Controller
         })
 
         ->editColumn('balance', function ($data) {
-            return '₱'.number_format($data->balance_id+((float) $data->previous_bal), 2, '.', ',');
+            return '₱'.number_format($data->balance_id+((float) $data->previous_bal-$data->partial), 2, '.', ',');
         })
 
         ->editColumn('partial', function ($data) {
