@@ -230,7 +230,11 @@ class usersController extends Controller
         $id = $request->id;
         $cash_history = Cash_History::with('user')->where('user_id', $id)->orderBy('id', 'DESC')->get();
 
-        return \DataTables::of($cash_history)->make(true);
+        return \DataTables::of($cash_history)
+         ->editColumn('created_at', function ($data) {
+
+                    return date('F d Y, h:i:s A',strtotime($data->created_at));
+                })->make(true);
     }
 
     function deletedata(Request $request){

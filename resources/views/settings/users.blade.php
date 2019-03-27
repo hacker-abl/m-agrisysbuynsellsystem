@@ -314,7 +314,7 @@
                        </div>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
     <!-- #END# Exportable Table -->
@@ -329,8 +329,8 @@
     var end = moment();
     var historytable;
     function cb(start, end) {
-        console.log("Start:"+start.format('MMMM D, YYYY'), "End:"+end.format('MMMM D, YYYY'));
-      $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        console.log("Start:"+start.format('MMMM D YYYY, h:mm:ss a'), "End:"+end.format('MMMM D YYYY, h:mm:ss a'));
+      $('#reportrange span').html(start.format('MMMM D YYYY, h:mm:ss a') + ' - ' + end.format('MMMM D YYYY, h:mm:ss a'));
     }
 
     $('#reportrange').daterangepicker({
@@ -693,18 +693,13 @@
                                 {data: 'cash_change', name: 'cash_change'},
                                 {data: 'total_cash', name: 'total_cash'},
                                 {data: 'type', name: 'type'},
-                                {data: 'created_at', name: 'created_at', type: "date",
-                                 render:function (value) {
-                                       var ts = new Date(value);
-
-                                      return ts.toDateString()}
-                                }
+                                {data: 'created_at', name: 'created_at'}
                             ]
                         });
                     }
                 })
                 $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('MMMM D, YYYY') + ' to ' + picker.endDate.format('MMMM D, YYYY'));
+            $(this).val(picker.startDate.format('MMMM D YYYY, h:mm:ss a') + ' to ' + picker.endDate.format('MMMM D YYYY, h:mm:ss a'));
               historytable.draw();
             });
             $("#reportrange").on('cancel.daterangepicker', function(ev, picker) {
