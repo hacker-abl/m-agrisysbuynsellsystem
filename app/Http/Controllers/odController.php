@@ -252,8 +252,14 @@ class odController extends Controller
         ->editColumn('allowance', function ($data) {
             return '₱'.number_format($data->allowance, 2, '.', ',');
         })
+        ->editColumn('kilos', function ($data) {
+            return number_format($data->kilos, 2, '.', ',');
+        })
+        ->editColumn('fuel_liters', function ($data) {
+            return number_format($data->fuel_liters, 2, '.', ',');
+        })
          ->editColumn('created_at', function ($data) {
-            return date('F d, Y g:i a', strtotime($data->created_at));
+            return date('F d Y, h:i:s A',strtotime($data->created_at));
         })
         ->make(true);
     }
@@ -316,8 +322,8 @@ class odController extends Controller
         ->editColumn('amount', function ($data) {
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
-         ->editColumn('created_at', function ($data) {
-            return $data->created_at;
+        ->editColumn('created_at', function ($data) {
+            return date('F d Y, h:i:s A',strtotime($data->created_at));
         })
         ->editColumn('released_by', function ($data) {
             if($data->released_by==""){

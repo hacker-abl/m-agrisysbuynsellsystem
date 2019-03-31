@@ -1003,11 +1003,7 @@
                     {data: 'type'},
                     {data: 'amount'},
                     {data: 'status'},
-                    {data:'created_at',
-                        render: function(data, type, full, meta){
-                            var d = new Date(data).toDateString(); 
-                            return d;
-                        }
+                    {data:'created_at'
                     },
                     {data: 'released_by'},
                     {data: "action", orderable:false,searchable:false}
@@ -1117,11 +1113,7 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                            {data:'created_at'
                             },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
@@ -1224,11 +1216,7 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                        {data:'created_at'
                         },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}
@@ -1330,7 +1318,7 @@
                                 date_from: date_from_trip,
                                 date_to: date_to_trip,
                             },
-                        },
+                        }, 
                         processing: true,
                         serverSide: true,
                         columns: [
@@ -1339,11 +1327,7 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                            {data:'created_at'
                             },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
@@ -1446,11 +1430,7 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                        {data:'created_at'
                         },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}
@@ -1559,11 +1539,7 @@
                     {data: 'type'},
                     {data: 'amount'},
                     {data: 'status'},
-                    {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                    {data:'created_at'
                     },
                     {data: 'released_by'},
                     {data: "action", orderable:false,searchable:false}
@@ -1669,11 +1645,7 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                            {data:'created_at'
                             },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
@@ -1772,11 +1744,7 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                        {data:'created_at'
                         },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}
@@ -1883,11 +1851,7 @@
                             {data: 'type'},
                             {data: 'amount'},
                             {data: 'status'},
-                            {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                            {data:'created_at'
                             },
                             {data: 'released_by'},
                             {data: "action", orderable:false,searchable:false}
@@ -1986,11 +1950,7 @@
                         {data: 'type'},
                         {data: 'amount' },
                         {data: 'status'},
-                        {data:'created_at',
-                                render: function(data, type, full, meta){
-                                    var d = new Date(data).toDateString(); 
-                                    return d;
-                                }
+                        {data:'created_at'
                         },
                         {data: 'released_by'},
                         {data: "action", orderable:false,searchable:false}

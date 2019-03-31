@@ -181,7 +181,7 @@
                                              <div class="form-group">
                                                   <label for="name">Tare (KG)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="tare" onkeyup="computeAll(this)" name="tare" value="" class="form-control" required>
+                                                       <input type="number" min="0" id="tare" onkeyup="computeAll(this)" name="tare" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -195,7 +195,7 @@
                                              <div class="form-group">
                                                   <label for="name">Moisture (%)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="moist" onkeyup="computeAll(this)" name="moist" value="" class="form-control" required>
+                                                       <input type="number" id="moist" min="0" onkeyup="computeAll(this)" name="moist" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -209,7 +209,7 @@
                                              <div class="form-group">
                                                   <label for="name">Net Weight</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="net" name="net" readonly="readonly" value="" class="form-control" required>
+                                                       <input type="number" id="net"  name="net" readonly="readonly" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -224,7 +224,7 @@
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                                  <div class="form-line">
-                                                      <input type="number" id="ca" name="ca" readonly="readonly" value="" class="form-control" required>
+                                                      <input type="number" id="ca" min="0" name="ca" readonly="readonly" value="" class="form-control" required>
                                                  </div>
                                             </div>
                                        </div>
@@ -238,7 +238,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-                                                    <input type="number"  id="cash" onkeyup="computeAll(this)" name="cash"   class="form-control"   required>
+                                                    <input type="number"  id="cash" min="0" onkeyup="computeAll(this)" name="cash"   class="form-control"   required>
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiCash" class="btn btn-primary waves-effect">Reset</button>
@@ -254,7 +254,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-                                                     <input type="number" id="partial" onkeyup="computeAll(this)" name="partial"  class="form-control"   required>
+                                                     <input type="number" id="partial" min="0" onkeyup="computeAll(this)" name="partial"  class="form-control"   required>
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiPartial" class="btn btn-primary waves-effect">Reset</button>
@@ -676,15 +676,26 @@
                                   </li>
                              </ul>
                         </div>
-                        <div class="body">
+                         
+                        <div class="body"> 
                              <div class="table-responsive">
+                             
+                             <div style="margin-bottom: -62px; margin-left: 480px;z-index: 999;">
+                              <h5>Commodity Filter</h5>
+                              <select style="width: 150px;" type="text" id="commodityfilter" name="commodityfilter" data-placeholder="Select Commodity" >
+                                    <option value="none">All</option>
+                                     @foreach($commodity as $a)
+                                     <option value="{{ $a->name }}">{{ $a->name }}</option>
+                                     @endforeach
+                                </select>
+                            </div>
                               <p id="date_filter">
                                 <h5>Date Range Filter</h5>
                                 <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="purchase_datepicker_from" />
                                 <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="purchase_datepicker_to" />
                             </p>
-                            <br>
-                                  <table id="purchasetable" class="table table-bordered table-striped table-hover  ">
+                                <table id="purchasetable" class="table table-bordered table-striped table-hover" style="z-index: -1;">
+                                  
                                        <thead>
                                             <tr>
                                                  <th width="100" style="text-align:center;">ID</th>
@@ -801,6 +812,16 @@
         $('#net').val(parseFloat(net).toFixed(2))
 
     }
+
+
+        $('form').on('focus', 'input[type=number]', function (e) {
+            $(this).on('mousewheel.disableScroll', function (e) {
+              e.preventDefault()
+            })
+          })
+          $('form').on('blur', 'input[type=number]', function (e) {
+            $(this).off('mousewheel.disableScroll')
+          })
         $("#resetNiCash").click(function(){
             $("#cash").prop("disabled", false) ;
             var t = 0;
@@ -844,9 +865,10 @@
             $("#resetNiPartial").hide();
         });
         var purchasestable;
-        var purchase_date_from;
-        var purchase_date_to;
+        var purchase_date_from = "";
+        var purchase_date_to="";
         var id;
+        var commodityselected="";
         function compute(value){
              if (value.which != 9) { 
                 if($('#bal').val() != ""){
@@ -1151,6 +1173,183 @@
                     processing: 'Loading.. Please wait'
                 }
             });
+            $("#commodityfilter").on('change', function(e) {
+              commodityselected=this.value;
+              console.log(commodityselected);
+              console.log(purchase_date_from);
+              console.log(purchase_date_to);
+               $('#purchasetable').dataTable().fnDestroy();
+                    purchasestable = $('#purchasetable').DataTable({
+                         "footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+
+                    // Total over this page
+                    pageTotal4 = api
+                        .column( 10, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 10 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal4,2) + ' kg'
+                    );
+
+                    // Total over this page
+                    pageTotal5 = api
+                        .column( 16, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 16 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal5,2)
+                    );
+
+                    // Total over this page
+                    pageTotal6 = api
+                        .column( 17, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 17 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal6,2)
+                    );
+
+                    // Total over this page
+                    pageTotal7 = api
+                        .column( 14, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 14 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal7,2) + ' kg'
+                    );
+                },
+                        dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        buttons: [{
+                            extend: 'print',
+                            pageSize: 'LEGAL',
+                            exportOptions: {
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                            },
+                            customize: function ( win ) {
+                                var last = null;
+                                var current = null;
+                                var bod = [];
+
+                                var css = '@page { size: landscape; }',
+                                    head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                    style = win.document.createElement('style');
+
+                                style.type = 'text/css';
+                                style.media = 'print';
+
+                                if (style.styleSheet){
+                                    style.styleSheet.cssText = css;
+                                }
+                                else{
+                                    style.appendChild(win.document.createTextNode(css));
+                                }
+
+                                head.appendChild(style);
+
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
+                            },
+                            footer: true
+                        },
+                        { 
+                            extend: 'pdfHtml5', 
+                            footer: true, 
+                            orientation: 'landscape', 
+                            pageSize: 'LEGAL' , 
+                            exportOptions: { 
+                                columns: [ 0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                            },
+                            customize: function(doc) {
+                                doc.styles.tableHeader.fontSize = 8;  
+                                doc.styles.tableFooter.fontSize = 8;   
+                                doc.defaultStyle.fontSize = 8; 
+                            }  
+                        }
+                        ],
+                        scrollX: true,
+                        fixedColumns: {
+                            leftColumns: 2,
+                            rightColumns: 1
+                        },
+                        processing: true,
+
+                        order:[],
+                        columnDefs: [{
+                            "targets": "_all", // your case first column
+                            "className": "text-center",
+                        }],
+                        ajax:{
+                            url: "{{ route('refresh_purchases') }}",
+                            // dataType: 'text',
+                            type: 'post',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                date_from: purchase_date_from,
+                                date_to: purchase_date_to,
+                                commodity: commodityselected,
+                            },
+                        },
+                        columns: [
+                            {data: 'trans_no'},
+                            {data:'wholename', name: 'customer.fname' },
+                            {data:'mname', name: 'customer.mname',visible:false  },
+                            {data:'lname', name: 'customer.lname',visible:false  },
+                            {data: 'commname', name: 'commodity.name'},
+                            {data: 'sacks'},
+                            {data: 'balance_id'},
+                            {data: 'partial'},
+                            {data: 'previous_bal'},
+                            {data: 'balance'},
+                            {data: 'kilo'},
+                            {data: 'type'},
+                            {data: 'tare'},
+                            {data: 'moist'},
+                            {data: 'net'},
+                            {data: 'price'},
+                            {data: 'total'},
+                            {data: 'amtpay'},
+                            {data:'created_at'},
+                            {data:'status'},
+                            {data:'released_by'},
+                            {data: 'remarks'},
+                            {data: "action", orderable:false,searchable:false}
+                        ]
+                    });
+                
+
+
+            });
 
             function number_format(number, decimals, dec_point, thousands_sep) {
                 // Strip all characters but numerical ones.
@@ -1314,6 +1513,7 @@
                     data: {
                         date_from: purchase_date_from,
                         date_to: purchase_date_to,
+                        commodity: commodityselected,
                     },
                 },
                 columns: [
@@ -1491,6 +1691,7 @@
                             data: {
                                 date_from: purchase_date_from,
                                 date_to: purchase_date_to,
+                                commodity: commodityselected,
                             },
                         },
                         columns: [
@@ -1661,6 +1862,7 @@
                     data: {
                         date_from: purchase_date_from,
                         date_to: purchase_date_to,
+                        commodity: commodityselected,
                     },
                 },
                 columns: [
@@ -1839,6 +2041,7 @@
                             data: {
                                 date_from: purchase_date_from,
                                 date_to: purchase_date_to,
+                                commodity: commodityselected,
                             },
                         },
                         columns: [
@@ -2008,6 +2211,7 @@
                     data: {
                         date_from: purchase_date_from,
                         date_to: purchase_date_to,
+                        commodity: commodityselected,
                     },
                 },
                 columns: [
@@ -2611,6 +2815,9 @@
                     }
                 })
             });
+            $("#commodityfilter").select2({
+            placeholder: "Select Commodity"
+          });
 
             $('#commodity').select2({
                 dropdownParent: $('#purchase_modal'),

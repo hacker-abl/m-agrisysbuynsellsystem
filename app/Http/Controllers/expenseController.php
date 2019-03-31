@@ -254,7 +254,8 @@ class expenseController extends Controller
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
          ->editColumn('created_at', function ($data) {
-            return date('F d, Y g:i a', strtotime($data->created_at));
+
+            return date('F d Y, h:i:s A',strtotime($data->created_at));
         })
          ->editColumn('released_by', function ($data) {
             if($data->released_by==""){

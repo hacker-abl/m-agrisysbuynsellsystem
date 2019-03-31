@@ -242,15 +242,15 @@
             </div>
         </div>
     </div>
-@endsection
 
+@endsection
 @section('script')
     <script>
+        $(document).ready(function() {
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
         });
-
-        $(document).ready(function() {
+          
             $('.delete').hide();
             $.extend( $.fn.dataTable.defaults, {
                 "language": {
@@ -271,13 +271,119 @@
 
             document.title = "M-Agri - Trips";
 
+             pickuptable = $('#triptable').DataTable({
+                "footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column( 2 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+                },
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                buttons: [
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    },
+                    { 
+                        extend: 'pdfHtml5', 
+                        footer: true,
+                        exportOptions: { 
+                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+                        },
+                        customize: function(doc) {
+                            doc.styles.tableHeader.fontSize = 8;  
+                            doc.styles.tableFooter.fontSize = 8;   
+                            doc.defaultStyle.fontSize = 8; 
+                            
+                        }  
+                    }
+                ],
+                paging: true,
+                columnDefs: [
+                {
+                    "targets": "_all", // your case first column
+                    "className": "text-center",
+                    
+                }
+                ],
+                pageLength: 10,
+                order:[],
+                ajax:{
+                   
+                        url: "{{ route('refresh_pickup') }}",
+                        // dataType: 'text',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                        data: {
+                            date_from: trip_date_from,
+                            date_to: trip_date_to,
+                        },
+                       
+                  
+                },
+                columns: [
+                    {data: 'trip_ticket'},
+                    {data: 'commodity_name'},
+                    {data: 'expense'},
+                    {data: 'destination'},
+                    {data: 'name'},
+                    {data:'fname',
+                        render: function(data, type, full, meta){
+                            return full.fname +" "+ full.mname+" "+full.lname;
+                        }
+                    },
+                    {data: 'plateno'},
+                    {data: 'num_liters'},
+                    {data: 'created_at'},
+                    {data: "action", orderable:false,searchable:false}
+                ]
+            });
+
             //Date Range Filter
             $("#trip_datepicker_from").datepicker({
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
                 buttonImageOnly: false,
                 "onSelect": function(date) {
-                   
                 minDateFilter = new Date(date).getTime();
                 var df= new Date(date);
                 trip_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
@@ -380,7 +486,7 @@
                     {data: 'created_at'},
                     {data: "action", orderable:false,searchable:false}
                 ]
-            });
+                });
 
                 }
               }).keyup(function() {
@@ -491,7 +597,7 @@
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
                 buttonImageOnly: false,
-                "onSelect": function(date) {
+                "onSelect": function(date){
                 maxDateFilter = new Date(date).getTime();
                 //oTable.fnDraw();
                 var dt= new Date(date);
@@ -700,6 +806,7 @@
                 ]
             });
               });
+
 
             //END OF DATE RANGE FILTER
             $('.delete').click(function(event){
@@ -1105,112 +1212,7 @@
                 return s.join(dec);
             }
 
-            pickuptable = $('#triptable').DataTable({
-                "footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i == 'string' ?
-                            i.replace(/[\₱,]/g, '')*1 :
-                            typeof i == 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    total = api
-                        .column( 2 )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    pageTotal = api
-                        .column( 2, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 2 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-                },
-                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; 
-                            
-						}  
-					}
-                ],
-                paging: true,
-                columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
-                pageLength: 10,
-                order:[],
-                ajax:{
-                   
-                        url: "{{ route('refresh_pickup') }}",
-                        // dataType: 'text',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                          },
-                        data: {
-                            date_from: trip_date_from,
-                            date_to: trip_date_to,
-                        },
-                       
-                  
-                },
-                columns: [
-                    {data: 'trip_ticket'},
-                    {data: 'commodity_name'},
-                    {data: 'expense'},
-                    {data: 'destination'},
-                    {data: 'name'},
-                    {data:'fname',
-                        render: function(data, type, full, meta){
-                            return full.fname +" "+ full.mname+" "+full.lname;
-                        }
-                    },
-                    {data: 'plateno'},
-                    {data: 'num_liters'},
-                    {data: 'created_at'},
-                    {data: "action", orderable:false,searchable:false}
-                ]
-            });
+           
 
             $("#plateno").select2({
                 dropdownParent: $('#pickup_modal_update'),
@@ -1225,9 +1227,8 @@
             $("#commodity").select2({
                 dropdownParent: $('#pickup_modal_update'),
                 placeholder: 'Select Commodity'
+            });     
             });
-        });//END DOCUMENT READY
-
             
     </script>
 @endsection

@@ -532,10 +532,12 @@ class purchasesController extends Controller
     }
 
     public function refresh(Request $request){   
+        // echo '<script type="text/javascript">console.log("' . $commodity . '"); </script>';
         $from = $request->date_from;
-        $to = $request->date_to;    
-
-        if($to==""&&$from==""){
+        $to = $request->date_to;   
+        $commodity= $request->commodity;
+        
+        if($to==""&&$from==""&&$commodity==null){
             $ultimatesickquery= DB::table('purchases')
               ->join('customer', 'customer.id', '=', 'purchases.customer_id')
               ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
@@ -544,7 +546,28 @@ class purchasesController extends Controller
               ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
               //->orderBy('purchases.id', 'desc')
               ->latest();
-          }else{
+          }
+         else if($to==""&&$from==""&&$commodity=="none"){
+            $ultimatesickquery= DB::table('purchases')
+              ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+              ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+              ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.previous_bal','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
+              ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
+              //->orderBy('purchases.id', 'desc')
+              ->latest();
+          }else if($to==""&&$from==""&&$commodity!="none"){
+            $ultimatesickquery= DB::table('purchases')
+              ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+              ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+              ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.previous_bal','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by','customer.fname','customer.mname','customer.lname')
+              ->where('commodity.name',$commodity)
+              ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
+              //->orderBy('purchases.id', 'desc')
+              ->latest();
+          }
+          else if($to!=""&&$from!=""&&$commodity=="none"){
               $ultimatesickquery= DB::table('purchases')
               ->join('customer', 'customer.id', '=', 'purchases.customer_id')
               ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
@@ -554,8 +577,28 @@ class purchasesController extends Controller
               ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
               //->orderBy('purchases.id', 'desc')
               ->latest();        
+          }else if($to!=""&&$from!=""&&$commodity==null){
+              $ultimatesickquery= DB::table('purchases')
+              ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+              ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+              ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.previous_bal','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
+              ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+              ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+              //->orderBy('purchases.id', 'desc')
+              ->latest();        
+          }else{
+              $ultimatesickquery= DB::table('purchases')
+              ->join('customer', 'customer.id', '=', 'purchases.customer_id')
+              ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+              ->join('balance', 'balance.customer_id', '=', 'purchases.customer_id')
+              ->select('purchases.created_at','purchases.id','purchases.trans_no','commodity.name AS commodity_name','purchases.sacks','purchases.net','purchases.tare','purchases.moist','purchases.type','purchases.previous_bal','purchases.balance_id','purchases.partial','purchases.kilo','purchases.price','purchases.total','purchases.amtpay','purchases.remarks','balance.balance','purchases.status','purchases.released_by', 'customer.fname','customer.mname','customer.lname')
+              ->where('commodity.name',$commodity)
+              ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+              ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+              //->orderBy('purchases.id', 'desc')
+              ->latest();        
           }
-       
         return \DataTables::of($ultimatesickquery)
         ->addColumn('action', function($ultimatesickquery){
             $userid= Auth::user()->id;
