@@ -337,6 +337,19 @@
                     $( api.column( 7 ).footer() ).html(
                         'Total: <br>' + number_format(pageTotal1,2) + ' kg'
                     );
+
+                    // Total over this page
+                    pageTotal1 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
+                    );
                 },
 				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 				buttons: [
@@ -410,8 +423,7 @@
                 showOn: "button",
                 buttonImage: 'assets/images/calendar2.png',
                 buttonImageOnly: false,
-                "onSelect": function(date) {
-                   
+                "onSelect": function(date) {  
 				minDateFilter = new Date(date).getTime();
 				var df= new Date(date);
 				od_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
@@ -461,6 +473,19 @@
 					$( api.column( 7 ).footer() ).html(
 						'Total: <br>' + number_format(pageTotal1,2) + ' kg'
 					);
+
+					 // Total over this page
+                    pageTotal1 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
+                    );
                 },
 				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 				buttons: [
@@ -579,6 +604,19 @@
 					$( api.column( 7 ).footer() ).html(
 						'Total: <br>' + number_format(pageTotal1,2) + ' kg'
 					);
+
+					 // Total over this page
+                    pageTotal1 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
+                    );
                 },
 				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 				buttons: [
@@ -705,6 +743,19 @@
                     $( api.column( 7 ).footer() ).html(
                         'Total: <br>' + number_format(pageTotal1,2) + ' kg'
                     );
+
+                     // Total over this page
+                    pageTotal1 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
+                    );
                 },
 				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 				buttons: [
@@ -822,6 +873,19 @@
                     // Update footer
                     $( api.column( 7 ).footer() ).html(
                         'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
+
+                     // Total over this page
+                    pageTotal1 = api
+                        .column( 6, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 6 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
                     );
                 },
 				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
