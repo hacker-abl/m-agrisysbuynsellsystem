@@ -56,7 +56,7 @@ hr {
   padding: 0;
 }
 
-.dataTables_length .dropdown-toggle, {
+.dataTables_length .dropdown-toggle {
   display: none;
 }
 

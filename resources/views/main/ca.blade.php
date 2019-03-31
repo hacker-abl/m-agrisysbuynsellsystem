@@ -1023,7 +1023,6 @@
                                       {data: "action", orderable:false,searchable:false}
                                   ]
                               }); 
-                              $('#ca_view_modal').modal('show');
                           }
                       });
                     },
