@@ -16,23 +16,21 @@
                         <h2 class="modal_title">Add Trip(Pick Up)</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_trip" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                                <button id="print_trip" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
                             </li>
                             <li class="dropdown">
                                 <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_trip') }}">
-                                <input type="hidden" id="item_num" name="item_num">
-                                <input type="hidden" id="ticket_clone" name="ticket_clone">
-                                <input type="hidden" id="expense_clone" name="expense_clone">
-                                <input type="hidden" id="commodity_clone" name="commodity_clone">
-                                <input type="hidden" id="driver_id_clone" name="driver_id_clone">
-                                <input type="hidden" id="plateno_clone" name="plateno_clone">
-                                <input type="hidden" id="destination_clone" name="destination_clone">
-                                <input type="hidden" id="num_liters_clone" name="num_liters_clone">
+                                    <input type="hidden" id="item_num" name="item_num">
+                                    <input type="hidden" id="ticket_clone" name="ticket_clone">
+                                    <input type="hidden" id="expense_clone" name="expense_clone">
+                                    <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                    <input type="hidden" id="driver_id_clone" name="driver_id_clone">
+                                    <input type="hidden" id="plateno_clone" name="plateno_clone">
+                                    <input type="hidden" id="destination_clone" name="destination_clone">
+                                    <input type="hidden" id="num_liters_clone" name="num_liters_clone">
+                                    <!-- <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button> -->
                                 </form>
                             </li>
-                            <li class="dropdown">
-                                <button class="btn btn-sm btn-icon print-icon" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                            </li> 
                         </ul>
                     </div>
                     <div class="body">
@@ -48,6 +46,7 @@
 
                         <div class="row clearfix">
                             <div class="modal-footer">
+                                <button class="btn btn-sm btn-icon print-icon print-only" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
                                 <button type="submit" id="add_trip" class="btn btn-link waves-effect" ng-disable="trip_form.$invalid">SAVE CHANGES</button>
                                 <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                             </div>
@@ -70,7 +69,7 @@
                                 <button id="print_trip1" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
                             </li>
                             <li class="dropdown">
-                                <button class="btn btn-sm btn-icon print-icon" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                                <!-- <button class="btn btn-sm btn-icon print-icon print-only" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button> -->
                             </li>
                         </ul>
                     </div>
@@ -175,13 +174,14 @@
                                 </div>
                             </div>
 
+                        </form>
                             <div class="row clearfix">
                                 <div class="modal-footer">
+                                    <button class="btn btn-sm btn-icon print-icon print-only" name="print_form1" id="print_form1" title="PRINT ONLY">PRINT ONLY</button>
                                     <button type="submit" id="update_trip" class="btn btn-link waves-effect" ng-disable="trip_form_update.$invalid">SAVE CHANGES</button>
                                     <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -1150,7 +1150,7 @@
             function print_loop () {
 
             var count_length = $('.trip_form').length;
-
+console.log(count_length)
             setTimeout(function () {
 
                 $("#ticket_clone").val($("#ticket"+trip_counter).val());
