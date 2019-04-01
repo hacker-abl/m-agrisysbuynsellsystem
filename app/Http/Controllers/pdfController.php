@@ -357,6 +357,38 @@ class pdfController extends Controller
 			$request->balance_clone = $request->balance1_clone;
 		}
 
+		if(isset($request->received1_clone)){
+			$request->received_clone = $request->received1_clone;
+		}
+
+		if(isset($request->month1_clone)){
+			$request->month_clone = $request->month1_clone;
+		}
+
+		if(isset($request->customer_id2_clone)){
+			$request->customer_id_clone = $request->customer_id2_clone;
+		}
+
+		if(isset($request->reason2_clone)){
+			$request->reason_clone = $request->reason2_clone;
+		}
+
+		if(isset($request->amount2_clone)){
+			$request->amount_clone = $request->amount2_clone;
+		}
+
+		if(isset($request->balance2_clone)){
+			$request->balance_clone = $request->balance2_clone;
+		}
+
+		if(isset($request->received2_clone)){
+			$request->received_clone = $request->received2_clone;
+		}
+
+		if(isset($request->month2_clone)){
+			$request->month_clone = $request->month2_clone;
+		}
+
     	$generator = new BarcodeGeneratorPNG();
 
 	    $pdf = "<html>
