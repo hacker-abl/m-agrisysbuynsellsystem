@@ -103,18 +103,18 @@
                           <h2 class="modal_title">Add Employee Cash Advance</h2>
                    <ul class="header-dropdown m-r--5">
                        <li class="dropdown">
-                            <button id="print_ca" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            <button id="print_ca" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
                        </li>
                        <li class="dropdown">
-                            <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
+                            <!-- <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
                             <input type="hidden" id="customer_id_clone" name="customer_id_clone">
                             <input type="hidden" id="reason_clone" name="reason_clone">
                             <input type="hidden" id="amount_clone" name="amount_clone">
                             <input type="hidden" id="balance1_clone" name="balance1_clone">
                             <input type="hidden" id="month_clone" name="month_clone">
                             <input type="hidden" id="received_clone" name="received_clone">
-                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                            </form>
+                            <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form1" id="print_form1" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
+                            </form> -->
                        </li>
                    </ul>
                      </div>
@@ -211,13 +211,24 @@
                                     </div>
                                 </div>
 
-                               <div class="row clearfix">
-                                    <div class="modal-footer">
-                                         <button type="submit" id="add_cash_advance" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                    </div>
-                               </div>
                           </form>
+                            <div class="row clearfix">
+                                <div class="modal-footer">
+                                    <div class="print-only">
+                                    <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_ca') }}">
+                                        <input type="hidden" id="customer_id_clone" name="customer_id_clone">
+                                        <input type="hidden" id="reason_clone" name="reason_clone">
+                                        <input type="hidden" id="amount_clone" name="amount_clone">
+                                        <input type="hidden" id="balance1_clone" name="balance1_clone">
+                                        <input type="hidden" id="month_clone" name="month_clone">
+                                        <input type="hidden" id="received_clone" name="received_clone">
+                                        <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form1" id="print_form1" title="PRINT ONLY">PRINT ONLY</button>
+                                    </form>
+                                    </div>
+                                        <button type="submit" id="add_cash_advance" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                </div>
+                            </div>
                           </div>
                           </div>
                      </div>
@@ -235,18 +246,18 @@
                        <h2 class="modal_title">Add Payment</h2>
                    <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
-                            <button id="print_balance_payment" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                            <button id="print_balance_payment" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
                        </li>
                        <li class="dropdown">
-                            <form method="POST" id="printBalanceForm" name="printBalanceForm" target="_blank" action="{{ route('print_balance_payment') }}">
-                            <input type="hidden" id="customer_id1_clone" name="customer_id1_clone">
-                            <input type="hidden" id="paymentmethod_clone" name="paymentmethod_clone">
-                            <input type="hidden" id="checknumber_clone" name="checknumber_clone">
-                            <input type="hidden" id="amount2_clone" name="amount2_clone">
-                            <input type="hidden" id="balance2_clone" name="balance2_clone">
-                            <input type="hidden" id="remarks_clone" name="remarks_clone">
-                            <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                            </form>
+                            <!-- <form method="POST" id="printBalanceForm" name="printBalanceForm" target="_blank" action="{{ route('print_balance_payment') }}">
+                                <input type="hidden" id="customer_id1_clone" name="customer_id1_clone">
+                                <input type="hidden" id="paymentmethod_clone" name="paymentmethod_clone">
+                                <input type="hidden" id="checknumber_clone" name="checknumber_clone">
+                                <input type="hidden" id="amount2_clone" name="amount2_clone">
+                                <input type="hidden" id="balance2_clone" name="balance2_clone">
+                                <input type="hidden" id="remarks_clone" name="remarks_clone">
+                                <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY">PRINT ONLY</button>
+                            </form> -->
                        </li> 
                    </ul>
                   </div>
@@ -341,13 +352,24 @@
                                   </div>
                             </div>
 
-                            <div class="row clearfix">
-                                  <div class="modal-footer">
-                                       <button type="submit" id="add_balance" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                                       <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                  </div>
-                            </div>
                        </form>
+                        <div class="row clearfix">
+                                <div class="modal-footer">
+                                    <div class="print-form">
+                                    <form method="POST" id="printBalanceForm" name="printBalanceForm" target="_blank" action="{{ route('print_balance_payment') }}">
+                                        <input type="hidden" id="customer_id1_clone" name="customer_id1_clone">
+                                        <input type="hidden" id="paymentmethod_clone" name="paymentmethod_clone">
+                                        <input type="hidden" id="checknumber_clone" name="checknumber_clone">
+                                        <input type="hidden" id="amount2_clone" name="amount2_clone">
+                                        <input type="hidden" id="balance2_clone" name="balance2_clone">
+                                        <input type="hidden" id="remarks_clone" name="remarks_clone">
+                                        <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY">PRINT ONLY</button>
+                                    </form>
+                                    </div>
+                                    <button type="submit" id="add_balance" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                </div>
+                        </div>
                   </div>
              </div>
          </div>
@@ -364,23 +386,23 @@
 						<h2 class="dtr_modal_title">Add DTR</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_dtr" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                                <button id="print_dtr" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
                             </li>
                             <li class="dropdown">
-                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_dtr') }}">
-                                <input type="hidden" id="view_dtr_name" name="view_dtr_name">
-                                <input type="hidden" id="employee_id_clone" name="employee_id_clone">
-                                <input type="hidden" id="role_clone" name="role_clone">
-                                <input type="hidden" id="overtime_clone" name="overtime_clone">
-                                <input type="hidden" id="rate_clone" name="rate_clone">
-                                <input type="hidden" id="num_hours_clone" name="num_hours_clone">
-                                <input type="hidden" id="salary_clone" name="salary_clone">
-				<input type="hidden" id="bonus_clone" name="bonus_clone">
-				<input type="hidden" id="balance_clone" name="balance_clone">
-				<input type="hidden" id="partial_payment_clone" name="partial_payment_clone">
-				<input type="hidden" id="remaining_balance_clone" name="remaining_balance_clone">
-                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                                </form>
+                                <!-- <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_dtr') }}">
+                                    <input type="hidden" id="view_dtr_name" name="view_dtr_name">
+                                    <input type="hidden" id="employee_id_clone" name="employee_id_clone">
+                                    <input type="hidden" id="role_clone" name="role_clone">
+                                    <input type="hidden" id="overtime_clone" name="overtime_clone">
+                                    <input type="hidden" id="rate_clone" name="rate_clone">
+                                    <input type="hidden" id="num_hours_clone" name="num_hours_clone">
+                                    <input type="hidden" id="salary_clone" name="salary_clone">
+                                    <input type="hidden" id="bonus_clone" name="bonus_clone">
+                                    <input type="hidden" id="balance_clone" name="balance_clone">
+                                    <input type="hidden" id="partial_payment_clone" name="partial_payment_clone">
+                                    <input type="hidden" id="remaining_balance_clone" name="remaining_balance_clone">
+                                    <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+                                </form> -->
                             </li>
                         </ul> 
 					</div>
@@ -522,13 +544,29 @@
 								</div>
 							</div>
 
-							<div class="row clearfix">
-							 	<div class="modal-footer">
-									<button type="submit" id="add_dtr" class="btn btn-link waves-effect">SAVE CHANGES</button>
-									<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-								</div>
-							</div>
 						</form>
+                        <div class="row clearfix">
+                            <div class="modal-footer">
+                                <div>
+                                    <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_dtr') }}">
+                                        <input type="hidden" id="view_dtr_name" name="view_dtr_name">
+                                        <input type="hidden" id="employee_id_clone" name="employee_id_clone">
+                                        <input type="hidden" id="role_clone" name="role_clone">
+                                        <input type="hidden" id="overtime_clone" name="overtime_clone">
+                                        <input type="hidden" id="rate_clone" name="rate_clone">
+                                        <input type="hidden" id="num_hours_clone" name="num_hours_clone">
+                                        <input type="hidden" id="salary_clone" name="salary_clone">
+                                        <input type="hidden" id="bonus_clone" name="bonus_clone">
+                                        <input type="hidden" id="balance_clone" name="balance_clone">
+                                        <input type="hidden" id="partial_payment_clone" name="partial_payment_clone">
+                                        <input type="hidden" id="remaining_balance_clone" name="remaining_balance_clone">
+                                        <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+                                    </form>
+                                </div>
+                                <button type="submit" id="add_dtr" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
