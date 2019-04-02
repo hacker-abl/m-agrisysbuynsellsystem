@@ -15,30 +15,30 @@
                              <h2 class="modal_title">Add Purchases</h2>
                              <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_purchase" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                                <button id="print_purchase" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
                             </li>
                             <li class="dropdown">
-                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_purchase') }}">
-                                <input type="hidden" name="button_action" id="button_action" value="">
-                                <input type="hidden" id="ticket_clone" name="ticket_clone">
-                                <input type="hidden" id="customer_clone" name="customer_clone">
-                                <input type="hidden" id="commodity_clone" name="commodity_clone">
-                                <input type="hidden" id="type_clone" name="type_clone">
-                                <input type="hidden" id="tare_clone" name="tare_clone">
-                                <input type="hidden" id="moist_clone" name="moist_clone">
-                                <input type="hidden" id="net_clone" name="net_clone">
-                                <input type="hidden" id="sacks_clone" name="sacks_clone">
-                                <input type="hidden" id="ca_clone" name="ca_clone">
-                                <input type="hidden" id="balance_clone" name="balance_clone">
-                                <input type="hidden" id="partial_clone" name="partial_clone">
-                                <input type="hidden" id="kilos_clone" name="kilos_clone">
-                                <input type="hidden" id="price_clone" name="price_clone">
-                                <input type="hidden" id="total_clone" name="total_clone">
-                                <input type="hidden" id="amount_clone" name="amount_clone">
-                                <input type="hidden" id="remarks_clone" name="remarks_clone">
-                                <input type="hidden" id="previous_balance_clone" name="previous_balance_clone">
-                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                                </form>
+                                <!-- <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_purchase') }}">
+                                    <input type="hidden" name="button_action" id="button_action" value="">
+                                    <input type="hidden" id="ticket_clone" name="ticket_clone">
+                                    <input type="hidden" id="customer_clone" name="customer_clone">
+                                    <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                    <input type="hidden" id="type_clone" name="type_clone">
+                                    <input type="hidden" id="tare_clone" name="tare_clone">
+                                    <input type="hidden" id="moist_clone" name="moist_clone">
+                                    <input type="hidden" id="net_clone" name="net_clone">
+                                    <input type="hidden" id="sacks_clone" name="sacks_clone">
+                                    <input type="hidden" id="ca_clone" name="ca_clone">
+                                    <input type="hidden" id="balance_clone" name="balance_clone">
+                                    <input type="hidden" id="partial_clone" name="partial_clone">
+                                    <input type="hidden" id="kilos_clone" name="kilos_clone">
+                                    <input type="hidden" id="price_clone" name="price_clone">
+                                    <input type="hidden" id="total_clone" name="total_clone">
+                                    <input type="hidden" id="amount_clone" name="amount_clone">
+                                    <input type="hidden" id="remarks_clone" name="remarks_clone">
+                                    <input type="hidden" id="previous_balance_clone" name="previous_balance_clone">
+                                    <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+                                </form> -->
                             </li>
                         </ul> 
                         </div>
@@ -322,17 +322,37 @@
                                        </div>
                                   </div>
 
-
-
-
-                                  <div class="row clearfix">
-                                       <div class="modal-footer">
-                                            <button type="submit" id="add_purchase" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                       </div>
-                                  </div>
                              </form>
-                        </div>
+                                <div class="row clearfix">
+                                    <div class="modal-footer">
+                                        <div class="print-only">
+                                            <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_purchase') }}">
+                                                <input type="hidden" name="button_action" id="button_action" value="">
+                                                <input type="hidden" id="ticket_clone" name="ticket_clone">
+                                                <input type="hidden" id="customer_clone" name="customer_clone">
+                                                <input type="hidden" id="commodity_clone" name="commodity_clone">
+                                                <input type="hidden" id="type_clone" name="type_clone">
+                                                <input type="hidden" id="tare_clone" name="tare_clone">
+                                                <input type="hidden" id="moist_clone" name="moist_clone">
+                                                <input type="hidden" id="net_clone" name="net_clone">
+                                                <input type="hidden" id="sacks_clone" name="sacks_clone">
+                                                <input type="hidden" id="ca_clone" name="ca_clone">
+                                                <input type="hidden" id="balance_clone" name="balance_clone">
+                                                <input type="hidden" id="partial_clone" name="partial_clone">
+                                                <input type="hidden" id="kilos_clone" name="kilos_clone">
+                                                <input type="hidden" id="price_clone" name="price_clone">
+                                                <input type="hidden" id="total_clone" name="total_clone">
+                                                <input type="hidden" id="amount_clone" name="amount_clone">
+                                                <input type="hidden" id="remarks_clone" name="remarks_clone">
+                                                <input type="hidden" id="previous_balance_clone" name="previous_balance_clone">
+                                                <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+                                            </form>
+                                        </div>
+                                        <button type="submit" id="add_purchase" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                    </div>
+                                </div>
+                            </div>
                            <div id="home1" class="tab-pane fade in ">
                                 <form class="form-horizontal " id="purchase_form1">
                                 
@@ -624,16 +644,14 @@
                                           </div>
                                      </div>
 
-
-
-
-                                     <div class="row clearfix">
-                                          <div class="modal-footer">
-                                               <button type="submit" id="add_purchase1" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                                               <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                          </div>
-                                     </div>
                                 </form>
+                                    <div class="row clearfix">
+                                        <div class="modal-footer">
+                                        <button class="btn btn-sm btn-icon print-icon print-only" id="print_form1" title="PRINT ONLY">PRINT ONLY</button>
+                                        <button type="submit" id="add_purchase1" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                        </div>
+                                    </div>
                            </div>
                       </div>
                         </div>
@@ -2376,6 +2394,11 @@
                 }else if($('#stat').val()=="new"){
                     $("#add_purchase1").trigger("click");
                 }
+                $("#print_form").trigger("click");
+            });
+
+            $("#print_form1").click(function(event) {
+                event.preventDefault();
                 $("#print_form").trigger("click");
             });
 

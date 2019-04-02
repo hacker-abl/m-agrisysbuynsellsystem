@@ -25,16 +25,16 @@
                         <h2 class="modal_title">Add Expense</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_expense" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" title="PRINT AND SAVE" ><i class="material-icons">print</i></button> 
+                                <button id="print_expense" type="button" class="btn btn-sm btn-icon print-icon" title="PRINT AND SAVE" ><i class="glyphicon glyphicon-print"></i></button> 
                             </li>
                             <li class="dropdown">
-                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_expense') }}">
+                                <!-- <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_expense') }}">
                                 <input type="hidden" id="expense_clone" name="expense_clone">
                                 <input type="hidden" id="type_clone" name="type_clone">
                                 <input type="hidden" id="amount_clone" name="amount_clone">
                                 <input type="hidden" id="trans_clone" name="trans_clone">
-                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                                </form>
+                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+                                </form> -->
                             </li>
                         </ul>
                     </div>
@@ -93,13 +93,22 @@
                                 </div>
                             </div>
 
-                            <div class="row clearfix">
-                                <div class="modal-footer">
-                                    <button type="button" id="add_expense" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                                </div>
-                            </div>
                         </form>
+                        <div class="row clearfix">
+                            <div class="modal-footer">
+                                <div class="print-only">
+                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_expense') }}">
+                                    <input type="hidden" id="expense_clone" name="expense_clone">
+                                    <input type="hidden" id="type_clone" name="type_clone">
+                                    <input type="hidden" id="amount_clone" name="amount_clone">
+                                    <input type="hidden" id="trans_clone" name="trans_clone">
+                                    <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+                                </form>
+                                </div>
+                                <button type="button" id="add_expense" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

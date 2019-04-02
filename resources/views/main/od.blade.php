@@ -14,21 +14,21 @@
 						<h2 class="modal_title">Add Delivery</h2>
 						<ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_od" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                                <button id="print_od" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
                             </li>
                             <li class="dropdown">
-                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_od') }}">
-                                <input type="hidden" id="ticket_clone" name="ticket_clone">
-                                <input type="hidden" id="commodity_clone" name="commodity_clone">
-                                <input type="hidden" id="destination_clone" name="destination_clone">
-                                <input type="hidden" id="driver_id_clone" name="driver_id_clone">
-                                <input type="hidden" id="company_clone" name="company_clone">
-                                <input type="hidden" id="plateno_clone" name="plateno_clone">
-                                <input type="hidden" id="liter_clone" name="liter_clone">
-                                <input type="hidden" id="kilos_clone" name="kilos_clone">
-                                <input type="hidden" id="allowance_clone" name="allowance_clone">
-                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button> 
-                                </form>
+                                <!-- <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_od') }}">
+									<input type="hidden" id="ticket_clone" name="ticket_clone">
+									<input type="hidden" id="commodity_clone" name="commodity_clone">
+									<input type="hidden" id="destination_clone" name="destination_clone">
+									<input type="hidden" id="driver_id_clone" name="driver_id_clone">
+									<input type="hidden" id="company_clone" name="company_clone">
+									<input type="hidden" id="plateno_clone" name="plateno_clone">
+									<input type="hidden" id="liter_clone" name="liter_clone">
+									<input type="hidden" id="kilos_clone" name="kilos_clone">
+									<input type="hidden" id="allowance_clone" name="allowance_clone">
+									<button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button> 
+                                </form> -->
                             </li>
                         </ul>
 					</div>
@@ -162,13 +162,27 @@
 								</div>
 							</div>
 
-							<div class="row clearfix">
-							 	<div class="modal-footer">
-									<button type="submit" id="add_delivery" class="btn btn-link waves-effect">SAVE CHANGES</button>
-									<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-								</div>
-							</div>
 						</form>
+						<div class="row clearfix">
+							<div class="modal-footer">
+								<div>
+									<form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_od') }}">
+										<input type="hidden" id="ticket_clone" name="ticket_clone">
+										<input type="hidden" id="commodity_clone" name="commodity_clone">
+										<input type="hidden" id="destination_clone" name="destination_clone">
+										<input type="hidden" id="driver_id_clone" name="driver_id_clone">
+										<input type="hidden" id="company_clone" name="company_clone">
+										<input type="hidden" id="plateno_clone" name="plateno_clone">
+										<input type="hidden" id="liter_clone" name="liter_clone">
+										<input type="hidden" id="kilos_clone" name="kilos_clone">
+										<input type="hidden" id="allowance_clone" name="allowance_clone">
+										<button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button> 
+									</form>
+								</div>
+								<button type="submit" id="add_delivery" class="btn btn-link waves-effect">SAVE CHANGES</button>
+								<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

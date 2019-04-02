@@ -8150,3 +8150,10 @@ html.ie11 .bs-searchbox .form-control {
 .ui-autocomplete {
 z-index: 9999999999;
 }
+
+/*
+PARA SA PRINT
+*/
+.print-only {
+  float:left;
+}

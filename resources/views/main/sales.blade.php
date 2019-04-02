@@ -14,20 +14,20 @@
 						<h2 class="modal_title">Add Sales</h2>
 						<ul class="header-dropdown m-r--5">
                             <li class="dropdown">
-                                <button id="print_sales" type="button" class="btn bg-grey btn-xs waves-effect m-r-20" ><i class="material-icons">print</i></button>
+                                <button id="print_sales" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
                             </li>
                             <li class="dropdown">
-                                <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_sales') }}">
-                                <input type="hidden" id="transaction_clone" name="transaction_clone">
-                                <input type="hidden" id="commodity_clone" name="commodity_clone">
-                                <input type="hidden" id="company_clone" name="company_clone">
-                                <input type="hidden" id="kilos_clone" name="kilos_clone">
-                                <input type="hidden" id="price_clone" name="price_clone">
-                                <input type="hidden" id="payment_method_clone" name="payment_method_clone">
-                                <input type="hidden" id="check_number_clone" name="check_number_clone">
-                                <input type="hidden" id="amount_clone" name="amount_clone">
-                                <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_form" id="print_form" title="PRINT ONLY"><i class="glyphicon glyphicon-print"></i></button>
-                                </form>
+                                <!-- <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_sales') }}">
+									<input type="hidden" id="transaction_clone" name="transaction_clone">
+									<input type="hidden" id="commodity_clone" name="commodity_clone">
+									<input type="hidden" id="company_clone" name="company_clone">
+									<input type="hidden" id="kilos_clone" name="kilos_clone">
+									<input type="hidden" id="price_clone" name="price_clone">
+									<input type="hidden" id="payment_method_clone" name="payment_method_clone">
+									<input type="hidden" id="check_number_clone" name="check_number_clone">
+									<input type="hidden" id="amount_clone" name="amount_clone">
+									<button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+                                </form> -->
                             </li>
                         </ul>
 					</div>
@@ -142,13 +142,26 @@
 								</div>
 							</div>
 
-							<div class="row clearfix">
-							 	<div class="modal-footer">
-									<button type="submit" id="add_sales" class="btn btn-link waves-effect">SAVE CHANGES</button>
-									<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-								</div>
-							</div>
 						</form>
+						<div class="row clearfix">
+							<div class="modal-footer">
+								<div class="print-only">
+									<form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_sales') }}">
+										<input type="hidden" id="transaction_clone" name="transaction_clone">
+										<input type="hidden" id="commodity_clone" name="commodity_clone">
+										<input type="hidden" id="company_clone" name="company_clone">
+										<input type="hidden" id="kilos_clone" name="kilos_clone">
+										<input type="hidden" id="price_clone" name="price_clone">
+										<input type="hidden" id="payment_method_clone" name="payment_method_clone">
+										<input type="hidden" id="check_number_clone" name="check_number_clone">
+										<input type="hidden" id="amount_clone" name="amount_clone">
+										<button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
+									</form>
+								</div>
+								<button type="submit" id="add_sales" class="btn btn-link waves-effect">SAVE CHANGES</button>
+								<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
