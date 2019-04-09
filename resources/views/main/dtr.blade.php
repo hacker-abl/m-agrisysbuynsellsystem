@@ -1473,20 +1473,20 @@
                     url:"{{ route('check_employee') }}",
                     method: 'get',
                     data:{id:id},
-                    dataType:'json',
+                    dataType:'json', 
                     success:function(data){
-                     
-                        $('#role').val(data[0].role);
-                        $('#rate').val(data[0].rate);
+                        console.log(data);
+                        $('#role').val(data.role);
+                        $('#rate').val(data.rate);
                         if(trig_update!=1){
-                          if(data[0].balance==null){
+                          if(data.balance==null){
                           $('#emp_balance').val(0);
                         }else{
-                            $('#emp_balance').val(data[0].balance);
+                            $('#emp_balance').val(data.balance);
                           }     
-                          $('#emp_rbalance').val(data[0].balance);
-                          emp_balance=data[0].balance;
-                          salary=data[0].rate;
+                          $('#emp_rbalance').val(data.balance);
+                          emp_balance=data.balance;
+                          salary=data.rate;
                         }
                         
                     }
@@ -1581,6 +1581,7 @@
                                         data:{id:person_id},
                                         dataType: 'json',
                                         success:function(data){
+                    
                                             dtr_info= $('#view_dtr_table').DataTable({
                                                 "footerCallback": function ( row, data, start, end, display ) {
                                                     var api = this.api(), data;
@@ -2284,6 +2285,20 @@
 					}
 				});
                 $.ajax({
+					url: "/check_employee",
+					method: 'get',
+					data:{id:id},
+					dataType: 'json',
+					success:function(data){
+					    
+                        if(data.balance==0||data.balance==null){
+                          $('#balance_view').html('Balance: ₱ 0.00'); 
+                       }else{
+                        $('#balance_view').html('Balance: ₱'+data.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
+                       }
+					}
+				});
+                $.ajax({
                     url: "{{ route('refresh_view_dtr') }}",
                     method: 'get',
                     data:{id:id},
@@ -2296,11 +2311,7 @@
                         $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")  Pending Salary: ₱"+total);
                        
                         $('#view_dtr_name').val(fname + " " + mname + " " +lname + " ("+ role + ")  Pending Salary: ₱"+total);
-                        if(data.data[0].balance==0||data.data[0].balance==null){
-                          $('#balance_view').html('Balance: ₱ 0.00'); 
-                       }else{
-                        $('#balance_view').html('Balance: ₱'+data.data[0].balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
-                       }
+                       
                         
                     dtr_info= $('#view_dtr_table').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {

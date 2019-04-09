@@ -64,63 +64,7 @@ class dtrController extends Controller
             $dtr->status = "On-Hand";
             $dtr->save();
             $dtr_id = dtr::where('employee_id', '=', $request->employee_id)->latest()->first();
-            $paymentlogs = new emp_payment;
-            $paymentlogs->logs_id = $request->employee_id;
-            $paymentlogs->dtr_id = $dtr_id->id;
-            $paymentlogs->paymentmethod = "From ADD DTR Form";
-            $balance = employee_ca::where('employee_id', '=', $request->employee_id)->latest()->first();
-            $empbalance = employee_bal::where('employee_id', '=', $request->employee_id)->first();
-            if($balance!=null){
-                $paymentlogs->r_balance=$balance->balance-$request->p_payment;
-                $paymentlogs->remarks = "Partial Payment";
-                $balance->balance = $balance->balance-$request->p_payment;
-                $empbalance->balance = $balance->balance;
-                
-                $paymentlogs->checknumber = "Not Specified";
-                $paymentlogs->paymentamount = $request->p_payment;
-                if($request->p_payment!=0){
-                    $paymentlogs->save();
-                    $balance->save();  
-                    $empbalance->save();     
-                }
-                }
-                if($request->p_payment>0){
-                    //
-                    $user = User::find(1);
-                    $user_current =  $user->cashOnHand;
-                    $user->cashOnHand += $request->p_payment;
-                    $user->save();
- 
-                    $userGet = User::where('id', '=', 1)->first();
-                    $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-                    $cash_history = new Cash_History;
-                    $cash_history->user_id = $userGet->id;
-
-                    $getDate = Carbon::now();
-                    
-                    if($cashLatest != null){
-                        $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
-                    }
-                    else{
-                        $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-                    }
-                    $employeeName= employee::where('id', '=', $request->employee_id)->first();
-                    $cash_history->trans_no = $dateTime;
-                    $cash_history->previous_cash = $user_current;
-                    $cash_history->cash_change = $request->p_payment;
-                    $cash_history->total_cash = $user->cashOnHand;
-                    $cash_history->type = "Employee CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
-                    $cash_history->save();
-
-                    $output = array(
-                        'cashOnHand' => $user->cashOnHand,
-                        'cashHistory'=> $dateTime,
-                        'user'       => Auth::user()->id,
-                    );
-                    
-                   return json_encode($output);    
- 
-                }
+            
                  $output = array(
                         'cashOnHand' => 0,
                  );
@@ -179,10 +123,6 @@ class dtrController extends Controller
                     'user'       => Auth::user()->id,
                 );
                 
-
-
-
-
                 $recent = emp_payment::where('dtr_id', '=', $request->add_id)->latest()->first();
                 $new_payment = new emp_payment;
                 $new_payment->logs_id = $recent->logs_id;
@@ -259,56 +199,103 @@ class dtrController extends Controller
     }
      public function release_update_dtr(Request $request){
         $check_admin =Auth::user()->id;
+        $released = dtr::find($request->id);
         if($check_admin==1){
             $logged_id = Auth::user()->name;
             $user = User::find(Auth::user()->id);
-            $released = dtr::find($request->id);
             $released->status = "Released";
-            $released->released_by = $logged_id;
-            $released->save();
+            $released->released_by = $logged_id;   
         }else{
             $logged_id = Auth::user()->emp_id;
             $user = User::find(Auth::user()->id);
             $name= Employee::find($logged_id);
-            $released=dtr::find($request->id);
             $released->status = "Released";
-            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
-            $released->save();
+            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;   
         }
+                
+            $paymentlogs = new emp_payment;
+            $paymentlogs->logs_id = $released->employee_id;
+            $paymentlogs->dtr_id = $released->id;
+            $paymentlogs->paymentmethod = "From ADD DTR Form";
+            $balance = employee_ca::where('employee_id', '=', $released->employee_id)->latest()->first();
+            $empbalance = employee_bal::where('employee_id', '=', $released->employee_id)->first();
+            if($balance!=null){
+                $paymentlogs->r_balance=$balance->balance-$released->p_payment;
+                $paymentlogs->remarks = "Partial Payment";
+                $balance->balance = $empbalance->balance-$released->p_payment;
+                $empbalance->balance = $empbalance->balance-$released->p_payment;
+                
+                $paymentlogs->checknumber = "Not Specified";
+                $paymentlogs->paymentamount = $released->p_payment;
+                if($released->p_payment!=0){
+                    $paymentlogs->save();
+                    $balance->save();  
+                    $empbalance->save();     
+                }
+                }
+                if($released->p_payment>0){
+                    //
+                    $user = User::find(1);
+                    $user_current =  $user->cashOnHand;
+                    $user->cashOnHand += $released->p_payment;
+                    $user->save();
+ 
+                    $userGet = User::where('id', '=', 1)->first();
+                    $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                    $cash_history = new Cash_History;
+                    $cash_history->user_id = $userGet->id;
 
-        $userGet = User::where('id', '=', $user->id)->first();
-        $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-        $cash_history = new Cash_History;
-        $cash_history->user_id = $userGet->id;
+                    $getDate = Carbon::now();
+                    
+                    if($cashLatest != null){
+                        $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                    }
+                    else{
+                        $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                    }
+                    $employeeName= employee::where('id', '=', $released->employee_id)->first();
+                    $cash_history->trans_no = $dateTime;
+                    $cash_history->previous_cash = $user_current;
+                    $cash_history->cash_change = $released->p_payment;
+                    $cash_history->total_cash = $user->cashOnHand;
+                    $cash_history->type = "Employee CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
+                    $cash_history->save();
+                }
 
-        $getDate = Carbon::now();
-        
-        if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
-        }
-        else{
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-        }
+                $userGet = User::where('id', '=', $user->id)->first();
+                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                $cash_history = new Cash_History;
+                $cash_history->user_id = $userGet->id;
 
-        $cash_history->trans_no = $dateTime;
-        $cash_history->previous_cash = $user->cashOnHand;
-        $cash_history->cash_change = $released->salary;
-        $cash_history->total_cash = $user->cashOnHand - $released->salary;
-        $cash_history->type = "Release Cash - DTR";
-        $cash_history->save();
+                $getDate = Carbon::now();
+                
+                if($cashLatest != null){
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                }
+                else{
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                }
 
-        $user->cashOnHand -= $released->salary;
-        $user->save();
+                $cash_history->trans_no = $dateTime;
+                $cash_history->previous_cash = $user->cashOnHand;
+                $cash_history->cash_change = $released->salary;
+                $cash_history->total_cash = $user->cashOnHand - $released->salary;
+                $cash_history->type = "Release Cash - DTR";
+                $cash_history->save();
 
-        event(new CashierCashUpdated());
+                $user->cashOnHand -= $released->salary;
+                $user->save();
+                $released->save();
 
-        $output = array(
-            'cashOnHand' => $user->cashOnHand,
-            'cashHistory' => $dateTime
-        );
-        
-        echo json_encode($output);
-    }
+                event(new CashierCashUpdated());
+
+                $output = array(
+                    'cashOnHand' => $user->cashOnHand,
+                    'cashHistory' => $dateTime
+                );
+                
+                echo json_encode($output);
+            }
 
     public function check_balance5(Request $request){
         $user = User::find(Auth::user()->id);
@@ -337,22 +324,9 @@ class dtrController extends Controller
             $ca->balance = $request->balance + $request->amount;
             $ca->status = "On-Hand";
             $ca->released_by = '';
-            $check_ca= employee_bal::where('employee_id', '=', $request->employee_id)->first();
-
-            if($check_ca!=null){
-                $balance = employee_bal::where('employee_id', '=', $request->employee_id)->first();
-                $balance->balance = $request->balance + $request->amount;
-                $balance->save();     
-            }else{
-                $balance = new employee_bal;
-                $balance->employee_id=$request->employee_id;
-                $balance->logs_id=$request->employee_id;
-                $balance->balance = $request->balance + $request->amount;
-                $balance->save();   
-            }
             $ca->save();
 
-        return json_encode($balance);
+        return json_encode($ca);
     }
 
     public function emp_payment(Request $request){
@@ -475,15 +449,17 @@ class dtrController extends Controller
                 'cashHistory' => $dateTime
             );
             $dtr->delete();
-
+            $empbalance = employee_bal::where('employee_id', '=', $dtr->employee_id)->first();
             $paymentlogs = emp_payment::where('dtr_id',$request->id)->count();
             $delete_dtr = emp_payment::where('dtr_id',$request->id);
             if($paymentlogs>0){
-                 $recent = emp_payment::where('dtr_id', '=', $request->id)->latest()->first();
-                 $recent_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first();
+                $recent = emp_payment::where('dtr_id', '=', $request->id)->latest()->first();
+                $recent_balance = emp_payment::where('logs_id', '=', $recent->logs_id)->latest()->first();
                 $balance = employee_ca::where('employee_id', '=', $recent->logs_id)->latest()->first();
-                   $balance->balance = $recent->paymentamount+$balance->balance;
-                   $balance->save();  
+                $balance->balance = $recent->paymentamount+$balance->balance;
+                $empbalance->balance = $empbalance->balance+$dtr->p_payment;
+                $empbalance->save();
+                $balance->save();  
                 }
             $delete_dtr->delete();   
             echo json_encode($output);
@@ -607,19 +583,17 @@ class dtrController extends Controller
         $id = $request->input('id');
         $dtr_view = DB::table('dtr')
             ->join('employee', 'employee.id', '=', 'dtr.employee_id')
-            ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname','employee_cas.balance')
-            ->leftJoin('employee_cas', function($query) {
-                     $query->on('employee.id','=','employee_cas.employee_id')
-                        ->whereRaw('employee_cas.id IN (select MAX(a2.id) from employee_cas as a2 join employee as u2 on u2.id = a2.employee_id group by u2.id)');
-            })
+           // ->join('employee_bal', 'employee.id', '=', 'employee_bal.employee_id')
+            ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname')
             ->where('dtr.employee_id', $id)
             ->latest();
+
         return \DataTables::of($dtr_view)
         ->addColumn('action', function($dtr_view){
             if($dtr_view->status=="On-Hand" && isAdmin()==1){
                  return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';
             }else if($dtr_view->status=="On-Hand" && isAdmin()!=1){
-                return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">mode_edit</i></button>';    
+                return '<button class="btn btn-xs btn-success release_expense_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">eject</i></button>&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';    
             }
             else if($dtr_view->status=="Released" && isAdmin()==1){
                  return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$dtr_view->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_dtr waves-effect" id="'.$dtr_view->id.'" ><i class="material-icons">delete</i></button>';
@@ -643,7 +617,7 @@ class dtrController extends Controller
 
         })
         ->make(true);
-       // echo json_encode($dtr_view);
+       
     }
 
      public function employee_view_ca(Request $request){
@@ -751,17 +725,27 @@ class dtrController extends Controller
 
 
     public function check_employee(Request $request){
-
-        $employee_details = DB::table('employee')
-        ->join('roles', 'employee.role_id', '=', 'roles.id')
-        ->select('employee.*', 'roles.role','roles.rate','employee_cas.balance')
-        ->leftJoin('employee_cas', function($query) {
-                     $query->on('employee.id','=','employee_cas.employee_id')
-                        ->whereRaw('employee_cas.id IN (select MAX(a2.id) from employee_cas as a2 join employee as u2 on u2.id = a2.employee_id group by u2.id)');
-            })
-        ->where('employee.id', $request->id)
-        ->get();
-        echo json_encode($employee_details);
+        if($request->id!=null){
+            $employee_details = DB::table('employee')
+            ->join('roles', 'employee.role_id', '=', 'roles.id')
+            //->join('employee_bal', 'employee.id', '=', 'employee_bal.employee_id')
+            ->select('employee.*', 'roles.role','roles.rate')   
+            ->where('employee.id', $request->id)
+            ->get();
+            $balance=0;
+            $empbalance = employee_bal::where('employee_id', '=', $request->id)->first();
+            if($empbalance!=null){
+                $balance= $empbalance->balance;
+            }
+            $output = array(
+                'role' => $employee_details[0]->role,
+                'rate' => $employee_details[0]->rate,
+                'balance'=>$balance,
+    
+            );
+            echo json_encode($output);
+        }
+        
     }
 
 	public function refresh_total(Request $request){
@@ -806,6 +790,19 @@ class dtrController extends Controller
             $released->save();
             event(new BalanceUpdated($released));
         }
+            $check_ca= employee_bal::where('employee_id', '=', $released->employee_id)->first();
+
+            if($check_ca!=null){
+                $balance = employee_bal::where('employee_id', '=', $released->employee_id)->first();
+                $balance->balance = $balance->balance + $released->amount;
+                $balance->save();     
+            }else{
+                $balance = new employee_bal;
+                $balance->employee_id=$released->employee_id;
+                $balance->logs_id=$released->employee_id;
+                $balance->balance = $released->amount;
+                $balance->save();   
+            }
 
         $userGet = User::where('id', '=', $user->id)->first();
         $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
