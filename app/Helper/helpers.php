@@ -75,3 +75,7 @@ function userpermission() {
     $id = Auth::id();
     return \App\UserPermission::with('permission')->where('user_id', $id)->orderBy('permission_id')->get();
 }
+
+function canAddExpense(){
+    return (Auth::user()->username != 'MAYETH') ? true : false;
+}
