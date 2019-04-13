@@ -235,15 +235,15 @@ class dtrController extends Controller
                 }
                 if($released->p_payment>0){
                     //
-                    $user = User::find(1);
-                    $user_current =  $user->cashOnHand;
-                    $user->cashOnHand += $released->p_payment;
-                    $user->save();
+                    $users = User::find(1);
+                    $user_current =  $users->cashOnHand;
+                    $users->cashOnHand += $released->p_payment;
+                    $users->save();
  
-                    $userGet = User::where('id', '=', 1)->first();
+                    $userGets = User::where('id', '=', 1)->first();
                     $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
                     $cash_history = new Cash_History;
-                    $cash_history->user_id = $userGet->id;
+                    $cash_history->user_id = $userGets->id;
 
                     $getDate = Carbon::now();
                     
