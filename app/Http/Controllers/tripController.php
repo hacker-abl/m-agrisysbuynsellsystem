@@ -104,6 +104,41 @@ class tripController extends Controller
 
     public function update_trip(Request $request){
         $trip= trips::find($request->id);
+        $trip_expenses =trip_expense::find($request->id);
+        $user = User::find(Auth::user()->id);  
+        $released = trip_expense::find($request->id);  
+        $output="Success";  
+        if($trip->expense!=$request->expense && $released->status=="Released"){
+            $userGet = User::where('id', '=', Auth::user()->id)->first();
+            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+            $cash_history = new Cash_History;
+            $cash_history->user_id = $userGet->id;
+    
+            $getDate = Carbon::now();
+            
+            if($cashLatest != null){
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            }
+            else{
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+            }
+    
+            $cash_history->trans_no = $dateTime;
+            $cash_history->previous_cash = $user->cashOnHand;
+            $cash_history->cash_change = $released->amount;
+            $cash_history->total_cash = $user->cashOnHand + $trip->expense;
+            $cash_history->type = "Edit Data on - Trips";
+            $cash_history->save();
+            $user->cashOnHand += $trip->expense;
+            $user->save();
+            $trip_expenses->status = "On-Hand";
+            $trip_expenses->released_by = '';
+            $output = array(
+                'cashOnHand' => $user->cashOnHand,
+                'trip_data' => $trip
+            );
+            
+        }
         $trip->trip_ticket = $request->ticket;
         $trip->expense = $request->expense;
         $trip->commodity_id = $request->commodity;
@@ -111,15 +146,15 @@ class tripController extends Controller
         $trip->driver_id = $request->driver_id;
         $trip->truck_id = $request->plateno;
         $trip->num_liters = $request->num_liters;
+        
         $trip->save();
-        $trip_expenses =trip_expense::find($request->id);
         $trip_expenses->description = $request->destination;
-        $trip_expenses->type ="TRIP EXPENSE";
         $trip_expenses->amount = $request->expense;
-        $trip_expenses->status = "On-Hand";
-        $trip_expenses->released_by = '';
         $trip_expenses->save();
-        return json_encode($trip);
+        
+        
+ 
+        return json_encode($output);
     }
      public function release_update(Request $request){
          $check_admin =Auth::user()->id;
@@ -255,7 +290,43 @@ class tripController extends Controller
 
     function deletedata(Request $request){
         $trips = trips::find($request->input('id'));
-        $trips->delete();
+        $trip_expenses =trip_expense::find($request->id);
+        $user = User::find(Auth::user()->id);  
+        $output="success";
+        if($trip_expenses->status=="Released"){
+            $userGet = User::where('id', '=', Auth::user()->id)->first();
+            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+            $cash_history = new Cash_History;
+            $cash_history->user_id = $userGet->id;
+    
+            $getDate = Carbon::now();
+            
+            if($cashLatest != null){
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            }
+            else{
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+            }
+    
+            $cash_history->trans_no = $dateTime;
+            $cash_history->previous_cash = $user->cashOnHand;
+            $cash_history->cash_change = $trip_expenses->amount;
+            $cash_history->total_cash = $user->cashOnHand + $trip_expenses->amount;
+            $cash_history->type = "Delete Released Data on - Trips";
+            $cash_history->save();
+            $user->cashOnHand += $trip_expenses->amount;
+            $user->save();
+            $output = array(
+                'cashOnHand' => $user->cashOnHand,
+                'trip_data' => $trips
+            );
+            $trip_expenses->delete();
+            $trips->delete();
+        }else{
+            $trip_expenses->delete();
+            $trips->delete();
+        }
+        return json_encode($output);
     }
      public function trip_expense_view(Request $request)
     {

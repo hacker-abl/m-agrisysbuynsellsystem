@@ -1045,10 +1045,16 @@
                     dataType:'text',
                     data: $('#trip_form_update').serialize(),
                     success:function(data){
+                        dataparsed = $.parseJSON(data);
+                        console.log(dataparsed);
                         button.disabled = false;
                         input.html('SAVE CHANGES');
-                        swal("Success!", "Update Success", "success")
-
+                        if(dataparsed!="Success"){
+                            swal("Cash Reverted!", "Cash On Hand: ₱"+dataparsed.cashOnHand.toFixed(2), "success")
+                            $('#curCashOnHand').html(dataparsed.cashOnHand.toFixed(2));
+                        }else{
+                            swal("Success!", "Record has been updated", "success")
+                        }
                         $('#pickup_modal_update').modal('hide');
                        refresh_pickup();
                     },
@@ -1075,10 +1081,18 @@
                         method: "get",
                         data:{id:id},
                         success:function(data){
+                            dataparsed = $.parseJSON(data);
+                            console.log(dataparsed);
                            refresh_pickup();
+                           if(dataparsed!="success"){
+                            swal("Cash Reverted!", "Cash On Hand: ₱"+dataparsed.cashOnHand.toFixed(2), "success")
+                            $('#curCashOnHand').html(dataparsed.cashOnHand.toFixed(2));
+                            }else{
+                                swal("Success!", "Record has been Deleted", "success")
+                            }
                         }
                     })
-                    swal("Deleted!", "The record has been deleted.", "success");
+                   
                 }
                 })
             });
@@ -1101,6 +1115,7 @@
                         dataType:'text',
                         data: valuesToSend,
                         success:function(data){
+                            console.log(data);
                             dataparsed = $.parseJSON(data);
                             $("#id").val(dataparsed.driver_id);
                             button.disabled = false;
