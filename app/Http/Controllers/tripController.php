@@ -220,6 +220,7 @@ class tripController extends Controller
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
             ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at')
+            ->whereBetween('trips.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->get();
         }else{
            
@@ -336,6 +337,7 @@ class tripController extends Controller
           $trip_expense = DB::table('trips')
             ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
             ->select('trip_expense.id','trips.trip_ticket AS trip_id','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
+            ->whereBetween('trips.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->get()->sortByDesc('created_at');
         }else{
            

@@ -213,7 +213,8 @@ class expenseController extends Controller
       $from = $request->date_from;
       $to = $request->date_to;    
         if($to==""){
-        $expense = DB::table('expenses')->latest();
+        $expense = DB::table('expenses')
+        ->whereBetween('expenses.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])->latest();
         }else{
            
              $expense = Expense::where('created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")

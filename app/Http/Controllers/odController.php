@@ -208,6 +208,7 @@ class odController extends Controller
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
             ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at')
+            ->whereBetween('deliveries.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->latest();
         }else{
             $ultimatesickquery= DB::table('deliveries')
@@ -299,6 +300,7 @@ class odController extends Controller
           $od_expense = DB::table('deliveries')
             ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
             ->select('od_expense.id','deliveries.outboundTicket AS od_id','od_expense.description AS description','od_expense.type AS type','od_expense.amount AS amount','od_expense.status AS status','od_expense.released_by as released_by','od_expense.created_at as created_at')
+            ->whereBetween('deliveries.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->get()->sortByDesc('created_at');
         }else{
            
