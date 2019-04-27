@@ -298,10 +298,19 @@
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
+                        pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
          
                     // Update footer
                     $( api.column( 2 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
                     );
                 },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -415,10 +424,20 @@
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
+
+                        pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
          
                     // Update footer
                     $( api.column( 2 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
                     );
                 },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -519,10 +538,19 @@
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
+                        pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
          
                     // Update footer
                     $( api.column( 2 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
                     );
                 },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -630,10 +658,19 @@
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
+                        pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
          
                     // Update footer
                     $( api.column( 2 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
                     );
                 },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -733,12 +770,22 @@
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
+                        pageTotal1 = api
+                        .column( 7, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
          
                     // Update footer
                     $( api.column( 2 ).footer() ).html(
                         'Total: <br>₱' + number_format(pageTotal,2)
                     );
+                    $( api.column( 7 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
                 },
+
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
