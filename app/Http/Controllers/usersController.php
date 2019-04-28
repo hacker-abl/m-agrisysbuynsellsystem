@@ -51,7 +51,6 @@ class usersController extends Controller
             'id' => $user->id,
             'access_id' => $user->access_id,
             'username' => $user->username,
-            'cashOnHand' => $user->cashOnHand,
             'type' => $user->type
         );
         echo json_encode($output);
@@ -59,7 +58,9 @@ class usersController extends Controller
 
     public function addCash(Request $request){
         $user = User::find($request->add_cash_id);
-        $user->cashOnHand = $request->total_cash;
+        $previous_cash = $user->cashOnHand;
+        $total_cash = $previous_cash + $request->add_cash;
+        $user->cashOnHand = $total_cash;
         $user->save();
 
         $userGet = User::where('id', '=', $user->id)->first();
@@ -77,9 +78,9 @@ class usersController extends Controller
         }
 
         $cash_history->trans_no = $dateTime;
-        $cash_history->previous_cash = $request->current_cash;
+        $cash_history->previous_cash = $previous_cash;
         $cash_history->cash_change = $request->add_cash;
-        $cash_history->total_cash = $request->total_cash;
+        $cash_history->total_cash = $total_cash;
         if($request->remarks){
             $cash_history->type = "Add Cash (".$request->remarks.")";
         }

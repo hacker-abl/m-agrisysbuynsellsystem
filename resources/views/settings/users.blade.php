@@ -113,38 +113,12 @@
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="current_cash">Current Cash</label>
-                                </div>
-                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="number" id="current_cash" name="current_cash" class="form-control" required readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row clearfix">
-                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                     <label for="add_cash">Add Cash</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="number" onkeyup="addTotal(this)" id="add_cash" name="add_cash" class="form-control" placeholder="Enter cash amount to be added" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row clearfix">
-                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                    <label for="total_cash">Total Cash</label>
-                                </div>
-                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="number" id="total_cash" name="total_cash" class="form-control" required readonly>
+                                            <input type="number" id="add_cash" name="add_cash" class="form-control" placeholder="Enter cash amount to be added" required>
                                         </div>
                                     </div>
                                 </div>
@@ -495,7 +469,6 @@
                         $('#add_cash_username').val(data.username);
                         $('#current_cash').val(data.cashOnHand);
                         $('#add_cash').val("");
-                        $('#total_cash').val($('#current_cash').val());
                     },
                     error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error")
@@ -812,16 +785,5 @@
             });
         });
 
-        function addTotal(tempAdd){
-            var total_cash = $('#total_cash');
-            var current_cash = $('#current_cash');
-
-            if($(tempAdd).val() == "" || $(tempAdd).val().includes("e")){
-                $('#total_cash').val($('#current_cash').val());
-            }
-            else{
-                total_cash.val(parseFloat(current_cash.val()) + parseFloat($(tempAdd).val()));
-            }
-        }
     </script>
 @endsection
