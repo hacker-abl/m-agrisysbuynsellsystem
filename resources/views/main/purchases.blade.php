@@ -181,11 +181,7 @@
                                              <div class="form-group">
                                                   <label for="name">Tare (KG)</label>
                                                   <div class="form-line">
-<<<<<<< Updated upstream
-                                                       <input type="number" min="0" id="tare" onkeyup="computeAll(this)" name="tare" value="" class="form-control" required>
-=======
                                                        <input type="number" id="tare" oninput="this.value = Math.abs(this.value)" onkeyup="computeAll(this)" name="tare" value="" class="form-control" required>
->>>>>>> Stashed changes
                                                   </div>
                                              </div>
                                         </div>
@@ -199,11 +195,7 @@
                                              <div class="form-group">
                                                   <label for="name">Moisture (%)</label>
                                                   <div class="form-line">
-<<<<<<< Updated upstream
-                                                       <input type="number" id="moist" min="0" onkeyup="computeAll(this)" name="moist" value="" class="form-control" required>
-=======
                                                        <input type="number" oninput="this.value = Math.abs(this.value)" id="moist" onkeyup="computeAll(this)" name="moist" value="" class="form-control" required>
->>>>>>> Stashed changes
                                                   </div>
                                              </div>
                                         </div>
@@ -246,11 +238,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-<<<<<<< Updated upstream
-                                                    <input type="number"  id="cash" min="0" onkeyup="computeAll(this)" name="cash"   class="form-control"   required>
-=======
                                                     <input type="number"  min="0"  oninput="this.value = Math.abs(this.value)" id="cash" onkeyup="computeAll(this)" name="cash"   class="form-control"   required>
->>>>>>> Stashed changes
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiCash" class="btn btn-primary waves-effect">Reset</button>
@@ -266,11 +254,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-<<<<<<< Updated upstream
-                                                     <input type="number" id="partial" min="0" onkeyup="computeAll(this)" name="partial"  class="form-control"   required>
-=======
                                                      <input type="number" id="partial" oninput="this.value = Math.abs(this.value)" onkeyup="computeAll(this)" name="partial"  class="form-control"   required>
->>>>>>> Stashed changes
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiPartial" class="btn btn-primary waves-effect">Reset</button>
