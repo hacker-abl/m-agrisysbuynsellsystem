@@ -1093,7 +1093,7 @@
                     data: $('#trip_form_update').serialize(),
                     success:function(data){
                         dataparsed = $.parseJSON(data);
-                        console.log(dataparsed);
+                    
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         if(dataparsed!="Success"){
