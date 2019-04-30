@@ -13,6 +13,9 @@
               <div class="card">
                    <div class="header">
                    <div class="container-fluid">
+                   <div class="container-fluid">
+                   <h4>Employee: <span class="employee_name"></span></h4>
+                   </div>
                      <ul class="nav nav-tabs">
                         <li class="active"><a href="#ca_tab" data-toggle="tab"><div class="block-header">
                              <h2> Cash Advance Logs <span class="modal_title_ca"></span></h2>
@@ -20,6 +23,7 @@
                         <li><a href="#payment_tab" data-toggle="tab" id="render"><div class="block-header">
                             <h2>Payment Logs</h2>
                         </div></a></li>
+                      
                       </ul>
                 </div> 
                       
@@ -1019,13 +1023,8 @@
                     data:{id:person_id},
                     dataType: 'json',
                     success:function(data){
-
-                    if(data.data[0] != undefined){
-                        $('#view_dtr_name').val(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " - CASH ADVANCE");
-                    }
-                    
-                       // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-
+                        console.log(data);
+                        $('.employee_name').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
                 cash_advance_release =  $('#view_employee_ca_table').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {
                                 var api = this.api(), data;
@@ -1934,6 +1933,7 @@
                                         data:{id:person_id},
                                         dataType: 'json',
                                         success:function(data){
+                                            
                                         dtr_info= $('#view_dtr_table').DataTable({
                                                 "footerCallback": function ( row, data, start, end, display ) {
                                                     var api = this.api(), data;
