@@ -139,7 +139,7 @@
                                             <div class="form-group">
                                                  <label for="name">Sacks</label>
                                                  <div class="form-line">
-                                                      <input type="number" id="sacks" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0"  name="sacks" class="form-control"   required>
+                                                      <input type="number" id="sacks" min="0"    name="sacks" class="form-control"   required>
                                                  </div>
                                             </div>
                                        </div>
@@ -152,7 +152,7 @@
                                                  <div class="form-group">
                                                       <label for="name">Kilograms</label>
                                                       <div class="form-line">
-                                                           <input type="number" id="kilo" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="kilo" onkeyup="computeAll(this)" class="form-control"   required>
+                                                           <input type="number" id="kilo" min="0"   name="kilo" onkeyup="computeAll(this)" class="form-control"   required>
                                                       </div>
                                                  </div>
                                             </div>
@@ -165,7 +165,7 @@
                                              <div class="form-group">
                                                   <label for="name">Price</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="price" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="price" readonly="readonly" value="" class="form-control" required>
+                                                       <input type="number" id="price" min="0"   name="price" readonly="readonly" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -181,7 +181,7 @@
                                              <div class="form-group">
                                                   <label for="name">Tare (KG)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="tare" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" onkeyup="computeAll(this)" name="tare" value="" class="form-control" required>
+                                                       <input type="number" id="tare" min="0"   onkeyup="computeAll(this)" name="tare" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -195,7 +195,7 @@
                                              <div class="form-group">
                                                   <label for="name">Moisture (%)</label>
                                                   <div class="form-line">
-                                                       <input type="number" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" id="moist" onkeyup="computeAll(this)" name="moist" value="" class="form-control" required>
+                                                       <input type="number" min="0"   id="moist" onkeyup="computeAll(this)" name="moist" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -224,7 +224,7 @@
                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
                                                  <div class="form-line">
-                                                      <input type="number" id="ca" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="ca" readonly="readonly" value="" class="form-control" required>
+                                                      <input type="number" id="ca" min="0"   name="ca" readonly="readonly" value="" class="form-control" required>
                                                  </div>
                                             </div>
                                        </div>
@@ -238,7 +238,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-                                                    <input type="number"  min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" id="cash" onkeyup="computeAll(this)" name="cash"   class="form-control"   required>
+                                                    <input type="number"  min="0"   id="cash" onkeyup="computeAll(this)" name="cash"   class="form-control"   required>
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiCash" class="btn btn-primary waves-effect">Reset</button>
@@ -254,7 +254,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-                                                     <input type="number" id="partial" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0"  onkeyup="computeAll(this)" name="partial"  class="form-control"   required>
+                                                     <input type="number" id="partial" min="0"    onkeyup="computeAll(this)" name="partial"  class="form-control"   required>
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiPartial" class="btn btn-primary waves-effect">Reset</button>
@@ -501,7 +501,7 @@
                                                <div class="form-group">
                                                     <label for="name">Sacks</label>
                                                     <div class="form-line">
-                                                         <input type="number" id="sacks1" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0"   name="sacks1" class="form-control"   required>
+                                                         <input type="number" id="sacks1" min="0"     name="sacks1" class="form-control"   required>
                                                     </div>
                                                </div>
                                           </div>
@@ -514,7 +514,7 @@
                                                     <div class="form-group">
                                                          <label for="name">Kilograms</label>
                                                          <div class="form-line">
-                                                              <input type="number" id="kilo1" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="kilo1" onkeyup="kilos2(this)" class="form-control"   required>
+                                                              <input type="number" id="kilo1" min="0"   name="kilo1" onkeyup="kilos2(this)" class="form-control"   required>
                                                          </div>
                                                     </div>
                                                </div>
@@ -543,7 +543,7 @@
                                              <div class="form-group">
                                                   <label for="name">Tare (KG)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="tare2" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="tare2"  onkeyup="tare3(this)"  value="" class="form-control" required>
+                                                       <input type="number" id="tare2" min="0"   name="tare2"  onkeyup="tare3(this)"  value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -557,7 +557,7 @@
                                              <div class="form-group">
                                                   <label for="name">Moisture (%)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="moist2" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="moist2" onkeyup="moist3(this)" value="" class="form-control" required>
+                                                       <input type="number" id="moist2" min="0"   name="moist2" onkeyup="moist3(this)" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -571,7 +571,7 @@
                                              <div class="form-group">
                                                   <label for="name">Net Weight</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="net2" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="net2" readonly="readonly" value="" class="form-control" required>
+                                                       <input type="number" id="net2" min="0"   name="net2" readonly="readonly" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -585,7 +585,7 @@
                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                <div class="form-group">
                                                     <div class="form-line">
-                                                         <input type="number" id="partialpayment" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="partialpayment" onkeyup="compute(this)"  value="" class="form-control" required>
+                                                         <input type="number" id="partialpayment" min="0"   name="partialpayment" onkeyup="compute(this)"  value="" class="form-control" required>
                                                     </div>
                                                </div>
                                           </div>
@@ -609,7 +609,7 @@
                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                <div class="form-group">
                                                     <div class="form-line">
-                                                         <input type="number" id="amount1" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="amount1" readonly="readonly" value="" class="form-control" required>
+                                                         <input type="number" id="amount1" min="0"   name="amount1" readonly="readonly" value="" class="form-control" required>
                                                     </div>
                                                </div>
                                           </div>
@@ -622,7 +622,7 @@
                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                <div class="form-group">
                                                     <div class="form-line">
-                                                         <input type="number" id="amountpay1" min="0"  oninput="this.value > 0 ? this.value = this.value : this.value = 0" name="amountpay1" readonly="readonly" value="" class="form-control" required>
+                                                         <input type="number" id="amountpay1" min="0"   name="amountpay1" readonly="readonly" value="" class="form-control" required>
                                                     </div>
                                                </div>
                                           </div>
@@ -794,22 +794,22 @@
         var amtpay = 0
         var net = 0
         if ($('#kilo').val() != ""){
-            kilo = parseFloat($('#kilo').val())
+            kilo = parseFloat($('#kilo').val())  > 0 ? parseFloat($('#kilo').val()) : 0
         }
         if ($('#price').val() != ""){
-            price = parseFloat($('#price').val())
+            price = parseFloat($('#price').val()) > 0 ? parseFloat($('#price').val()) : 0 
         }
         if ($('#tare').val() != ""){
-            tare = parseFloat($('#tare').val())
+            tare = parseFloat($('#tare').val()) > 0 ? parseFloat($('#tare').val()) : 0
         }
         if ($('#moist').val() != ""){
-            moist = parseFloat($('#moist').val())
+            moist = parseFloat($('#moist').val()) > 0 ? parseFloat($('#moist').val()) : 0
         }
         if ($('#cash').val() != ""){
-            ca = parseFloat($('#cash').val())
+            ca = parseFloat($('#cash').val()) > 0 ? parseFloat($('#cash').val()) : 0
         }
         if ($('#partial').val() != ""){
-            partial = parseFloat($('#partial').val())
+            partial = parseFloat($('#partial').val()) > 0 ? parseFloat($('#partial').val()) : 0
         }
         if ($('#balance').val() != ""){
             balance = parseFloat($('#balance').val())
@@ -822,8 +822,17 @@
         }
         net =   (kilo - tare) - (moist/100 * net)
         total = net * price
-        amtpay  = partial < total ? (ca - partial) + total : $('#partial').val(0)
-        balance = partial < total ? prev + ca-partial : $('#partial').val(0)
+        let ca_to_partial  = 0
+        if (partial > ca) {
+            ca_to_partial = 0
+            partial = 0
+            $('#partial').val('')
+        }
+        else {
+            ca_to_partial = ca - partial
+        }
+        amtpay  = ca_to_partial + total 
+        balance =  prev + ca_to_partial 
         $('#total').val(parseFloat(total).toFixed(2))
         $('#amount').val(parseFloat(amtpay).toFixed(2))
         $('#balance').val(parseFloat(balance).toFixed(2))
