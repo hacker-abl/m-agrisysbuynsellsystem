@@ -52,6 +52,7 @@ class odController extends Controller
 
     public function store(Request $request)
     {
+        $output; 
         if($request->get('button_action') == 'add'){
             $commodity= new od;
             $commodity->outboundTicket = $request->ticket;
@@ -99,8 +100,9 @@ class odController extends Controller
 
                 event(new \App\Events\NewNotification($notification));
             }
+            $output="Add"; 
 
-            echo json_encode($details);
+            return json_encode($output);
         }
 
         if($request->get('button_action') == 'update'){
@@ -108,7 +110,6 @@ class odController extends Controller
           $commodity= od::find($request->get('id'));
           $od_expenses =od_expense::find($request->get('id'));
           $user = User::find(Auth::user()->id); 
-          $output="Success"; 
           if($commodity->allowance!=$request->allowance && $od_expenses->status=="Released"){
             $userGet = User::where('id', '=', Auth::user()->id)->first();
             $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
@@ -139,6 +140,8 @@ class odController extends Controller
                 'outbound_data' => $commodity
             );
             
+        }else{
+            $output="Success"; 
         }
           $commodity->outboundTicket = $request->ticket;
           $commodity->commodity_id = $request->commodity;
