@@ -104,8 +104,42 @@ class odController extends Controller
         }
 
         if($request->get('button_action') == 'update'){
-          $commodity= new od;
+          $commodity= new od; 
           $commodity= od::find($request->get('id'));
+          $od_expenses =od_expense::find($request->get('id'));
+          $user = User::find(Auth::user()->id); 
+          $output="Success"; 
+          if($commodity->allowance!=$request->allowance && $od_expenses->status=="Released"){
+            $userGet = User::where('id', '=', Auth::user()->id)->first();
+            $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+            $cash_history = new Cash_History;
+            $cash_history->user_id = $userGet->id;
+    
+            $getDate = Carbon::now();
+            
+            if($cashLatest != null){
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            }
+            else{
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+            }
+    
+            $cash_history->trans_no = $dateTime;
+            $cash_history->previous_cash = $user->cashOnHand;
+            $cash_history->cash_change = $od_expenses->amount;
+            $cash_history->total_cash = $user->cashOnHand + $commodity->allowance;
+            $cash_history->type = "Edit Data on - Outbound Deliveries";
+            $cash_history->save();
+            $user->cashOnHand += $commodity->allowance;
+            $user->save();
+            $od_expenses->status = "On-Hand";
+            $od_expenses->released_by = '';
+            $output = array(
+                'cashOnHand' => $user->cashOnHand,
+                'outbound_data' => $commodity
+            );
+            
+        }
           $commodity->outboundTicket = $request->ticket;
           $commodity->commodity_id = $request->commodity;
           $commodity->destination = $request->destination;
@@ -115,14 +149,12 @@ class odController extends Controller
           $commodity->fuel_liters = $request->liter;
           $commodity->kilos = $request->kilos;
           $commodity->allowance = $request->allowance;
-          $commodity->save();
-          $od_expenses =od_expense::find($request->get('id'));
           $od_expenses->description = $request->destination;
           $od_expenses->type ="Outbound Expense";
           $od_expenses->amount = $request->allowance;
-          $od_expenses->status = "On-Hand";
-          $od_expenses->released_by = '';
           $od_expenses->save();
+          $commodity->save();
+          return json_encode($output);
         }
     }
 
@@ -163,7 +195,7 @@ class odController extends Controller
         $cash_history->previous_cash = $user->cashOnHand;
         $cash_history->cash_change = $released->amount;
         $cash_history->total_cash = $user->cashOnHand - $released->amount;
-        $cash_history->type = "Release Cash - Purchases";
+        $cash_history->type = "Release Cash - Outbound Deliveries";
         $cash_history->save();
         
         event(new ExpensesUpdated($released));
