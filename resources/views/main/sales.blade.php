@@ -405,6 +405,51 @@
                   sales_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
                   $('#salestable').dataTable().fnDestroy();
                   salestable = $('#salestable').DataTable({
+					"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(8)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 5, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 5 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
+                },
 					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 					buttons: [
                     {
@@ -472,6 +517,51 @@
               	sales_date_from="";
                $('#salestable').dataTable().fnDestroy();
                  salestable = $('#salestable').DataTable({
+					"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(8)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 5, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 5 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
+                },
 					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 					buttons: [
                     {
@@ -547,6 +637,51 @@
                    sales_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
                   $('#salestable').dataTable().fnDestroy();
                  salestable = $('#salestable').DataTable({
+					"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(8)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 5, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 5 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
+                },
 					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 					buttons: [
                     {
@@ -614,6 +749,51 @@
               	sales_date_to="";
                 $('#salestable').dataTable().fnDestroy();
                  salestable = $('#salestable').DataTable({
+					"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(8)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 8, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 8 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal,2)
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 5, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 5 ).footer() ).html(
+                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
+                    );
+                },
 					dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 					buttons: [
                     {
