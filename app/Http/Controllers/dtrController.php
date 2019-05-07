@@ -219,7 +219,7 @@ class dtrController extends Controller
             $paymentlogs->paymentmethod = "From ADD DTR Form";
             $balance = employee_ca::where('employee_id', '=', $released->employee_id)->latest()->first();
             $empbalance = employee_bal::where('employee_id', '=', $released->employee_id)->first();
-            if($balance!=null){
+            if($released->p_payment!=0){
                 $paymentlogs->r_balance=$balance->balance-$released->p_payment;
                 $paymentlogs->remarks = "Partial Payment";
                 $balance->balance = $empbalance->balance-$released->p_payment;
@@ -281,11 +281,12 @@ class dtrController extends Controller
                 $cash_history->cash_change = $released->salary;
                 $cash_history->total_cash = $user->cashOnHand - $released->salary;
                 $cash_history->type = "Release Cash - DTR";
-                $cash_history->save();
+                
 
                 $user->cashOnHand -= $released->salary;
                 $user->save();
                 $released->save();
+                $cash_history->save();
 
                 event(new CashierCashUpdated());
 
@@ -827,6 +828,7 @@ class dtrController extends Controller
 
         $user->cashOnHand -= $released->amount;
         $user->save();
+        $cashLatest->save();
         
         event(new CashierCashUpdated());
         
