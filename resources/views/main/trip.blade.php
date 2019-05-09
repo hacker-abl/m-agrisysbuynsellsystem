@@ -1017,25 +1017,14 @@
                 $.ajax({
                     url:"{{ route('get_pickup') }}",
                     method: 'get',
-                    data: { temp: 'temp' },
                     dataType:'json',
                     success:function(data){
-                        var t=0;
-                        if(data[0].temp!=null){
-                             t = data[0].temp;
-                        }
-                        var stringticket= t.toString();
-
-                        var e=stringticket; 
-                        if(stringticket!="0"){
-                            e = stringticket.substr(stringticket.length-1);
-                        }
-                        var a = parseInt(e);
-                        var b = a + 1;
+                        console.log(data.id);
                         var c = new Date();
                         var twoDigitMonth = ((c.getMonth().length+1) == 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
-                        $("input[id=ticket"+(item)+"]").val(currentDate+b);
+                        console.log(currentDate);
+                        $("input[id=ticket"+(item)+"]").val(currentDate+data.id);
                         if(item>=1){
                             div= $('.dynamic-element form').last().attr('id');
                             item = (parseInt( div.match(/\d+/g), 10 ) +1);

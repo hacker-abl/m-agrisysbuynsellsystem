@@ -273,8 +273,8 @@ class tripController extends Controller
         /*$temp = DB::table('trips')
             ->select(DB::raw('max(cast(trip_ticket as Int) as temp)'))
             ->get();*/
-        $temp = DB::select('select MAX(Cast(trip_ticket as Int)) as "temp" FROM trips');
-        echo json_encode($temp);
+       $output = DB::table('trips')->select('trips.*')->latest()->first();
+        echo json_encode($output);
      }
 
      function updatedata(Request $request){
