@@ -1025,7 +1025,7 @@
 						$("#driver_id").val('').trigger('change');
 						$("#company").val('').trigger('change');
 						$("#commodity").val('').trigger('change');
-						if(dataparsed!="Success"){
+						if(dataparsed!="Success"&&dataparsed!="Add"){
                             swal("Cash Reverted!", "Cash On Hand: ₱"+dataparsed.cashOnHand.toFixed(2), "success")
                             $('#curCashOnHand').html(dataparsed.cashOnHand.toFixed(2));
                         }if(dataparsed=="Add"){
