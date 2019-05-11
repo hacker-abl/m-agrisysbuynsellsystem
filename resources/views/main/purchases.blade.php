@@ -829,7 +829,7 @@
             $('#partial').val('')
         }
         else {
-            ca_to_partial = ca - partial
+            ca_to_partial = ca + prev  - partial
         }
         amtpay  = ca_to_partial + total 
         balance =  prev + ca_to_partial 
@@ -2285,60 +2285,66 @@
                 var button =this;
                 button.disabled = true;
                 input.html('SAVING...');
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:"{{ route('add_purchases') }}",
-                    method: 'POST',
-                    dataType:'text',
-                    data: $('#purchase_form').serialize(),
-                    success:function(data){
-                        if(data!="Not"){
-                            button.disabled = false;
-                            input.html('SAVE CHANGES');
-                            $("#customer").val('').trigger('change');
-                            $("#commodity").val('').trigger('change');
-                            swal("Success!", "Record has been added to database", "success")
-                            $('#purchase_modal').modal('hide');
-                            refresh_purchase_table();
-                            $("#sacks").val("");
-                            $("#kilo").val("");
-                            $("#price").val("");
-                            $("#sacks1").val("");
-                            $("#kilo1").val("");
-                            $("#price1").val("");
-                            $("#fname").val("");
-                            $("#tare").val("");
-                            $("#moist").val("");
-                            $("#net").val("");
-                            $("#mname").val("");
-                            $("#lname").val("");
-                            $("#amount1").val("");
-                            $("#total").val("");
-                            $("#amount").val("");
-                            $("#ca").val("");
-                            $("#balance").val("");
+                if (parseFloat( $("#amount").val()) > 0 ) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "{{ route('add_purchases') }}",
+                        method: 'POST',
+                        dataType: 'text',
+                        data: $('#purchase_form').serialize(),
+                        success: function (data) {
+                            if (data != "Not") {
+                                button.disabled = false;
+                                input.html('SAVE CHANGES');
+                                $("#customer").val('').trigger('change');
+                                $("#commodity").val('').trigger('change');
+                                swal("Success!", "Record has been added to database", "success")
+                                $('#purchase_modal').modal('hide');
+                                refresh_purchase_table();
+                                $("#sacks").val("");
+                                $("#kilo").val("");
+                                $("#price").val("");
+                                $("#sacks1").val("");
+                                $("#kilo1").val("");
+                                $("#price1").val("");
+                                $("#fname").val("");
+                                $("#tare").val("");
+                                $("#moist").val("");
+                                $("#net").val("");
+                                $("#mname").val("");
+                                $("#lname").val("");
+                                $("#amount1").val("");
+                                $("#total").val("");
+                                $("#amount").val("");
+                                $("#ca").val("");
+                                $("#balance").val("");
 
-                            $("#partial").val("");
-                            $("#commodity").val('').trigger('change');
-                            $("#commodity1").val('').trigger('change');
-                            $("#customer").val('').trigger('change');
-                            $('#curCashOnHand').html(data);
-                            //refresh_delivery_table();
-                        }
-                        else{
+                                $("#partial").val("");
+                                $("#commodity").val('').trigger('change');
+                                $("#commodity1").val('').trigger('change');
+                                $("#customer").val('').trigger('change');
+                                $('#curCashOnHand').html(data);
+                                //refresh_delivery_table();
+                            } else {
+                                button.disabled = false;
+                                input.html('SAVE CHANGES');
+                                swal("Oh no!", "You are not authorized to edit this. try again.", "error")
+                            }
+                        },
+                        error: function (data) {
                             button.disabled = false;
                             input.html('SAVE CHANGES');
-                            swal("Oh no!", "You are not authorized to edit this. try again.", "error")
+                            swal("Oh no!", "Something went wrong, try again.", "error")
                         }
-                    },
-                    error: function(data){
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        swal("Oh no!", "Something went wrong, try again.", "error")
-                    }
-                })
+                    })
+                }
+                else{
+                    button.disabled = false;
+                    input.html('SAVE CHANGES');
+                    swal("Oh no!", "Amount to Pay shouldn't be negative.", "warning")
+                }
             });
             $(document).on('click', '.release_purchase', function(event){
                 event.preventDefault();
