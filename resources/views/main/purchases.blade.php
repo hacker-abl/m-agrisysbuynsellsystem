@@ -829,7 +829,7 @@
             $('#partial').val('')
         }
         else {
-            ca_to_partial = ca - partial
+            ca_to_partial = ca > 0 ? ca - partial : partial
         }
         amtpay  = ca_to_partial + total 
         balance =  ca_to_partial + prev
