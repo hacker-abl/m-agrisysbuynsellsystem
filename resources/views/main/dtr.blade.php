@@ -2085,9 +2085,9 @@
                          }else if(data2.cashOnHand!=undefined){    
                          swal("Data Deleted! Employee Balance : ₱"+data2.balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
                         $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                      }
-                        else{
-                          swal("Data Deleted", " Employee Balance : ₱"+data2.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "success");
+                      } else if(data2=="deleted")
+                       {
+                          swal("Data Deleted", " Cash Advance", "success");
                       }
                           $.ajax({
                     url: "{{ route('employee_view_ca') }}",
