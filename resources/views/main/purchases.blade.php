@@ -829,10 +829,10 @@
             $('#partial').val('')
         }
         else {
-            ca_to_partial = ca + prev  - partial
+            ca_to_partial = ca - partial
         }
         amtpay  = ca_to_partial + total 
-        balance =  ca_to_partial
+        balance =  ca_to_partial + prev
         $('#total').val(parseFloat(total).toFixed(2))
         $('#amount').val(parseFloat(amtpay).toFixed(2))
         $('#balance').val(parseFloat(balance).toFixed(2))
