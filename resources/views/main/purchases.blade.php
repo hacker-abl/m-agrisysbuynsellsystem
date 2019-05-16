@@ -832,7 +832,7 @@
             ca_to_partial = ca > 0 ? ca - partial : partial
         }
         amtpay  = ca_to_partial + total 
-        balance =  ca_to_partial + prev
+        balance =  prev - ca_to_partial 
         $('#total').val(parseFloat(total).toFixed(2))
         $('#amount').val(parseFloat(amtpay).toFixed(2))
         $('#balance').val(parseFloat(balance).toFixed(2))
