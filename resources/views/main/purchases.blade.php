@@ -823,7 +823,7 @@
         net =   (kilo - tare) - (moist/100 * net)
         total = net * price
         let ca_to_partial  = 0
-        if (partial > (ca + prev)) {
+        if (partial > (ca + prev) || partial > total) {
             ca_to_partial = 0
             partial = 0
             $('#partial').val('')
@@ -831,7 +831,7 @@
         else {
             ca_to_partial = ca > 0 ? ca - partial : partial
         }
-        amtpay  = ca_to_partial > 0 ? ca_to_partial + total  : partial + total 
+        amtpay  = ca_to_partial > 0 ? ca_to_partial + total  : total - partial
         balance =  prev + ca - partial
         $('#total').val(parseFloat(total).toFixed(2))
         $('#amount').val(parseFloat(amtpay).toFixed(2))
