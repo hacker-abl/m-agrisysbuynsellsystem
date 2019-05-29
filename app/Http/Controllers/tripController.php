@@ -219,7 +219,8 @@ class tripController extends Controller
             ->join('commodity', 'commodity.id', '=', 'trips.commodity_id')
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
-            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at')
+            ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
+            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at','trip_expense.status')
             ->whereBetween('trips.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->get();
         }else{
@@ -228,7 +229,8 @@ class tripController extends Controller
             ->join('commodity', 'commodity.id', '=', 'trips.commodity_id')
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
-            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at')
+            ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
+            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at','trip_expense.status')
              ->where('trips.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
              ->where('trips.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->get();
@@ -247,9 +249,12 @@ class tripController extends Controller
                  return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                      <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
             }
-            if($userid!=1 && $delete==1 && $edit==1){
+            if($userid!=1 && $delete==1 && $edit==1&&$trips->status=="On-Hand"){
                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                      <button class="btn btn-xs btn-danger delete_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">delete</i></button></div>';
+            }
+            if($userid!=1 && $delete==1 && $edit==1&&$trips->status=="Released"){
+                return 'Released';
             }
              if($userid!=1 && $delete==0 && $edit==1){
                 return '<div class="btn-group"><button class="btn btn-xs btn-warning update_pickup waves-effect" id="'.$trips->id.'"><i class="material-icons">mode_edit</i></button>';

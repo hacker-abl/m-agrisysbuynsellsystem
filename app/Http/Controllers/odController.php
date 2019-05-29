@@ -242,7 +242,8 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at')
+            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at','od_expense.status')
             ->whereBetween('deliveries.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->latest();
         }else{
@@ -251,7 +252,8 @@ class odController extends Controller
             ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
             ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
             ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at')
+            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
+            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at','od_expense.status')
             ->where('deliveries.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('deliveries.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->latest();
@@ -270,16 +272,25 @@ class odController extends Controller
             if($userid==1){
                  return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
             <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }if($userid!=1 && $delete==1 && $edit==1){
+            }if($userid!=1 && $delete==1 && $edit==1 &&$ultimatesickquery->status=="On-Hand"){
                      return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
                 <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }
-            if($userid!=1 && $delete==1 && $edit==0){
+            if($userid!=1 && $delete==1 && $edit==1 &&$ultimatesickquery->status=="Released"){
+                return 'Released';
+       }
+            if($userid!=1 && $delete==1 && $edit==0 &&$ultimatesickquery->status=="On-Hand"){
             return '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }
-            if($userid!=1 && $delete==0 && $edit==1){
+            if($userid!=1 && $delete==1 && $edit==0 &&$ultimatesickquery->status=="Released"){
+                return 'Released';
+                }
+            if($userid!=1 && $delete==0 && $edit==1 &&$ultimatesickquery->status=="On-Hand"){
                  return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
             }
+            if($userid!=1 && $delete==0 && $edit==1 &&$ultimatesickquery->status=="Released"){
+                return 'Released';
+           }
             if($userid!=1 && $delete==0 && $edit==0){
                  return 'No Action Permitted';
             }

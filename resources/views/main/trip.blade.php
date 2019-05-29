@@ -1019,10 +1019,11 @@
                     method: 'get',
                     dataType:'json',
                     success:function(data){
-                        console.log(data.id);
                         var c = new Date();
                         var twoDigitMonth = ((c.getMonth().length+1) == 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
                         var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
+                        if(data!=null){
+                            console.log(data.id); 
                         console.log(currentDate);
                         $("input[id=ticket"+(item)+"]").val(currentDate+data.id);
                         if(item>=1){
@@ -1030,6 +1031,10 @@
                             item = (parseInt( div.match(/\d+/g), 10 ) +1);
                             $('.delete').show();
                         }
+                        }else{
+                            $("input[id=ticket"+(item)+"]").val(currentDate+1);
+                        }
+                       
                     }
                 })
             });
