@@ -199,6 +199,8 @@ Route::group(['middleware'=>['auth', 'user:dtr']], function() {
     Route::get('/employee_balance', 'dtrController@employee_balance')->name('employee_balance');
     Route::get('/refresh_view_dtr', 'dtrController@refresh_view')->name('refresh_view_dtr');
     Route::post('/release_update_dtr', 'dtrController@release_update_dtr')->name('release_update_dtr');
+    Route::post('/receive_payment', 'dtrController@receive_payment')->name('receive_payment');
+    Route::post('/delete_payment', 'dtrController@delete_payment')->name('delete_payment');
 });
 
 Route::group(['middleware'=>['auth', 'user:trips']], function() {

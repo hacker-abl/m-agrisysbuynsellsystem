@@ -334,37 +334,117 @@ class dtrController extends Controller
         $paymentlogs = new emp_payment;
         $paymentlogs->logs_id = $request->employee_payment_id;
         $paymentlogs->paymentmethod = $request->paymentmethod;
-        if($request->balance <= 0){
-             $output = array(
-            'cashOnHand' => 0
-        );
-            echo json_encode($output);
-        }else{
-        $balance = employee_ca::where('employee_id', '=', $request->employee_payment_id)->latest()->first();
-        $paymentlogs->r_balance=$balance->balance-$request->amount;
-        $paymentlogs->remarks = $request->remarks;
-        $balance->balance = $balance->balance-$request->amount;
         if( $request->checknumber!=""){
             $paymentlogs->checknumber = $request->checknumber;
         }
         else{
             $paymentlogs->checknumber = "Not Specified";
         }
-        $paymentlogs->paymentamount = $request->amount;
         $paymentlogs->remarks = $request->remarks;
-        $empbalance = employee_bal::where('employee_id', '=', $request->employee_payment_id)->latest()->first();
-        $empbalance->balance = $request->balance - $request->amount;
-        $empbalance->save();
+        $paymentlogs->paymentamount = $request->amount;
+        $balance = employee_ca::where('employee_id', '=', $request->employee_payment_id)->latest()->first();
+        $paymentlogs->r_balance=$balance->balance;
         $paymentlogs->save();
-        $balance->save();
-        //
-        //
-        $user = User::find(1);
-        $user_current =  $user->cashOnHand;
-        $user->cashOnHand += $request->amount;
-        $user->save();
+        if($request->balance <= 0){
+             $output = array(
+            'cashOnHand' => 0
+        );
+            echo json_encode($output);
+        }else{
+            $output =['cashOnHand' => 1];
+            echo json_encode($output);    
+        }
+        
+    }
+    public function delete_payment(Request $request){
+        $check_admin =Auth::user()->id;
+        $paymentDetails = emp_payment::where('id', '=',$request->id)->latest()->first();
+        if($paymentDetails->status==null){
+            $paymentDetails->delete();
+            return "deleted";
+        }else{
+            $balance = employee_ca::where('employee_id', '=', $paymentDetails->logs_id)->latest()->first();
+            $paymentDetails->r_balance=$balance->balance+$paymentDetails->paymentamount;
+            $balance->balance = $balance->balance+$paymentDetails->paymentamount;
+            $empbalance = employee_bal::where('employee_id', '=', $paymentDetails->logs_id)->latest()->first();
+            $empbalance->balance = $paymentDetails->r_balance;
+            
+                $user = User::find(Auth::user()->id);
+                $user_current =  $user->cashOnHand;
+                $user->cashOnHand -= $paymentDetails->paymentamount;
+                $user->save();
+        
+                $userGet = User::where('id', '=',Auth::user()->id)->first();
+                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+                $cash_history = new Cash_History;
+                $cash_history->user_id = $userGet->id;
 
-        $userGet = User::where('id', '=', 1)->first();
+                $getDate = Carbon::now();
+                
+                if($cashLatest != null){
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                }
+                else{
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+                }
+                $employeeName= employee::where('id', '=', $paymentDetails->logs_id)->first();
+                $cash_history->trans_no = $dateTime;
+                $cash_history->previous_cash = $user_current;
+                $cash_history->cash_change = $paymentDetails->paymentamount;
+                $cash_history->total_cash = $user->cashOnHand;
+                $cash_history->type = "Delete Employee CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
+                $cash_history->save();
+                $empbalance->save();
+                $balance->save();
+                
+
+                $output = array(
+                    'cashOnHand' => $user->cashOnHand,
+                    'cashHistory'=> $dateTime,
+                    'user'       => Auth::user()->id,
+                    'amount'       => $paymentDetails->paymentamount,
+                );
+                $paymentDetails->delete();
+                
+            return json_encode($output);    
+     
+            //
+        }
+        
+        
+    }
+    public function receive_payment(Request $request){
+        $check_admin =Auth::user()->id;
+        $paymentDetails = emp_payment::where('id', '=',$request->id)->latest()->first();
+        $balance = employee_ca::where('employee_id', '=', $paymentDetails->logs_id)->latest()->first();
+        $paymentDetails->r_balance=$balance->balance-$paymentDetails->paymentamount;
+        $balance->balance = $balance->balance-$paymentDetails->paymentamount;
+        $empbalance = employee_bal::where('employee_id', '=', $paymentDetails->logs_id)->latest()->first();
+        $empbalance->balance = $paymentDetails->r_balance;
+        if($check_admin==1){
+            $logged_id = Auth::user()->name;
+            $user = User::find(Auth::user()->id);
+            $paymentDetails->received_by=$logged_id;  
+            $paymentDetails->status="Received";  
+        }else{
+            $logged_id = Auth::user()->emp_id;
+            $user = User::find(Auth::user()->id);
+            $name= Employee::find($logged_id);
+            $paymentDetails->status = "Received";
+            $paymentDetails->received_by = $name->fname." ".$name->mname." ".$name->lname;   
+        }
+        //
+        //
+      
+     
+            $user = User::find(Auth::user()->id);
+            $user_current =  $user->cashOnHand;
+            $user->cashOnHand += $paymentDetails->paymentamount;
+            $user->save();
+     
+       
+
+        $userGet = User::where('id', '=',Auth::user()->id)->first();
         $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
         $cash_history = new Cash_History;
         $cash_history->user_id = $userGet->id;
@@ -377,22 +457,26 @@ class dtrController extends Controller
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
         }
-        $employeeName= employee::where('id', '=', $request->employee_payment_id)->first();
+        $employeeName= employee::where('id', '=', $paymentDetails->logs_id)->first();
         $cash_history->trans_no = $dateTime;
         $cash_history->previous_cash = $user_current;
-        $cash_history->cash_change = $request->amount;
+        $cash_history->cash_change = $paymentDetails->paymentamount;
         $cash_history->total_cash = $user->cashOnHand;
-        $cash_history->type = "Employee CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
+        $cash_history->type = "Received Employee CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
         $cash_history->save();
+        $empbalance->save();
+        $balance->save();
+        $paymentDetails->save();
 
         $output = array(
             'cashOnHand' => $user->cashOnHand,
             'cashHistory'=> $dateTime,
             'user'       => Auth::user()->id,
+            'amount'       => $paymentDetails->paymentamount,
         );
         
-        echo json_encode($output);    
-        }
+       return json_encode($output);    
+     
         
     }
     function updatedata(Request $request){
@@ -682,33 +766,25 @@ class dtrController extends Controller
         $id = $request->input('id');
         $payments = DB::table('emp_payments')
             ->join('employee', 'employee.id', '=', 'emp_payments.logs_id')
-            ->select('emp_payments.id','emp_payments.logs_id', 'employee.fname', 'employee.mname', 'employee.lname', 'emp_payments.paymentmethod', 'emp_payments.paymentamount', 'emp_payments.created_at','emp_payments.checknumber','emp_payments.remarks','emp_payments.r_balance')
+            ->select('emp_payments.id','emp_payments.logs_id', 'employee.fname', 'employee.mname', 'employee.lname', 'emp_payments.paymentmethod', 'emp_payments.paymentamount', 'emp_payments.created_at','emp_payments.checknumber','emp_payments.remarks','emp_payments.r_balance','received_by','status')
             ->where('emp_payments.logs_id', $id)
             ->get()->sortByDesc('created_at');
         return \DataTables::of($payments)
-        //  ->addColumn('action', function($cash_advance){
-        //     $userid= Auth::user()->id;
-        //     $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',5)->get();   
-        //     if($userid!=1){
-        //         $delete=$permit[0]->permit_delete;  
-        //         $edit = $permit[0]->permit_edit;  
-        //    }
-        //     if($cash_advance->status=="On-Hand" && isAdmin()==1){
-        //          return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
-        //     }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==1){
-        //          return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
-        //     }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==1 && $edit==0){
-        //          return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">delete</i></button>';
-        //     }if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==1){
-        //          return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-warning update_ca waves-effect" id="'.$cash_advance->id.'" ><i class="material-icons">mode_edit</i></button>';
-        //     }else if($cash_advance->status=="On-Hand" && isAdmin()!=1 && $delete==0 && $edit==0){
-        //          return '<button class="btn btn-xs btn-success release_ca waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">eject</i></button>';
-        //     }
-        //     else{
-        //          return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>';
-        //     }
+         ->addColumn('action', function($cash_advance){
+          
+            if($cash_advance->status!="Received"){
+         return '<button class="btn btn-xs btn-success receive_payment waves-effect" id="'.$cash_advance->id.'">
+         <i class="material-icons">details</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_payment waves-effect" id="'.$cash_advance->id.'" >
+         <i class="material-icons">delete</i></button>';
+        }else if($cash_advance->status=="Received" && isAdmin()==1){
+            return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_payment waves-effect" id="'.$cash_advance->id.'" >
+            <i class="material-icons">delete</i></button>';
+        }else if($cash_advance->status=="Received"){
+            return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>';
+        }
+            
            
-        // })
+        })
         ->editColumn('paymentamount', function ($data) {
            return '₱'.number_format($data->paymentamount, 2, '.', ',');
         })
@@ -717,6 +793,14 @@ class dtrController extends Controller
         })
          ->editColumn('created_at', function ($data) {
             return date('F d, Y g:i a', strtotime($data->created_at));
+        })
+        ->editColumn('received_by', function ($data) {
+            if($data->received_by==null){
+                return "None";
+            }else{
+                return $data->received_by;
+            }
+           
         })
 
         ->make(true);
