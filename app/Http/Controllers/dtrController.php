@@ -222,6 +222,18 @@ class dtrController extends Controller
             if($released->p_payment!=0){
                 $paymentlogs->r_balance=$balance->balance-$released->p_payment;
                 $paymentlogs->remarks = "Partial Payment";
+                if($check_admin==1){
+                    $logged_id = Auth::user()->name;
+                    $user = User::find(Auth::user()->id);
+                    $paymentlogs->received_by=$logged_id;  
+                    $paymentlogs->status="Received";  
+                }else{
+                    $logged_id = Auth::user()->emp_id;
+                    $user = User::find(Auth::user()->id);
+                    $name= Employee::find($logged_id);
+                    $paymentlogs->status = "Received";
+                    $paymentlogs->received_by = $name->fname." ".$name->mname." ".$name->lname;   
+                }
                 $balance->balance = $empbalance->balance-$released->p_payment;
                 $empbalance->balance = $empbalance->balance-$released->p_payment;
                 
@@ -658,6 +670,9 @@ class dtrController extends Controller
         ->editColumn('bonus', function ($data) {
             return '₱ '.number_format($data->bonus, 2, '.', ',');
         })
+        ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
+        })
         ->editColumn('salary', function ($data) {
             return '₱ '.number_format($data->salary, 2, '.', ',');
         })
@@ -692,6 +707,9 @@ class dtrController extends Controller
         })
         ->editColumn('bonus', function ($data) {
             return '₱ '.number_format($data->bonus, 2, '.', ',');
+        })
+        ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
         })
          ->editColumn('released_by', function ($data) {
             if($data->released_by==""){
@@ -748,6 +766,9 @@ class dtrController extends Controller
             }
              
         })
+        ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
+        })
         ->editColumn('amount', function ($data) { 
             return '₱'.number_format($data->amount, 2, '.', ',');
         })
@@ -776,6 +797,8 @@ class dtrController extends Controller
          return '<button class="btn btn-xs btn-success receive_payment waves-effect" id="'.$cash_advance->id.'">
          <i class="material-icons">details</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_payment waves-effect" id="'.$cash_advance->id.'" >
          <i class="material-icons">delete</i></button>';
+        }else if($cash_advance->paymentmethod=="From ADD DTR Form" && isAdmin()==1){
+            return 'No Action';
         }else if($cash_advance->status=="Received" && isAdmin()==1){
             return '<button class="btn btn-xs btn-danger waves-effect" id="'.$cash_advance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_payment waves-effect" id="'.$cash_advance->id.'" >
             <i class="material-icons">delete</i></button>';
@@ -941,6 +964,9 @@ class dtrController extends Controller
         })
         ->editColumn('name', function ($data) {
             return $data->fname." ".$data->lname;
+        })
+        ->editColumn('created_at', function ($data) {
+            return date('F d, Y g:i a', strtotime($data->created_at));
         })
          ->editColumn('role', function ($data) {
             return $data->role; 

@@ -790,7 +790,7 @@
     var end = moment();
  $(document).ready(function() {
     function cb(start, end) {
-      $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        $('#reportrange span').html(start.format('MMMM D YYYY, h:mm:ss a') + ' - ' + end.format('MMMM D YYYY, h:mm:ss a'));
     }
 
     $('#reportrange').daterangepicker({
@@ -1100,13 +1100,7 @@
                             columns:[
                                 {data: 'reason', name: 'reason'},
                                 {data: 'amount', name: 'amount'},
-                                 {data: 'created_at', name: 'created_at',
-                                                        type: "date",
-                                                        render:function (value) {
-                                                            var ts = new Date(value);
-
-                                                            return ts.toDateString()}
-                                                    },
+                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'status', name: 'status'},
                                 {data: 'released_by', name: 'released_by'},
                                 {data: "action", orderable:false,searchable:false}
@@ -1192,13 +1186,7 @@
                             columns:[
                                 {data: 'paymentmethod', name: 'paymentmethod'},
                                 {data: 'paymentamount', name: 'paymentamount'},
-                                 {data: 'created_at', name: 'created_at',
-                                                        type: "date",
-                                                        render:function (value) {
-                                                            var ts = new Date(value);
-
-                                                            return ts.toDateString()}
-                                                    },
+                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'checknumber', name: 'checknumber'},
                                 {data: 'remarks', name: 'remarks'},
                                 {data: 'r_balance', name: 'r_balance'},
@@ -1413,16 +1401,14 @@
 				]
 			});
             $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
+                $(this).val(picker.startDate.format('MMMM D YYYY, h:mm:ss a') + ' to ' + picker.endDate.format('MMMM D YYYY, h:mm:ss a'));
               dtr_info.draw();
-              payment_table.draw();
-              cash_advance_release.draw();
+             
             });
             $("#reportrange").on('cancel.daterangepicker', function(ev, picker) {
                   $(this).val('');
               dtr_info.draw();
-              payment_table.draw();
-              cash_advance_release.draw();
+              
             });
          $.fn.dataTableExt.afnFiltering.push(
             function( oSettings, aData, iDataIndex ) {
@@ -1717,7 +1703,7 @@
               button.disabled = true;
               input.html('SAVING...');    
               event.preventDefault();
-              if(parseInt($('#p_payment').val())<=parseInt($('#emp_balance').val())&&parseInt($('#salary').val())>0){
+              if(parseInt($('#p_payment').val())<=parseInt($('#emp_balance').val())&&parseInt($('#salary').val())>=0){
                 
                 $.ajax({
                     headers: {
@@ -2177,13 +2163,7 @@
                             columns:[
                                 {data: 'reason', name: 'reason'},
                                 {data: 'amount', name: 'amount'},
-                                 {data: 'created_at', name: 'created_at',
-                                                        type: "date",
-                                                        render:function (value) {
-                                                            var ts = new Date(value);
-
-                                                            return ts.toDateString()}
-                                                    },
+                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'status', name: 'status'},
                                 {data: 'released_by', name: 'released_by'},
                                 {data: "action", orderable:false,searchable:false}
@@ -2303,13 +2283,7 @@
                             columns:[
                                 {data: 'paymentmethod', name: 'paymentmethod'},
                                 {data: 'paymentamount', name: 'paymentamount'},
-                                 {data: 'created_at', name: 'created_at',
-                                                        type: "date",
-                                                        render:function (value) {
-                                                            var ts = new Date(value);
-
-                                                            return ts.toDateString()}
-                                                    },
+                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'checknumber', name: 'checknumber'},
                                 {data: 'remarks', name: 'remarks'},
                                 {data: 'r_balance', name: 'r_balance'},
@@ -2435,13 +2409,7 @@
                             columns:[
                                 {data: 'paymentmethod', name: 'paymentmethod'},
                                 {data: 'paymentamount', name: 'paymentamount'},
-                                 {data: 'created_at', name: 'created_at',
-                                                        type: "date",
-                                                        render:function (value) {
-                                                            var ts = new Date(value);
-
-                                                            return ts.toDateString()}
-                                                    },
+                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'checknumber', name: 'checknumber'},
                                 {data: 'remarks', name: 'remarks'},
                                 {data: 'r_balance', name: 'r_balance'},
@@ -2675,7 +2643,7 @@
 								 render:function (value) {
 									   var ts = new Date(value);
 
-									  return ts.toDateString()}
+									  return ts.toDateString()+" "+ts.toLocaleTimeString()}
 								},
                                 {data: 'bonus', name: 'bonus'},
                                 {data: 'dtr_balance', name: 'dtr_balance'},
@@ -2822,13 +2790,7 @@
                             columns:[
                                 {data: 'reason', name: 'reason'},
                                 {data: 'amount', name: 'amount'},
-                                 {data: 'created_at', name: 'created_at',
-                                                        type: "date",
-                                                        render:function (value) {
-                                                            var ts = new Date(value);
-
-                                                            return ts.toDateString()}
-                                                    },
+                                 {data: 'created_at', name: 'created_at'},
                                 {data: 'status', name: 'status'},
                                 {data: 'released_by', name: 'released_by'},
                                 {data: "action", orderable:false,searchable:false}
