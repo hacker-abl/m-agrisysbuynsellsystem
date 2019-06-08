@@ -823,7 +823,7 @@
         net =   (kilo - tare) - (moist/100 * net)
         total = net * price
         let ca_to_partial  = 0
-        if (partial >= (ca + prev) || partial >= total + ca) {
+        if (partial > (ca + prev) || partial > total + ca) {
             ca_to_partial = 0
             partial = 0
             $('#partial').val('')
