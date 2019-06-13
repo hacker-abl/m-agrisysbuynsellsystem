@@ -857,6 +857,7 @@
                        method: 'get',
                        dataType:'json',
                        success:function(data){
+                           console.log(data);
                          employee_balace_view =  $('#view_balance_table').DataTable({
                             "footerCallback": function ( row, data, start, end, display ) {
                                 var api = this.api(), data;
