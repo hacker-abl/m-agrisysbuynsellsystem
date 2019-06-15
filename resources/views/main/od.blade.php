@@ -1105,10 +1105,17 @@
 						method: "get",
 						data:{id:id},
 						success:function(data){
+							dataparsed = $.parseJSON(data);
+                            console.log(dataparsed);
+                           if(dataparsed!="success"){
+                            swal("Cash Reverted!", "Cash On Hand: ₱"+dataparsed.cashOnHand.toFixed(2), "success")
+                            $('#curCashOnHand').html(dataparsed.cashOnHand.toFixed(2));
+                            }else{
+                                swal("Success!", "Record has been Deleted", "success")
+                            }
 							refresh_delivery_table();
 						}
 					})
-					swal("Deleted!", "The record has been deleted.", "success");
 				}
 				})
 			});

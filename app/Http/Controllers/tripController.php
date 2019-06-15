@@ -297,7 +297,7 @@ class tripController extends Controller
     function deletedata(Request $request){
         $trips = trips::find($request->input('id'));
         $trip_expenses =trip_expense::find($request->id);
-        $user = User::find(Auth::user()->id);  
+        $user = User::find(1);  
         $output="success";
         if($trip_expenses->status=="Released"){
             $userGet = User::where('id', '=', Auth::user()->id)->first();

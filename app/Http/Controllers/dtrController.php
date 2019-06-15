@@ -965,9 +965,6 @@ class dtrController extends Controller
         ->editColumn('name', function ($data) {
             return $data->fname." ".$data->lname;
         })
-        // ->editColumn('created_at', function ($data) {
-        //     return date('F d, Y g:i a', strtotime($data->created_at));
-        // })
          ->editColumn('role', function ($data) {
             return $data->role; 
 
