@@ -124,8 +124,10 @@ class usersController extends Controller
     {
         if($request->get('button_action') == 'add'){
             $user = new User;
+            $user_info = Employee::where('id', '=', $request->emp_id)->first();
             $user->validation('create', $request->all());
             $user->emp_id = $request->emp_id;
+            $user->name=  $user_info->fname." ".$user_info->mname." ".$user_info->lname;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
             $user->cashOnHand = 0;
