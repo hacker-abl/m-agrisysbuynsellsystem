@@ -943,7 +943,7 @@
               }
             });
 
-            $("#add_cash_advance1").click(function(event){
+            $("#add_cash_advance1").one('click',function(event){
                 event.preventDefault();
                 var input = $(this);
                 var button =this;
@@ -1068,7 +1068,7 @@
                 });
             });
 
-            $("#add_cash_advance").click(function(event){
+            $("#add_cash_advance").one('click',function(event){
                 event.preventDefault();
                 var input = $(this);
                 var button =this;

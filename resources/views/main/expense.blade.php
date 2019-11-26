@@ -2164,8 +2164,8 @@
 					}
 				})
             })
-            $("#add_expense").click(function(event) {
-                
+            $("#add_expense").one('click',function(event) {
+                console.log("tura");
                 var input = $(this);
                 var button =this;
                 button.disabled = true;

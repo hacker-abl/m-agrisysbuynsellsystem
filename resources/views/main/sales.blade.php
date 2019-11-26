@@ -894,7 +894,7 @@
                     $('#sales_modal').modal('show');
 			});
 
-			$(document).on('click', '#add_sales', function(event){
+			$('#add_sales').one('click', function(event){
 				event.preventDefault();
 				var input = $(this);
                 var button =this;

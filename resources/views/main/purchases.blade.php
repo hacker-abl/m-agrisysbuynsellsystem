@@ -2278,7 +2278,7 @@
                 purchasestable.ajax.reload(); //reload datatable ajax
             }
 
-            $(document).on('click', '#add_purchase', function(event){
+            $('#add_purchase').one('click',function(event){
                 $('.modal_title').text('Add Purchase');
                 $('#button_action').val('add');
                
@@ -2405,7 +2405,7 @@
             });
 
 
-            $("#print_purchase").click(function(event) {
+            $("#print_purchase").one('click',function(event) {
                 event.preventDefault();
                 if($('#stat1').val()=="old"){
                     $("#add_purchase").trigger("click");
@@ -2465,7 +2465,7 @@
                 }
             });
 
-            $(document).on('click', '#add_purchase1', function(event){
+            $('#add_purchase1').one('click', function(event){
                 var input = $(this);
                 var button =this;
                 button.disabled = true;

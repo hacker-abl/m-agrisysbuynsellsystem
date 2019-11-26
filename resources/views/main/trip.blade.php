@@ -1138,7 +1138,7 @@
                 })
             });
 
-            $("#add_trip").click(function(){
+            $("#add_trip").one('click',function(){
                 var input = $(this);
                 var button =this;
                 button.disabled = true;

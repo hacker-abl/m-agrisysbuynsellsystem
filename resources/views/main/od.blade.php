@@ -1003,7 +1003,7 @@
 				})
 			});
 
-			$(document).on('click', '#add_delivery', function(event){
+			$('#add_delivery').one('click',function(event){
 				var input = $(this);
                 var button =this;
                 button.disabled = true;

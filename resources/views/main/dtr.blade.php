@@ -939,7 +939,7 @@
         });
 
 
-     $("#add_balance").on('click',function(event){
+     $("#add_balance").one('click',function(event){
                event.preventDefault();
                var input = $(this);
                var button =this;
@@ -1224,7 +1224,7 @@
                    })
                });
 
-  $("#add_cash_advance").click(function(event){
+  $("#add_cash_advance").one('click',function(event){
                 event.preventDefault();
                 var input = $(this);
                 var button =this;
@@ -1698,7 +1698,7 @@
                 })
                 
             });
-            $("#add_dtr").click(function(event){
+            $("#add_dtr").one('click',function(event){
               var input = $(this);
               var button =this;
               button.disabled = true;
