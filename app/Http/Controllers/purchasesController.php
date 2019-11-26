@@ -55,15 +55,25 @@ class purchasesController extends Controller
         $id = $request->input('id');
         $balance = balance::where('customer_id', '=', $id)
             ->first();
+        // dd($balance);
         $customer = customer::where('id', '=', $id)
             ->first();
-
-        $output = array(
-            'balance' => $balance->balance,
-            'suki_type'=> $customer->suki_type,
-        );
-
-        echo json_encode($output);
+        if($balance!=null){
+            $output = array(
+                'balance' => $balance->balance,
+                'suki_type'=> $customer->suki_type,
+            );
+    
+            echo json_encode($output);
+        }else{
+            $output = array(
+                'balance' => 0,
+                'suki_type'=> $customer->suki_type,
+            );
+    
+            echo json_encode($output);
+        }
+      
     }
 
     function findcomm(Request $request){
@@ -135,60 +145,19 @@ class purchasesController extends Controller
             // if ($request->cash != ""){
             //     $balance = balance::where('customer_id', $request->customer)->increment('balance',$request->cash);
             // }
-            if (intval($request->partial) != 0 && intval($request->cash) <= 0 ){
-                $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
-            }
-            if(intval($request->cash) > 0 && $request->cash != ""){    
-                $ca = new ca;
-                $ca->pid = $purchases->id;
-                $ca->customer_id = $request->customer;
-                $ca->amount =  $request->cash - $request->partial;
-                if($ca->amount > 0 ){
-                    $ca->reason = "FROM PURCHASE (Cash Advance)";
-                }
-                else{
-                    $ca->reason = "FROM PURCHASE (Cash Advance PHP ".$request->cash.")";
-                }
-                $ca->balance = 0;
-                $ca->status = "On-Hand";
-                $ca->released_by = '';
-                $ca->save();
-            
-            
-                if($ca) {
-                    $notification = new Notification;
-                    $notification->notification_type = "Cash Advance";
-                    $notification->message = "Cash Advance";
-                    $notification->status = "Pending";
-                    $notification->admin_id = Auth::id();
-                    $notification->table_source = "cash_advance";
-                    $notification->cash_advance_id = $ca->id;
-                    $notification->save();
-        
-                    $datum = Notification::where('id', $notification->id)
-                        ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
-                        ->get()[0];
-        
-                    $notification = array();
-        
-                    $notification = array(
-                        'notifications' => $datum,
-                        'customer' => $datum->cash_advance->customer,
-                        'time' => time_elapsed_string($datum->updated_at),
-                    );
-
-                    event(new \App\Events\NewNotification($notification));
-                }
-            }
-            if( $request->partial > 0){
-                $paymentlogs = new paymentlogs;
-                $paymentlogs->logs_id = $request->customer;
-                $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
-                $paymentlogs->checknumber = "Not Specified";
-                $paymentlogs->paymentamount = $request->partial;
-                $paymentlogs->save();
-                event(new BalanceUpdated($paymentlogs));
-            }
+            // if (intval($request->partial) != 0 && intval($request->cash) <= 0 ){
+            //     $balance = balance::where('customer_id', $request->customer)->decrement('balance',$request->partial);
+            // }
+         
+            // if( $request->partial > 0){
+            //     $paymentlogs = new paymentlogs;
+            //     $paymentlogs->logs_id = $request->customer;
+            //     $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+            //     $paymentlogs->checknumber = "Not Specified";
+            //     $paymentlogs->paymentamount = $request->partial;
+            //     $paymentlogs->save();
+            //     event(new BalanceUpdated($paymentlogs));
+            // }
         }
         if($request->get('button_action1') == 'update'){
             $check_admin =Auth::user()->access_id;
@@ -446,17 +415,18 @@ class purchasesController extends Controller
 
     public function release_purchase(Request $request){
         $check_admin =Auth::user()->access_id;
+        $released = purchases::find($request->id);
+        $user=User::find(Auth::user()->id);
+        $fullname=$user->name;
+        //  dd($released);
         if($check_admin==1){
-            $logged_id = Auth::user()->name;
-            $user = User::find(Auth::user()->id);
-            $released = purchases::find($request->id);
             if($released->status == 'Released'){return false;}
             $released->status = "Released";
-            $released->released_by = $logged_id;
+            $released->released_by = $fullname;
             $releasedCA = ca::where('pid',$released->id)->first();
             if($releasedCA){
                 $releasedCA->status = "Released";
-                $releasedCA->released_by = $logged_id;
+                $releasedCA->released_by = $fullname;
                 $releasedCA->save();
                 $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
             }
@@ -466,18 +436,14 @@ class purchasesController extends Controller
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
         }else{
-            $logged_id = Auth::user()->emp_id;
-            $name= employee::find($logged_id);
             $user = User::find(Auth::user()->id);
-
-            $released = purchases::find($request->id);
             if($released->status == 'Released'){return false;}
             $released->status = "Released";
-            $released->released_by = $name->fname." ".$name->mname." ".$name->lname;
+            $released->released_by=$fullname;
             $releasedCA = ca::where('pid',$released->id)->first();
             if($releasedCA){
                 $releasedCA->status = "Released";
-                $releasedCA->released_by = $name->fname." ".$name->mname." ".$name->lname;
+                $releasedCA->released_by = $fullname;
                 $releasedCA->save();
                 $balance = balance::where('customer_id', $releasedCA->customer_id)->increment('balance',$releasedCA->amount);
             }
@@ -486,6 +452,7 @@ class purchasesController extends Controller
             event(new PurchasesUpdated($released));
             event(new BalanceUpdated($released));
         }
+       
 
         $userGet = User::where('id', '=', $user->id)->first();
         $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
@@ -510,6 +477,62 @@ class purchasesController extends Controller
 
         $user->cashOnHand -= $released->amtpay;
         $user->save();
+
+           if(intval($released->balance_id) > 0){    
+                $ca = new ca;
+                $ca->pid = $released->id;
+                $ca->customer_id = $released->customer_id;
+                $ca->amount =  $released->balance_id;
+                if($ca->amount > 0 ){
+                    $ca->reason = "FROM PURCHASE (Cash Advance)";
+                }
+                else{
+                    $ca->reason = "FROM PURCHASE (Cash Advance PHP ".$released->balance_id.")";
+                }
+                $ca->balance = 0;
+                $ca->status = "Released";
+                $ca->released_by =$fullname;
+                $ca->save();
+            
+                $balance = balance::where('customer_id', $released->customer_id)->increment('balance', $released->balance_id);
+                if($ca) {
+                    $notification = new Notification;
+                    $notification->notification_type = "Cash Advance";
+                    $notification->message = "Cash Advance";
+                    $notification->status = "Pending";
+                    $notification->admin_id = Auth::id();
+                    $notification->table_source = "cash_advance";
+                    $notification->cash_advance_id = $ca->id;
+                    $notification->save();
+        
+                    $datum = Notification::where('id', $notification->id)
+                        ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee')
+                        ->get()[0];
+        
+                    $notification = array();
+        
+                    $notification = array(
+                        'notifications' => $datum,
+                        'customer' => $datum->cash_advance->customer,
+                        'time' => time_elapsed_string($datum->updated_at),
+                    );
+
+                    event(new \App\Events\NewNotification($notification));
+                }
+            }    
+            if( $released->partial > 0){
+                $balance = balance::where('customer_id', $released->customer_id)->decrement('balance',$released->partial);
+                $paymentlogs = new paymentlogs;
+                $paymentlogs->logs_id =$released->customer_id;
+                $paymentlogs->paymentmethod = 'FROM PURCHASE CA';
+                $paymentlogs->checknumber = "Not Specified";
+                $paymentlogs->paymentamount = $released->partial;
+                $paymentlogs->purchase_id = $released->id;
+                $paymentlogs->save();
+               
+       
+                event(new BalanceUpdated($paymentlogs));
+            }
          
         event(new CashierCashUpdated());
        
@@ -696,45 +719,89 @@ class purchasesController extends Controller
     function deletedata(Request $request){
         $purchases = Purchases::find($request->input('id'));
         $ca =  ca::where('pid',$request->get('id'))->first();
-        if($ca){
-            if($ca->status == 'Released'){
-                $balance = balance::where('customer_id', $ca->customer_id)->first();
-                $balance->balance -= $ca->amount;
-                $balance->save();
-                $user = User::find(Auth::user()->id);
+        // return [
+        //     "code"       => 500,
+        //     "title"      => "Delete Error",
+        //     "description" => "Cant process request, Cash advance is Paid.",
+        //     "data"=>$purchases
+        // ];
+        // if($ca){
+        //     if($purchases->status == 'Released'){
+        //         $balance = balance::where('customer_id', $purchases->customer_id)->first();
+        //         $balance->balance -= $purchases->partial;
+        //         if($balance->balance==0){
+        //             return [
+        //                 "code"       => 500,
+        //                 "title"      => "Delete Error",
+        //                 "description" => "Cant process request, Cash advance is Paid.",
+        //             ];
+        //         }
+        //         $balance->save();
+        //         $user = User::find(Auth::user()->id);
     
-                $userGet = User::where('id', '=', $user->id)->first();
-                $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
-                $cash_history = new Cash_History;
-                $cash_history->user_id = $userGet->id;
+        //         $userGet = User::where('id', '=', $user->id)->first();
+        //         $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+        //         $cash_history = new Cash_History;
+        //         $cash_history->user_id = $userGet->id;
     
-                $getDate = Carbon::now();
+        //         $getDate = Carbon::now();
                 
-                if($cashLatest != null){
-                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
-                }
-                else{
-                    $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
-                }
+        //         if($cashLatest != null){
+        //             $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        //         }
+        //         else{
+        //             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+        //         }
                 
-                $cash_history->trans_no = $dateTime;
-                $cash_history->previous_cash = $user->cashOnHand;
-                $cash_history->cash_change = $ca->amount;
-                $cash_history->total_cash = $user->cashOnHand + $ca->amount;
-                $cash_history->type = "Released Purchase(CA) Deleted";
-                $cash_history->save();
+        //         $cash_history->trans_no = $dateTime;
+        //         $cash_history->previous_cash = $user->cashOnHand;
+        //         $cash_history->cash_change = $ca->amount;
+        //         $cash_history->total_cash = $user->cashOnHand + $ca->amount;
+        //         $cash_history->type = "Released Purchase(CA) Deleted";
+        //         $cash_history->save();
     
-                $user->cashOnHand += $ca->amount;
-                $user->save();
-            }
-            $ca->delete();
-        }
+        //         $user->cashOnHand += $ca->amount;
+        //         $user->save();
+        //     }
+        //     $ca->delete();
+        // }
         if($purchases->status=="Released"){
             $user = User::find(Auth::user()->id);
             $userGet = User::where('id', '=', $user->id)->first();
             $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
             $cash_history = new Cash_History;
             $cash_history->user_id = $userGet->id;
+            $payment_history=paymentlogs::where('purchase_id', '=', $purchases->id)->first();
+            $cash_advance=ca::where('pid', '=', $purchases->id)->first();
+            $check_balance=balance::where('customer_id', $purchases->customer_id)->first();
+            if($payment_history!=null){
+                $payment_history->delete();
+                $balance = balance::where('customer_id', $purchases->customer_id)->increment('balance',$purchases->partial);
+            }
+            if($cash_advance!=null){
+
+                 if(($check_balance->balance+$purchases->partial)-$purchases->balance_id<0){
+                    return [
+                        "code"       => 500,
+                        "type"      =>"error",
+                        "title"      => "Delete Error",
+                        "description" => "Cant process request, Cash advance is fully or partially paid.",
+                        "cash"        => null
+                    ];
+                }else{
+                    $cash_advance->delete();
+                    $balance = balance::where('customer_id', $purchases->customer_id)->decrement('balance',$purchases->balance_id);
+                }
+            }
+           
+            
+            // if($balance->balance==0){
+            //     return [
+            //         "code"       => 500,
+            //         "title"      => "Delete Error",
+            //         "description" => "Cant process request, Cash advance is Paid.",
+            //     ];
+            // }
 
             $getDate = Carbon::now();
             
@@ -756,15 +823,27 @@ class purchasesController extends Controller
             $user->save();
             $output = $user->cashOnHand;
         
-        $purchases->delete();
+            $purchases->delete();
         
-        return $output;
+            return [
+                "code"       => 200,
+                "type"      =>"success",
+                "title"      => "Success Deleting purchase",
+                "description" => "Pucrchase Deleted Successfully.",
+                "cash"        => $output
+            ];
         }
        
         $purchases->delete();
         $user = User::find(Auth::user()->id);
         $output =  $user->cashOnHand;
-        return $output;
+        return [
+            "code"       => 200,
+            "type"      =>"success",
+            "title"      => "Success Deleting purchase",
+            "description" => "Pucrchase Deleted Successfully.",
+            "cash"        => $output
+        ];
     }
 
     function updatedata(Request $request){

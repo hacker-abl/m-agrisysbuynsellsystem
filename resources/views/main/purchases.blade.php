@@ -1112,8 +1112,11 @@
                             method: "get",
                             data:{id:id},
                             success:function(data){
-                                swal("Deleted!", "The record has been deleted.", "success");
-                                $('#curCashOnHand').html(data);
+                                console.log(data);
+                                swal(data.title,data.description, data.type);
+                                if(data.cash!=null){
+                                    $('#curCashOnHand').html(data.cash);
+                                }
                                 refresh_purchase_table();
                             }
                         })
