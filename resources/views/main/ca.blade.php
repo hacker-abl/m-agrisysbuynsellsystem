@@ -943,6 +943,8 @@
               }
             });
 
+            mainMouseDownOne();
+    function mainMouseDownOne() {
             $("#add_cash_advance1").one('click',function(event){
                 event.preventDefault();
                 var input = $(this);
@@ -958,6 +960,7 @@
                     dataType: 'text',
                     data: $('#ca_form1').serialize(),
                     success:function(data){
+                        mainMouseDownOne();
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#customer_id").val('').trigger('change');
@@ -1061,13 +1064,17 @@
                       });
                     },
                     error: function(data){
+                        mainMouseDownOne();
 						swal("Oh no!", "Something went wrong, try again.", "error");
                         button.disabled = false;
                         input.html('SAVE CHANGES');
 					}
                 });
             });
+    }
 
+    mainMouseDownOne2();
+    function mainMouseDownOne2() {
             $("#add_cash_advance").one('click',function(event){
                 event.preventDefault();
                 var input = $(this);
@@ -1083,6 +1090,7 @@
                     dataType: 'text',
                     data: $('#ca_form').serialize(),
                     success:function(data){
+                        mainMouseDownOne2();
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#customer_id").val('').trigger('change');
@@ -1190,12 +1198,14 @@
                       });
                     },
                     error: function(data){
+                        mainMouseDownOne2();
 						swal("Oh no!", "Something went wrong, try again.", "error");
                         button.disabled = false;
                         input.html('SAVE CHANGES');
 					}
                 });
             });
+    }
 
             $("#add_balance").click(function(event){
                event.preventDefault();

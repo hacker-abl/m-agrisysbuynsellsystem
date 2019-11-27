@@ -1137,7 +1137,8 @@
                 }
                 })
             });
-
+            mainMouseDownOne();
+    function mainMouseDownOne() {
             $("#add_trip").one('click',function(){
                 var input = $(this);
                 var button =this;
@@ -1156,6 +1157,7 @@
                         dataType:'text',
                         data: valuesToSend,
                         success:function(data){
+                            mainMouseDownOne();
                             console.log(data);
                             dataparsed = $.parseJSON(data);
                             $("#id").val(dataparsed.driver_id);
@@ -1168,6 +1170,7 @@
 
                         },
                         error: function(data){
+                            mainMouseDownOne();
                             swal("Oh no!", "Something went wrong, try again.", "error")
                             button.disabled = false;
                             input.html('SAVE CHANGES');
@@ -1176,6 +1179,7 @@
                     })
                 });
             });
+    }
 
             // $("#print_trip").click(function(event) {
             //     event.preventDefault();

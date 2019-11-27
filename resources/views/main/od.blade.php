@@ -1002,7 +1002,8 @@
 					}
 				})
 			});
-
+			mainMouseDownOne();
+    function mainMouseDownOne() {
 			$('#add_delivery').one('click',function(event){
 				var input = $(this);
                 var button =this;
@@ -1022,6 +1023,7 @@
 						dataparsed = $.parseJSON(data);
 						button.disabled = false;
                         input.html('SAVE CHANGES');
+						mainMouseDownOne();
 						$("#driver_id").val('').trigger('change');
 						$("#company").val('').trigger('change');
 						$("#commodity").val('').trigger('change');
@@ -1037,12 +1039,14 @@
 						refresh_delivery_table();
 					},
 					error: function(data){
+						mainMouseDownOne();
 						button.disabled = false;
                         input.html('SAVE CHANGES');
 						swal("Oh no!", "Something went wrong, try again.", "error")
 					}
 				})
 			});
+	}
 
 			$("#print_od").click(function(event) {
                 event.preventDefault();

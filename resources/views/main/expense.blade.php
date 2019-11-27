@@ -2164,6 +2164,9 @@
 					}
 				})
             })
+             mainMouseDownOne();
+    function mainMouseDownOne() {
+
             $("#add_expense").one('click',function(event) {
                 console.log("tura");
                 var input = $(this);
@@ -2182,12 +2185,14 @@
                     success: function(data){
                         swal("Success!", "Record has been added to database", "success")
                         $('#expense_modal').modal('hide');
+                        mainMouseDownOne();
                          button.disabled = false;
                          input.html('SAVE CHANGES');
                          $('.modal_title').text('Add Expense');
                         refresh_expense_table();
                     },
                     error: function(data){
+                        mainMouseDownOne();
                         swal("Oh no!", "Something went wrong, try again.", "error")
                         button.disabled = false;
                         input.html('SAVE CHANGES');
@@ -2195,6 +2200,7 @@
                     }
                 });
             });
+    }
              $(document).on('click', '.update_expense', function(){
                 var id = $(this).attr("id");
                 type="update";

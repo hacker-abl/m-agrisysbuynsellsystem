@@ -2277,6 +2277,9 @@
             function refresh_purchase_table(){
                 purchasestable.ajax.reload(); //reload datatable ajax
             }
+            mainMouseDownOne();
+
+            function mainMouseDownOne() {
 
             $('#add_purchase').one('click',function(event){
                 $('.modal_title').text('Add Purchase');
@@ -2329,25 +2332,32 @@
                                 $("#customer").val('').trigger('change');
                                 $('#curCashOnHand').html(data);
                                 //refresh_delivery_table();
+                                mainMouseDownOne();
                             } else {
+                                mainMouseDownOne();
                                 button.disabled = false;
                                 input.html('SAVE CHANGES');
                                 swal("Oh no!", "You are not authorized to edit this. try again.", "error")
+                               
                             }
                         },
                         error: function (data) {
+                            mainMouseDownOne();
                             button.disabled = false;
                             input.html('SAVE CHANGES');
                             swal("Oh no!", "Something went wrong, try again.", "error")
+                            
                         }
                     })
                 }
                 else{
+                    mainMouseDownOne();
                     button.disabled = false;
                     input.html('SAVE CHANGES');
                     swal("Oh no!", "Amount to Pay shouldn't be negative.", "warning")
                 }
             });
+            }
             $(document).on('click', '.release_purchase', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
@@ -2464,7 +2474,12 @@
                 }
             });
 
-            $('#add_purchase1').one('click', function(event){
+            
+            mainMouseDownOne2();
+
+function mainMouseDownOne2() {
+
+              $('#add_purchase1').one('click', function(event){
                 var input = $(this);
                 var button =this;
                 button.disabled = true;
@@ -2497,15 +2512,20 @@
                         $('#purchase_modal').modal('hide');
                         refresh_purchase_table();
                         //refresh_delivery_table();
+                        mainMouseDownOne2();
                     },
                     error:  function(xhr, textStatus, error){
+                        mainMouseDownOne2();
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         swal("Oh no!", xhr.responseText, "error")
                     }
                 })
             });
+}
+            
         });
+      
 
         function sacks1(value) {
             if (value.which != 9) { 

@@ -893,6 +893,8 @@
 					$("#paymentmethod").val('').trigger('change');
                     $('#sales_modal').modal('show');
 			});
+			mainMouseDownOne();
+    function mainMouseDownOne() {
 
 			$('#add_sales').one('click', function(event){
 				event.preventDefault();
@@ -909,6 +911,7 @@
 					dataType:'text',
 					data: $('#sales_form').serialize(),
 					success:function(data){
+						mainMouseDownOne();
 						button.disabled = false;
                         input.html('SAVE CHANGES');
 						$("#company").val('').trigger('change');
@@ -919,12 +922,14 @@
 						refresh_sales_table();
 					},
 					error: function(data){
+						mainMouseDownOne();
 						swal("Oh no!", "Something went wrong, try again.", "error")
 						button.disabled = false;
                         input.html('SAVE CHANGES');
 					}
 				})
 			});
+	}
 
 			$("#print_sales").click(function(event) {
                 event.preventDefault();

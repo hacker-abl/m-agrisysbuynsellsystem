@@ -1224,7 +1224,10 @@
                    })
                });
 
-  $("#add_cash_advance").one('click',function(event){
+             mainMouseDownOne2();
+    function mainMouseDownOne2() {
+
+            $("#add_cash_advance").one('click',function(event){
                 event.preventDefault();
                 var input = $(this);
                 var button =this;
@@ -1239,6 +1242,7 @@
                     dataType: 'text',
                     data: $('#ca_emp_form').serialize(),
                     success:function(data){
+                        mainMouseDownOne2();
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                         $("#employee_ca").val('').trigger('change');
@@ -1249,12 +1253,14 @@
                                     $('#employee_ca_modal').modal('hide');
                          },
                     error: function(data){
+                        mainMouseDownOne2();
                         swal("Oh no!", "Something went wrong, try again.", "error");
                         button.disabled = false;
                         input.html('SAVE CHANGES');
                     }
                 });
             });
+    }
           
         $(document).on("click","#link",function(){
             $("#bod").toggleClass('overlay-open');
@@ -1698,6 +1704,9 @@
                 })
                 
             });
+
+            mainMouseDownOne();
+    function mainMouseDownOne() {
             $("#add_dtr").one('click',function(event){
               var input = $(this);
               var button =this;
@@ -1833,6 +1842,7 @@
                                         }
                                     });
                          if(data2.cashHistory&&data2.user==1){
+                             
                           swal("Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
                             $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
                          }else if(data2.cashHistory&&data2.user!=1){
@@ -1840,23 +1850,26 @@
                          }else{
                             swal("Success!", "Record has been added to database", "success");
                          }      
-                         
+                         mainMouseDownOne();
                         button.disabled = false;
                         input.html('SAVE CHANGES');
 						refresh_dtr_table();
                     },
                     error: function(data){
+                        mainMouseDownOne();
 						swal("Oh no!", "Something went wrong, try again.", "error");
                         button.disabled = false;
                         input.html('SAVE CHANGES');
 					}
                 });
    }else{
+    mainMouseDownOne();
           swal("Denied! Can't Partial Payment", "Payment is greater than Balance or greater than Salary", "error");
           button.disabled = false;
           input.html('SAVE CHANGES');
    }
             });
+    }
 
       $('#dtr_modal').on('hidden.bs.modal', function () {
           $('.dtr_modal_title').text('Add DTR');
