@@ -2939,6 +2939,7 @@ function mainMouseDownOne2() {
                     data: { id : id },
                     dataType:'json',
                     success: function(data) {
+                        $('#moist').val(0)
                         $('#ca').val(data.balance)
                         $('#balance').val(data.balance)
                         $('#balance1').val(data.balance)
