@@ -2288,7 +2288,7 @@
                 var button =this;
                 button.disabled = true;
                 input.html('SAVING...');
-                if (parseFloat( $("#amount").val()) > 0 ) {
+                if (parseFloat( $("#amount").val()) >=0 ) {
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2323,7 +2323,6 @@
                                 $("#amount").val("");
                                 $("#ca").val("");
                                 $("#balance").val("");
-
                                 $("#partial").val("");
                                 $("#commodity").val('').trigger('change');
                                 $("#commodity1").val('').trigger('change');
@@ -2405,7 +2404,7 @@
             });
 
 
-            $("#print_purchase").one('click',function(event) {
+            $("#print_purchase").on('click',function(event) {
                 event.preventDefault();
                 if($('#stat1').val()=="old"){
                     $("#add_purchase").trigger("click");
