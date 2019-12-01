@@ -152,7 +152,7 @@
                                                  <div class="form-group">
                                                       <label for="name">Kilograms</label>
                                                       <div class="form-line">
-                                                           <input type="number" id="kilo" min="0"   name="kilo" onkeyup="computeAll(this)" class="form-control"   required>
+                                                           <input type="number" id="kilo" min="0"   name="kilo"  class="form-control"   required>
                                                       </div>
                                                  </div>
                                             </div>
@@ -181,7 +181,7 @@
                                              <div class="form-group">
                                                   <label for="name">Tare (KG)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="tare" min="0"   onkeyup="computeAll(this)" name="tare" value="" class="form-control" required>
+                                                       <input type="number" id="tare" min="0"    name="tare" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -195,7 +195,7 @@
                                              <div class="form-group">
                                                   <label for="name">Moisture (%)</label>
                                                   <div class="form-line">
-                                                       <input type="number" min="0"   id="moist" onkeyup="computeAll(this)" name="moist" value="" class="form-control" required>
+                                                       <input type="number" min="0"   id="moist"  name="moist" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -238,7 +238,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-                                                    <input type="number"  min="0"   id="cash" onkeyup="computeAll(this)" name="cash"   class="form-control"   required>
+                                                    <input type="number"  min="0"   id="cash" name="cash"  class="form-control"   required>
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiCash" class="btn btn-primary waves-effect">Reset</button>
@@ -254,7 +254,7 @@
                                       <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                            <div class="form-group input-group">
                                                 <div class="form-line">
-                                                     <input type="number" id="partial" min="0"    onkeyup="computeAll(this)" name="partial"  class="form-control"   required>
+                                                     <input type="number" id="partial" min="0"  name="partial"  class="form-control"   required>
                                                 </div>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="resetNiPartial" class="btn btn-primary waves-effect">Reset</button>
@@ -458,7 +458,7 @@
                                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <input type="number" id="bal" name="bal" class="form-control" onkeyup="compute(this)" placeholder="Enter customer's cash advance">
+                                                        <input type="number" id="bal" name="bal" class="form-control" placeholder="Enter customer's cash advance">
                                                     </div>
                                                 </div>
                                             </div>
@@ -543,7 +543,7 @@
                                              <div class="form-group">
                                                   <label for="name">Tare (KG)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="tare2" min="0"   name="tare2"  onkeyup="tare3(this)"  value="" class="form-control" required>
+                                                       <input type="number" id="tare2" min="0"   name="tare2"  value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -557,7 +557,7 @@
                                              <div class="form-group">
                                                   <label for="name">Moisture (%)</label>
                                                   <div class="form-line">
-                                                       <input type="number" id="moist2" min="0"   name="moist2" onkeyup="moist3(this)" value="" class="form-control" required>
+                                                       <input type="number" id="moist2" min="0"   name="moist2" value="" class="form-control" required>
                                                   </div>
                                              </div>
                                         </div>
@@ -585,7 +585,7 @@
                                           <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                                <div class="form-group">
                                                     <div class="form-line">
-                                                         <input type="number" id="partialpayment" min="0"   name="partialpayment" onkeyup="compute(this)"  value="" class="form-control" required>
+                                                         <input type="number" id="partialpayment" min="0"   name="partialpayment"  value="" class="form-control" required>
                                                     </div>
                                                </div>
                                           </div>
@@ -781,65 +781,149 @@
 
 @section('script')
     <script>
-    function computeAll(value){
-        var kilo = 0
+       var kilo = 0
         var price = 0
         var tare = 0
         var moist = 0
+        var net = 0
+        var percentage=0
         var ca = 0
         var partial = 0
         var balance = 0
         var prev = 0
         var total = 0
         var amtpay = 0
-        var net = 0
-        if ($('#kilo').val() != ""){
-            kilo = parseFloat($('#kilo').val())  > 0 ? parseFloat($('#kilo').val()) : 0
-        }
-        if ($('#price').val() != ""){
-            price = parseFloat($('#price').val()) > 0 ? parseFloat($('#price').val()) : 0 
-        }
-        if ($('#tare').val() != ""){
-            tare = parseFloat($('#tare').val()) > 0 ? parseFloat($('#tare').val()) : 0
-        }
-        if ($('#moist').val() != ""){
-            moist = parseFloat($('#moist').val()) > 0 ? parseFloat($('#moist').val()) : 0
-        }
-        if ($('#cash').val() != ""){
-            ca = parseFloat($('#cash').val()) > 0 ? parseFloat($('#cash').val()) : 0
-        }
-        if ($('#partial').val() != ""){
-            partial = parseFloat($('#partial').val()) > 0 ? parseFloat($('#partial').val()) : 0
-        }
-        if ($('#balance').val() != ""){
-            balance = parseFloat($('#balance').val())
-        }
-        if ($('#ca').val() != ""){
-            prev = parseFloat($('#ca').val())
-        }
-        if ($('#net').val() != ""){
-            net = parseFloat($('#net').val())
-        }
-        net =   (kilo - tare) - (moist/100 * net)
-        total = net * price
-        let ca_to_partial  = 0
-        if (partial > parseFloat(ca + prev) || partial > parseFloat(total + ca)) {
-            ca_to_partial = 0
-            partial = 0
-            $('#partial').val('')
-        }
-        else {
-            ca_to_partial = ca > 0 ? ca - partial : partial 
-        }
-        amtpay  = ca > 0 ? ca_to_partial + total  : total - partial
-        balance =  prev + ca - partial
-        $('#total').val(parseFloat(total).toFixed(2))
-        $('#amount').val(parseFloat(amtpay).toFixed(2))
-        $('#balance').val(parseFloat(balance).toFixed(2))
-        $('#net').val(parseFloat(net).toFixed(2))
 
-    }
 
+        
+
+        $("#kilo").blur(function(){
+            if($("#kilo").val()==""){
+                $("#kilo").val('0');
+            }
+            computeAll();
+        });
+        $("#cash").blur(function(){
+            var mois= $("#moist").val();
+            console.log(mois);
+            
+            $("#moist").val('0');
+            computeAll();
+            $("#moist").val(mois);
+            computeAll();
+        });
+        $("#partial").blur(function(){
+            var mois= $("#moist").val();
+            console.log(mois);
+            
+            $("#moist").val('0');
+            computeAll();
+            $("#moist").val(mois);
+            computeAll();
+        });
+        $("#tare").blur(function(){
+            if($("#tare").val()==""){
+                $("#tare").val('0');
+            }
+            computeAll();
+        });
+        $("#moist").blur(function(){
+            if($("#moist").val()==""){
+                $("#moist").val('0');
+            }
+            computeAll();
+        });
+
+        $("#tare2").blur(function(){
+            if($("#tare2").val()==""){
+                $("#tare2").val('0');
+            }
+            tare3();
+             
+        });
+        $("#moist2").blur(function(){
+            var mois= $("#moist2").val();
+            console.log(mois);
+            
+            $("#moist2").val('0');
+            moist3();
+            $("#moist2").val(mois);
+            moist3();
+ 
+             
+        });
+        $("#bal").blur(function(){
+            var mois= $("#moist2").val();
+            console.log(mois);
+            
+            $("#moist2").val('0');
+            compute();
+            $("#moist2").val(mois);
+            compute();
+             
+        });
+        $("#partialpayment").blur(function(){
+            var mois= $("#partialpayment").val();
+            console.log(mois);
+            
+            $("#partialpayment").val('0');
+            compute();
+            $("#partialpayment").val(mois);
+            compute();
+ 
+        });
+        function computeAll(value){
+        
+                if ($('#kilo').val() != ""){
+                    kilo = parseFloat($('#kilo').val())  > 0 ? parseFloat($('#kilo').val()) : 0
+                }
+                if ($('#price').val() != ""){
+                    price = parseFloat($('#price').val()) > 0 ? parseFloat($('#price').val()) : 0 
+                }
+                if ($('#tare').val() != ""){
+                    tare = parseFloat($('#tare').val()) > 0 ? parseFloat($('#tare').val()) : 0
+                }
+                if ($('#moist').val() != ""){
+                    moist = parseFloat($('#moist').val()) > 0 ? parseFloat($('#moist').val()) : 0
+                }
+                if ($('#cash').val() != ""){
+                    ca = parseFloat($('#cash').val()) > 0 ? parseFloat($('#cash').val()) : 0
+                }
+                if ($('#partial').val() != ""){
+                    partial = parseFloat($('#partial').val()) > 0 ? parseFloat($('#partial').val()) : 0
+                }
+                if ($('#balance').val() != ""){
+                    balance = parseFloat($('#balance').val())
+                }
+                if ($('#ca').val() != ""){
+                    prev = parseFloat($('#ca').val())
+                }
+                if ($('#net').val() != ""){
+                    net = parseFloat($('#net').val())
+                }
+                console.log("net:",net);
+                console.log("moist:",moist);
+                percentage=(moist/100) * net;
+                console.log("percentage:",percentage);
+                net =   (kilo - tare) - (percentage);
+                total = net * price;
+                let ca_to_partial  = 0;
+                if (partial > parseFloat(ca + prev) || partial > parseFloat(total + ca)) {
+                    ca_to_partial = 0;
+                    partial = 0;
+                    $('#partial').val('');
+                }
+                else {
+                    ca_to_partial = ca > 0 ? ca - partial : partial 
+                }
+                amtpay  = ca > 0 ? ca_to_partial + total  : total - partial
+                balance =  prev + ca - partial
+                $('#total').val(parseFloat(total).toFixed(2))
+                $('#amount').val(parseFloat(amtpay).toFixed(2))
+                $('#balance').val(parseFloat(balance).toFixed(2))
+                $('#net').val(parseFloat(net).toFixed(2))
+
+  }
 
         $('form').on('focus', 'input[type=number]', function (e) {
             $(this).on('mousewheel.disableScroll', function (e) {
@@ -897,27 +981,37 @@
         var id;
         var commodityselected="";
         function compute(value){
-             if (value.which != 9) { 
+            var total = parseFloat($('#total1').val());
+            var amount= parseFloat($('#amountpay1').val());
+            var balance=parseFloat($('#balanceWALKIN').val());
+            var partial = parseFloat($('#partialpayment').val());
                 if($('#bal').val() != ""){
                     var t = parseFloat($('#bal').val());
+                    
                     var x = 0;
                     if($('#partialpayment').val() != ""){
                         x = parseFloat($('#partialpayment').val());
                     }
+                    console.log(amount);
                     t = t - x;
-                    $('#balanceWALKIN').val(t);
+                    $('#balanceWALKIN').val(parseFloat(t).toFixed(2));
+                    $('#amountpay1').val(parseFloat(amount-x).toFixed(2));
                 }
+                if($('#partialpayment').val() == ""||$('#partialpayment').val() == 0){
+                    $('#partialpayment').val(0);
+                    $('#amountpay1').val(parseFloat(total+balance).toFixed(2));
+                    }else{
+                        $('#amountpay1').val(parseFloat(total+balance-partial).toFixed(2));
+                    }
                 if($('#bal').val() == ""){
-                    $('#balanceWALKIN').val("");
-                }
-            }
+                    $('#balanceWALKIN').val(0);
+                }        
+            
         }
       
         function tare3(value) {
-            if (value.which != 9) { 
-            //test
             if( $('#moist2').val() == "" ){
-
+                $('#moist2').val(0);
                 var t = parseFloat($('#total1').val());
                 var kilo = parseFloat($('#kilo1').val());
                 var amount = parseFloat($('#amount1').val());
@@ -984,7 +1078,7 @@
                     partial =  parseFloat($('#partial1').val());
                 }
                 var price = parseFloat($('#price1').val());
-                var temp4 = moist/100 * kilo;
+                var temp4 = (moist/100) * kilo;
                 var temp5 = temp4*price;
                 var x2 = parseFloat(temp5).toFixed(2);
                 var x1 = parseFloat(temp4).toFixed(2);
@@ -1008,82 +1102,82 @@
                 $('#net2').val(temp3);
             }
         }
-        }
-        function moist3(value) {
-            if (value.which != 9) { 
-            if( $('#tare2').val() == ""  ){
-
-                var total = parseFloat($('#total1').val());
-                var moist = 0;
-                var partialpayment = parseFloat($('#partialpayment').val());
-                if($('#moist2').val()!=""){
-                    moist = parseFloat($('#moist2').val());
-                }
-                var kilo = parseFloat($('#kilo1').val());
-                var amount = parseFloat($('#amount1').val());
-                var tare = 0;
-                if($('#tare2').val()!=""){
-                    tare = parseFloat($('#tare2').val());
-                }
-                var price = parseFloat($('#price1').val());
-                var partial = 0;
-                if($('#partial1').val()!=""){
-                    partial =  parseFloat($('#partial1').val());
-                }
-                var temp4 = moist/100 * kilo;
-                var temp5 = temp4*price;
-                var temp6 = (kilo * price) - temp5;
-                var temp7 = ((kilo * price) - partial)-temp5 ;
-                var temp8 = kilo - temp4;
-                var x5 = parseFloat(temp8).toFixed(2);
-                var x4 = parseFloat(temp7).toFixed(2);
-                var x3 = parseFloat(temp6).toFixed(2);
-                var x2 = parseFloat(temp5).toFixed(2);
-                var x1 = parseFloat(temp4).toFixed(2);
-                $('#amount1').val(x4);
-                $('#total1').val(x3);
-                if($('#partialpayment').val()!=""){
-                    x4 = x4-partialpayment;
-                    $('#amountpay1').val(x4);
-                }
-                else{
-                $('#amountpay1').val(x4);
-                }
-                $('#net2').val(x5);
+        function moist3(value) {  
+            if( $('#moist2').val()==""){
+                $('#moist2').val(0);
             }
+            // if( $('#tare2').val() == ""  ){
+            //     var total = parseFloat($('#total1').val());
+            //     var moist = 0;
+            //     var partialpayment = parseFloat($('#partialpayment').val());
+            //     if($('#moist2').val()!=""){
+            //         moist = parseFloat($('#moist2').val());
+            //     }
+            //     var kilo = parseFloat($('#kilo1').val());
+            //     var amount = parseFloat($('#amount1').val());
+            //     var tare = 0;
+            //     if($('#tare2').val()!=""){
+            //         tare = parseFloat($('#tare2').val());
+            //     }
+            //     var price = parseFloat($('#price1').val());
+            //     var partial = 0;
+            //     if($('#partial1').val()!=""){
+            //         partial =  parseFloat($('#partial1').val());
+            //     }
+            //     var temp4 = moist/100 * kilo;
+            //     var temp5 = temp4*price;
+            //     var temp6 = (kilo * price) - temp5;
+            //     var temp7 = ((kilo * price) - partial)-temp5 ;
+            //     var temp8 = kilo - temp4;
+            //     var x5 = parseFloat(temp8).toFixed(2);
+            //     var x4 = parseFloat(temp7).toFixed(2);
+            //     var x3 = parseFloat(temp6).toFixed(2);
+            //     var x2 = parseFloat(temp5).toFixed(2);
+            //     var x1 = parseFloat(temp4).toFixed(2);
+            //     $('#amount1').val(x4);
+            //     $('#total1').val(x3);
+            //     if($('#partialpayment').val()!=""){
+            //         x4 = x4-partialpayment;
+            //         $('#amountpay1').val(x4);
+            //     }
+            //     else{
+            //     $('#amountpay1').val(x4);
+            //     }
+            //     $('#net2').val(x5);
+            // }
             if( $('#tare2').val() != ""  ){
+                console.log('dri')
                 var partialpayment = parseFloat($('#partialpayment').val());
+                var bal = parseFloat($('#balanceWALKIN').val());
                 var total = parseFloat($('#total1').val());
-                var moist = 0
-                if($('#moist2').val()!=""){
-                    moist = parseFloat($('#moist2').val());
-                }
-
+                var moist = parseFloat($('#moist2').val());
                 var kilo = parseFloat($('#kilo1').val());
+                var net = parseFloat($('#net2').val());
                 var amount = parseFloat($('#amount1').val());
-                var tare = 0;
-                if($('#tare2').val()!=""){
-                    tare = parseFloat($('#tare2').val());
-                }
+                var tare = parseFloat($('#tare2').val());
                 var price = parseFloat($('#price1').val());
                 var partial = 0;
                 if($('#partial1').val()!=""){
                     partial =  parseFloat($('#partial1').val());
                 }
-                var temp4 = moist/100 * kilo ;
-                var temp5 = temp4*price;
+                var percentage = (moist/100) * net ;
+                var temp5 = percentage*price;
                 var temp6 = (kilo * price) - temp5 - (tare*price);
-                var temp7 = ((kilo*price) -partial)-temp5 - (tare*price);
-                var temp8 = kilo - temp4 -tare;
+                var temp8 = (kilo -tare)-percentage ;
+                var temp7 = temp8*price;
+                
                 var x5 = parseFloat(temp8).toFixed(2);
                 var x4 = parseFloat(temp7).toFixed(2);
                 var x3 = parseFloat(temp6).toFixed(2);
                 var x2 = parseFloat(temp5).toFixed(2);
-                var x1 = parseFloat(temp4).toFixed(2);
+                // var x1 = parseFloat(temp4).toFixed(2);
                 $('#amount1').val(x4);
                 $('#total1').val(x3);
                 if($('#partialpayment').val()!=""){
                     x4 = x4-partialpayment;
+                    $('#amountpay1').val(x4);
+                }if($('#bal').val()!=""||$('#bal').val()!="0"){
+                    x4 = parseFloat(x4)+parseFloat(bal);
                     $('#amountpay1').val(x4);
                 }
                 else{
@@ -1091,7 +1185,6 @@
                 }
                 $('#net2').val(x5);
             }
-        }
         }
         $(document).ready(function () {
             document.title = "M-Agri - Purchases";
@@ -2480,12 +2573,19 @@
 function mainMouseDownOne2() {
 
               $('#add_purchase1').one('click', function(event){
+               
                 var input = $(this);
                 var button =this;
                 button.disabled = true;
                 input.html('SAVING...');
                 event.preventDefault();
-                $.ajax({
+                if(parseFloat($('#balanceWALKIN').val())<0){
+                    mainMouseDownOne2();
+                    button.disabled = false;
+                    input.html('SAVE CHANGES');
+                    swal("Oh no!", "There's a negative number in the form", "error")
+                }else{
+                    $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -2521,6 +2621,8 @@ function mainMouseDownOne2() {
                         swal("Oh no!", xhr.responseText, "error")
                     }
                 })
+                }  
+      
             });
 }
             
@@ -2960,6 +3062,7 @@ function mainMouseDownOne2() {
                     data: { id : id },
                     dataType:'json',
                     success: function(data) {
+                        $("#moist").val('0');
                         $('#pr').val(data.price);
                         $('#suki').val(data.suki_price);
                         var a = parseFloat($('#last').val());
@@ -2979,6 +3082,7 @@ function mainMouseDownOne2() {
                 if(id == "Dry"){
                     $("#moist").prop("readonly", true);
                     $("#moist").val('0');
+                    computeAll();
                 }
                 else{
                     $("#tare").prop('readonly', false);
@@ -3082,6 +3186,10 @@ function mainMouseDownOne2() {
                 tare3(this);
             });
         });
+
+
+       
+
 
     </script>
 @endsection
