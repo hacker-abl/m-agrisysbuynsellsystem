@@ -53,9 +53,12 @@ class balanceController extends Controller
 			 
 		return \DataTables::of($balance)
 		->addColumn('action', function($balance){
-			if($balance->status!="Received"){
+			if($balance->status!="Received"&&$balance->status!=NUll){
 				return '<button class="btn btn-xs btn-success receive_payment_customer waves-effect" id="'.$balance->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_customer_payment waves-effect" id="'.$balance->id.'" ><i class="material-icons">delete</i></button>';
-			}else{
+			}if($balance->status==NUll){
+				return 'Old Data';
+			}
+			else{
 				return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$balance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_customer_payment waves-effect" id="'.$balance->id.'" ><i class="material-icons">delete</i></button>';
 			}
 		})

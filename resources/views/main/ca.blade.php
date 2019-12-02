@@ -480,7 +480,7 @@
                                         <th>Amount</th>
                                         <th>Payment Method</th>
                                         <th>Check Number</th>
-                                        <th>Statusr</th>
+                                        <th>Status</th>
                                         <th>Received By</th>
                                         <th>Action</th>
                                      </tr>
