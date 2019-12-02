@@ -203,7 +203,7 @@
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{!! getName()->fname !!}</div>
-                    <div class="email">{{ Auth::user()->username }} &nbsp;  ₱<span id="curCashOnHand">{{ Auth::user()->cashOnHand }}</span></div>
+                    <div class="email">{{ Auth::user()->username }} &nbsp;  ₱<span id="curCashOnHand">{{ number_format(Auth::user()->cashOnHand,2) }}</span></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -361,7 +361,7 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2018 <a href="javascript:void(0);">Solid Script Web Systems</a>.
+                    &copy; 2020 <a href="javascript:void(0);">Solid Script Web Systems</a>.
                 </div>
 
             </div>

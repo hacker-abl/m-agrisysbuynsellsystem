@@ -480,10 +480,16 @@
                                         <th>Amount</th>
                                         <th>Payment Method</th>
                                         <th>Check Number</th>
+                                        <th>Statusr</th>
+                                        <th>Received By</th>
+                                        <th>Action</th>
                                      </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th></th>
@@ -1208,7 +1214,9 @@
     }
 
             $("#add_balance").click(function(event){
-               event.preventDefault();
+                console.log("nalick");
+                event.preventDefault();
+                event.stopPropagation();
                var input = $(this);
                var button =this;
                button.disabled = true;
@@ -1237,16 +1245,19 @@
                         $("#checknumber").val('');
                         $("#balance2").val('');
                         $('#balancemodal').modal('hide');
-                        if(data2.user==1){
-                            swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
-                        $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
-                            refresh_cash_advance_table();
-                            refresh_balance_table();
-                        }else if(data2.user!=1){
-                            swal("Payment Success!", "Payment Received By the Admin.", "success")
-                            refresh_cash_advance_table();
-                            refresh_balance_table();
-                        }
+                        // if(data2.user==1){
+                        //     swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
+                        // $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
+                        //     refresh_cash_advance_table();
+                        //     refresh_balance_table();
+                        // }else if(data2.user!=1){
+                        //     swal("Payment Success!", "Payment Received By the Admin.", "success")
+                        //     refresh_cash_advance_table();
+                        //     refresh_balance_table();
+                        // }
+                        swal("Payment Success!", "Payment Added.", "success")
+                        refresh_cash_advance_table();
+                        refresh_balance_table();
                    },
                    error: function(data){
                         swal("Oh no!", "Something went wrong, try again.", "error");
@@ -1255,6 +1266,290 @@
                     }
                });
            });
+
+        //        $("#add_balance").one('click',function(event){
+        //        event.preventDefault();
+        //        var input = $(this);
+        //        var button =this;
+        //        button.disabled = true;
+        //        input.html('SAVING...');
+        //        if(parseFloat($("#amount1").val()) > parseFloat($("#balance2").val())){
+        //             swal("Hold on!", "Payment more than balance.", "warning");
+        //             button.disabled = false;
+        //             input.html('SAVE CHANGES');
+        //             return;
+        //        }
+        //        $.ajax({ 
+        //            headers: {
+        //                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //            },
+        //            url: "{{ route('add_payment') }}",
+        //            method: 'POST',
+        //            dataType: 'text',
+        //            data: $('#balanceform').serialize(),
+        //            success:function(data){
+        //             var data2= JSON.parse(data);
+        //                 button.disabled = false;
+        //                 input.html('SAVE CHANGES');
+        //                 $("#customer_id1").val('').trigger('change');
+        //                 $("#paymentmethod").val('').trigger('change');
+        //                 $("#amount1").val('');
+        //                 $("#checknumber").val('');
+        //                 $("#balance2").val('');
+        //                 $('#balancemodal').modal('hide');
+        //                 swal("Payment Success!", "Payment Added.", "success")
+        //                 refresh_cash_advance_table();
+        //                 refresh_balance_table();
+        //            },
+        //            error: function(data){
+        //                 swal("Oh no!", "Something went wrong, try again.", "error");
+        //                 button.disabled = false;
+        //                 input.html('SAVE CHANGES');
+        //             }
+        //        });
+        //    });
+
+
+           $(document).on('click', '.delete_customer_payment', function(event){
+                var ObjData;
+                event.preventDefault();
+                var id = $(this).attr('id');
+                swal({
+                    title: "Delete this Payment?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                }).then((willDelete) => {
+                if (willDelete) {
+                            $.ajax({
+                            url:"{{ route('delete_cutomer_payment') }}",
+                            method: "POST",
+                            headers: {
+                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data:{id:id},
+                            dataType: 'text',
+                            success:function(data){
+                                 console.log(data);
+                                 var data2=JSON.parse(data);
+                                 if(data2.cashOnHand!=null){
+                                    console.log(data);
+                                    console.log("ayay");                         
+                                    swal("Amount Reverted : ₱"+data2.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
+                                    $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                 }else{
+                                    swal("Payment Deleted!", "Successfully deleted a payment.", "success");
+                                 }
+                               
+                                 $.ajax({
+                   url: "{{ route('balancelogs') }}",
+                   method: 'get',
+                   data:{id:person_id},
+                   dataType: 'json',
+                   success:function(data){
+                        $('#view_balancetable').DataTable({
+                           "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                     
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i == 'string' ?
+                                        i.replace(/[\₱,]/g, '')*1 :
+                                        typeof i == 'number' ?
+                                            i : 0;
+                                };
+                     
+                                // Total over all pages
+                                total = api
+                                    .column( 1 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 1, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Update footer
+                                $( api.column( 1 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
+                            },
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3 ]
+                                    },
+                                    customize: function ( win ) {
+                                        $(win.document.body)
+                                            .css( 'font-size', '10pt' );
+                     
+                                        $(win.document.body).find( 'table' )
+                                            .addClass( 'compact' )
+                                            .css( 'font-size', 'inherit' );
+                                    },
+                                    footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3 ]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
+                                }
+                            ],
+                           order: [[ 0, "desc" ]],
+                           bDestroy: true,
+                           data: data.data,
+                           columns:[
+                              {data: 'created_at', name: 'created_at'},
+                              {data: 'paymentamount', name: 'paymentamount'},
+                              {data: 'paymentmethod', name: 'paymentmethod'},
+                              {data: 'checknumber', name: 'checknumber'},
+                              {data: 'status', name: 'status'},
+                              {data: 'received_by', name: 'received_by'},
+                              {data: 'action', name: 'action'},
+                           ]
+                       });
+                   }
+           });
+
+                }
+            })
+                }
+                })
+            });
+
+
+            $(document).on('click', '.receive_payment_customer', function(event){
+                var ObjData;
+                event.preventDefault();
+                var id = $(this).attr('id');
+                swal({
+                    title: "Receive Payment?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                }).then((willDelete) => {
+                if (willDelete) {
+                            $.ajax({
+                            url:"{{ route('receive_payment_customer') }}",
+                            method: "POST",
+                            headers: {
+                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data:{id:id},
+                            dataType: 'text',
+                            success:function(data){
+                                 
+                                 var data2=JSON.parse(data);  
+                                 console.log(data2);   
+                                    console.log("ayay");                         
+                                    swal("Amount Received : ₱"+data2.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Current Cash: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
+                                    $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));                                  
+                            
+                                 $.ajax({
+                   url: "{{ route('balancelogs') }}",
+                   method: 'get',
+                   data:{id:person_id},
+                   dataType: 'json',
+                   success:function(data){
+                        $('#view_balancetable').DataTable({
+                           "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                     
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i == 'string' ?
+                                        i.replace(/[\₱,]/g, '')*1 :
+                                        typeof i == 'number' ?
+                                            i : 0;
+                                };
+                     
+                                // Total over all pages
+                                total = api
+                                    .column( 1 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 1, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                     
+                                // Update footer
+                                $( api.column( 1 ).footer() ).html(
+                                    'Total: <br>₱' + number_format(pageTotal,2)
+                                );
+                            },
+                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3 ]
+                                    },
+                                    customize: function ( win ) {
+                                        $(win.document.body)
+                                            .css( 'font-size', '10pt' );
+                     
+                                        $(win.document.body).find( 'table' )
+                                            .addClass( 'compact' )
+                                            .css( 'font-size', 'inherit' );
+                                    },
+                                    footer: true
+                                },
+                                { 
+                                    extend: 'pdfHtml5', 
+                                    footer: true,
+                                    exportOptions: { 
+                                        columns: [ 0, 1, 2, 3 ]
+                                    },
+                                    customize: function(doc) {
+                                        doc.styles.tableHeader.fontSize = 8;  
+                                        doc.styles.tableFooter.fontSize = 8;   
+                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                    }  
+                                }
+                            ],
+                           order: [[ 0, "desc" ]],
+                           bDestroy: true,
+                           data: data.data,
+                           columns:[
+                              {data: 'created_at', name: 'created_at'},
+                              {data: 'paymentamount', name: 'paymentamount'},
+                              {data: 'paymentmethod', name: 'paymentmethod'},
+                              {data: 'checknumber', name: 'checknumber'},
+                              {data: 'status', name: 'status'},
+                              {data: 'received_by', name: 'received_by'},
+                              {data: 'action', name: 'action'},
+                           ]
+                       });
+                   }
+           });
+
+                }
+            })
+                }
+                })
+            });
 
             $("#print_ca").click(function(event) {
                 event.preventDefault();
@@ -1305,7 +1600,7 @@
             $(document).on('click', '.view_balance', function(){
 
                var id = $(this).attr("id");
-
+                person_id=id;
                //Datatable for each person
                $.ajax({
                    url: "{{ route('balancelogs') }}",
@@ -1384,6 +1679,9 @@
                               {data: 'paymentamount', name: 'paymentamount'},
                               {data: 'paymentmethod', name: 'paymentmethod'},
                               {data: 'checknumber', name: 'checknumber'},
+                              {data: 'status', name: 'status'},
+                              {data: 'received_by', name: 'received_by'},
+                              {data: 'action', name: 'action'},
                            ]
                        });
                        $('#balance_view_modal').modal('show');

@@ -11,7 +11,7 @@
             <div class="body">
                 <form id="sign_in" method="POST" action="{{ route('login') }}" >
 				@csrf
-                    <div class="msg">Log In</div>
+                    <div class="msg"><h4>Log In</h4></div>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">person</i>
@@ -49,11 +49,11 @@
                     </div>
                     <div class="row m-t-15 m-b--20">
                          
-                        <div class="col-xs-6 ">
+                        <!-- <div class="col-xs-6 ">
                             <a href="forgot-password.html">Forgot Password?</a>
-                    </div>
+                    </div> -->
                     <div>
-                        <small>Powered By: Solid Script </small>
+                    <h5 align="center"><small>Powered By:</small> Solid Script Web Systems</h5>
                     </div>
                         </div>
 

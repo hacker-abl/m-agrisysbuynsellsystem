@@ -46,18 +46,26 @@ class balanceController extends Controller
 		$id = $request->input('id');
 		$balance = DB::table('payment_logs')
 			->join('customer', 'customer.id', '=', 'payment_logs.logs_id')
-			->select('customer.fname','customer.mname','customer.lname','payment_logs.logs_id','payment_logs.paymentmethod','payment_logs.checknumber','payment_logs.paymentamount','payment_logs.created_at' )
+			->select('customer.fname','customer.mname','customer.lname','payment_logs.id','payment_logs.logs_id','payment_logs.paymentmethod','payment_logs.checknumber','payment_logs.paymentamount','payment_logs.created_at','payment_logs.status','payment_logs.received_by' )
 			->where('payment_logs.logs_id', $id)
 			->orderBy('payment_logs.created_at', 'desc')
 			->get();
+			 
 		return \DataTables::of($balance)
-
+		->addColumn('action', function($balance){
+			if($balance->status!="Received"){
+				return '<button class="btn btn-xs btn-success receive_payment_customer waves-effect" id="'.$balance->id.'" ><i class="material-icons">eject</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_customer_payment waves-effect" id="'.$balance->id.'" ><i class="material-icons">delete</i></button>';
+			}else{
+				return '<button class="btn btn-xs btn-danger released waves-effect" id="'.$balance->id.'"><i class="material-icons">done_all</i></button>&nbsp&nbsp<button class="btn btn-xs btn-danger delete_customer_payment waves-effect" id="'.$balance->id.'" ><i class="material-icons">delete</i></button>';
+			}
+		})
 		->make(true);
 		echo json_encode($balance);
 	} 
 
-	public function store(Request $request){
-	    $paymentlogs = new paymentlogs;
+	public function add_payment(Request $request){
+		$paymentlogs = new paymentlogs;
+	 
 	    $paymentlogs->logs_id = $request->customer_id1;
 	    $paymentlogs->paymentmethod = $request->paymentmethod;
 	    if( $request->checknumber!=""){
@@ -66,23 +74,83 @@ class balanceController extends Controller
 	    else{
 			$paymentlogs->checknumber = "Not Specified";
 	    }
-	    $paymentlogs->paymentamount = $request->amount1;
+		$paymentlogs->paymentamount = $request->amount1;
+		$paymentlogs->status="Not Received";
+		$paymentlogs->received_by="NONE";
 	    $paymentlogs->save();
-	    if($request->balance2 == $request->amount1){
-			$balance = balance::where('customer_id', $request->customer_id1)->first();
-			$balance->balance = 0;
-			$balance->save();
+        $output = array(
+            'cashOnHand' => 0,
+            'cashHistory'=> 0,
+            'user'       => Auth::user()->id,
+        );
+        
+        echo json_encode($output);    
+			
+			event(new BalanceUpdated($paymentlogs));
+	}
+	public function delete_payment(Request $request){
+		 
+		$ca = paymentlogs::find($request->input('id'));
+		$balance=balance::find($ca->logs_id)->first();
+		if($ca->status=="Received"){
+			$user = User::find(1);
+			$user_current =  $user->cashOnHand;
+			$user->cashOnHand -= $ca->paymentamount;
+			$user->save();
+
+			$userGet = User::where('id', '=', 1)->first();
+			$cashLatest = Cash_History::orderBy('id', 'DESC')->first();
+			$cash_history = new Cash_History;
+			$cash_history->user_id = $userGet->id;
+
+			$getDate = Carbon::now();
+			
+			if($cashLatest != null){
+				$dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+			}
+			else{
+				$dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
+			}
+			$employeeName= Customer::where('id', '=', $ca->logs_id)->first();
+			$cash_history->trans_no = $dateTime;
+			$cash_history->previous_cash = $user_current;
+			$cash_history->cash_change = $ca->paymentamount;
+			$cash_history->total_cash = $user->cashOnHand;
+			$cash_history->type = "Customer Balance Payment (".$employeeName->fname." ".$employeeName->lname.") Deleted";
+			$cash_history->save();
+			$ca->delete();  
+			$balance->balance=$balance->balance+$ca->paymentamount;
+			$balance->save();   
+
+			$output = [
+				'cashOnHand' => $user->cashOnHand,
+				'cashHistory'=> $dateTime,
+				'amount'=>$ca->paymentamount,
+				'user'       => Auth::user()->id,
+			];
+		}else{
+			$ca->delete();     
+			$output = [
+				'cashOnHand' => null,
+				'cashHistory'=> null,
+				'user'       => Auth::user()->id,
+			];
 		}
-	    else{
-		    $balance = balance::where('customer_id', '=',$request->customer_id1)
-				->decrement('balance', $request->amount1);
-		}
-		$user = User::find(1);
+	    
+        echo json_encode($output);    
+	}
+	public function receive(Request $request){
+		$logged_user=Auth::user()->id;
+	    $paymentlogs = paymentlogs::find($request->input('id'));
+		
+		$balance = balance::where('customer_id', '=',$paymentlogs->logs_id)
+				->decrement('balance', $paymentlogs->paymentamount);
+		$user = User::find($logged_user);
         $user_current =  $user->cashOnHand;
-        $user->cashOnHand += $request->amount1;
+        $user->cashOnHand += $paymentlogs->paymentamount;
         $user->save();
 
-        $userGet = User::where('id', '=', 1)->first();
+        $userGet = User::where('id', '=', $logged_user)->first();
         $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
         $cash_history = new Cash_History;
         $cash_history->user_id = $userGet->id;
@@ -95,19 +163,23 @@ class balanceController extends Controller
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
         }
-        $employeeName= Customer::where('id', '=', $request->customer_id1)->first();
+        $employeeName= Customer::where('id', '=', $paymentlogs->logs_id)->first();
         $cash_history->trans_no = $dateTime;
         $cash_history->previous_cash = $user_current;
-        $cash_history->cash_change = $request->amount1;
+        $cash_history->cash_change = $paymentlogs->paymentamount;
         $cash_history->total_cash = $user->cashOnHand;
-        $cash_history->type = "Customer CA Payment (".$employeeName->fname." ".$employeeName->lname.")";
-        $cash_history->save();
+        $cash_history->type = "Customer Balance Payment (".$employeeName->fname." ".$employeeName->lname.")";
+		$cash_history->save();
+		$paymentlogs->status="Received";
+		$paymentlogs->received_by=$user->name;
+		$paymentlogs->save();
 
-        $output = array(
+        $output = [
             'cashOnHand' => $user->cashOnHand,
-            'cashHistory'=> $dateTime,
+			'cashHistory'=> $dateTime,
+			'amount'=>$paymentlogs->paymentamount,
             'user'       => Auth::user()->id,
-        );
+		];
         
         echo json_encode($output);    
 			
