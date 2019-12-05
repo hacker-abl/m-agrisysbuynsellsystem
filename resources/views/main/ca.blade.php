@@ -1265,6 +1265,7 @@
                         $("#amount1").val('');
                         $("#checknumber").val('');
                         $("#balance2").val('');
+                        $("#r_balance").val('');
                         $('#balancemodal').modal('hide');
                         // if(data2.user==1){
                         //     swal("Payment Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
@@ -1585,7 +1586,6 @@
                     $("#reason2_clone").val($("#reason1").val());
                     $("#amount2_clone").val($("#bal").val());
                     $("#balance2_clone").val('0');
-                    $("#r_balance_clone").val('0');
                     $("#received2_clone").val($("#received1").val());
                     $("#month2_clone").val($("#month1").val());
 
