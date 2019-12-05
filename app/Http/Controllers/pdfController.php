@@ -646,6 +646,10 @@ class pdfController extends Controller
 				<tr>
 				<td><span>Balance: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->balance2_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>Remaining Balance: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->r_balance_clone, 2, '.', ',')."</span></td>
 				</tr>";
 		if(isset($request->remarks_clone)){
 			$pdf .= "
