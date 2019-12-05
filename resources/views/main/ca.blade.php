@@ -102,6 +102,18 @@
                                        </div>
                                   </div>
                             </div>
+                        <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="name">Remaining Balance</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                                <input type="number" id="r_balance" name="r_balance" readonly="readonly" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
 
                     </form>
                         <div class="row clearfix">
@@ -113,6 +125,7 @@
                                     <input type="hidden" id="checknumber_clone" name="checknumber_clone">
                                     <input type="hidden" id="amount1_clone" name="amount1_clone">
                                     <input type="hidden" id="balance2_clone" name="balance2_clone">
+                                    <input type="hidden" id="r_balance_clone" name="r_balance_clone">
                                     <button class="btn btn-sm btn-icon print-icon" type="submit" name="print_balance_form" id="print_balance_form" title="PRINT ONLY">PRINT ONLY</button>
                                 </form>
                             </div>
@@ -402,6 +415,7 @@
                                                     <input type="hidden" id="reason2_clone" name="reason2_clone">
                                                     <input type="hidden" id="amount2_clone" name="amount2_clone">
                                                     <input type="hidden" id="balance2_clone" name="balance2_clone">
+                                                    <input type="hidden" id="r_balance_clone" name="r_balance_clone">
                                                     <input type="hidden" id="month2_clone" name="month2_clone">
                                                     <input type="hidden" id="received2_clone" name="received2_clone">
                                                     <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
@@ -916,6 +930,13 @@
                        }
                    })
                });
+
+               $('#amount1').blur(function(){ 
+                   var balance=$('#balance2').val();
+                   var amount=$('#amount1').val()
+                   $('#r_balance').val(balance-amount);    
+               });
+
 
 
 
@@ -1564,6 +1585,7 @@
                     $("#reason2_clone").val($("#reason1").val());
                     $("#amount2_clone").val($("#bal").val());
                     $("#balance2_clone").val('0');
+                    $("#r_balance_clone").val('0');
                     $("#received2_clone").val($("#received1").val());
                     $("#month2_clone").val($("#month1").val());
 
@@ -1595,6 +1617,7 @@
                 $("#checknumber_clone").val($("#checknumber").val());
                 $("#amount1_clone").val($("#amount1").val());
                 $("#balance2_clone").val($("#balance2").val());
+                $("#r_balance_clone").val($("#r_balance").val());
             });
 
             $(document).on('click', '.view_balance', function(){
