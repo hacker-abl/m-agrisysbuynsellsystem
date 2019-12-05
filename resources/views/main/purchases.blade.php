@@ -712,6 +712,7 @@
                                 <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="purchase_datepicker_from" />
                                 <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="purchase_datepicker_to" />
                             </p>
+                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 refresh_table"><i class="material-icons">cached</i></button><br><br>
                                 <table id="purchasetable" class="table table-bordered table-striped table-hover" style="z-index: -1;">
                                   
                                        <thead>
@@ -796,7 +797,6 @@
 
 
         
-
         $("#kilo").blur(function(){
             if($("#kilo").val()==""){
                 $("#kilo").val('0');
@@ -1187,6 +1187,10 @@
             }
         }
         $(document).ready(function () {
+            $(".refresh_table").click(function(){
+            refresh_purchase_table();
+        });
+
             document.title = "M-Agri - Purchases";
 
             //Delete Purchases

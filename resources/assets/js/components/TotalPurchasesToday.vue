@@ -32,7 +32,6 @@
                     var valueMonth = (totalMonth/1).toFixed(2).replace(',', '.');
                     valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     $( "#totalPurchasesMonth" ).html("&#8369; "+valueMonth);
-
                     var totalYear = parseFloat($( "#totalPurchasesYear" ).text().replace(/[^\d.]/g, '')) + parseFloat(e.total);
                     var valueYear = (totalYear/1).toFixed(2).replace(',', '.');
                     valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
