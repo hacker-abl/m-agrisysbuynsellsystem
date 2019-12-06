@@ -597,8 +597,17 @@
                                        <button type="button" id="balancebutton" class="btn bg-grey btn-xs waves-effect m-r-20 open_balancemodal"><i class="material-icons">chrome_reader_mode</i></button>
                                   </li>
                              </ul>
+                            
                         </div>
                         <div class="body">
+                        <div>
+                              <h5>Advance Filter</h5>
+                              <select style="width: 150px;" type="text" id="commodityfilter" name="commodityfilter" data-placeholder="Select Commodity" >
+                                    <option value="has">Has Balance</option>
+                                    <option value="all">All</option>
+                                    
+                                </select>
+                            </div>
                              <div class="table-responsive">
                              <br>
                                   <table id="balancetable" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -606,7 +615,7 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Total Balance</th>
-                                                <th width="90">Action</th>
+                                                <th width="90">View History</th>
                                             </tr>
                                        </thead>
                                        <tfoot>
@@ -649,7 +658,9 @@
             });
 
         $(document).ready(function() {
-
+            $("#commodityfilter").select2({
+            placeholder: "Select Filter"
+          });
         document.title = "M-Agri - Cash Advance";
 
             $.extend( $.fn.dataTable.defaults, {
@@ -790,7 +801,96 @@
       				]
       			});
 
-               var balancetable = $('#balancetable').DataTable({
+                  $("#commodityfilter").on('change', function(e) {
+                  var  selectedFilter=this.value;
+                      if(selectedFilter=="has"){
+                    $('#balancetable').dataTable().fnDestroy();
+                     balancetable = $('#balancetable').DataTable({
+                       "footerCallback": function ( row, data, start, end, display ) {
+                          var api = this.api(), data;
+               
+                          // Remove the formatting to get integer data for summation
+                          var intVal = function ( i ) {
+                              return typeof i == 'string' ?
+                                  i.replace(/[\₱,]/g, '')*1 :
+                                  typeof i == 'number' ?
+                                      i : 0;
+                          };
+               
+                          // Total over all pages
+                          total = api
+                              .column( 1 )
+                              .data()
+                              .reduce( function (a, b) {
+                                  return intVal(a) + intVal(b);
+                              }, 0 );
+               
+                          // Total over this page
+                          pageTotal = api
+                              .column( 1, { page: 'current'} )
+                              .data()
+                              .reduce( function (a, b) {
+                                  return intVal(a) + intVal(b);
+                              }, 0 );
+               
+                          // Update footer
+                          $( api.column( 1 ).footer() ).html(
+                              'Total: <br>₱' + number_format(pageTotal,2)
+                          );
+                      },
+                      dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                      buttons: [
+                          {
+                              extend: 'print',
+                              exportOptions: {
+                                  columns: [ 0, 1]
+                              },
+                              customize: function ( win ) {
+                                  $(win.document.body)
+                                      .css( 'font-size', '10pt' );
+               
+                                  $(win.document.body).find( 'table' )
+                                      .addClass( 'compact' )
+                                      .css( 'font-size', 'inherit' );
+                              },
+                              footer: true
+                          },
+                            { 
+                                extend: 'pdfHtml5', 
+                                footer: true,
+                                exportOptions: { 
+                                    columns: [ 0, 1 ]
+                                },
+                                customize: function(doc) {
+                                    doc.styles.tableHeader.fontSize = 8;  
+                                    doc.styles.tableFooter.fontSize = 8;   
+                                    doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                }  
+                            }
+                      ],
+                       processing: true,
+
+                       columnDefs: [
+                  				{
+                    			  	"targets": "_all", // your case first column
+                     				"className": "text-center",
+                      				
+                 				}
+                				],
+                       ajax: "{{ route('hasbalance') }}",
+                       columns: [
+                            {data:'fname',
+                                render: function(data, type, full, meta){
+                                     return full.fname +" "+ full.mname+" "+full.lname;
+                                }
+                           },
+                            {data: 'balance', name: 'balance'},
+                            {data: "action", orderable:false,searchable:false}
+                       ]
+                  });
+                      }else{
+                        $('#balancetable').dataTable().fnDestroy();
+                     balancetable = $('#balancetable').DataTable({
                        "footerCallback": function ( row, data, start, end, display ) {
                           var api = this.api(), data;
                
@@ -863,6 +963,93 @@
                  				}
                 				],
                        ajax: "{{ route('refresh_balancedt') }}",
+                       columns: [
+                            {data:'fname',
+                                render: function(data, type, full, meta){
+                                     return full.fname +" "+ full.mname+" "+full.lname;
+                                }
+                           },
+                            {data: 'balance', name: 'balance'},
+                            {data: "action", orderable:false,searchable:false}
+                       ]
+                  });
+                      }
+                      
+                  });
+
+               var balancetable = $('#balancetable').DataTable({
+                       "footerCallback": function ( row, data, start, end, display ) {
+                          var api = this.api(), data;
+               
+                          // Remove the formatting to get integer data for summation
+                          var intVal = function ( i ) {
+                              return typeof i == 'string' ?
+                                  i.replace(/[\₱,]/g, '')*1 :
+                                  typeof i == 'number' ?
+                                      i : 0;
+                          };
+               
+                          // Total over all pages
+                          total = api
+                              .column( 1 )
+                              .data()
+                              .reduce( function (a, b) {
+                                  return intVal(a) + intVal(b);
+                              }, 0 );
+               
+                          // Total over this page
+                          pageTotal = api
+                              .column( 1, { page: 'current'} )
+                              .data()
+                              .reduce( function (a, b) {
+                                  return intVal(a) + intVal(b);
+                              }, 0 );
+               
+                          // Update footer
+                          $( api.column( 1 ).footer() ).html(
+                              'Total: <br>₱' + number_format(pageTotal,2)
+                          );
+                      },
+                      dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                      buttons: [
+                          {
+                              extend: 'print',
+                              exportOptions: {
+                                  columns: [ 0, 1]
+                              },
+                              customize: function ( win ) {
+                                  $(win.document.body)
+                                      .css( 'font-size', '10pt' );
+               
+                                  $(win.document.body).find( 'table' )
+                                      .addClass( 'compact' )
+                                      .css( 'font-size', 'inherit' );
+                              },
+                              footer: true
+                          },
+                            { 
+                                extend: 'pdfHtml5', 
+                                footer: true,
+                                exportOptions: { 
+                                    columns: [ 0, 1 ]
+                                },
+                                customize: function(doc) {
+                                    doc.styles.tableHeader.fontSize = 8;  
+                                    doc.styles.tableFooter.fontSize = 8;   
+                                    doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                                }  
+                            }
+                      ],
+                       processing: true,
+
+                       columnDefs: [
+                  				{
+                    			  	"targets": "_all", // your case first column
+                     				"className": "text-center",
+                      				
+                 				}
+                				],
+                       ajax: "{{ route('hasbalance') }}",
                        columns: [
                             {data:'fname',
                                 render: function(data, type, full, meta){
@@ -1235,7 +1422,6 @@
     }
 
             $("#add_balance").click(function(event){
-                console.log("nalick");
                 event.preventDefault();
                 event.stopPropagation();
                var input = $(this);
@@ -1352,11 +1538,8 @@
                             data:{id:id},
                             dataType: 'text',
                             success:function(data){
-                                 console.log(data);
                                  var data2=JSON.parse(data);
-                                 if(data2.cashOnHand!=null){
-                                    console.log(data);
-                                    console.log("ayay");                         
+                                 if(data2.cashOnHand!=null){                    
                                     swal("Amount Reverted : ₱"+data2.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
                                     $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                                  }else{
@@ -1476,9 +1659,7 @@
                             dataType: 'text',
                             success:function(data){
                                  
-                                 var data2=JSON.parse(data);  
-                                 console.log(data2);   
-                                    console.log("ayay");                         
+                                 var data2=JSON.parse(data);                      
                                     swal("Amount Received : ₱"+data2.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Current Cash: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
                                     $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));                                  
                             
@@ -1580,7 +1761,6 @@
             });
 
             $("#print_form").click(function(event) {
-                console.log(print_checker)
                 if(print_checker == 'new'){
                     $("#customer_id2_clone").val($("#fname").val() + ' ' + $("#mname").val() + ' ' + $("#lname").val());
                     $("#reason2_clone").val($("#reason1").val());
@@ -1588,8 +1768,6 @@
                     $("#balance2_clone").val('0');
                     $("#received2_clone").val($("#received1").val());
                     $("#month2_clone").val($("#month1").val());
-
-                    console.log($("#month_clone").val($("#month1").val()))
                 }else{
                     $("#print_form1").trigger("click");
                 }
@@ -2152,7 +2330,7 @@
                 }
             });
 
-
+           
             $('#paymentmethod').select2({
                 dropdownParent: $('#balancemodal'),
                 placeholder: 'Select a type of payment'

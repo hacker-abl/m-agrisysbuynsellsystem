@@ -27,11 +27,31 @@ class balanceController extends Controller
 	{
 		//$user = User::all();
           $ultimatesickquery= DB::table('balance')
-              ->join('customer', 'customer.id', '=', 'balance.customer_id')
+			  ->join('customer', 'customer.id', '=', 'balance.customer_id')
+			//   ->leftjoin('payment_logs', 'payment_logs.logs_id', '=', 'balance.logs_id')
 			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname')
-			  //->where('balance.balance' ,'!=','0')
-            //  ->orderBy('purchases.id', 'desc')
-              ->get();
+			  ->whereExists(function ($query) {
+				$query->select("payment_logs.logs_id")
+					  ->from('payment_logs')
+					  ->whereRaw('payment_logs.logs_id = balance.customer_id');
+			})->get();
+			//   ->where('balance.balance','!=','0')->get();
+		    return \DataTables::of($ultimatesickquery)
+		    ->addColumn('action', function($ultimatesickquery){
+			   return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+		    })
+		    ->editColumn('balance', function ($data) {
+     		  return '₱'.number_format($data->balance, 2, '.', ',');
+     	    })
+		     ->make(true);
+	}
+	public function hasbalance()
+	{
+		//$user = User::all();
+          $ultimatesickquery= DB::table('balance')
+			  ->join('customer', 'customer.id', '=', 'balance.customer_id')
+			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname')
+			  ->where('balance.balance','!=','0')->get();
 		    return \DataTables::of($ultimatesickquery)
 		    ->addColumn('action', function($ultimatesickquery){
 			   return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility

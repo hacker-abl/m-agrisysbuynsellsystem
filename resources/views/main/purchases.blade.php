@@ -1504,6 +1504,7 @@
 
             purchasestable = $('#purchasetable').DataTable({
                 "footerCallback": function ( row, data, start, end, display ) {
+                    console.log(data);
                     var api = this.api(), data;
 
                     // Remove the formatting to get integer data for summation

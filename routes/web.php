@@ -150,6 +150,7 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
     Route::get('/getCustomer', 'caController@getCustomer')->name('getCustomer');
     Route::get('/refresh_balancedt', 'balanceController@refresh')->name('refresh_balancedt');
     Route::get('/balancelogs', 'balanceController@balance')->name('balancelogs');
+    Route::get('/hasbalance', 'balanceController@hasbalance')->name('hasbalance');
     Route::post('/add_payment', 'balanceController@add_payment')->name('add_payment');
     Route::post('/delete_cutomer_payment', 'balanceController@delete_payment')->name('delete_cutomer_payment');
     Route::post('/receive_payment_customer', 'balanceController@receive')->name('receive_payment_customer');
