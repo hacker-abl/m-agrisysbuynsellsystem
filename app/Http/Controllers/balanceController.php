@@ -116,12 +116,12 @@ class balanceController extends Controller
 		$ca = paymentlogs::find($request->input('id'));
 		$balance=balance::find($ca->logs_id)->first();
 		if($ca->status=="Received"){
-			$user = User::find(1);
+			$user = User::find(Auth::user()->id);
 			$user_current =  $user->cashOnHand;
 			$user->cashOnHand -= $ca->paymentamount;
 			$user->save();
 
-			$userGet = User::where('id', '=', 1)->first();
+			$userGet = User::where('id', '=', Auth::user()->id)->first();
 			$cashLatest = Cash_History::orderBy('id', 'DESC')->first();
 			$cash_history = new Cash_History;
 			$cash_history->user_id = $userGet->id;

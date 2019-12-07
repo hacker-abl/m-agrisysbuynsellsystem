@@ -594,7 +594,9 @@
                         <h2>List of Customer Balance as of {{ date('Y-m-d ') }}</h2>
                              <ul class="header-dropdown m-r--5">
                                   <li class="dropdown">
+                                  @if(isAdmin() || isPurchaser())
                                        <button type="button" id="balancebutton" class="btn bg-grey btn-xs waves-effect m-r-20 open_balancemodal"><i class="material-icons">chrome_reader_mode</i></button>
+                                 @endif()
                                   </li>
                              </ul>
                             
