@@ -120,7 +120,8 @@ class balanceController extends Controller
 			$user_current =  $user->cashOnHand;
 			$user->cashOnHand -= $ca->paymentamount;
 			$user->save();
-
+			$balance = balance::where('customer_id', '=',$ca->logs_id)
+				->increment('balance', $ca->paymentamount);
 			$userGet = User::where('id', '=', Auth::user()->id)->first();
 			$cashLatest = Cash_History::orderBy('id', 'DESC')->first();
 			$cash_history = new Cash_History;
@@ -142,8 +143,8 @@ class balanceController extends Controller
 			$cash_history->type = "Customer Balance Payment (".$employeeName->fname." ".$employeeName->lname.") Deleted";
 			$cash_history->save();
 			$ca->delete();  
-			$balance->balance=$balance->balance+$ca->paymentamount;
-			$balance->save();   
+			// $balance->balance=$balance->balance+$ca->paymentamount;
+			// $balance->save();   
 
 			$output = [
 				'cashOnHand' => $user->cashOnHand,

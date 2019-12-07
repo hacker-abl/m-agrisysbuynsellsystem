@@ -1547,7 +1547,7 @@
                                  }else{
                                     swal("Payment Deleted!", "Successfully deleted a payment.", "success");
                                  }
-                               
+                                 refresh_balance_table();
                                  $.ajax({
                    url: "{{ route('balancelogs') }}",
                    method: 'get',
