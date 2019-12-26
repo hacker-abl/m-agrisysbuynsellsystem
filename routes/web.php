@@ -140,6 +140,18 @@ Route::group(['middleware'=>['auth', 'user:sales']], function() {
 
 });
 
+Route::group(['middleware'=>['auth', 'user:summary']], function() {
+    //Summary
+    Route::get('/summary', 'summaryController@index')->name('summary');
+    Route::post('/refresh_summary', 'summaryController@refresh')->name('refresh_summary');
+    // Route::post('/add_sales', 'salesController@store')->name('add_sales');
+    // Route::get('/update_sales', 'salesController@updatedata')->name('update_sales');
+    // Route::get('/delete_sales', 'salesController@deletedata')->name('delete_sales');
+    // Route::post('/print_sales', 'pdfController@sales')->name('print_sales');
+    // Route::get('/getSales', 'salesController@getSales')->name('getSales');
+
+});
+
 Route::group(['middleware'=>['auth', 'user:ca']], function() {
     //CASH ADVANCE
     Route::get('/cashadvance', 'caController@index')->name('ca');

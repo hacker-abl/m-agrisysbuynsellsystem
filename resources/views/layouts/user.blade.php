@@ -137,7 +137,7 @@
         <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
         @endif
     @endif
-    @if(Request::path() == 'purchases' || Request::path() == 'outbound' || Request::path() == 'sales' || Request::path() == 'expense' || Request::path() == 'trips')
+    @if(Request::path() == 'purchases' || Request::path() == 'outbound' || Request::path() == 'sales' || Request::path() == 'expense' || Request::path() == 'trips'|| Request::path() == 'summary')
     <style>
         #ui-datepicker-div .ui-datepicker-calendar {
             display: table !important;
@@ -295,6 +295,14 @@
                         </li>
                         @if($permissions = userpermission())
                             @foreach($permissions as $key => $permission)
+                                @if($permissions[$key]->permission->middleware == "summary" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                <li class="{{ (Request::path() == 'summary') ? 'active' : '' }}">
+                                    <a href="{{ route('summary') }}">
+                                        <i class="material-icons">assessment</i>
+                                        <span>Summary</span>
+                                    </a>
+                                </li>
+                                @endif
                                 @if($permissions[$key]->permission->middleware == "expenses" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'expense') ? 'active' : '' }}">
                                     <a href="{{ route('expense') }}">
@@ -351,6 +359,7 @@
                                     </a>
                                 </li>
                                 @endif
+                               
                             @endforeach
                         @endif
                     @endif
