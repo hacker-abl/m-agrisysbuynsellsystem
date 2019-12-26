@@ -290,7 +290,7 @@ class usersController extends Controller
             $permission = array();
             $permissions = Permission::select('id')->whereNotIn('id', $authorized)->get();
 
-            for ($i=1; $i <= 12; $i++){
+            for ($i=1; $i <= 13; $i++){
                 UserPermission::updateOrCreate(['permission_id'=>$i, 'user_id'=>$request->id], ['permit' => 0,'permit_delete'=>0,'permit_edit'=>0]);
             } 
 
