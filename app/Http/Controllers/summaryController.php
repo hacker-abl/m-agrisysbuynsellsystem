@@ -243,7 +243,7 @@ class summaryController extends Controller
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
             ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,purchases.price as price'))
             // ->groupBy(\DB::raw('commodity_id'))
-            ->groupBy(\DB::raw('purchases.price'))
+            ->groupBy(\DB::raw('commodity_id,purchases.price'))
              ->whereIn('commodity.name',$commodity)
             ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
