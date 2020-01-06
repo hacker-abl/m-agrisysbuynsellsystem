@@ -136,62 +136,130 @@ class summaryController extends Controller
         $from = $request->date_from;
         $to = $request->date_to; 
         $commodity= $request->commodity;
-        if($to==""){
+        $type= $request->type;
+        if($to==null&&$commodity==null){
          $ultimatesickquery=  DB::table('purchases')
          ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-         ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name'))
+         ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
          ->groupBy(\DB::raw('commodity_id'))
          ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
          ->get();
         }
-        if($commodity==""&&$to!=""){
+        // if($commodity==""&&$to!=null){
+        //     $ultimatesickquery=  DB::table('purchases')
+        //     ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+        //     ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
+        //     ->groupBy(\DB::raw('commodity_id'))
+        //     ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+        //     ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+        //     ->get();                      
+        // } 
+        if($type==null||$type=="All"){
+            if($commodity==null&&$to!==null){
+                $ultimatesickquery=  DB::table('purchases')
+                ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+                ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
+                ->groupBy(\DB::raw('commodity_id'))
+                ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+                ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+                ->get();                
+            }    
+         if($commodity!="All"&&$commodity!=null&&$to!=null){
             $ultimatesickquery=  DB::table('purchases')
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name'))
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
             ->groupBy(\DB::raw('commodity_id'))
-            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
-            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-            ->get();                      
-        }   
-         if($commodity!=""&&$to!=""){
-            $ultimatesickquery=  DB::table('purchases')
-            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name'))
-            ->groupBy(\DB::raw('commodity_id'))
-            ->where('commodity.name',$commodity)
-            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
-            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-            ->get();                
-        }   
-         if($commodity=="none"){
-            $ultimatesickquery=  DB::table('purchases')
-            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name'))
-            ->groupBy(\DB::raw('commodity_id'))
-            // ->where('commodity.name',$commodity)
-            // ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
-            // ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-            ->get();                
-        } 
-        if($commodity=="none"&&$to!=""){
-            $ultimatesickquery=  DB::table('purchases')
-            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name'))
-            ->groupBy(\DB::raw('commodity_id'))
-            // ->where('commodity.name',$commodity)
+            ->whereIn('commodity.name',$commodity)
             ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
             ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->get();                
         }   
-        if($commodity!=""&&$to==""){
+         if($commodity!="All"&&$to==null&&$commodity!=null){
             $ultimatesickquery=  DB::table('purchases')
             ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
-            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name'))
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
             ->groupBy(\DB::raw('commodity_id'))
-            ->where('commodity.name',$commodity)
+            ->whereIn('commodity.name',$commodity)
             ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->get();                
-        }       
+        } 
+        if($commodity=="All"&&$to==null){
+            $ultimatesickquery=  DB::table('purchases')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
+            ->groupBy(\DB::raw('commodity_id'))
+            ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
+            ->get();                
+        }    
+        if($commodity=="All"&&$to!=null){
+            $ultimatesickquery=  DB::table('purchases')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
+            ->groupBy(\DB::raw('commodity_id'))
+            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+            ->get();                
+        } 
+        
+    }
+        /// DIRI SUGOD
+        if($type=="Price"){
+        if($commodity!="All"&&$to==null&&$commodity!=null){
+            $ultimatesickquery=  DB::table('purchases')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
+            ->groupBy(\DB::raw('purchases.price'))
+            ->whereIn('commodity.name',$commodity)
+            ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
+            ->get();                
+        } 
+        if($commodity=="All"||$commodity==null&&$to!=null){
+
+            $ultimatesickquery=  DB::table('purchases')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,purchases.price as price'))
+            // ->groupBy(\DB::raw('commodity_id'))
+            ->groupBy(\DB::raw('purchases.price'))
+            // ->where('commodity.name',$commodity)
+            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+            ->get();                
+        }   
+        if($commodity=="All"&&$to!=null){
+            
+            $ultimatesickquery=  DB::table('purchases')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,purchases.price as price'))
+            // ->groupBy(\DB::raw('commodity_id'))
+            ->groupBy(\DB::raw('purchases.price'))
+            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+            ->get();                
+        }   
+
+        if($commodity!="All"&&$commodity!=null&&$to!=null){
+            
+            $ultimatesickquery=  DB::table('purchases')
+            ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+            ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,purchases.price as price'))
+            // ->groupBy(\DB::raw('commodity_id'))
+            ->groupBy(\DB::raw('purchases.price'))
+             ->whereIn('commodity.name',$commodity)
+            ->where('purchases.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+            ->where('purchases.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
+            ->get();                
+        }   
+        
+        //  if($commodity!="All"&&$to==null&&$commodity!=null){
+        //     $ultimatesickquery=  DB::table('purchases')
+        //     ->join('commodity', 'commodity.id', '=', 'purchases.commodity_id')
+        //     ->select(\DB::raw('commodity_id, SUM(net) as net_weight,SUM(total) as total,commodity.name as commodity_name,commodity.price as price'))
+        //     ->groupBy(\DB::raw('commodity_id'))
+        //     ->where('commodity.name',$commodity)
+        //     ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
+        //     ->get();                
+        // } 
+    }
         // dd($ultimatesickquery);
         // var_dump($ultimatesickquery);
         // $ultimatesickquery->offsetSet('data_range', array('g1', 'g2'));
@@ -227,6 +295,9 @@ class summaryController extends Controller
         // ->editColumn('amount', function ($data) {
         //     return '₱'.number_format($data->amount, 2, '.', ',');
         // })
+        ->editColumn('commodity_name', function ($data) {
+            return $data->commodity_name." (".$data->price.")";
+        })
         ->editColumn('net_weight', function ($data) {
             return number_format($data->net_weight, 2, '.', ',');
         })

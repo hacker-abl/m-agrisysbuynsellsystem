@@ -176,13 +176,20 @@
 						<div class="table-responsive">
                         <div style="margin-bottom: -62px; margin-left: 480px;z-index: 999;">
                               <h5>Commodity Filter</h5>
-                              <select style="width: 200px;" type="text" id="commodityfilter" name="commodityfilter" data-placeholder="Select Commodity" >
-                                    <option value="none">All</option>
+                              <select style="width: 350px;" type="text"  id="commodityfilter" name="commodityfilter" multiple="multiple" data-placeholder="Select Commodity" >
                                      @foreach($commodity as $a)
                                      <option value="{{ $a->name }}">{{ $a->name }}</option>
                                      @endforeach
                                 </select>
                             </div>
+                            <div style="margin-bottom: -68px; margin-left: 850px;z-index: 1000;">
+                              <h5>Group By</h5>
+                              <select size="3" style="width: 200px;" type="text" id="typeFilter" name="typeFilter" data-placeholder="Select Group" >
+                                    <option value="All">All</option>
+                                    <option value="Price">Price</option>
+                                </select>
+                            </div>
+                          
 							 <p id="date_filter">
                                 <h5>Date Range Filter</h5>
                                 <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="sales_datepicker_from" />
@@ -192,7 +199,7 @@
 							<table id="salestable" class="table table-bordered table-striped table-hover  ">
 								<thead>
 									<tr>
-										<th width="100" style="text-align:center;">Commodity</th>
+										<th width="100" style="text-align:center;">Commodity (Price)</th>
 										<th width="100" style="text-align:center;">Total Net Weight (KG)</th>
 										<th width="100" style="text-align:center;">Total Amount</th>
 									</tr>
@@ -216,9 +223,10 @@
 @section('script')
     <script>
     	var salestable;
-    	var sales_date_from;
-    	var sales_date_to;
-        var commodityselected="";
+    	var sales_date_from="";
+    	var sales_date_to="";
+        var commodityselected=[];
+        var typeselected="";
 		var day = new Date();
 
 		var today= day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate();
@@ -274,6 +282,54 @@
         }
 
 		 salestable = $('#salestable').DataTable({
+			"footerCallback": function ( row, data, start, end, display ) {
+                    
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+                    
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 1, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 1 ).footer() ).html(
+                        number_format(pageTotal,2)+" KG"
+                    );
+                    
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
+                    $( api.column( 0 ).footer() ).html(
+                      'Average Price = '+ number_format(pageTotal1/pageTotal,2)
+                    );  
+                },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
@@ -326,6 +382,7 @@
                           date_from: sales_date_from,
                           date_to: sales_date_to,
 						  commodity: commodityselected,
+                          type: typeselected,
                       },
                      
                 
@@ -349,6 +406,54 @@
 				  $('#date_today').html(new Date(sales_date_from).toDateString()+" to "+new Date(sales_date_to).toDateString());
                   $('#salestable').dataTable().fnDestroy();
                   salestable = $('#salestable').DataTable({
+					"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column(1, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 1 ).footer() ).html(
+                          number_format(pageTotal,2)+" KG"
+                    );
+                    
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        'Total: <br>₱' + number_format(pageTotal1,2)
+                    );
+                    $( api.column( 0 ).footer() ).html(
+                      'Average Price = '+ number_format(pageTotal1/pageTotal,2)
+                    );  
+                },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
@@ -401,6 +506,7 @@
                           date_from: sales_date_from,
                           date_to: sales_date_to,
 						  commodity: commodityselected,
+                          type: typeselected,
                       },
                      
                 
@@ -417,6 +523,54 @@
 				$('#date_today').html(new Date(today).toDateString());
                $('#salestable').dataTable().fnDestroy();
                salestable = $('#salestable').DataTable({
+				"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column(1, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 1 ).footer() ).html(
+                       number_format(pageTotal,2)+" KG"
+                    );
+                   
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        '₱' + number_format(pageTotal1,2)
+                    );
+                    $( api.column( 0 ).footer() ).html(
+                      'Average Price = '+ number_format(pageTotal1/pageTotal,2)
+                    );  
+                },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
@@ -469,6 +623,7 @@
                           date_from: sales_date_from,
                           date_to: sales_date_to,
 						  commodity: commodityselected,
+                          type: typeselected,
                       },
                      
                 
@@ -494,6 +649,54 @@
 				   $('#date_today').html(new Date(sales_date_from).toDateString()+" to "+new Date(sales_date_to).toDateString());
                   $('#salestable').dataTable().fnDestroy();
                   salestable = $('#salestable').DataTable({
+					"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 1, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 1 ).footer() ).html(
+                     number_format(pageTotal,2)+" KG"
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        '₱' + number_format(pageTotal1,2)
+                    );
+                    $( api.column( 0 ).footer() ).html(
+                      'Average Price = '+ number_format(pageTotal1/pageTotal,2)
+                    );  
+                },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
@@ -546,6 +749,7 @@
                           date_from: sales_date_from,
                           date_to: sales_date_to,
 						  commodity: commodityselected,
+                          type: typeselected,
                       },
                      
                 
@@ -563,6 +767,54 @@
 				$('#date_today').html(new Date(today).toDateString());
                 $('#salestable').dataTable().fnDestroy();
                 salestable = $('#salestable').DataTable({
+					"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 1, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 1 ).footer() ).html(
+                         number_format(pageTotal,2)+" KG"
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        '₱' + number_format(pageTotal1,2)
+                    );
+                    $( api.column( 0 ).footer() ).html(
+                      'Average Price = '+ number_format(pageTotal1/pageTotal,2)
+                    );  
+                },
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
@@ -615,6 +867,7 @@
                           date_from: sales_date_from,
                           date_to: sales_date_to,
                           commodity: commodityselected,
+                          type: typeselected,
                       },
                      
                 
@@ -630,10 +883,61 @@
 		 	//End of Date Range Filter
 			 var x ;
              $("#commodityfilter").on('change', function(e) {
-              commodityselected=this.value;
+                   commodityselected=$("#commodityfilter").select2("val");
               console.log(commodityselected);
+            //    console.log(this.value)
+           
+            
               $('#salestable').dataTable().fnDestroy();
                 salestable = $('#salestable').DataTable({
+                	"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 1, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 1 ).footer() ).html(
+                        number_format(pageTotal,2)+" KG"
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        '₱' + number_format(pageTotal1,2)
+                    );
+                    $( api.column( 0 ).footer() ).html(
+                      'Average Price = '+ number_format(pageTotal1/pageTotal,2)
+                    );  
+                },    
                 dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
                     {
@@ -686,6 +990,7 @@
                           date_from: sales_date_from,
                           date_to: sales_date_to,
                           commodity: commodityselected,
+                          type: typeselected,
                       },
                 },
 				columns: [
@@ -696,6 +1001,125 @@
 			});
 
               });
+
+              $("#typeFilter").on('change', function(e) {
+              typeselected=this.value;
+              console.log(typeselected);
+              $('#salestable').dataTable().fnDestroy();
+                salestable = $('#salestable').DataTable({
+                	"footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+         
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i == 'string' ?
+                            i.replace(/[\₱,]/g, '')*1 :
+                            typeof i == 'number' ?
+                                i : 0;
+                    };
+         
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Total over this page
+                    pageTotal = api
+                        .column( 1, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 1 ).footer() ).html(
+                        number_format(pageTotal,2)+" KG"
+                    );
+
+					// Total over this page
+                    pageTotal1 = api
+                        .column( 2, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+         
+                    // Update footer
+                    $( api.column( 2 ).footer() ).html(
+                        '₱' + number_format(pageTotal1,2)
+                    );
+                    $( api.column( 0 ).footer() ).html(
+                      'Average Price = '+ number_format(pageTotal1/pageTotal,2)
+                    );  
+                },    
+                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                buttons: [
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [ 0, 1, 2]
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '15pt' );
+         
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        },
+                        footer: true
+                    },
+					{ 
+						extend: 'pdfHtml5', 
+						footer: true,
+						exportOptions: { 
+							columns: [ 0, 1, 2]
+						},
+						customize: function(doc) {
+							doc.styles.tableHeader.fontSize = 8;  
+							doc.styles.tableFooter.fontSize = 8;   
+							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');  
+						}  
+					}
+                ],
+				processing: true,
+				
+				columnDefs: [
+  				{
+    			  	"targets": "_all", // your case first column
+     				"className": "text-center",
+      				
+ 				}
+				],
+				order:[],
+                ajax:{
+                 
+                      url: "{{ route('refresh_summary') }}",
+                      // dataType: 'text',
+                      type: 'post',
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                      data: {
+                          date_from: sales_date_from,
+                          date_to: sales_date_to,
+                          commodity: commodityselected,
+                          type: typeselected,
+                      },
+                },
+				columns: [
+					{data: 'commodity_name'},
+					{data: 'net_weight'},
+					{data: 'total'}
+				]
+			});
+
+              });
+
+
 			function refresh_sales_table(){
 				salestable.ajax.reload(); //reload datatable ajax
 			}
@@ -721,7 +1145,14 @@
 
 
             $("#commodityfilter").select2({
-            placeholder: "Select Commodity"
+            placeholder: "Select Commodity",
+          });
+          
+
+  
+          
+          $("#typeFilter").select2({
+            placeholder: "Select Group"
           });
 			 $('#paymentmethod').select2({
          	 dropdownParent: $('#sales_modal'),
