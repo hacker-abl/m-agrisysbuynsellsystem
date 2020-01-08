@@ -39,7 +39,6 @@
             listenForChanges() {
                 Echo.channel('homepage')
                 .listen('CashierCashUpdated', (e) => {
-
                     axios.get('/cash_on_hand').then((response) => {
                     this.cashier = response.data;
                     })

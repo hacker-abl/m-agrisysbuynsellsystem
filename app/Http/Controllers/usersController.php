@@ -15,6 +15,8 @@ use App\Cash_History;
 use Auth;
 use DB;
 use Carbon\Carbon;
+use App\Events\CashierCashUpdated;
+
 class usersController extends Controller
 {
     /**
@@ -88,6 +90,8 @@ class usersController extends Controller
             $cash_history->type = "Add Cash";
         }
         $cash_history->save();
+
+        event(new CashierCashUpdated());
 
         $output = array(
             'cashOnHand' => $user->cashOnHand,
