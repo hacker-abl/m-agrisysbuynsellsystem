@@ -30,10 +30,10 @@
       <tfoot>
         <tr class="text-danger">
           <th>TOTAL</th>
-          <th>{{ purchasesToday["totals"].net }}</th>
+          <th>{{ formatPrice(purchasesToday["totals"] != null ? purchasesToday["totals"].net : 0) }}</th>
           <th>
             &#8369;
-            {{ formatPrice(purchasesToday["totals"].total) }}
+            {{ formatPrice(purchasesToday["totals"] != null ? purchasesToday["totals"].total : 0) }}
           </th>
         </tr>
       </tfoot>
