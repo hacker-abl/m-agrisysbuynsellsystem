@@ -8,7 +8,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in cashier" :key="user.amount">
+            <tr v-for="user in cashier" :key="user.id">
                 <td>{{ user.name }}</td>
                 <td>&#8369; {{ formatPrice(user.amount) }}</td>
             </tr>
