@@ -15,11 +15,23 @@
                 </div>
                 <div class="body" style="max-height:500px;">
                     <section class="totalPurchases">
-                    @include('home_content.total_purchases_today')
+                    <total-purchases-today-table></total-purchases-today-table>
                     </section>
                 </div>
             </div>
         </div>
+        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="header text-center">
+                    <h2>PURCHASES TODAY</h2>
+                </div>
+                <div class="body" style="max-height:500px;">
+                    <section class="totalPurchases">
+                    @include('home_content.total_purchases_today')
+                    </section>
+                </div>
+            </div>
+        </div> -->
 
         <!-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-pink hover-expand-effect">

@@ -132,6 +132,26 @@ class HomeController extends Controller
         }
     }
 
+    public function totalPurchasesToday(){
+        $purchases = purchases::groupBy('commodity_id')
+            ->orderBy(DB::raw('SUM(total)'), 'desc')
+            ->limit(6)
+            ->whereDate('created_at', Carbon::today())
+            ->where('released_by', '!=' ,'')
+            ->with('commodityName')
+            ->get(['commodity_id', DB::raw('SUM(net) AS net'), 'price', DB::raw('SUM(total) AS total')]);
+
+        $totals = [
+            'net' => $purchases->sum('net'),
+            'total' => $purchases->sum('total'),
+        ];
+
+        return response()->json([
+            'data' => $purchases,
+            'totals' => $totals
+        ]);
+    }
+
     public function purchases_today(){
         $totalPurchasesToday = purchases::whereDate('created_at', Carbon::today())->where('released_by', '!=' ,'')->get([DB::raw('SUM(total) AS total')]);
         

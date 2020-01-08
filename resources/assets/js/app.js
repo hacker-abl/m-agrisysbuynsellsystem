@@ -21,6 +21,7 @@ Vue.component('notification-list', require('./components/NotificationList.vue'))
 
 Vue.component('total-sales-today', require('./components/TotalSalesToday.vue'));
 Vue.component('total-purchases-today', require('./components/TotalPurchasesToday.vue'));
+Vue.component('total-purchases-today-table', require('./components/TotalPurchasesTodayTable.vue'));
 Vue.component('total-balance-today', require('./components/TotalBalanceToday.vue'));
 Vue.component('total-expenses-today', require('./components/TotalExpensesToday.vue'));
 Vue.component('cash-on-hand', require('./components/CashOnHand.vue'));
