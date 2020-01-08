@@ -61,7 +61,7 @@ class HomeController extends Controller
             ->limit(6)
             ->whereDate('created_at', Carbon::today())
             ->where('released_by', '!=' ,'')
-            ->get(['commodity_id', 'kilo', 'net', 'price', DB::raw('SUM(total) AS total')]);
+            ->get(['commodity_id', DB::raw('SUM(net) AS net'), 'price', DB::raw('SUM(total) AS total')]);
         $topCommoditiesTodayTotals = [
             'net' => $topCommoditiesToday->sum('net'),
             'total' => $topCommoditiesToday->sum('total'),
