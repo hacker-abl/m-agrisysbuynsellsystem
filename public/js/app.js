@@ -1142,7 +1142,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(62);
+module.exports = __webpack_require__(65);
 
 
 /***/ }),
@@ -1172,9 +1172,10 @@ Vue.component('notification-list', __webpack_require__(44));
 
 Vue.component('total-sales-today', __webpack_require__(47));
 Vue.component('total-purchases-today', __webpack_require__(50));
-Vue.component('total-balance-today', __webpack_require__(53));
-Vue.component('total-expenses-today', __webpack_require__(56));
-Vue.component('cash-on-hand', __webpack_require__(59));
+Vue.component('total-purchases-today-table', __webpack_require__(53));
+Vue.component('total-balance-today', __webpack_require__(56));
+Vue.component('total-expenses-today', __webpack_require__(59));
+Vue.component('cash-on-hand', __webpack_require__(62));
 
 if (document.getElementById('request')) {
     var CommodityUpdateAlert = function CommodityUpdateAlert() {
@@ -1323,8 +1324,8 @@ window.Pusher = __webpack_require__(36);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
-  key: "",
-  cluster: "mt1",
+  key: "0076d5b67602c0a57cd8",
+  cluster: "ap1",
   encrypted: true
 });
 
@@ -19328,7 +19329,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var valueMonth = (totalMonth / 1).toFixed(2).replace(',', '.');
                 valueMonth = valueMonth.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 $("#totalPurchasesMonth").html("&#8369; " + valueMonth);
-
                 var totalYear = parseFloat($("#totalPurchasesYear").text().replace(/[^\d.]/g, '')) + parseFloat(e.total);
                 var valueYear = (totalYear / 1).toFixed(2).replace(',', '.');
                 valueYear = valueYear.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -19395,6 +19395,216 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources/assets/js/components/TotalPurchasesTodayTable.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-90f32bdc", Component.options)
+  } else {
+    hotAPI.reload("data-v-90f32bdc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["current"],
+  data: function data() {
+    return {
+      purchasesToday: []
+    };
+  },
+  created: function created() {
+    this.listenForChanges();
+    this.fetchPurchasesTodayUpdate();
+  },
+
+  methods: {
+    fetchPurchasesTodayUpdate: function fetchPurchasesTodayUpdate() {
+      var _this = this;
+
+      axios.get("/purchases/today").then(function (response) {
+        _this.purchasesToday = response.data;
+      });
+    },
+    listenForChanges: function listenForChanges() {
+      var _this2 = this;
+
+      Echo.channel("homepage").listen("PurchasesUpdated", function (e) {
+        //update purchases today
+        _this2.fetchPurchasesTodayUpdate();
+      });
+    },
+    formatPrice: function formatPrice(value) {
+      var val = (value / 1).toFixed(2).replace(",", ".");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
+});
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("br"),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-striped" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.purchasesToday["data"], function(commodity) {
+          return _c("tr", { key: commodity.commodity_id }, [
+            _c("td", [
+              _c("span", [_vm._v(_vm._s(commodity.commodity_name[0].name))])
+            ]),
+            _vm._v(" "),
+            _c("td", [_c("span", [_vm._v(_vm._s(commodity.net))])]),
+            _vm._v(" "),
+            _c("td", [
+              _c("span", [
+                _c("b", [
+                  _vm._v("₱ " + _vm._s(_vm.formatPrice(commodity.total)))
+                ])
+              ])
+            ])
+          ])
+        })
+      ),
+      _vm._v(" "),
+      _c("tfoot", [
+        _c("tr", { staticClass: "text-danger" }, [
+          _c("th", [_vm._v("TOTAL")]),
+          _vm._v(" "),
+          _c("th", [_vm._v(_vm._s(_vm.purchasesToday["totals"].net))]),
+          _vm._v(" "),
+          _c("th", [
+            _vm._v(
+              "\n          ₱\n          " +
+                _vm._s(_vm.formatPrice(_vm.purchasesToday["totals"].total)) +
+                "\n        "
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("COMMODITY")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("NET WEIGHT (Kilos)")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("TOTAL PRICE")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-90f32bdc", module.exports)
+  }
+}
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(57)
+/* template */
+var __vue_template__ = __webpack_require__(58)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources/assets/js/components/TotalBalanceToday.vue"
 
 /* hot reload */
@@ -19417,7 +19627,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19493,7 +19703,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -19520,15 +19730,15 @@ if (false) {
 }
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(57)
+var __vue_script__ = __webpack_require__(60)
 /* template */
-var __vue_template__ = __webpack_require__(58)
+var __vue_template__ = __webpack_require__(61)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -19567,7 +19777,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19625,7 +19835,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -19652,15 +19862,15 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(60)
+var __vue_script__ = __webpack_require__(63)
 /* template */
-var __vue_template__ = __webpack_require__(61)
+var __vue_template__ = __webpack_require__(64)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -19699,7 +19909,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19748,7 +19958,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             Echo.channel('homepage').listen('CashierCashUpdated', function (e) {
-
                 axios.get('/cash_on_hand').then(function (response) {
                     _this2.cashier = response.data;
                 });
@@ -19762,7 +19971,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -19776,7 +19985,7 @@ var render = function() {
       _c(
         "tbody",
         _vm._l(_vm.cashier, function(user) {
-          return _c("tr", { key: user.amount }, [
+          return _c("tr", { key: user.id }, [
             _c("td", [_vm._v(_vm._s(user.name))]),
             _vm._v(" "),
             _c("td", [_vm._v("₱ " + _vm._s(_vm.formatPrice(user.amount)))])
@@ -19810,7 +20019,7 @@ if (false) {
 }
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

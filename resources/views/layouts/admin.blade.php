@@ -326,7 +326,7 @@ ul {
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2020 <a href="javascript:void(0);">Solid Script Web Systems</a>.
+                    &copy; {{date("Y")}}  <a href="javascript:void(0);">Solid Script Web Systems</a>.
                 </div>
 
             </div>

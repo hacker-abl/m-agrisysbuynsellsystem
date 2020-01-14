@@ -44,7 +44,7 @@ class salesController extends Controller
         return view('main.sales')->with(compact('commodity','company'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
           if($request->get('button_action') == 'add'){
             $sales= new sales;
