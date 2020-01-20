@@ -243,13 +243,29 @@
 </div>
 @endsection
 @section('script')
-    <script>
-    $(document).ready(function() {
-    $('#commodityTable').DataTable({
-        pageLength : 5,
-        lengthMenu: [[5], [5]]
-    });
+<script>
+$(document).ready(function() {
+$('#commodityTable').DataTable({
+    pageLength : 5,
+    lengthMenu: [[5], [5]]
+});
+// $('#purchases-today-table').DataTable({
+//     pageLength : 5,
+//     lengthMenu: [[5], [5]]
+// });
+// $('#cash-on-hand-table').DataTable({
+//     pageLength : 5,
+//     lengthMenu: [[5], [5]]
+// });
+$('#payment-logs-table').DataTable({
+    pageLength : 5,
+    lengthMenu: [[5], [5]]
+});
+$('#cash-advance-today-table').DataTable({
+    pageLength : 5,
+    lengthMenu: [[5], [5]]
+});
 } );
-    </script>
-    @endsection
+</script>
+@endsection
 

@@ -1,6 +1,6 @@
 <div class="body">
     <div class="table-responsive">
-        <table class="table table-hover dashboard-task-infos">
+        <table id="payment-logs-table" class="table table-hover dashboard-task-infos">
             <thead>
                 <tr>
                     <th>#</th>
