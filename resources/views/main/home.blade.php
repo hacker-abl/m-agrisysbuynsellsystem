@@ -88,7 +88,7 @@
                 <div class="header text-center">
                     <h2>COMMODITY PRICE LIST</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:400px;">
+                <div class="body" style="min-height:150px; max-height:450px;">
                     <section class="commodityList">
                     @include('home_content.commodity_list')
                     </section>
@@ -242,3 +242,14 @@
 
 </div>
 @endsection
+@section('script')
+    <script>
+    $(document).ready(function() {
+    $('#commodityTable').DataTable({
+        pageLength : 5,
+        lengthMenu: [[5], [5]]
+    });
+} );
+    </script>
+    @endsection
+

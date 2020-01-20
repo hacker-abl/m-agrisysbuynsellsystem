@@ -49,16 +49,14 @@ class HomeController extends Controller
         $user = User::find($id);
 
         $paymentLogs = paymentlogs::orderBy('id', 'desc')->paginate(5);
-        $commodityList = commodity::orderBy('id', 'desc')->paginate(6);
+        $commodityList = commodity::orderBy('id', 'desc')->get();
         $truckList = trucks::orderBy('id', 'desc')->paginate(6);
         $latestPurchases = purchases::orderBy('id', 'desc')->paginate(15);
         $topCommodities = purchases::groupBy('commodity_id')
             ->orderBy(DB::raw('SUM(total)'), 'desc')
-            ->limit(6)
             ->get(['commodity_id', DB::raw('SUM(total) AS total')]);
         $topCommoditiesToday = purchases::groupBy('commodity_id')
             ->orderBy(DB::raw('SUM(total)'), 'desc')
-            ->limit(6)
             ->whereDate('created_at', Carbon::today())
             ->where('released_by', '!=' ,'')
             ->get(['commodity_id', DB::raw('SUM(net) AS net'), 'price', DB::raw('SUM(total) AS total')]);
@@ -135,7 +133,6 @@ class HomeController extends Controller
     public function totalPurchasesToday(){
         $purchases = purchases::groupBy('commodity_id')
             ->orderBy(DB::raw('SUM(total)'), 'desc')
-            ->limit(6)
             ->whereDate('created_at', Carbon::today())
             ->where('released_by', '!=' ,'')
             ->with('commodityName')

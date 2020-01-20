@@ -1,5 +1,5 @@
 <div>
-    <table class="table table-striped">
+    <table id="commodityTable" class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>Name</th>
@@ -8,8 +8,8 @@
         </tr>
         </thead>
         <tbody>
-
     @foreach($commodityList as $commodity)
+
         <tr>
             <td>{{ $commodity->name }}</td>
             <td><b>&#8369; {{ number_format($commodity->price, 2, '.', ',') }}</b></td>
