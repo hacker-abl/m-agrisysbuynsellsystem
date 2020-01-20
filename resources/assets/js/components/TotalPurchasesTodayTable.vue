@@ -6,7 +6,7 @@
         <tr>
           <th>COMMODITY</th>
           <th>NET WEIGHT (Kilos)</th>
-          <th>TOTAL PRICE</th>
+          <th>TOTAL AMOUNT</th>
         </tr>
       </thead>
       <tbody>
