@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 window.Vue = require('vue');
 
@@ -26,6 +27,10 @@ Vue.component('total-balance-today', require('./components/TotalBalanceToday.vue
 Vue.component('total-expenses-today', require('./components/TotalExpensesToday.vue'));
 Vue.component('cash-on-hand', require('./components/CashOnHand.vue'));
 
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
 if(document.getElementById('request')) {
     const request = new Vue({
         el: '#request',

@@ -12,7 +12,7 @@
     "devDependencies": {
         "axios": "^0.17",
         "babel-preset-react": "^6.24.1",
-        "bootstrap": "^4.0.0",
+        "bootstrap": "^4.4.1",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^2.1.14",
@@ -23,9 +23,10 @@
         "vue-template-compiler": "^2.5.17"
     },
     "dependencies": {
+        "bootstrap-vue": "^2.2.2",
         "laravel-echo": "^1.4.0",
         "pusher-js": "^4.2.2",
         "sweetalert": "^2.1.2",
-        "vue": "^2.5.17"
+        "vue": "^2.6.11"
     }
 }
