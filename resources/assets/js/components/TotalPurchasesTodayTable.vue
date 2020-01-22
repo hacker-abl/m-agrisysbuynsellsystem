@@ -1,7 +1,40 @@
 <template>
   <div class="container">
     <br />
-    <table class="table table-striped">
+    <b-table
+      ref="table"
+      :items="items"
+      :fields="fields"
+      per-page="5"
+      :current-page="currentPage"
+      striped
+      hover
+      foot-clone
+    >
+    </b-table>
+    <b-row>
+      <b-col md="6">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link">Total {{ totalRows }}</a>
+          </li>
+        </ul>
+      </b-col>
+      <b-col md="6">
+        <b-pagination
+          style="float:right"
+          v-model="currentPage"
+          :total-rows="totalRows"
+          per-page="5"
+          aria-controls="table"
+          prev-text="Previous"
+          next-text="Next"
+          hide-goto-end-buttons="true"
+        >
+        </b-pagination>
+      </b-col>
+    </b-row>
+    <!-- <table class="table table-striped">
       <thead>
         <tr>
           <th>COMMODITY</th>
@@ -37,7 +70,7 @@
           </th>
         </tr>
       </tfoot>
-    </table>
+    </table> -->
   </div>
 </template>
 
@@ -46,7 +79,27 @@ export default {
   props: ["current"],
   data() {
     return {
-      purchasesToday: []
+      currentPage: 1,
+      totalRows: 0,
+      purchasesToday: [],
+      fields: [
+        {
+          key: "commodity",
+          label: "COMMODITY",
+          sortable: true
+        },
+        {
+          key: "net_weight",
+          label: "NET WEIGHT",
+          sortable: true
+        },
+        {
+          key: "total_amount",
+          label: "TOTAL AMOUNT",
+          sortable: true
+        }
+      ],
+      items: []
     };
   },
   created() {
@@ -56,7 +109,19 @@ export default {
   methods: {
     fetchPurchasesTodayUpdate() {
       axios.get("/purchases/today").then(response => {
+        let self = this;
         this.purchasesToday = response.data;
+
+        $.each(this.purchasesToday.data, function(key, value) {
+          self.items.push({
+            commodity: value.commodity_name[0].name,
+            net_weight: self.formatPrice(value.net),
+            total_amount: "₱ " + self.formatPrice(value.total)
+          });
+        });
+
+        this.totalRows = this.items.length;
+        this.$refs.table.refresh();
       });
     },
     listenForChanges() {
