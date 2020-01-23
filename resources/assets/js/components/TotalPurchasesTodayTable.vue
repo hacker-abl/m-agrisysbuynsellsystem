@@ -11,12 +11,41 @@
       hover
       foot-clone
     >
+      <template v-slot:foot(commodity)>
+        <span class="text-danger">TOTAL</span>
+      </template>
+      <template v-slot:foot(net_weight)>
+        <span class="text-danger">
+          {{
+            formatPrice(
+              purchasesToday["totals"] != null
+                ? purchasesToday["totals"].net
+                : 0
+            )
+          }}
+        </span>
+      </template>
+      <template v-slot:foot(total_amount)>
+        <span class="text-danger">
+          &#8369;
+          {{
+            formatPrice(
+              purchasesToday["totals"] != null
+                ? purchasesToday["totals"].total
+                : 0
+            )
+          }}
+        </span>
+      </template>
     </b-table>
     <b-row>
       <b-col md="6">
         <ul class="pagination">
           <li class="page-item">
-            <a class="page-link">Total {{ totalRows }}</a>
+            <a class="page-link"
+              >Showing {{ startEntry }} to {{ endEntry }} of
+              {{ totalRows }} entries</a
+            >
           </li>
         </ul>
       </b-col>
@@ -29,7 +58,7 @@
           aria-controls="table"
           prev-text="Previous"
           next-text="Next"
-          hide-goto-end-buttons="true"
+          :hide-goto-end-buttons="true"
         >
         </b-pagination>
       </b-col>
@@ -105,6 +134,24 @@ export default {
   created() {
     this.listenForChanges();
     this.fetchPurchasesTodayUpdate();
+  },
+  computed: {
+    startEntry() {
+      if (this.totalRows == 0) {
+        return 0;
+      }
+
+      let start = (this.currentPage - 1) * 5 + 1;
+      return start;
+    },
+    endEntry() {
+      if (this.totalRows == 0) {
+        return 0;
+      }
+
+      let end = this.currentPage * 5;
+      return end < this.totalRows ? end : this.totalRows;
+    }
   },
   methods: {
     fetchPurchasesTodayUpdate() {
