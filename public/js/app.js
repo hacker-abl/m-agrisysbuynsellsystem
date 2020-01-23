@@ -59370,9 +59370,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: ["current"],
   data: function data() {
     return {
+      purchasesToday: [],
       currentPage: 1,
       totalRows: 0,
-      purchasesToday: [],
       fields: [{
         key: "commodity",
         label: "COMMODITY",
@@ -59946,41 +59946,115 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['current'],
-    data: function data() {
-        return {
-            cashier: []
-        };
+  props: ["current"],
+  data: function data() {
+    return {
+      cashier: [],
+      currentPage: 1,
+      totalRows: 0,
+      fields: [{
+        key: "name",
+        sortable: true
+      }, {
+        key: "cash",
+        sortable: true
+      }],
+      items: []
+    };
+  },
+  created: function created() {
+    this.fetchHomepageUpdate();
+    this.listenForChanges();
+  },
+
+  computed: {
+    startEntry: function startEntry() {
+      if (this.totalRows == 0) {
+        return 0;
+      }
+
+      var start = (this.currentPage - 1) * 5 + 1;
+      return start;
     },
-    created: function created() {
-        this.fetchHomepageUpdate();
-        this.listenForChanges();
-    },
+    endEntry: function endEntry() {
+      if (this.totalRows == 0) {
+        return 0;
+      }
 
-    methods: {
-        fetchHomepageUpdate: function fetchHomepageUpdate() {
-            var _this = this;
-
-            axios.get('/cash_on_hand').then(function (response) {
-                _this.cashier = response.data;
-            });
-        },
-        listenForChanges: function listenForChanges() {
-            var _this2 = this;
-
-            Echo.channel('homepage').listen('CashierCashUpdated', function (e) {
-                axios.get('/cash_on_hand').then(function (response) {
-                    _this2.cashier = response.data;
-                });
-            });
-        },
-        formatPrice: function formatPrice(value) {
-            var val = (value / 1).toFixed(2).replace(',', '.');
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+      var end = this.currentPage * 5;
+      return end < this.totalRows ? end : this.totalRows;
     }
+  },
+  methods: {
+    fetchHomepageUpdate: function fetchHomepageUpdate() {
+      var _this = this;
+
+      axios.get("/cash_on_hand").then(function (response) {
+        var self = _this;
+        _this.cashier = response.data;
+
+        $.each(_this.cashier, function (key, value) {
+          self.items.push({
+            name: value.name,
+            cash: "₱ " + self.formatPrice(value.amount)
+          });
+        });
+
+        _this.totalRows = _this.items.length;
+        _this.$refs.table.refresh();
+      });
+    },
+    listenForChanges: function listenForChanges() {
+      var _this2 = this;
+
+      Echo.channel("homepage").listen("CashierCashUpdated", function (e) {
+        axios.get("/cash_on_hand").then(function (response) {
+          _this2.fetchHomepageUpdate();
+        });
+      });
+    },
+    formatPrice: function formatPrice(value) {
+      var val = (value / 1).toFixed(2).replace(",", ".");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
 });
 
 /***/ }),
@@ -59991,38 +60065,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("table", { staticClass: "table table-striped" }, [
-      _vm._m(0),
+  return _c(
+    "div",
+    [
+      _c("b-table", {
+        ref: "table",
+        attrs: {
+          items: _vm.items,
+          fields: _vm.fields,
+          "per-page": "5",
+          "current-page": _vm.currentPage,
+          striped: "",
+          hover: ""
+        }
+      }),
       _vm._v(" "),
       _c(
-        "tbody",
-        _vm._l(_vm.cashier, function(user) {
-          return _c("tr", { key: user.id }, [
-            _c("td", [_vm._v(_vm._s(user.name))]),
-            _vm._v(" "),
-            _c("td", [_vm._v("₱ " + _vm._s(_vm.formatPrice(user.amount)))])
-          ])
-        }),
-        0
+        "b-row",
+        [
+          _c("b-col", { attrs: { md: "6" } }, [
+            _c("ul", { staticClass: "pagination" }, [
+              _c("li", { staticClass: "page-item" }, [
+                _c("a", { staticClass: "page-link" }, [
+                  _vm._v(
+                    "Showing " +
+                      _vm._s(_vm.startEntry) +
+                      " to " +
+                      _vm._s(_vm.endEntry) +
+                      " of\n            " +
+                      _vm._s(_vm.totalRows) +
+                      " entries"
+                  )
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { attrs: { md: "6" } },
+            [
+              _c("b-pagination", {
+                staticStyle: { float: "right" },
+                attrs: {
+                  "total-rows": _vm.totalRows,
+                  "per-page": "5",
+                  "aria-controls": "table",
+                  "prev-text": "Previous",
+                  "next-text": "Next",
+                  "hide-goto-end-buttons": true
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
       )
-    ])
-  ])
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Cash")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

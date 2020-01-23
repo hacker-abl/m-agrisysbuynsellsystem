@@ -108,9 +108,9 @@ export default {
   props: ["current"],
   data() {
     return {
+      purchasesToday: [],
       currentPage: 1,
       totalRows: 0,
-      purchasesToday: [],
       fields: [
         {
           key: "commodity",
