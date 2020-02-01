@@ -103,7 +103,7 @@
                 <div class="header text-center">
                     <h2>CASHIER LIST</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:400px;">
+                <div class="body" style="min-height:150px; max-height:450px;">
                     <cash-on-hand></cash-on-hand>
                 </div>
             </div>
@@ -118,7 +118,7 @@
                 <div class="header text-center">
                     <h2>CASH ADVANCE TODAY</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:400px;">
+                <div class="body" style="min-height:150px; max-height:450px;">
                     <section class="paymentLogs">
                         @include('home_content.cash_advance_today_table')
                     </section>
@@ -133,7 +133,7 @@
                 <div class="header text-center">
                     <h2>PAYMENT LOGS</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:400px;">
+                <div class="body" style="min-height:150px; max-height:450px;">
                     <section class="paymentLogs">
                         @include('home_content.payment_logs_table')
                     </section>
@@ -231,7 +231,7 @@
                         <div class="content" style="width:100%;">
                             <h3>PURCHASES - MONTH</h3>
                             <br>
-                            <h4>WEIGHT (KG) <span class="pull-right">{{ $totalPurchasesMonth[0]->total_kilos }}</span></h4>
+                            <h4>WEIGHT (KG) <span class="pull-right">{{ number_format( $totalPurchasesMonth[0]->total_kilos , 2, '.', ',') }}</span></h4>
                             <h4>AMOUNT <span class="pull-right">&#8369; {{ number_format( $totalPurchasesMonth[0]->total_purchases , 2, '.', ',') }}</span></h4>
                         </div>
                     </div>
@@ -268,4 +268,3 @@ $('#cash-advance-today-table').DataTable({
 } );
 </script>
 @endsection
-
