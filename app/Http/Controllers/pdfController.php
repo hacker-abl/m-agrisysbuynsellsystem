@@ -611,7 +611,7 @@ class pdfController extends Controller
 		}
 
     	$generator = new BarcodeGeneratorPNG();
-
+		$remaining=(int)$request->balance2_clone - (int)$request->amount1_clone;
 	    $pdf = "<html>
 		<head>
 		<title>Balance Payment PDF</title>
@@ -649,7 +649,7 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Remaining Balance: </span></td>
-				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->r_balance_clone, 2, '.', ',')."</span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($remaining, 2, '.', ',')."</span></td>
 				</tr>";
 		if(isset($request->remarks_clone)){
 			$pdf .= "
