@@ -88,7 +88,7 @@
                 <div class="header text-center">
                     <h2>COMMODITY PRICE LIST</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:450px;">
+                <div class="body" style="min-height:150px;">
                     <section class="commodityList">
                     @include('home_content.commodity_list')
                     </section>
@@ -103,7 +103,7 @@
                 <div class="header text-center">
                     <h2>CASHIER LIST</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:450px;">
+                <div class="body" style="min-height:150px;">
                     <cash-on-hand></cash-on-hand>
                 </div>
             </div>
@@ -118,8 +118,8 @@
                 <div class="header text-center">
                     <h2>CASH ADVANCE TODAY</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:450px;">
-                    <section class="paymentLogs">
+                <div class="body" style="min-height:150px;">
+                    <section class="cashAdvance">
                         @include('home_content.cash_advance_today_table')
                     </section>
                 </div>
@@ -133,7 +133,7 @@
                 <div class="header text-center">
                     <h2>PAYMENT LOGS</h2>
                 </div>
-                <div class="body" style="min-height:150px; max-height:450px;">
+                <div class="body" style="min-height:150px;">
                     <section class="paymentLogs">
                         @include('home_content.payment_logs_table')
                     </section>

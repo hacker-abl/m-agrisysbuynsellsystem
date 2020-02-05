@@ -1,6 +1,5 @@
 <template>
-  <div class="container">
-    <br />
+  <div>
     <b-table
       ref="table"
       :items="items"
