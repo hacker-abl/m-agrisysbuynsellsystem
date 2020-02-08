@@ -210,7 +210,7 @@
                             <li><a href="{{ route('profile') }}"><i class="material-icons">person</i>Profile</a></li>
                             @if($permissions = userpermission())
                             @foreach($permissions as $key => $permission)
-                                @if(strpos($permissions[$key]->permission->middleware, 'manage') !== false && $permission->permit == 1)
+                                @if($permissions[$key]->permission && strpos($permissions[$key]->permission->middleware, 'manage') !== false && $permission->permit == 1)
                                     {{$routeName = '/'.str_replace('manage_', '', $permissions[$key]->permission->middleware)}};
                                     <li role="seperator" class="divider"></li>
                                     <li><a href="{{ route('home') }}"><i class="material-icons">group</i>Main Navigation</a></li>
@@ -243,7 +243,7 @@
                         <li class="header">Manage Settings</li>
                         @if($permissions = userpermission())
                             @foreach($permissions as $key => $permission)
-                                @if($permissions[$key]->permission->middleware == "manage_company" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "manage_company" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'company') ? 'active' : '' }}">
                                     <a href="{{ route('company') }}">
                                         <i class="material-icons">business</i>
@@ -251,7 +251,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "manage_employee" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "manage_employee" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'employee') ? 'active' : '' }}">
                                     <a href="{{ route('employee') }}">
                                         <i class="material-icons">supervisor_account</i>
@@ -259,7 +259,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "manage_customer" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "manage_customer" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'customer') ? 'active' : '' }}">
                                     <a href="{{ route('customer') }}">
                                         <i class="material-icons">tag_faces</i>
@@ -267,7 +267,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "manage_trucks" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "manage_trucks" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'trucks') ? 'active' : '' }}">
                                     <a href="{{ route('trucks') }}">
                                         <i class="material-icons">local_shipping</i>
@@ -275,7 +275,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "manage_commodity" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "manage_commodity" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'commodity') ? 'active' : '' }}">
                                     <a href="{{ route('commodity') }}">
                                         <i class="material-icons">receipt</i>
@@ -295,7 +295,7 @@
                         </li>
                         @if($permissions = userpermission())
                             @foreach($permissions as $key => $permission)
-                                @if($permissions[$key]->permission->middleware == "summary" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "summary" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'summary') ? 'active' : '' }}">
                                     <a href="{{ route('summary') }}">
                                         <i class="material-icons">assessment</i>
@@ -303,7 +303,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "expenses" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "expenses" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'expense') ? 'active' : '' }}">
                                     <a href="{{ route('expense') }}">
                                         <i class="material-icons">show_chart</i>
@@ -311,7 +311,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "trips" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "trips" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'trips') ? 'active' : '' }}">
                                     <a href="{{ route('trips') }}">
                                         <i class="material-icons">directions_bus</i>
@@ -319,7 +319,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "dtr" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "dtr" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'dtr') ? 'active' : '' }}">
                                     <a href="{{ route('dtr') }}">
                                         <i class="material-icons">access_time</i>
@@ -327,7 +327,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "od" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "od" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'outbound') ? 'active' : '' }}">
                                     <a href="{{ route('od') }}">
                                         <i class="material-icons">arrow_upward</i>
@@ -335,7 +335,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "ca" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "ca" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'cashadvance') ? 'active' : '' }}">
                                     <a href="{{ route('ca') }}">
                                         <i class="material-icons">monetization_on</i>
@@ -343,7 +343,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "purchases" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "purchases" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'purchases') ? 'active' : '' }}">
                                     <a href="{{ route('purchases') }}">
                                         <i class="material-icons">bookmark_border</i>
@@ -351,7 +351,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if($permissions[$key]->permission->middleware == "sales" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "sales" && $permission->permit == 1 || Auth::user()->access_id == 1)
                                 <li class="{{ (Request::path() == 'sales') ? 'active' : '' }}">
                                     <a href="{{ route('sales') }}">
                                         <i class="material-icons">shopping_cart</i>
