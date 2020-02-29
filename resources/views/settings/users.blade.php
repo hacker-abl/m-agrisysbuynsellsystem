@@ -298,492 +298,579 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-    <script>
-    var start = moment();
-    var end = moment();
-    var historytable;
-    function cb(start, end) {
-        console.log("Start:"+start.format('MMMM D YYYY, h:mm:ss a'), "End:"+end.format('MMMM D YYYY, h:mm:ss a'));
-      $('#reportrange span').html(start.format('MMMM D YYYY, h:mm:ss a') + ' - ' + end.format('MMMM D YYYY, h:mm:ss a'));
+<script>
+var start = moment();
+var end = moment();
+var historytable;
+function cb(start, end) {
+  console.log(
+    "Start:" + start.format("MMMM D YYYY, h:mm:ss a"),
+    "End:" + end.format("MMMM D YYYY, h:mm:ss a")
+  );
+  $("#reportrange span").html(
+    start.format("MMMM D YYYY, h:mm:ss a") +
+      " - " +
+      end.format("MMMM D YYYY, h:mm:ss a")
+  );
+}
+
+$("#reportrange").daterangepicker(
+  {
+    startDate: start,
+    endDate: end,
+    ranges: {
+      Today: [moment(), moment()],
+      Yesterday: [moment().subtract(1, "days"), moment().subtract(1, "days")],
+      "Last 7 Days": [moment().subtract(6, "days"), moment()],
+      "Last 30 Days": [moment().subtract(29, "days"), moment()],
+      "This Month": [moment().startOf("month"), moment().endOf("month")],
+      "Last Month": [
+        moment()
+          .subtract(1, "month")
+          .startOf("month"),
+        moment()
+          .subtract(1, "month")
+          .endOf("month")
+      ]
     }
+  },
+  cb
+);
 
-    $('#reportrange').daterangepicker({
-      startDate: start,
-      endDate: end,
-      ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+cb(start, end);
+
+$(document).on("click", "#link", function() {
+  $("#bod").toggleClass("overlay-open");
+});
+
+$(":checkbox").change(function() {
+  var suffix = this.id.match(/\d+/); // 123456
+  if ($("#permission" + suffix).is(":checked")) {
+    $("#delete_permission" + suffix).removeAttr("disabled");
+    $("#edit_permission" + suffix).removeAttr("disabled");
+  } else {
+    $("#delete_permission" + suffix).attr("disabled", "disabled");
+    $("#edit_permission" + suffix).attr("disabled", "disabled");
+    $("#delete_permission" + suffix).prop("checked", false);
+    $("#edit_permission" + suffix).prop("checked", false);
+  }
+});
+
+$(document).ready(function() {
+  document.title = "M-Agri - Users";
+
+  $("#emp_id").select2({
+    dropdownParent: $("#user_modal"),
+    placeholder: "Select an option"
+  });
+  $.extend($.fn.dataTable.defaults, {
+    language: {
+      processing: "Loading.. Please wait"
+    }
+  });
+
+  //USER Datatable starts here
+  $("#user_modal").on("hidden.bs.modal", function(e) {
+    $(this)
+      .find("input,textarea,select")
+      .val("")
+      .end()
+      .find("input[type=checkbox], input[type=radio]")
+      .prop("checked", "")
+      .end();
+  });
+  $("#add_cash_modal").on("hidden.bs.modal", function(e) {
+    $(this)
+      .find("input,textarea,select")
+      .val("")
+      .end();
+  });
+  var usertable = $("#usertable").DataTable({
+    dom: "Blfrtip",
+    lengthMenu: [
+      [10, 25, 50, -1],
+      [10, 25, 50, "All"]
+    ],
+    buttons: [
+      {
+        extend: "print",
+        exportOptions: {
+          columns: [0, 1, 2, 3],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(win) {
+          $(win.document.body).css("font-size", "10pt");
+
+          $(win.document.body)
+            .find("table")
+            .addClass("compact")
+            .css("font-size", "inherit");
+        },
+        footer: true
+      },
+      {
+        extend: "pdfHtml5",
+        title: "Cash History - " + $(".modal_title_cash").text(),
+        footer: true,
+        exportOptions: {
+          columns: [0, 1, 2, 3],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(doc) {
+          doc.styles.tableHeader.fontSize = 8;
+          doc.styles.tableFooter.fontSize = 8;
+          doc.defaultStyle.fontSize = 8;
+          doc.content[1].table.widths = Array(
+            doc.content[1].table.body[0].length + 1
+          )
+            .join("*")
+            .split("");
+        }
       }
-    }, cb);
+    ],
+    processing: true,
+    columnDefs: [
+      {
+        targets: "_all", // your case first column
+        className: "text-center"
+      }
+    ],
+    ajax: "{{ route('refresh_user') }}",
+    columns: [
+      { data: "emp_id", name: "emp_id" },
+      { data: "username", name: "username" },
+      { data: "access_id", name: "access_id" },
+      { data: "cashOnHand", name: "cashOnHand" },
+      { data: "action", orderable: false, searchable: false }
+    ]
+  });
 
-    cb(start, end);
+  function refresh_user_table() {
+    usertable.ajax.reload(); //reload datatable ajax
+  }
 
-      
+  //Open User Modal
+  $(document).on("click", ".open_user_modal", function() {
+    $("#emp_id")
+      .val("")
+      .trigger("change");
+    $(".open_user_modal .modal_title").text("Add User");
+    $("#button_action").val("add");
+    //Generate input for password when adding User
+    if (!$(".password_input")[0]) {
+      $(
+        '<div class="row clearfix password_input">' +
+          '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">' +
+          '<label for="password">Password</label>' +
+          "</div>" +
+          '<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">' +
+          '<div class="form-group">' +
+          '<div class="form-line">' +
+          '<input type="password" id="password" name="password" class="form-control" placeholder="Enter user password"  required>' +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "</div>"
+      ).insertAfter(".in_password");
+    }
+  });
 
+  //Open Cash Modal
+  $(document).on("click", ".open_add_cash_modal", function(event) {
+    event.preventDefault();
+    var id = $(this).attr("id");
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "{{ route('get_balance') }}",
+      data: { id: id },
+      method: "POST",
+      dataType: "json",
+      success: function(data) {
+        $("#trans_no").val(data.trans_no);
+        $("#add_cash_id").val(data.id);
+        $("#add_cash_access_id").val(data.access_id);
+        $("#add_cash_username").val(data.username);
+        $("#current_cash").val(data.cashOnHand);
+        $("#add_cash").val("");
+      },
+      error: function(data) {
+        swal("Oh no!", "Something went wrong, try again.", "error");
+      }
+    });
+  });
 
-        $(document).on("click","#link",function(){
-            $("#bod").toggleClass('overlay-open');
+  //Add Cash
+  $(document).on("click", "#add_cash_submit", function(event) {
+    event.preventDefault();
+    var input = $(this);
+    var button = this;
+    button.disabled = true;
+    input.html("SAVING...");
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "{{ route('add_cash') }}",
+      method: "POST",
+      dataType: "json",
+      data: $("#cash_form").serialize(),
+      success: function(data) {
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+        swal(
+          "Cash Added!",
+          "Remaining Balance: ₱" +
+            parseFloat(data.cashOnHand).toFixed(2) +
+            " | Transaction ID: " +
+            data.cashHistory,
+          "success"
+        );
+        $("#add_cash_modal").modal("hide");
+        if ($("#add_cash_access_id").val() == 1) {
+          $("#curCashOnHand").html(parseFloat(data.cashOnHand).toFixed(2));
+        } else {
+          refresh_user_table();
+        }
+      },
+      error: function(data) {
+        swal("Oh no!", "Something went wrong, try again.", "error");
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+      }
+    });
+  });
+
+  //Add User
+  $(document).on("submit", "#user_form", function(event) {
+    event.preventDefault();
+    var input = $("#add_user");
+    var button = $("#add_user");
+    var data = $(this).serialize();
+
+    button.disabled = true;
+    input.html("SAVING...");
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "{{ route('add_user') }}",
+      method: "POST",
+      dataType: "json",
+      data: data,
+      success: function(data) {
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+        swal("Success!", "Record has been added to database", "success");
+        $("#user_modal").modal("hide");
+        refresh_user_table();
+      },
+      error: function(err) {
+        if (err.statusText === "abort") return;
+        var errorMessage = "";
+
+        $.each(err.responseJSON.errors, function(key, val) {
+          errorMessage += "<li>" + val[0] + "</li>";
         });
 
-         $(":checkbox").change(function(){
-            var suffix = this.id.match(/\d+/); // 123456
-            if ($("#permission"+suffix).is(':checked')){
-                            $("#delete_permission"+suffix).removeAttr("disabled");
-                            $("#edit_permission"+suffix).removeAttr("disabled");
-            }else{
-                 $("#delete_permission"+suffix).attr('disabled', 'disabled');
-                 $("#edit_permission"+suffix).attr('disabled', 'disabled');
-                 $("#delete_permission"+suffix).prop('checked', false);
-                 $("#edit_permission"+suffix).prop('checked', false);
-            }
-          });
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = errorMessage;
 
-
-        $(document).ready(function() {
-
-            document.title = "M-Agri - Users";
-
-
-            $('#emp_id').select2({
-            dropdownParent: $('#user_modal'),
-            placeholder: 'Select an option'
+        swal({
+          title: "Something went wrong!",
+          content: wrapper,
+          icon: "error"
         });
-            $.extend( $.fn.dataTable.defaults, {
-                "language": {
-                    processing: 'Loading.. Please wait'
-                }
-            });
-            
-            //USER Datatable starts here
-            $('#user_modal').on('hidden.bs.modal', function (e) {
-                $(this)
-                .find("input,textarea,select")
-                    .val('')
-                    .end()
-                .find("input[type=checkbox], input[type=radio]")
-                    .prop("checked", "")
-                    .end();
-            })
-            $('#add_cash_modal').on('hidden.bs.modal', function (e) {
-                $(this)
-                .find("input,textarea,select")
-                    .val('')
-                    .end()
-            })
-            var usertable = $('#usertable').DataTable({
-                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 1, 2, 3]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-                        title: "Cash History - " + $('.modal_title_cash').text(),
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-						}  
-					}
-                ],
-                processing: true,
-                columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
- 				}
-				],
-                ajax: "{{ route('refresh_user') }}",
-                columns: [
-                    {data: 'emp_id', name: 'emp_id'},
-                    {data: 'username', name: 'username'},
-                    {data: 'access_id', name: 'access_id'},
-                    {data: 'cashOnHand', name: 'cashOnHand'},
-                    {data: "action", orderable:false,searchable:false}
-                ]
-            });
 
-            function refresh_user_table(){
-                usertable.ajax.reload(); //reload datatable ajax
-            }
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+      }
+    });
+  });
 
-            //Open User Modal
-            $(document).on('click','.open_user_modal', function(){
-                $("#emp_id").val('').trigger('change');
-                $('.open_user_modal .modal_title').text('Add User');
-                $('#button_action').val('add');
-                //Generate input for password when adding User
-                if(!$(".password_input")[0]){
-                    $('<div class="row clearfix password_input">'+
-                        '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">'+
-                            '<label for="password">Password</label>'+
-                        '</div>'+
-                        '<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">'+
-                            '<div class="form-group">'+
-                                '<div class="form-line">'+
-                                    '<input type="password" id="password" name="password" class="form-control" placeholder="Enter user password"  required>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'
-                    ).insertAfter(".in_password");
-                }
-            });
+  //Update User
+  $(document).on("click", ".update_user", function() {
+    var id = $(this).attr("id");
+    $.ajax({
+      url: "{{ route('update_user') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        //Remove password input when updating User
+        if ($(".password_input")[0]) {
+          $(".password_input").remove();
+        }
+        $("#button_action").val("update");
+        $("#id").val(id);
+        $("#emp_id").val(data.emp_id);
+        $("#emp_id").change();
+        $("#username").val(data.username);
+        $(".update_user .modal_title").text("Update User");
+        $("#user_modal").modal("show");
+        refresh_user_table();
+      }
+    });
+  });
 
-            //Open Cash Modal
-            $(document).on('click', '.open_add_cash_modal', function(event){
-                event.preventDefault();
-                var id = $(this).attr("id");
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:"{{ route('get_balance') }}",
-                    data:{id:id},
-                    method: 'POST',
-                    dataType:'json',
-                    success:function(data){
-                        $('#trans_no').val(data.trans_no);
-                        $('#add_cash_id').val(data.id);
-                        $('#add_cash_access_id').val(data.access_id);
-                        $('#add_cash_username').val(data.username);
-                        $('#current_cash').val(data.cashOnHand);
-                        $('#add_cash').val("");
-                    },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
-                    }
-                })
-            });
+  $(document).on("click", ".delete_user", function() {
+    var id = $(this).attr("id");
+    swal({
+      title: "Are you sure?",
+      text: "Delete this record?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('delete_user') }}",
+          method: "get",
+          data: { id: id },
+          success: function(data) {
+            refresh_user_table();
+          }
+        });
+        swal("Deleted!", "The record has been deleted.", "success");
+      }
+    });
+  });
+  //USER Datatable ends here
 
-            //Add Cash
-            $(document).on('click', '#add_cash_submit', function(event){
-                event.preventDefault();
-                var input = $(this);
-                var button =this;
-                button.disabled = true;
-                input.html('SAVING...'); 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:"{{ route('add_cash') }}",
-                    method: 'POST',
-                    dataType:'json',
-                    data: $('#cash_form').serialize(),
-                    success:function(data){
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        swal("Cash Added!", "Remaining Balance: ₱"+parseFloat(data.cashOnHand).toFixed(2)+" | Transaction ID: "+data.cashHistory, "success");
-                        $('#add_cash_modal').modal('hide');
-                        if($('#add_cash_access_id').val() == 1){
-                            $('#curCashOnHand').html(parseFloat(data.cashOnHand).toFixed(2));
-                        }
-                        else{
-                            refresh_user_table();
-                        }
-                    },
-                    error: function(data){
-                        swal("Oh no!", "Something went wrong, try again.", "error")
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                    }
-                })
-            });
+  //CASH History Daatatable starts here
+  $(document).on("click", ".view_cash_history", function() {
+    var id = $(this).attr("id");
 
-            //Add User
-            $(document).on('submit', '#user_form', function(event){
-                event.preventDefault();
-                var input = $('#add_user');
-                var button = $('#add_user');
-                var data = $(this).serialize();
+    $.ajax({
+      url: "{{ route('view_cash_history') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        $(".modal_title_cash").text(data.data[0].user.username);
 
-                button.disabled = true;
-                input.html('SAVING...'); 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:"{{ route('add_user') }}",
-                    method: 'POST',
-                    dataType:'json',
-                    data: data,
-                    success:function(data){
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        swal("Success!", "Record has been added to database", "success")
-                        $('#user_modal').modal('hide');
-                        refresh_user_table();
-                    },
-                    error: function(err){
-                        if(err.statusText === 'abort') return;
-                        var errorMessage = "";
-                        
-                        $.each(err.responseJSON.errors, function(key, val) {
-                            errorMessage += '<li>'+val[0]+'</li>';
-                        });
-                        
-                        const wrapper = document.createElement('div');
-                        wrapper.innerHTML = errorMessage;
-
-                        swal({
-                            title: "Something went wrong!", 
-                            content: wrapper,
-                            icon: 'error'
-                        });
-                        
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                    }
-                })
-            });
-
-            //Update User
-            $(document).on('click', '.update_user', function(){
-                var id = $(this).attr("id");
-                $.ajax({
-                    url:"{{ route('update_user') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        
-                        //Remove password input when updating User
-                        if($(".password_input")[0]){
-                            $(".password_input").remove();
-                        }
-                        $('#button_action').val('update');
-                        $('#id').val(id);
-                        $('#emp_id').val(data.emp_id);
-                        $("#emp_id").change();
-                        $('#username').val(data.username);
-                        $('.update_user .modal_title').text('Update User');
-                        $('#user_modal').modal('show');
-                        refresh_user_table();
-                    }
-                })
-            });
-
-            $(document).on('click', '.delete_user', function(){
-                var id = $(this).attr('id');
-                   swal({
-                    title: "Are you sure?",
-                    text: "Delete this record?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url:"{{ route('delete_user') }}",
-                        method: "get",
-                        data:{id:id},
-                        success:function(data){
-                            refresh_user_table();
-                        }
-                    })
-				swal("Deleted!", "The record has been deleted.", "success");
-                    }
-			    })
-            });
-            //USER Datatable ends here
-
-            //CASH History Daatatable starts here
-            $(document).on('click', '.view_cash_history', function(){
-                var id = $(this).attr('id');
-                
-                $.ajax({
-                    url: "{{ route('view_cash_history') }}",
-                    method: 'get',
-                    data: {id:id},
-                    dataType: 'json',
-                    success:function(data){
-                        $('.modal_title_cash').text(data.data[0].user.username);
-
-                       historytable = $('#cash_history_table').DataTable({
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            destroy: true,
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4, 5]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                    
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    title: "Cash History - " + $('.modal_title_cash').text(),
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4, 5]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            data:data.data,
-                            processing: true,
-                            columnDefs: [{
-                                "targets": "_all", // your case first column
-                                "className": "text-center",
-                            }],
-                            order: [ 0 ],
-                            columns: [
-                                {data: 'trans_no', name: 'trans_no'},
-                                {data: 'previous_cash', name: 'previous_cash'},
-                                {data: 'cash_change', name: 'cash_change'},
-                                {data: 'total_cash', name: 'total_cash'},
-                                {data: 'type', name: 'type'},
-                                {data: 'created_at', name: 'created_at'}
-                            ]
-                        });
-                    }
-                })
-                $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('MMMM D YYYY, h:mm:ss a') + ' to ' + picker.endDate.format('MMMM D YYYY, h:mm:ss a'));
-              historytable.draw();
-            });
-            $("#reportrange").on('cancel.daterangepicker', function(ev, picker) {
-                  $(this).val('');
-              historytable.draw();
-            });
-         $.fn.dataTableExt.afnFiltering.push(
-            function( oSettings, aData, iDataIndex ) {
-            
-            var grab_daterange = $("#reportrange").val();
-            var give_results_daterange = grab_daterange.split(" to ");
-            var filterstart = give_results_daterange[0];
-            var filterend = give_results_daterange[1];
-            var iStartDateCol = 5; //using column 2 in this instance
-            var iEndDateCol = 5;
-            var tabledatestart = aData[iStartDateCol];
-            var tabledateend= aData[iEndDateCol];
-            
-            if ( !filterstart && !filterend )
+        historytable = $("#cash_history_table").DataTable({
+          dom: "Blfrtip",
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          destroy: true,
+          buttons: [
             {
-                return true;
-            }
-            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isBefore(tabledatestart)) && filterend === "")
-            {
-                return true;
-            }
-            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isAfter(tabledatestart)) && filterstart === "")
-            {
-                return true;
-            }
-            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isBefore(tabledatestart)) && (moment(filterend).isSame(tabledateend) || moment(filterend).isAfter(tabledateend)))
-            {
-                return true;
-            }
-            return false;
-        });
-        
-
-            });
-
-            //CASH History Datatable ends here
-        });
-
-        $("#user-permission").on('shown.bs.modal', function(e) {
-            var id = $(e.relatedTarget).data('id');
-            
-            $.ajax({
-                url: '/get/permission',
-                method: 'GET',
-                data: {id: id},
-                dataType: 'json',
-                beforeSend: function() {
-                    $('#user-permission form#user-permission-form .preloader').removeClass('hidden');
-                    $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
-                },
-                success: function(data) {
-                    var name = $('#permit_name');
-                    name.html("Permission for Username: "+data.username);
-                    $.each(data.userpermission, function(i, val){
-                        
-                        if(val.permit != 0)
-                        $('#user-permission form#user-permission-form input[id="permission'+val.permission_id+'"]').prop('checked', true);
-                        if ($("#permission"+val.permission_id).is(':checked')){
-                            $("#delete_permission"+val.permission_id).removeAttr("disabled");
-                            $("#edit_permission"+val.permission_id).removeAttr("disabled");
-                        }
-                        if(val.permit_delete != 0)
-                        $('#user-permission form#user-permission-form input[id="delete_permission'+val.permission_id+'"]').prop('checked', true);
-                        if(val.permit_edit != 0)
-                        $('#user-permission form#user-permission-form input[id="edit_permission'+val.permission_id+'"]').prop('checked', true);
-                    });
-                    
-                    $('#user-permission form#user-permission-form .preloader').addClass('hidden');
-                    $('#user-permission form#user-permission-form .demo-checkbox').removeClass('hidden');
+              extend: "print",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5],
+                modifier: {
+                  page: "current"
                 }
-            })
-            
-            $('#user-permission form#user-permission-form input[name="id"]').val(id);
-        });
+              },
+              customize: function(win) {
+                $(win.document.body).css("font-size", "10pt");
 
-        $("#user-permission").on('hidden.bs.modal', function(e) {
-            $('#user-permission form#user-permission-form input[type="checkbox"]').prop('checked', false);
-            for (var i =1; i <= 12; i++) {
-              $('#user-permission form#user-permission-form input[id="edit_permission'+i+'"]').attr('disabled', 'disabled');
-              $('#user-permission form#user-permission-form input[id="delete_permission'+i+'"]').attr('disabled', 'disabled');
-            }
-            
-            $('#user-permission form#user-permission-form .demo-checkbox').addClass('hidden');
-          
-        });
-
-        $('form#user-permission-form').submit(function(e) {
-            e.preventDefault();
-            var data = $(this).serialize();
-
-            $.ajax({
-                url: '{{route("permission", "update")}}',
-                method:'POST',
-                data: data,
-                dataType: 'json',
-                success: function(data) { 
-                    if(data) {
-                        swal("Success!", "Permission has been updated!", "success");
-                        $('#user-permission').modal('hide');
-                    }
-                },
-                error: function(err) {
-                    swal("Error!", "Something went wrong! Please try again.", "error");
+                $(win.document.body)
+                  .find("table")
+                  .addClass("compact")
+                  .css("font-size", "inherit");
+              },
+              footer: true
+            },
+            {
+              extend: "pdfHtml5",
+              title: "Cash History - " + $(".modal_title_cash").text(),
+              footer: true,
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5],
+                modifier: {
+                  page: "current"
                 }
-            });
+              },
+              customize: function(doc) {
+                doc.styles.tableHeader.fontSize = 8;
+                doc.styles.tableFooter.fontSize = 8;
+                doc.defaultStyle.fontSize = 8;
+                doc.content[1].table.widths = Array(
+                  doc.content[1].table.body[0].length + 1
+                )
+                  .join("*")
+                  .split("");
+              }
+            }
+          ],
+          data: data.data,
+          processing: true,
+          columnDefs: [
+            {
+              targets: "_all", // your case first column
+              className: "text-center"
+            }
+          ],
+          order: [0],
+          columns: [
+            { data: "trans_no", name: "trans_no" },
+            { data: "previous_cash", name: "previous_cash" },
+            { data: "cash_change", name: "cash_change" },
+            { data: "total_cash", name: "total_cash" },
+            { data: "type", name: "type" },
+            { data: "created_at", name: "created_at" }
+          ]
         });
+      }
+    });
+    $("#reportrange").on("apply.daterangepicker", function(ev, picker) {
+      $(this).val(
+        picker.startDate.format("MMMM D YYYY, h:mm:ss a") +
+          " to " +
+          picker.endDate.format("MMMM D YYYY, h:mm:ss a")
+      );
+      historytable.draw();
+    });
+    $("#reportrange").on("cancel.daterangepicker", function(ev, picker) {
+      $(this).val("");
+      historytable.draw();
+    });
+    $.fn.dataTableExt.afnFiltering.push(function(oSettings, aData, iDataIndex) {
+      var grab_daterange = $("#reportrange").val();
+      var give_results_daterange = grab_daterange.split(" to ");
+      var filterstart = give_results_daterange[0];
+      var filterend = give_results_daterange[1];
+      var iStartDateCol = 5; //using column 2 in this instance
+      var iEndDateCol = 5;
+      var tabledatestart = aData[iStartDateCol];
+      var tabledateend = aData[iEndDateCol];
 
-    </script>
+      if (!filterstart && !filterend) {
+        return true;
+      } else if (
+        (moment(filterstart).isSame(tabledatestart) ||
+          moment(filterstart).isBefore(tabledatestart)) &&
+        filterend === ""
+      ) {
+        return true;
+      } else if (
+        (moment(filterstart).isSame(tabledatestart) ||
+          moment(filterstart).isAfter(tabledatestart)) &&
+        filterstart === ""
+      ) {
+        return true;
+      } else if (
+        (moment(filterstart).isSame(tabledatestart) ||
+          moment(filterstart).isBefore(tabledatestart)) &&
+        (moment(filterend).isSame(tabledateend) ||
+          moment(filterend).isAfter(tabledateend))
+      ) {
+        return true;
+      }
+      return false;
+    });
+  });
+
+  //CASH History Datatable ends here
+});
+
+$("#user-permission").on("shown.bs.modal", function(e) {
+  var id = $(e.relatedTarget).data("id");
+
+  $.ajax({
+    url: "/get/permission",
+    method: "GET",
+    data: { id: id },
+    dataType: "json",
+    beforeSend: function() {
+      $("#user-permission form#user-permission-form .preloader").removeClass(
+        "hidden"
+      );
+      $("#user-permission form#user-permission-form .demo-checkbox").addClass(
+        "hidden"
+      );
+    },
+    success: function(data) {
+      var name = $("#permit_name");
+      name.html("Permission for Username: " + data.username);
+      $.each(data.userpermission, function(i, val) {
+        if (val.permit != 0)
+          $(
+            '#user-permission form#user-permission-form input[id="permission' +
+              val.permission_id +
+              '"]'
+          ).prop("checked", true);
+        if ($("#permission" + val.permission_id).is(":checked")) {
+          $("#delete_permission" + val.permission_id).removeAttr("disabled");
+          $("#edit_permission" + val.permission_id).removeAttr("disabled");
+        }
+        if (val.permit_delete != 0)
+          $(
+            '#user-permission form#user-permission-form input[id="delete_permission' +
+              val.permission_id +
+              '"]'
+          ).prop("checked", true);
+        if (val.permit_edit != 0)
+          $(
+            '#user-permission form#user-permission-form input[id="edit_permission' +
+              val.permission_id +
+              '"]'
+          ).prop("checked", true);
+      });
+
+      $("#user-permission form#user-permission-form .preloader").addClass(
+        "hidden"
+      );
+      $(
+        "#user-permission form#user-permission-form .demo-checkbox"
+      ).removeClass("hidden");
+    }
+  });
+
+  $('#user-permission form#user-permission-form input[name="id"]').val(id);
+});
+
+$("#user-permission").on("hidden.bs.modal", function(e) {
+  $('#user-permission form#user-permission-form input[type="checkbox"]').prop(
+    "checked",
+    false
+  );
+  for (var i = 1; i <= 12; i++) {
+    $(
+      '#user-permission form#user-permission-form input[id="edit_permission' +
+        i +
+        '"]'
+    ).attr("disabled", "disabled");
+    $(
+      '#user-permission form#user-permission-form input[id="delete_permission' +
+        i +
+        '"]'
+    ).attr("disabled", "disabled");
+  }
+
+  $("#user-permission form#user-permission-form .demo-checkbox").addClass(
+    "hidden"
+  );
+});
+
+$("form#user-permission-form").submit(function(e) {
+  e.preventDefault();
+  var data = $(this).serialize();
+
+  $.ajax({
+    url: '{{route("permission", "update")}}',
+    method: "POST",
+    data: data,
+    dataType: "json",
+    success: function(data) {
+      if (data) {
+        swal("Success!", "Permission has been updated!", "success");
+        $("#user-permission").modal("hide");
+      }
+    },
+    error: function(err) {
+      swal("Error!", "Something went wrong! Please try again.", "error");
+    }
+  });
+});
+</script>
 @endsection

@@ -145,237 +145,254 @@
 @endsection
 
 @section('script')
-    <script>
-        $(document).on("click","#link",function(){
-            $("#bod").toggleClass('overlay-open');
+<script>
+$(document).on("click", "#link", function() {
+  $("#bod").toggleClass("overlay-open");
+});
+
+$(document).ready(function() {
+  document.title = "M-Agri - Customers";
+
+  $.extend($.fn.dataTable.defaults, {
+    language: {
+      processing: "Loading.. Please wait"
+    }
+  });
+
+  //CUSTOMER Datatable starts here
+  $("#customer_modal").on("hidden.bs.modal", function(e) {
+    $(this)
+      .find("input,textarea,select")
+      .val("")
+      .end()
+      .find("input[type=checkbox], input[type=radio]")
+      .prop("checked", "")
+      .end();
+  });
+
+  var customertable = $("#customertable").DataTable({
+    dom: "Blfrtip",
+    lengthMenu: [
+      [10, 25, 50, -1],
+      [10, 25, 50, "All"]
+    ],
+    buttons: [
+      {
+        extend: "print",
+        exportOptions: {
+          columns: [0, 3, 4, 5],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(win) {
+          $(win.document.body).css("font-size", "10pt");
+
+          $(win.document.body)
+            .find("table")
+            .addClass("compact")
+            .css("font-size", "inherit");
+        },
+        footer: true
+      },
+      {
+        extend: "pdfHtml5",
+        footer: true,
+        exportOptions: {
+          columns: [0, 3, 4, 5],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(doc) {
+          doc.styles.tableHeader.fontSize = 8;
+          doc.styles.tableFooter.fontSize = 8;
+          doc.defaultStyle.fontSize = 8;
+          doc.content[1].table.widths = Array(
+            doc.content[1].table.body[0].length + 1
+          )
+            .join("*")
+            .split("");
+        }
+      }
+    ],
+    processing: true,
+    columnDefs: [
+      {
+        targets: "_all", // your case first column
+        className: "text-center"
+      }
+    ],
+
+    ajax: "{{ route('refresh_customer') }}",
+    columns: [
+      { data: "wholename", name: "customer.fname" },
+      { data: "mname", name: "customer.mname", visible: false },
+      { data: "lname", name: "customer.lname", visible: false },
+      { data: "address", name: "address" },
+      { data: "contacts", name: "contacts" },
+      {
+        render: function(data, type, row) {
+          return row.suki_type == 1 ? "YES" : "NO";
+        }
+      },
+      { data: "action", orderable: false, searchable: false }
+    ]
+  });
+
+  function refresh_customer_table() {
+    customertable.ajax.reload(); //reload datatable ajax
+  }
+
+  //Open Customer Modal
+  $(document).on("click", ".open_customer_modal", function() {
+    $.ajax({
+      url: "{{ route('refresh_balance') }}",
+      method: "get",
+      data: { temp: "temp" },
+      dataType: "json",
+      success: function(data) {
+        var t = 0;
+        if (data[0].temp != null) {
+          t = data[0].temp;
+        }
+        var a = parseInt(t);
+        var x = a + 1;
+        $("#balance_id").val(x);
+        $("#customer_modal").modal("show");
+      }
+    });
+
+    $(".modal_title").text("Add Customer");
+    $("#button_action").val("add");
+    if ($(".suki_type_input:visible")) {
+      $(".suki_type_input").hide();
+    }
+  });
+
+  //Add Customer
+  $("#customer_form").submit(function(event) {
+    event.preventDefault();
+    var input = $("#add_customer");
+    var button = $("#add_customer");
+    var data = $(this).serialize();
+
+    button.disabled = true;
+    input.html("SAVING...");
+
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      type: "POST",
+      url: "{{ route('add_customer') }}",
+      dataType: "json",
+      data: data,
+      success: function(data) {
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+        $(".suki_type_input").hide();
+        swal("Success!", "Record has been added to database", "success");
+        $("#customer_modal").modal("hide");
+        refresh_customer_table();
+      },
+      error: function(err) {
+        if (err.statusText === "abort") return;
+        var errorMessage = "";
+
+        $.each(err.responseJSON.errors, function(key, val) {
+          errorMessage += "<li>" + val[0] + "</li>";
         });
 
-        $(document).ready(function() {
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = errorMessage;
 
-            document.title = "M-Agri - Customers";
-
-            $.extend( $.fn.dataTable.defaults, {
-                "language": {
-                    processing: 'Loading.. Please wait'
-                }
-            });
-
-            //CUSTOMER Datatable starts here
-            $('#customer_modal').on('hidden.bs.modal', function (e) {
-                $(this)
-                .find("input,textarea,select")
-                    .val('')
-                    .end()
-                .find("input[type=checkbox], input[type=radio]")
-                    .prop("checked", "")
-                    .end();
-            })
-
-
-
-            var customertable = $('#customertable').DataTable({
-                dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 3, 4, 5]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 3, 4, 5]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-						}  
-					}
-                ],	
-                processing: true,
-                columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-      				
- 				}
-				],
-     
-                ajax: "{{ route('refresh_customer') }}",
-                columns: [
-                {data:'wholename', name: 'customer.fname' },
-                {data:'mname', name: 'customer.mname',visible:false  },
-                {data:'lname', name: 'customer.lname',visible:false  },
-                {data: 'address', name: 'address'},
-                {data: 'contacts', name: 'contacts'},
-                {render:function(data, type, row){
-                        return row.suki_type == 1 ? 'YES' : 'NO'
-                }},
-                {data: "action", orderable:false,searchable:false}
-                ]
-            });
-
-            function refresh_customer_table()
-            {
-                customertable.ajax.reload(); //reload datatable ajax
-            }
-
-            //Open Customer Modal
-            $(document).on('click','.open_customer_modal', function(){
-                 $.ajax({
-                     url:"{{ route('refresh_balance') }}",
-                     method: 'get',
-                     data: { temp: 'temp' },
-                     dataType:'json',
-                     success:function(data){
-                          var t=0;
-                          if(data[0].temp!=null){
-                               t = data[0].temp;
-                          }
-                          var a = parseInt(t);
-                          var x = a+1;
-                            $('#balance_id').val(x);
-                           $('#customer_modal').modal('show');
-                     }
-                })
-
-                $('.modal_title').text('Add Customer');
-                $('#button_action').val('add');
-                if($(".suki_type_input:visible")){
-                    $(".suki_type_input").hide();
-                }
-            });
-
-            //Add Customer
-            $("#customer_form").submit(function(event) {
-                event.preventDefault();
-                var input = $("#add_customer");
-                var button = $("#add_customer");
-                var data = $(this).serialize();
-
-                button.disabled = true;
-                input.html('SAVING...');
-
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: "{{ route('add_customer') }}",
-                    dataType: "json",
-                    data: data,
-                    success: function(data){
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        $(".suki_type_input").hide();
-                        swal("Success!", "Record has been added to database", "success")
-                        $('#customer_modal').modal('hide');
-                        refresh_customer_table();
-                    },
-                    error: function(err){
-                        if(err.statusText === 'abort') return;
-                        var errorMessage = "";
-                        
-                        $.each(err.responseJSON.errors, function(key, val) {
-                            errorMessage += '<li>'+val[0]+'</li>';
-                        });
-                        
-                        const wrapper = document.createElement('div');
-                        wrapper.innerHTML = errorMessage;
-
-                        swal({
-                            title: "Something went wrong!", 
-                            content: wrapper,
-                            icon: 'error'
-                        });
-
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                    }
-                });
-            });
-
-            //Update Customer
-            $(document).on('click', '.update_customer', function(){
-                var id = $(this).attr("id");
-
-                $.ajax({
-                    url:"{{ route('update_customer') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        
-                        $('#button_action').val('update');
-                        $('.modal_title').text('Update Customer');
-                        $('#customer_modal').modal('show');
-                        $('#id').val(id);
-                        $('#fname').val(data.fname);
-                        $('#mname').val(data.mname);
-                        $('#lname').val(data.lname);
-                        if(data.address != "Not Specified" && data.contacts != "Not Specified"){
-                             $('#address').val(data.address);
-                            $('#contacts').val(data.contacts);
-                        }
-                        else{
-                             $('#address').val("");
-                            $('#contacts').val("");
-                        }
-
-                        //Make input for suki type visible when updating customer
-                        if($(".suki_type_input:hidden")){
-                            $(".suki_type_input").show();
-                        }
-                        if(data.suki_type == 1){
-                            $('#suki_type').val('YES').trigger('change');
-                        }
-                        else if(data.suki_type == 0){
-                            $('#suki_type').val('NO').trigger('change');
-                        }
-                    }
-                })
-            });
-
-            $(document).on('click', '.delete_customer', function(){
-                var id = $(this).attr('id');
-                swal({
-                    title: "Are you sure?",
-                    text: "Delete this record?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url:"{{ route('delete_customer') }}",
-                        method: "get",
-                        data:{id:id},
-                        success:function(data){
-                            refresh_customer_table();
-                        }
-                    })
-                    swal("Deleted!", "The record has been deleted.", "success");
-                }
-                })
-            });
-            //CUSTOMER Datatable ends here
-
-            $('#suki_type').select2({
-                dropdownParent: $('#customer_modal'),
-                placeholder: 'Select suki type'
-            });
+        swal({
+          title: "Something went wrong!",
+          content: wrapper,
+          icon: "error"
         });
-    </script>
+
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+      }
+    });
+  });
+
+  //Update Customer
+  $(document).on("click", ".update_customer", function() {
+    var id = $(this).attr("id");
+
+    $.ajax({
+      url: "{{ route('update_customer') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        $("#button_action").val("update");
+        $(".modal_title").text("Update Customer");
+        $("#customer_modal").modal("show");
+        $("#id").val(id);
+        $("#fname").val(data.fname);
+        $("#mname").val(data.mname);
+        $("#lname").val(data.lname);
+        if (
+          data.address != "Not Specified" &&
+          data.contacts != "Not Specified"
+        ) {
+          $("#address").val(data.address);
+          $("#contacts").val(data.contacts);
+        } else {
+          $("#address").val("");
+          $("#contacts").val("");
+        }
+
+        //Make input for suki type visible when updating customer
+        if ($(".suki_type_input:hidden")) {
+          $(".suki_type_input").show();
+        }
+        if (data.suki_type == 1) {
+          $("#suki_type")
+            .val("YES")
+            .trigger("change");
+        } else if (data.suki_type == 0) {
+          $("#suki_type")
+            .val("NO")
+            .trigger("change");
+        }
+      }
+    });
+  });
+
+  $(document).on("click", ".delete_customer", function() {
+    var id = $(this).attr("id");
+    swal({
+      title: "Are you sure?",
+      text: "Delete this record?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('delete_customer') }}",
+          method: "get",
+          data: { id: id },
+          success: function(data) {
+            refresh_customer_table();
+          }
+        });
+        swal("Deleted!", "The record has been deleted.", "success");
+      }
+    });
+  });
+  //CUSTOMER Datatable ends here
+
+  $("#suki_type").select2({
+    dropdownParent: $("#customer_modal"),
+    placeholder: "Select suki type"
+  });
+});
+
+</script>
 @endsection
