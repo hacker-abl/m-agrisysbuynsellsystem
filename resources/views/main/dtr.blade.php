@@ -2701,6 +2701,9 @@
             $(document).on('click', '.release_ca', function(event){
                 event.preventDefault();
                 id = $(this).attr("id");
+                 var input = $(this);
+                var button =this;
+                button.disabled = true; 
                 $.ajax({
                     url:"{{ route('check_balance_user') }}",
                     method: 'POST',

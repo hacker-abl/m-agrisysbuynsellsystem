@@ -774,6 +774,15 @@ class purchasesController extends Controller
             $payment_history=paymentlogs::where('purchase_id', '=', $purchases->id)->first();
             $cash_advance=ca::where('pid', '=', $purchases->id)->first();
             $check_balance=balance::where('customer_id', $purchases->customer_id)->first();
+            if($userGet->access_id===1){
+                return [
+                    "code"       => 500,
+                    "type"      =>"error",
+                    "title"      => "Delete Error",
+                    "description" => "Already Released, only Admin can delete this.",
+                    "cash"        => null
+                ];
+            }
             if($payment_history!=null){
                 $payment_history->delete();
                 $balance = balance::where('customer_id', $purchases->customer_id)->increment('balance',$purchases->partial);
@@ -833,7 +842,7 @@ class purchasesController extends Controller
                 "cash"        => $output
             ];
         }
-       
+     
         $purchases->delete();
         $user = User::find(Auth::user()->id);
         $output =  $user->cashOnHand;
@@ -844,6 +853,7 @@ class purchasesController extends Controller
             "description" => "Pucrchase Deleted Successfully.",
             "cash"        => $output
         ];
+       
     }
 
     function updatedata(Request $request){

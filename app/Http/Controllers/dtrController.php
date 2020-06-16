@@ -841,7 +841,8 @@ class dtrController extends Controller
             ->where('employee.id', $request->id)
             ->get();
             $balance=0;
-            $empbalance = employee_bal::where('employee_id', '=', $request->id)->first();
+            $empbalance = employee_ca::where('employee_id', '=', $request->id)->latest()->first();
+            // $empbalance = employee_bal::where('employee_id', '=', $request->id)->first();
             if($empbalance!=null){
                 $balance= $empbalance->balance;
             }
