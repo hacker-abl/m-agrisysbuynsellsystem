@@ -774,7 +774,7 @@ class purchasesController extends Controller
             $payment_history=paymentlogs::where('purchase_id', '=', $purchases->id)->first();
             $cash_advance=ca::where('pid', '=', $purchases->id)->first();
             $check_balance=balance::where('customer_id', $purchases->customer_id)->first();
-            if($userGet->access_id===1){
+            if($userGet->access_id!==1){
                 return [
                     "code"       => 500,
                     "type"      =>"error",
