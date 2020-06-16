@@ -769,1934 +769,1906 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-    <script>
-    var overtime;
-    var salary;
-    var id;
-    var dtr_info;
-    var person_id;
-  	var fname;
-  	var lname;
-  	var mname;
-  	var idmain
-  	var total;
-  	var role;
-    var bonus;
-    var trig_update;
-    var  payment_table;
-    var  cash_advance_release;
-    var emp_balance;
-    var start = moment();
-    var end = moment();
- $(document).ready(function() {
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('MMMM D YYYY, h:mm:ss a') + ' - ' + end.format('MMMM D YYYY, h:mm:ss a'));
-    }
+<script>
+var overtime;
+var salary;
+var id;
+var dtr_info;
+var person_id;
+var fname;
+var lname;
+var mname;
+var idmain;
+var total;
+var role;
+var bonus;
+var trig_update;
+var payment_table;
+var cash_advance_release;
+var emp_balance;
+var start = moment();
+var end = moment();
+$(document).ready(function() {
+  function cb(start, end) {
+    $("#reportrange span").html(
+      start.format("MMMM D YYYY, h:mm:ss a") +
+        " - " +
+        end.format("MMMM D YYYY, h:mm:ss a")
+    );
+  }
 
-    $('#reportrange').daterangepicker({
+  $("#reportrange").daterangepicker(
+    {
       startDate: start,
       endDate: end,
       ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        Today: [moment(), moment()],
+        Yesterday: [moment().subtract(1, "days"), moment().subtract(1, "days")],
+        "Last 7 Days": [moment().subtract(6, "days"), moment()],
+        "Last 30 Days": [moment().subtract(29, "days"), moment()],
+        "This Month": [moment().startOf("month"), moment().endOf("month")],
+        "Last Month": [
+          moment()
+            .subtract(1, "month")
+            .startOf("month"),
+          moment()
+            .subtract(1, "month")
+            .endOf("month")
+        ]
       }
-    }, cb);
+    },
+    cb
+  );
 
-    cb(start, end);
+  cb(start, end);
 
-     $(document).on('click','.add_ca', function(){
-             $('#c').removeClass('focused');
-            $("#customer_id").val('').trigger('change');
-            $("#reason").val('').trigger('change');
-            $("#amount").val('').trigger('change');
-            $("#balance").val('').trigger('change');
-            $('#employee_ca_modal').modal('show');
-        });
+  $(document).on("click", ".add_ca", function() {
+    $("#c").removeClass("focused");
+    $("#customer_id")
+      .val("")
+      .trigger("change");
+    $("#reason")
+      .val("")
+      .trigger("change");
+    $("#amount")
+      .val("")
+      .trigger("change");
+    $("#balance")
+      .val("")
+      .trigger("change");
+    $("#employee_ca_modal").modal("show");
+  });
 
-    $(document).on('click','.add_ca', function(){
-             $('#c').removeClass('focused');
-            $("#customer_id").val('').trigger('change');
-            $("#reason").val('').trigger('change');
-            $("#amount").val('').trigger('change');
-            $("#balance").val('').trigger('change');
-            $('#employee_ca_modal').modal('show');
-        });
+  $(document).on("click", ".add_ca", function() {
+    $("#c").removeClass("focused");
+    $("#customer_id")
+      .val("")
+      .trigger("change");
+    $("#reason")
+      .val("")
+      .trigger("change");
+    $("#amount")
+      .val("")
+      .trigger("change");
+    $("#balance")
+      .val("")
+      .trigger("change");
+    $("#employee_ca_modal").modal("show");
+  });
 
-    $('#paymentmethod').change(function(){
-              x = $("#paymentmethod").val();
-              if(x=="Check"){
-                  $('#cn').removeClass('hidden');
-              }
-              else{
-                   $('#checknumber').val('');
-                    $('#cn').addClass('hidden');
-              }
-            });
-
-
-     $(document).on('click','.add_payment', function(){
-                    $('#pm').removeClass('focused');
-                    $('#c1').removeClass('focused');
-                   $("#employee_payment_id").val('').trigger('change');
-                   $("#paymentmethod").val('').trigger('change');
-                   $("#reason").val('').trigger('change');
-                   $("#amount").val('').trigger('change');
-                   $("#balance").val('').trigger('change');
-                   $('#payment_modal').modal('show');
-        });
-
-
-      $(document).on('click','.open_ca_list', function(){
-                   $('#ca_view_modal').modal('show');
-                  $.ajax({
-                       url:"{{ route('employee_balance') }}",
-                       method: 'get',
-                       dataType:'json',
-                       success:function(data){
-                           console.log(data);
-                         employee_balace_view =  $('#view_balance_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 1 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 2, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Update footer
-                                $( api.column( 2 ).footer() ).html(
-                                    'Total: <br>₱' + number_format(pageTotal,2)
-                                );
-                            },
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    title: 'Employees With Balances',
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2,]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    title: 'Employees With Balances',
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2 ]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            order: [[ 2, "desc" ]],
-                            bDestroy: true,
-                            data: data.data,
-                            columns:[
-                                {data: 'name', name: 'name'},
-                                {data: 'role', name: 'role'},
-                                {data: 'balance', name: 'balance'},
-                                
-                            ]
-                        }); 
-                       }
-                   })
-
-        });
-
-
-     $("#add_balance").one('click',function(event){
-               event.preventDefault();
-               var input = $(this);
-               var button =this;
-               button.disabled = true;
-               input.html('SAVING...');  
-
-               $.ajax({
-                   headers: {
-                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                   },
-                   url: "{{ route('add_payment_emp') }}",
-                   method: 'POST',
-                   dataType: 'text',
-                   data: $('#balanceform').serialize(),
-                   success:function(data){
-                    var data2= JSON.parse(data);
-                    if(data2.cashOnHand==0){
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        $("#employee_payment_id").val('').trigger('change');
-                        $("#paymentmethod").val('').trigger('change');
-                        $("#amount_payment").val('');
-                        $("#checknumber").val('');
-                        $("#remarks").val('');
-                        $("#balance").val('');
-                         swal("Denied!", "This employee has no balance to pay", "error");
-                    }else if(data2.cashOnHand==1){
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        $("#employee_payment_id").val('').trigger('change');
-                        $("#paymentmethod").val('').trigger('change');
-                        $("#amount_payment").val('');
-                        $("#checknumber").val('');
-                        $("#balance").val('');
-                        $('#payment_modal').modal('hide');
-                        swal("Payment Added!", "Please validate payment and then received it.", "success")
-                    }
-                    // }else if(data2.cashHistory&&data2.user!=1){
-                    //     button.disabled = false;
-                    //     input.html('SAVE CHANGES');
-                    //     $("#employee_payment_id").val('').trigger('change');
-                    //     $("#paymentmethod").val('').trigger('change');
-                    //     $("#amount_payment").val('');
-                    //     $("#checknumber").val('');
-                    //     $("#balance").val('');
-                    //     $('#payment_modal').modal('hide');
-                    //     swal("Payment Success!", "Payment Recieved by Admin.", "success")
-                    //   }
-                       
-                   },
-                   error: function(data){
-                            swal("Oh no!", "Something went wrong, try again.", "error");
-                            button.disabled = false;
-                            input.html('SAVE CHANGES');
-                       }
-               });
-           });
-
-  $('#employee_payment_id').change(function(){ 
-                  var id = $(this).val();
-                   $.ajax({
-                       url:"{{ route('check_emp_balance') }}",
-                       method: 'get',
-                       data:{id:id},
-                       dataType:'json',
-                       success:function(data){
-                      
-                           if(data==null){
-                              $('#balancepayment').val(0.00);
-                           }
-                           else{
-                              $('#balancepayment').val(data.balance);
-                           }
-                       }
-                   })
-               });
-
-
-  $(document).on('click', '.view_ca', function(){
-                  person_id = $(this).attr("id");
-              
-                //Datatable for each person
-                $.ajax({
-                    url: "{{ route('employee_view_ca') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                        console.log(data);
-                        $('.employee_name').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-                cash_advance_release =  $('#view_employee_ca_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 1 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 1, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Update footer
-                                $( api.column( 1 ).footer() ).html(
-                                    'Total: <br>₱' + number_format(pageTotal,2)
-                                );
-                            },
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    title: $('#view_dtr_name').val(),
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4 ]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    title: $('#view_dtr_name').val(),
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4 ]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            order: [[ 2, "desc" ]],
-                            bDestroy: true,
-                            data: data.data,
-                            columns:[
-                                {data: 'reason', name: 'reason'},
-                                {data: 'amount', name: 'amount'},
-                                 {data: 'created_at', name: 'created_at'},
-                                {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
-                            ]
-                        }); 
-                        
-                    }
-                });
-                  
-                  $.ajax({
-                    url: "{{ route('employee_view_payment') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                    
-                 payment_table =  $('#payment_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 1 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 1, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // // Update footer
-                                // $( api.column( 1 ).footer() ).html(
-                                //     'Total: <br>₱' + number_format(pageTotal,2)
-                                // );
-                            },
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4 , 5]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4 ,5]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            order: [[ 2, "desc" ]],
-                            bDestroy: true,
-                            data: data.data,
-                            columns:[
-                                {data: 'paymentmethod', name: 'paymentmethod'},
-                                {data: 'paymentamount', name: 'paymentamount'},
-                                 {data: 'created_at', name: 'created_at'},
-                                {data: 'checknumber', name: 'checknumber'},
-                                {data: 'remarks', name: 'remarks'},
-                                {data: 'r_balance', name: 'r_balance'},
-                                {data: 'received_by', name: 'received_by'},
-                                {data: "action", orderable:false,searchable:false}
-                               
-                            ]
-                        }); 
-                        
-                    }
-                });
-
-                $('#employee_ca_view').modal('show');
-            });
-
- 
- $('#employee_ca').change(function(){
-                   var id = $(this).val();
-                 
-                   $.ajax({
-                       url:"{{ route('check_emp_balance') }}",
-                       method: 'get',
-                       data:{id:id},
-                       dataType:'json',
-                       success:function(data){
-                     
-                           if(data==null){
-                              $('#balance').val(0.00);
-                           }
-                           else{
-                              $('#balance').val(data.balance);
-                           }
-                       }
-                   })
-               });
-
-             mainMouseDownOne2();
-    function mainMouseDownOne2() {
-
-            $("#add_cash_advance").one('click',function(event){
-                event.preventDefault();
-                var input = $(this);
-                var button =this;
-                button.disabled = true;
-                input.html('SAVING...');   
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: "{{ route('emp_add_cashadvance') }}",
-                    method: 'POST',
-                    dataType: 'text',
-                    data: $('#ca_emp_form').serialize(),
-                    success:function(data){
-                        mainMouseDownOne2();
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                        $("#employee_ca").val('').trigger('change');
-                        $("#reason").val('').trigger('change');
-                        $("#amount").val('').trigger('change');
-                        $("#balance").val('').trigger('change');
-                        swal("Success!", "Record has been added to database", "success");
-                                    $('#employee_ca_modal').modal('hide');
-                         },
-                    error: function(data){
-                        mainMouseDownOne2();
-                        swal("Oh no!", "Something went wrong, try again.", "error");
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-                    }
-                });
-            });
+  $("#paymentmethod").change(function() {
+    x = $("#paymentmethod").val();
+    if (x == "Check") {
+      $("#cn").removeClass("hidden");
+    } else {
+      $("#checknumber").val("");
+      $("#cn").addClass("hidden");
     }
-          
-        $(document).on("click","#link",function(){
-            $("#bod").toggleClass('overlay-open');
-        });
+  });
 
-       
+  $(document).on("click", ".add_payment", function() {
+    $("#pm").removeClass("focused");
+    $("#c1").removeClass("focused");
+    $("#employee_payment_id")
+      .val("")
+      .trigger("change");
+    $("#paymentmethod")
+      .val("")
+      .trigger("change");
+    $("#reason")
+      .val("")
+      .trigger("change");
+    $("#amount")
+      .val("")
+      .trigger("change");
+    $("#balance")
+      .val("")
+      .trigger("change");
+    $("#payment_modal").modal("show");
+  });
 
+  $(document).on("click", ".open_ca_list", function() {
+    $("#ca_view_modal").modal("show");
+    $.ajax({
+      url: "{{ route('employee_balance') }}",
+      method: "get",
+      dataType: "json",
+      success: function(data) {
+        console.log(data);
+        employee_balace_view = $("#view_balance_table").DataTable({
+          footerCallback: function(row, data, start, end, display) {
+            var api = this.api(),
+              data;
 
-            document.title = "M-Agri - Daily Time Record";
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+              return typeof i == "string"
+                ? i.replace(/[\₱,]/g, "") * 1
+                : typeof i == "number"
+                ? i
+                : 0;
+            };
 
-            $.extend( $.fn.dataTable.defaults, {
-                "language": {
-                    processing: 'Loading.. Please wait'
+            // Total over all pages
+            total = api
+              .column(1)
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal = api
+              .column(2, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(2).footer()).html(
+              "Total: <br>₱" + number_format(pageTotal, 2)
+            );
+          },
+          dom: "Blfrtip",
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          buttons: [
+            {
+              extend: "print",
+              title: "Employees With Balances",
+              exportOptions: {
+                columns: [0, 1, 2],
+                modifier: {
+                  page: "current"
                 }
-            });
+              },
+              customize: function(win) {
+                $(win.document.body).css("font-size", "10pt");
 
-            //DTR datatable starts here
-            $('#dtr_modal').on('hidden.bs.modal', function (e) {
-				$(this)
-				.find("input,textarea,select")
-					.val('')
-					.end()
-				.find("input[type=checkbox], input[type=radio]")
-					.prop("checked", "")
-					.end();
-			})
-
-            function number_format(number, decimals, dec_point, thousands_sep) {
-                // Strip all characters but numerical ones.
-                number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
-                var n = !isFinite(+number) ? 0 : +number,
-                    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-                    sep = (typeof thousands_sep == 'undefined') ? ',' : thousands_sep,
-                    dec = (typeof dec_point == 'undefined') ? '.' : dec_point,
-                    s = '',
-                    toFixedFix = function (n, prec) {
-                        var k = Math.pow(10, prec);
-                        return '' + Math.round(n * k) / k;
-                    };
-                // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-                s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-                if (s[0].length > 3) {
-                    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+                $(win.document.body)
+                  .find("table")
+                  .addClass("compact")
+                  .css("font-size", "inherit");
+              },
+              footer: true
+            },
+            {
+              extend: "pdfHtml5",
+              title: "Employees With Balances",
+              footer: true,
+              exportOptions: {
+                columns: [0, 1, 2],
+                modifier: {
+                  page: "current"
                 }
-                if ((s[1] || '').length < prec) {
-                    s[1] = s[1] || '';
-                    s[1] += new Array(prec - s[1].length + 1).join('0');
-                }
-                return s.join(dec);
+              },
+              customize: function(doc) {
+                doc.styles.tableHeader.fontSize = 8;
+                doc.styles.tableFooter.fontSize = 8;
+                doc.defaultStyle.fontSize = 8;
+                doc.content[1].table.widths = Array(
+                  doc.content[1].table.body[0].length + 1
+                )
+                  .join("*")
+                  .split("");
+              }
             }
+          ],
+          order: [[2, "desc"]],
+          bDestroy: true,
+          data: data.data,
+          columns: [
+            { data: "name", name: "name" },
+            { data: "role", name: "role" },
+            { data: "balance", name: "balance" }
+          ]
+        });
+      }
+    });
+  });
 
-            var dtr = $('#dtr_table').DataTable({
-                "footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i == 'string' ?
-                            i.replace(/[\₱,]/g, '')*1 :
-                            typeof i == 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    total = api
-                        .column( 8 )
+  $("#add_balance").one("click", function(event) {
+    event.preventDefault();
+    var input = $(this);
+    var button = this;
+    button.disabled = true;
+    input.html("SAVING...");
+
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "{{ route('add_payment_emp') }}",
+      method: "POST",
+      dataType: "text",
+      data: $("#balanceform").serialize(),
+      success: function(data) {
+        var data2 = JSON.parse(data);
+        if (data2.cashOnHand == 0) {
+          button.disabled = false;
+          input.html("SAVE CHANGES");
+          $("#employee_payment_id")
+            .val("")
+            .trigger("change");
+          $("#paymentmethod")
+            .val("")
+            .trigger("change");
+          $("#amount_payment").val("");
+          $("#checknumber").val("");
+          $("#remarks").val("");
+          $("#balance").val("");
+          swal("Denied!", "This employee has no balance to pay", "error");
+        } else if (data2.cashOnHand == 1) {
+          button.disabled = false;
+          input.html("SAVE CHANGES");
+          $("#employee_payment_id")
+            .val("")
+            .trigger("change");
+          $("#paymentmethod")
+            .val("")
+            .trigger("change");
+          $("#amount_payment").val("");
+          $("#checknumber").val("");
+          $("#balance").val("");
+          $("#payment_modal").modal("hide");
+          swal(
+            "Payment Added!",
+            "Please validate payment and then received it.",
+            "success"
+          );
+        }
+        // }else if(data2.cashHistory&&data2.user!=1){
+        //     button.disabled = false;
+        //     input.html('SAVE CHANGES');
+        //     $("#employee_payment_id").val('').trigger('change');
+        //     $("#paymentmethod").val('').trigger('change');
+        //     $("#amount_payment").val('');
+        //     $("#checknumber").val('');
+        //     $("#balance").val('');
+        //     $('#payment_modal').modal('hide');
+        //     swal("Payment Success!", "Payment Recieved by Admin.", "success")
+        //   }
+      },
+      error: function(data) {
+        swal("Oh no!", "Something went wrong, try again.", "error");
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+      }
+    });
+  });
+
+  $("#employee_payment_id").change(function() {
+    var id = $(this).val();
+    $.ajax({
+      url: "{{ route('check_emp_balance') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        if (data == null) {
+          $("#balancepayment").val(0.0);
+        } else {
+          $("#balancepayment").val(data.balance);
+        }
+      }
+    });
+  });
+
+  $(document).on("click", ".view_ca", function() {
+    person_id = $(this).attr("id");
+
+    //Datatable for each person
+    $.ajax({
+      url: "{{ route('employee_view_ca') }}",
+      method: "get",
+      data: { id: person_id },
+      dataType: "json",
+      success: function(data) {
+        console.log(data);
+        $(".employee_name").text(
+          data.data[0].fname +
+            " " +
+            data.data[0].mname +
+            " " +
+            data.data[0].lname
+        );
+        cash_advance_release = $("#view_employee_ca_table").DataTable({
+          footerCallback: function(row, data, start, end, display) {
+            var api = this.api(),
+              data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+              return typeof i == "string"
+                ? i.replace(/[\₱,]/g, "") * 1
+                : typeof i == "number"
+                ? i
+                : 0;
+            };
+
+            // Total over all pages
+            total = api
+              .column(1)
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal = api
+              .column(1, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(1).footer()).html(
+              "Total: <br>₱" + number_format(pageTotal, 2)
+            );
+          },
+          dom: "Blfrtip",
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          buttons: [
+            {
+              extend: "print",
+              title: $("#view_dtr_name").val(),
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4],
+                modifier: {
+                  page: "current"
+                }
+              },
+              customize: function(win) {
+                $(win.document.body).css("font-size", "10pt");
+
+                $(win.document.body)
+                  .find("table")
+                  .addClass("compact")
+                  .css("font-size", "inherit");
+              },
+              footer: true
+            },
+            {
+              extend: "pdfHtml5",
+              title: $("#view_dtr_name").val(),
+              footer: true,
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4],
+                modifier: {
+                  page: "current"
+                }
+              },
+              customize: function(doc) {
+                doc.styles.tableHeader.fontSize = 8;
+                doc.styles.tableFooter.fontSize = 8;
+                doc.defaultStyle.fontSize = 8;
+                doc.content[1].table.widths = Array(
+                  doc.content[1].table.body[0].length + 1
+                )
+                  .join("*")
+                  .split("");
+              }
+            }
+          ],
+          order: [[2, "desc"]],
+          bDestroy: true,
+          data: data.data,
+          columns: [
+            { data: "reason", name: "reason" },
+            { data: "amount", name: "amount" },
+            { data: "created_at", name: "created_at" },
+            { data: "status", name: "status" },
+            { data: "released_by", name: "released_by" },
+            { data: "action", orderable: false, searchable: false }
+          ]
+        });
+      }
+    });
+
+    $.ajax({
+      url: "{{ route('employee_view_payment') }}",
+      method: "get",
+      data: { id: person_id },
+      dataType: "json",
+      success: function(data) {
+        payment_table = $("#payment_table").DataTable({
+          footerCallback: function(row, data, start, end, display) {
+            var api = this.api(),
+              data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+              return typeof i == "string"
+                ? i.replace(/[\₱,]/g, "") * 1
+                : typeof i == "number"
+                ? i
+                : 0;
+            };
+
+            // Total over all pages
+            total = api
+              .column(1)
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal = api
+              .column(1, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // // Update footer
+            // $( api.column( 1 ).footer() ).html(
+            //     'Total: <br>₱' + number_format(pageTotal,2)
+            // );
+          },
+          dom: "Blfrtip",
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          buttons: [
+            {
+              extend: "print",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5],
+                modifier: {
+                  page: "current"
+                }
+              },
+              customize: function(win) {
+                $(win.document.body).css("font-size", "10pt");
+
+                $(win.document.body)
+                  .find("table")
+                  .addClass("compact")
+                  .css("font-size", "inherit");
+              },
+              footer: true
+            },
+            {
+              extend: "pdfHtml5",
+              footer: true,
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5],
+                modifier: {
+                  page: "current"
+                }
+              },
+              customize: function(doc) {
+                doc.styles.tableHeader.fontSize = 8;
+                doc.styles.tableFooter.fontSize = 8;
+                doc.defaultStyle.fontSize = 8;
+                doc.content[1].table.widths = Array(
+                  doc.content[1].table.body[0].length + 1
+                )
+                  .join("*")
+                  .split("");
+              }
+            }
+          ],
+          order: [[2, "desc"]],
+          bDestroy: true,
+          data: data.data,
+          columns: [
+            { data: "paymentmethod", name: "paymentmethod" },
+            { data: "paymentamount", name: "paymentamount" },
+            { data: "created_at", name: "created_at" },
+            { data: "checknumber", name: "checknumber" },
+            { data: "remarks", name: "remarks" },
+            { data: "r_balance", name: "r_balance" },
+            { data: "received_by", name: "received_by" },
+            { data: "action", orderable: false, searchable: false }
+          ]
+        });
+      }
+    });
+
+    $("#employee_ca_view").modal("show");
+  });
+
+  $("#employee_ca").change(function() {
+    var id = $(this).val();
+
+    $.ajax({
+      url: "{{ route('check_emp_balance') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        if (data == null) {
+          $("#balance").val(0.0);
+        } else {
+          $("#balance").val(data.balance);
+        }
+      }
+    });
+  });
+
+  mainMouseDownOne2();
+  function mainMouseDownOne2() {
+    $("#add_cash_advance").one("click", function(event) {
+      event.preventDefault();
+      var input = $(this);
+      var button = this;
+      button.disabled = true;
+      input.html("SAVING...");
+      $.ajax({
+        headers: {
+          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        },
+        url: "{{ route('emp_add_cashadvance') }}",
+        method: "POST",
+        dataType: "text",
+        data: $("#ca_emp_form").serialize(),
+        success: function(data) {
+          mainMouseDownOne2();
+          button.disabled = false;
+          input.html("SAVE CHANGES");
+          $("#employee_ca")
+            .val("")
+            .trigger("change");
+          $("#reason")
+            .val("")
+            .trigger("change");
+          $("#amount")
+            .val("")
+            .trigger("change");
+          $("#balance")
+            .val("")
+            .trigger("change");
+          swal("Success!", "Record has been added to database", "success");
+          $("#employee_ca_modal").modal("hide");
+        },
+        error: function(data) {
+          mainMouseDownOne2();
+          swal("Oh no!", "Something went wrong, try again.", "error");
+          button.disabled = false;
+          input.html("SAVE CHANGES");
+        }
+      });
+    });
+  }
+
+  $(document).on("click", "#link", function() {
+    $("#bod").toggleClass("overlay-open");
+  });
+
+  document.title = "M-Agri - Daily Time Record";
+
+  $.extend($.fn.dataTable.defaults, {
+    language: {
+      processing: "Loading.. Please wait"
+    }
+  });
+
+  //DTR datatable starts here
+  $("#dtr_modal").on("hidden.bs.modal", function(e) {
+    $(this)
+      .find("input,textarea,select")
+      .val("")
+      .end()
+      .find("input[type=checkbox], input[type=radio]")
+      .prop("checked", "")
+      .end();
+  });
+
+  function number_format(number, decimals, dec_point, thousands_sep) {
+    // Strip all characters but numerical ones.
+    number = (number + "").replace(/[^0-9+\-Ee.]/g, "");
+    var n = !isFinite(+number) ? 0 : +number,
+      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+      sep = typeof thousands_sep == "undefined" ? "," : thousands_sep,
+      dec = typeof dec_point == "undefined" ? "." : dec_point,
+      s = "",
+      toFixedFix = function(n, prec) {
+        var k = Math.pow(10, prec);
+        return "" + Math.round(n * k) / k;
+      };
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec) : "" + Math.round(n)).split(".");
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || "").length < prec) {
+      s[1] = s[1] || "";
+      s[1] += new Array(prec - s[1].length + 1).join("0");
+    }
+    return s.join(dec);
+  }
+
+  var dtr = $("#dtr_table").DataTable({
+    footerCallback: function(row, data, start, end, display) {
+      var api = this.api(),
+        data;
+
+      // Remove the formatting to get integer data for summation
+      var intVal = function(i) {
+        return typeof i == "string"
+          ? i.replace(/[\₱,]/g, "") * 1
+          : typeof i == "number"
+          ? i
+          : 0;
+      };
+
+      // Total over all pages
+      total = api
+        .column(8)
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Total over this page
+      pageTotal = api
+        .column(8, { page: "current" })
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Update footer
+      $(api.column(8).footer()).html(
+        "Total: <br>₱" + number_format(pageTotal, 2)
+      );
+    },
+    dom: "Blfrtip",
+    lengthMenu: [
+      [10, 25, 50, -1],
+      [10, 25, 50, "All"]
+    ],
+    buttons: [
+      {
+        extend: "print",
+        exportOptions: {
+          columns: [0, 3, 4, 5, 6, 7, 8, 9],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(win) {
+          $(win.document.body).css("font-size", "10pt");
+
+          $(win.document.body)
+            .find("table")
+            .addClass("compact")
+            .css("font-size", "inherit");
+        },
+        footer: true
+      },
+      {
+        extend: "pdfHtml5",
+        footer: true,
+        exportOptions: {
+          columns: [0, 3, 4, 5, 6, 7, 8, 9],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(doc) {
+          doc.styles.tableHeader.fontSize = 8;
+          doc.styles.tableFooter.fontSize = 8;
+          doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10
+          doc.content[1].table.widths = Array(
+            doc.content[1].table.body[0].length + 1
+          )
+            .join("*")
+            .split("");
+        }
+      }
+    ],
+    processing: true,
+    columnDefs: [
+      {
+        targets: "_all", // your case first column
+        className: "text-center"
+      }
+    ],
+
+    ajax: "{{ route('refresh_dtr') }}",
+    columns: [
+      { data: "wholename", name: "employee.fname" },
+      { data: "mname", name: "employee.mname", visible: false },
+      { data: "lname", name: "employee.lname", visible: false },
+      { data: "role", name: "role" },
+      { data: "overtime", name: "overtime" },
+      { data: "num_hours", name: "num_hours" },
+      {
+        data: "created_at",
+        name: "created_at",
+        type: "date",
+        render: function(value) {
+          var ts = new Date(value);
+
+          return ts.toDateString() + " " + ts.toLocaleTimeString();
+        }
+      },
+      { data: "bonus", name: "bonus" },
+      { data: "salary", name: "salary" },
+      { data: "status", name: "status" },
+      { data: "action", orderable: false, searchable: false }
+    ]
+  });
+  $("#reportrange").on("apply.daterangepicker", function(ev, picker) {
+    $(this).val(
+      picker.startDate.format("MMMM D YYYY, h:mm:ss a") +
+        " to " +
+        picker.endDate.format("MMMM D YYYY, h:mm:ss a")
+    );
+    dtr_info.draw();
+  });
+  $("#reportrange").on("cancel.daterangepicker", function(ev, picker) {
+    $(this).val("");
+    dtr_info.draw();
+  });
+  $.fn.dataTableExt.afnFiltering.push(function(oSettings, aData, iDataIndex) {
+    var grab_daterange = $("#reportrange").val();
+    var give_results_daterange = grab_daterange.split(" to ");
+    var filterstart = give_results_daterange[0];
+    var filterend = give_results_daterange[1];
+    var iStartDateCol = 2; //using column 2 in this instance
+    var iEndDateCol = 2;
+    var tabledatestart = aData[iStartDateCol];
+    var tabledateend = aData[iEndDateCol];
+
+    if (!filterstart && !filterend) {
+      return true;
+    } else if (
+      (moment(filterstart).isSame(tabledatestart) ||
+        moment(filterstart).isBefore(tabledatestart)) &&
+      filterend === ""
+    ) {
+      return true;
+    } else if (
+      (moment(filterstart).isSame(tabledatestart) ||
+        moment(filterstart).isAfter(tabledatestart)) &&
+      filterstart === ""
+    ) {
+      return true;
+    } else if (
+      (moment(filterstart).isSame(tabledatestart) ||
+        moment(filterstart).isBefore(tabledatestart)) &&
+      (moment(filterend).isSame(tabledateend) ||
+        moment(filterend).isAfter(tabledateend))
+    ) {
+      return true;
+    }
+    return false;
+  });
+
+  function refresh_dtr_table() {
+    dtr.ajax.reload(); //reload datatable ajax
+  }
+
+  $(document).on("click", ".open_dtr_modal", function() {
+    $("#employee_id")
+      .val("")
+      .trigger("change");
+    $("#role")
+      .val("")
+      .trigger("change");
+    $("#overtime")
+      .val("")
+      .trigger("change");
+    $("#num_hours")
+      .val("")
+      .trigger("change");
+    $("#dtr_modal").modal("show");
+  });
+
+  //check employee details
+  $("#employee_id").change(function() {
+    var id = $(this).val();
+    $.ajax({
+      url: "{{ route('check_employee') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        console.log(data);
+        $("#role").val(data.role);
+        $("#rate").val(data.rate);
+        if (trig_update != 1) {
+          if (data.balance == null) {
+            $("#emp_balance").val(0);
+          } else {
+            $("#emp_balance").val(data.balance);
+          }
+          $("#emp_rbalance").val(data.balance);
+          emp_balance = data.balance;
+          salary = data.rate;
+        }
+      }
+    });
+  });
+  var p_payment;
+  $("#overtime").change(function() {
+    salary = parseFloat($("#rate").val());
+    overtime =
+      parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
+    p_payment = $("#p_payment").val();
+    bonus = parseFloat($("#bonus").val());
+    $("#salary").val(overtime * salary + bonus - p_payment);
+  });
+  $("#p_payment").change(function() {
+    salary = parseFloat($("#rate").val());
+    overtime =
+      parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
+    p_payment = $("#p_payment").val();
+    emp_balance = $("#emp_balance").val();
+    bonus = parseFloat($("#bonus").val());
+    $("#emp_rbalance").val(emp_balance - p_payment);
+    $("#salary").val(overtime * salary + bonus - p_payment);
+  });
+
+  $("#num_hours").change(function() {
+    salary = parseFloat($("#rate").val());
+    overtime =
+      parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
+    bonus = parseFloat($("#bonus").val());
+    p_payment = $("#p_payment").val();
+    $("#salary").val(overtime * salary + bonus - p_payment);
+  });
+
+  $("#bonus").change(function() {
+    overtime =
+      parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
+    salary = parseFloat($("#rate").val());
+    p_payment = $("#p_payment").val();
+    bonus = parseFloat($("#bonus").val());
+    $("#salary").val(overtime * salary + bonus - p_payment);
+  });
+
+  $(document).on("click", ".release_expense_dtr", function(event) {
+    var input = $(this);
+    var button = this;
+    button.disabled = true;
+    event.preventDefault();
+    id = $(this).attr("id");
+    var button = this;
+    button.disabled = true;
+    $.ajax({
+      url: "{{ route('check_balance5') }}",
+      method: "POST",
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        if (data == 0) {
+          swal("Insufficient Balance!", "Contact Boss", "warning");
+          button.disabled = false;
+          return;
+        } else if (data == 2) {
+          swal(
+            "Money already released for this!",
+            "Please refresh the page",
+            "info"
+          );
+          button.disabled = false;
+          return;
+        } else {
+          $.ajax({
+            url: "{{ route('release_update_dtr') }}",
+            method: "POST",
+            headers: {
+              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            },
+            data: { id: id },
+            dataType: "json",
+            success: function(data) {
+              var total = "";
+              $.ajax({
+                url: "/refresh_view_total",
+                method: "get",
+                data: { id: idmain },
+                dataType: "json",
+                success: function(data) {
+                  total = addCommas(data);
+                  $(".modal_title_dtr").text(
+                    fname +
+                      " " +
+                      mname +
+                      " " +
+                      lname +
+                      " (" +
+                      role +
+                      ") Pending Salary: ₱" +
+                      total
+                  );
+                }
+              });
+              $.ajax({
+                url: "{{ route('refresh_view_dtr') }}",
+                method: "get",
+                data: { id: person_id },
+                dataType: "json",
+                success: function(data) {
+                  dtr_info = $("#view_dtr_table").DataTable({
+                    footerCallback: function(row, data, start, end, display) {
+                      var api = this.api(),
+                        data;
+
+                      // Remove the formatting to get integer data for summation
+                      var intVal = function(i) {
+                        return typeof i == "string"
+                          ? i.replace(/[\₱,]/g, "") * 1
+                          : typeof i == "number"
+                          ? i
+                          : 0;
+                      };
+
+                      // Total over all pages
+                      total = api
+                        .column(7)
                         .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    pageTotal = api
-                        .column( 8, { page: 'current'} )
+                        .reduce(function(a, b) {
+                          return intVal(a) + intVal(b);
+                        }, 0);
+
+                      // Total over this page
+                      pageTotal = api
+                        .column(7, { page: "current" })
                         .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html( 
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-                },
-				dom: 'Blfrtip',
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-				buttons: [
-                    {
-                        extend: 'print',
+                        .reduce(function(a, b) {
+                          return intVal(a) + intVal(b);
+                        }, 0);
+
+                      // Total over this page
+                      pageTotal1 = api
+                        .column(7, { page: "current" })
+                        .data()
+                        .reduce(function(a, b) {
+                          return intVal(a) + intVal(b);
+                        }, 0);
+
+                      // Update footer
+                      $(api.column(7).footer()).html(
+                        "Total: <br>₱" + number_format(pageTotal, 2)
+                      );
+                    },
+                    dom: "Blfrtip",
+                    lengthMenu: [
+                      [10, 25, 50, -1],
+                      [10, 25, 50, "All"]
+                    ],
+                    bDestroy: true,
+                    buttons: [
+                      {
+                        extend: "print",
                         exportOptions: {
-                            columns: [ 0, 3, 4, 5, 6, 7, 8, 9 ]
+                          columns: [0, 1, 2, 3, 4, 5, 6],
+                          modifier: {
+                            page: "current"
+                          }
                         },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
+                        title: $("#view_dtr_name").val(),
+                        customize: function(win) {
+                          $(win.document.body).css("font-size", "10pt");
+
+                          $(win.document.body)
+                            .find("table")
+                            .addClass("compact")
+                            .css("font-size", "inherit");
+
+                          $(win.document.body)
+                            .find("h1")
+                            .css("font-size", "15pt");
                         },
                         footer: true
-                    },
-                    { 
-                        extend: 'pdfHtml5', 
+                      },
+                      {
+                        extend: "pdfHtml5",
+                        title: $("#view_dtr_name").val(),
                         footer: true,
-                        exportOptions: { 
-                            columns: [ 0, 3, 4, 5, 6, 7, 8, 9 ]
+                        exportOptions: {
+                          columns: [0, 1, 2, 3, 4, 5, 6],
+                          modifier: {
+                            page: "current"
+                          }
                         },
                         customize: function(doc) {
-                            doc.styles.tableHeader.fontSize = 8;  
-                            doc.styles.tableFooter.fontSize = 8;   
-                            doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10 
-                            doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                        }  
-                    }
-                ],
-				processing: true,
-                columnDefs: [
-  				{
-    			  	"targets": "_all", // your case first column
-     				"className": "text-center",
-
- 				}
-				],
-			
-				ajax: "{{ route('refresh_dtr') }}",
-				columns: [
-					{data:'wholename', name: 'employee.fname'},
-          {data:'mname', name: 'employee.mname',visible:false  },
-          {data:'lname', name: 'employee.lname',visible:false  },
-					{data: 'role', name: 'role'},
-          {data: 'overtime', name: 'overtime'},
-          {data: 'num_hours', name: 'num_hours'},
-					{data: 'created_at', name: 'created_at',
-				   type: "date",
-					 render:function (value) {
-						   var ts = new Date(value);
-
-						  return ts.toDateString()+" "+ts.toLocaleTimeString()}
-					},
-                    {data: 'bonus', name: 'bonus'},
-					{data: 'salary', name: 'salary'},
-                    {data: 'status', name: 'status'},
-					{data: "action", orderable:false,searchable:false}
-				]
-			});
-            $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('MMMM D YYYY, h:mm:ss a') + ' to ' + picker.endDate.format('MMMM D YYYY, h:mm:ss a'));
-              dtr_info.draw();
-             
-            });
-            $("#reportrange").on('cancel.daterangepicker', function(ev, picker) {
-                  $(this).val('');
-              dtr_info.draw();
-              
-            });
-         $.fn.dataTableExt.afnFiltering.push(
-            function( oSettings, aData, iDataIndex ) {
-            
-            var grab_daterange = $("#reportrange").val();
-            var give_results_daterange = grab_daterange.split(" to ");
-            var filterstart = give_results_daterange[0];
-            var filterend = give_results_daterange[1];
-            var iStartDateCol = 2; //using column 2 in this instance
-            var iEndDateCol = 2;
-            var tabledatestart = aData[iStartDateCol];
-            var tabledateend= aData[iEndDateCol];
-            
-            if ( !filterstart && !filterend )
-            {
-                return true;
-            }
-            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isBefore(tabledatestart)) && filterend === "")
-            {
-                return true;
-            }
-            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isAfter(tabledatestart)) && filterstart === "")
-            {
-                return true;
-            }
-            else if ((moment(filterstart).isSame(tabledatestart) || moment(filterstart).isBefore(tabledatestart)) && (moment(filterend).isSame(tabledateend) || moment(filterend).isAfter(tabledateend)))
-            {
-                return true;
-            }
-            return false;
-        });
-        
-
-
-
-
-            function refresh_dtr_table(){
-				dtr.ajax.reload(); //reload datatable ajax
-			}
-
-            $(document).on('click','.open_dtr_modal', function(){
-                $("#employee_id").val('').trigger('change');
-                $("#role").val('').trigger('change');
-                $("#overtime").val('').trigger('change');
-                $("#num_hours").val('').trigger('change');
-                $('#dtr_modal').modal('show');
-			});
-
-            //check employee details
-            $('#employee_id').change(function(){
-                var id = $(this).val();
-                $.ajax({
-                    url:"{{ route('check_employee') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType:'json', 
-                    success:function(data){
-                        console.log(data);
-                        $('#role').val(data.role);
-                        $('#rate').val(data.rate);
-                        if(trig_update!=1){
-                          if(data.balance==null){
-                          $('#emp_balance').val(0);
-                        }else{
-                            $('#emp_balance').val(data.balance);
-                          }     
-                          $('#emp_rbalance').val(data.balance);
-                          emp_balance=data.balance;
-                          salary=data.rate;
+                          doc.styles.tableHeader.fontSize = 8;
+                          doc.styles.tableFooter.fontSize = 8;
+                          doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10
+                          doc.content[1].table.widths = Array(
+                            doc.content[1].table.body[0].length + 1
+                          )
+                            .join("*")
+                            .split("");
                         }
-                        
-                    }
-                })
-            });
-            var p_payment;
-            $('#overtime').change(function(){
-                salary = parseFloat($('#rate').val());
-                  overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
-                 p_payment=$('#p_payment').val();
-                  bonus=parseFloat($('#bonus').val());
-                 $('#salary').val(overtime*salary+bonus-p_payment);
-            });
-            $('#p_payment').change(function(){
-                  salary = parseFloat($('#rate').val());
-                  overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
-                  p_payment=$('#p_payment').val();
-                  emp_balance=$('#emp_balance').val();
-                  bonus=parseFloat($('#bonus').val());
-                 $('#emp_rbalance').val(emp_balance-p_payment);
-                 $('#salary').val(overtime*salary+bonus-p_payment);
-            });
-            
-            $('#num_hours').change(function(){
-                salary = parseFloat($('#rate').val());
-                overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
-                bonus=parseFloat($('#bonus').val());
-                p_payment=$('#p_payment').val();
-                $('#salary').val(overtime*salary+bonus-p_payment);
-            });
-
-            $('#bonus').change(function(){
-
-            overtime=parseFloat($('#overtime').val())+parseFloat($('#num_hours').val());
-            salary = parseFloat($('#rate').val());
-             p_payment=$('#p_payment').val();
-            bonus=parseFloat($('#bonus').val());
-            $('#salary').val(overtime*salary+bonus-p_payment);
-            });
-
-            $(document).on('click', '.release_expense_dtr', function(event){
-                var input = $(this);
-                var button =this;
-                button.disabled = true;
-                event.preventDefault();
-                id = $(this).attr("id");
-                var button =this;
-                button.disabled = true;
-                $.ajax({
-                    url:"{{ route('check_balance5') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        if(data == 0){
-                            swal("Insufficient Balance!", "Contact Boss", "warning")
-                            button.disabled = false;
-                            return;
-                        }
-                        else if(data == 2){
-                            swal("Money already released for this!", "Please refresh the page", "info")
-                            button.disabled = false;
-                            return;
-                        }
-                        else{
-                            $.ajax({
-                                url:"{{ route('release_update_dtr') }}",
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data:{id:id},
-                                dataType:'json',
-                                success:function(data){
-                                    var total="";
-                                    $.ajax({
-                                        url: "/refresh_view_total",
-                                        method: 'get',
-                                        data:{id:idmain},
-                                        dataType: 'json',
-                                        success:function(data){
-                                            total = addCommas(data);
-                                            $('.modal_title_dtr').text(fname + " " + mname + " " + lname + " ("+role + ") Pending Salary: ₱"+total);
-                                        }
-                                    });
-                                    $.ajax({
-                                        url: "{{ route('refresh_view_dtr') }}",
-                                        method: 'get',
-                                        data:{id:person_id},
-                                        dataType: 'json',
-                                        success:function(data){
-                    
-                                            dtr_info= $('#view_dtr_table').DataTable({
-                                                "footerCallback": function ( row, data, start, end, display ) {
-                                                    var api = this.api(), data;
-                                         
-                                                    // Remove the formatting to get integer data for summation
-                                                    var intVal = function ( i ) {
-                                                        return typeof i == 'string' ?
-                                                            i.replace(/[\₱,]/g, '')*1 :
-                                                            typeof i == 'number' ?
-                                                                i : 0;
-                                                    };
-                                         
-                                                    // Total over all pages
-                                                    total = api
-                                                        .column( 7 )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-                                         
-                                                    // Total over this page
-                                                    pageTotal = api
-                                                        .column( 7, { page: 'current'} )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-                                         
-                                                    
-
-                                                    // Total over this page
-                                                    pageTotal1 = api
-                                                        .column( 7, { page: 'current'} )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-
-                                                    // Update footer
-                                                      $( api.column( 7 ).footer() ).html( 
-                                                          'Total: <br>₱' + number_format(pageTotal,2)
-                                                      );
-                                                                                     
-                                                },
-                                                dom: 'Blfrtip',
-                                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                                                bDestroy: true,
-                                                buttons: [
-                                                    {
-                                                        extend: 'print',
-                                                        exportOptions: {
-                                                            columns: [ 0, 1, 2, 3, 4, 5 ,6]
-                                                        },
-                                                        title: $('#view_dtr_name').val(),
-                                                        customize: function ( win ) {
-                                                            $(win.document.body)
-                                                                .css( 'font-size', '10pt' );
-                                         
-                                                            $(win.document.body).find( 'table' )
-                                                                .addClass( 'compact' )
-                                                                .css( 'font-size', 'inherit' );
-
-                                                            $(win.document.body).find('h1').css('font-size', '15pt');
-                                                        },
-                                                        footer: true
-                                                    },
-                                                    { 
-                                                        extend: 'pdfHtml5', 
-                                                        title: $('#view_dtr_name').val(),
-                                                        footer: true,
-                                                        exportOptions: { 
-                                                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
-                                                        },
-                                                        customize: function(doc) {
-                                                            doc.styles.tableHeader.fontSize = 8;  
-                                                            doc.styles.tableFooter.fontSize = 8;   
-                                                            doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10 
-                                                            doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                                        }  
-                                                    }
-                                                ],
-                                                columnDefs: [
-                                                {
-                                                    "targets": "_all", // your case first column
-                                                    "className": "text-center",
-
-                                                }
-                                                ],
-                                                data: data.data,
-                                                columns:[
-                                                    {data: 'overtime', name: 'overtime'},
-                                                    {data: 'num_hours', name: 'num_hours'},
-                                                    {data: 'created_at', name: 'created_at',
-                                                        type: "date",
-                                                        render:function (value) {
-                                                            var ts = new Date(value);
-
-                                                            return ts.toDateString()+" "+ts.toLocaleTimeString()}
-                                                    },
-                                                    {data: 'bonus', name: 'bonus'},
-                                                    {data: 'dtr_balance', name: 'dtr_balance'},
-                                                    {data: 'p_payment', name: 'p_payment'},
-                                                    {data: 'r_balance', name: 'r_balance'},
-                                                    {data: 'salary', name: 'salary'},
-                                                    {data: 'status', name: 'status'},
-                                                    {data: 'released_by', name: 'released_by'},
-                                                    {data: "action", orderable:false,searchable:false}
-                                                ]
-                                            });
-
-                                            dtr.ajax.reload();
-                                        }
-                                        });
-                                        button.disabled = true;
-                                        swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
-                                        $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
-
-                                    }
-                            });
-                        }
-                    }
-                })
-                
-            });
-
-            mainMouseDownOne();
-    function mainMouseDownOne() {
-            $("#add_dtr").one('click',function(event){
-              var input = $(this);
-              var button =this;
-              button.disabled = true;
-              input.html('SAVING...');    
-              event.preventDefault();
-              if(parseInt($('#p_payment').val())<=parseInt($('#emp_balance').val())&&parseInt($('#salary').val())>=0){
-                
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: "{{ route('add_dtr') }}",
-                    method: 'POST',
-                    dataType: 'text',
-                    data: $('#dtr_form').serialize(),
-                    success:function(data){  
-                    var data2 = JSON.parse(data);  
-                        $('#dtr_modal').modal('hide');
-                        $.ajax({
-                                        url: "{{ route('refresh_view_dtr') }}",
-                                        method: 'get',
-                                        data:{id:person_id},
-                                        dataType: 'json',
-                                        success:function(data){
-                                        dtr_info= $('#view_dtr_table').DataTable({
-                                                "footerCallback": function ( row, data, start, end, display ) {
-                                                    var api = this.api(), data;
-                                         
-                                                    // Remove the formatting to get integer data for summation
-                                                    var intVal = function ( i ) {
-                                                        return typeof i == 'string' ?
-                                                            i.replace(/[\₱,]/g, '')*1 :
-                                                            typeof i == 'number' ?
-                                                                i : 0;
-                                                    };
-                                         
-                                                    // Total over all pages
-                                                    total = api
-                                                        .column( 7 )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-                                         
-                                                    // Total over this page
-                                                    pageTotal = api
-                                                        .column( 7, { page: 'current'} )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-                                         
-                                                  
-                                                    // Total over this page
-                                                    pageTotal1 = api
-                                                        .column( 7, { page: 'current'} )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-                                                     $( api.column( 7 ).footer() ).html( 
-                                                        'Total: <br>₱' + number_format(pageTotal,2)
-                                                    );
-                                                                    },
-                                                dom: 'Blfrtip',
-                                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                                                bDestroy: true,
-                                                buttons: [
-                                                    {
-                                                        extend: 'print',
-                                                        exportOptions: {
-                                                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
-                                                        },
-                                                        title: $('#view_dtr_name').val(),
-                                                        customize: function ( win ) {
-                                                            $(win.document.body)
-                                                                .css( 'font-size', '10pt' );
-                                         
-                                                            $(win.document.body).find( 'table' )
-                                                                .addClass( 'compact' )
-                                                                .css( 'font-size', 'inherit' );
-                                                            
-                                                            $(win.document.body).find('h1').css('font-size', '15pt');
-                                                        },
-                                                        footer: true
-                                                    },
-                                                    { 
-                                                        extend: 'pdfHtml5', 
-                                                        title: $('#view_dtr_name').val(),
-                                                        footer: true,
-                                                        exportOptions: { 
-                                                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
-                                                        },
-                                                        customize: function(doc) {
-                                                            doc.styles.tableHeader.fontSize = 8;  
-                                                            doc.styles.tableFooter.fontSize = 8;   
-                                                            doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10 
-                                                            doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                                        }  
-                                                    }
-                                                ],
-                                                columnDefs: [
-                                            {
-                                                "targets": "_all", // your case first column
-                                                "className": "text-center",
-
-                                            }
-                                            ],
-                                                data: data.data,
-                                                columns:[
-                                                    {data: 'overtime', name: 'overtime'},
-                                                    {data: 'num_hours', name: 'num_hours'},
-                                                    {data: 'created_at', name: 'created_at',
-                                                type: "date",
-                                                    render:function (value) {
-                                                        var ts = new Date(value);
-
-                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
-                                                    },
-                                                    {data: 'bonus', name: 'bonus'},
-                                                    {data: 'dtr_balance', name: 'dtr_balance'},
-                                                    {data: 'p_payment', name: 'p_payment'},
-                                                    {data: 'r_balance', name: 'r_balance'},
-                                                    {data: 'salary', name: 'salary'},
-                                                    {data: 'status', name: 'status'},
-                                                    {data: 'released_by', name: 'released_by'},
-                                                    {data: "action", orderable:false,searchable:false}
-                                                ]
-                                            });
-  
-                                            dtr.ajax.reload();
-                                        }
-                                    });
-                         if(data2.cashHistory&&data2.user==1){
-                             
-                          swal("Success!", "Cash on Hand: ₱"+data2.cashOnHand.toFixed(2)+" | Transaction ID: "+data2.cashHistory, "success")
-                            $('#curCashOnHand').html(data2.cashOnHand.toFixed(2));
-                         }else if(data2.cashHistory&&data2.user!=1){
-                          swal("Success!", "Partial Payment Received by Admin.", "success")
-                         }else{
-                            swal("Success!", "Record has been added to database", "success");
-                         }      
-                         mainMouseDownOne();
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-						refresh_dtr_table();
-                    },
-                    error: function(data){
-                        mainMouseDownOne();
-						swal("Oh no!", "Something went wrong, try again.", "error");
-                        button.disabled = false;
-                        input.html('SAVE CHANGES');
-					}
-                });
-   }else{
-    mainMouseDownOne();
-          swal("Denied! Can't Partial Payment", "Payment is greater than Balance or greater than Salary", "error");
-          button.disabled = false;
-          input.html('SAVE CHANGES');
-   }
-            });
-    }
-
-      $('#dtr_modal').on('hidden.bs.modal', function () {
-          $('.dtr_modal_title').text('Add DTR');
-      })
-
-            $(document).on('click', '.update_dtr', function(event){
-                 $('#dtr_view_modal').modal('hide'); 
-                event.preventDefault();
-                var id = $(this).attr("id");
-                $.ajax({
-                    url:"{{ route('update_dtr') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                     
-                      trig_update=1;
-                        $('#button_action').val('update');
-                        $('#last_payment').val(data.p_payment);
-                        $('#add_id').val(id);
-                        $('#employee_id').select2('enable',false);
-                        $("#employee_id").val(data.employee_id).trigger('change');
-                        $('#employee_ni').val(data.employee_id);
-                        $("#role").val(data.role);
-                        $("#overtime").val(data.overtime);
-                        $("#rate").val(data.rate);
-                        $("#num_hours").val(data.num_hours);
-                        $("#p_payment").val(data.p_payment);
-                        $("#emp_balance").val("");
-                        $("#emp_rbalance").val('');
-                        $("#emp_balance").val(data.dtr_balance);
-                        $("#emp_rbalance").val(data.r_balance);
-                        $("#bonus").val(data.bonus);
-                        $('#salary').val(data.salary);
-                        $('#dtr_modal').modal('show');
-                        $('.dtr_modal_title').text('Update DTR');
-                        //refresh_expense_table();
-
-                    }
-                })
-                trig_update=0;
-            });
-
-            $(document).on('click', '.delete_dtr', function(event){
-                var ObjData;
-                event.preventDefault();
-                var id = $(this).attr('id');
-                swal({
-                    title: "Are you sure?",
-                    text: "Delete this record?",
-                    icon: "warning",
-                    buttons: true,
-                }).then((willDelete) => {
-                if (willDelete) {
-
-                     $.ajax({
-                        url:"{{ route('delete_dtr') }}",
-                        method: "get",
-                        data:{id:id},
-                        success:function(data){
-                          
-                            ObjData = JSON.parse(data);
-                            
-                             $.ajax({
-                                        url: "{{ route('refresh_view_dtr') }}",
-                                        method: 'get',
-                                        data:{id:person_id},
-                                        dataType: 'json',
-                                        success:function(data){
-                                            
-                                        dtr_info= $('#view_dtr_table').DataTable({
-                                                "footerCallback": function ( row, data, start, end, display ) {
-                                                    var api = this.api(), data;
-                                         
-                                                    // Remove the formatting to get integer data for summation
-                                                    var intVal = function ( i ) {
-                                                        return typeof i == 'string' ?
-                                                            i.replace(/[\₱,]/g, '')*1 :
-                                                            typeof i == 'number' ?
-                                                                i : 0;
-                                                    };
-                                         
-                                                    // Total over all pages
-                                                    total = api
-                                                        .column( 7 )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-                                         
-                                                    // Total over this page
-                                                    pageTotal = api
-                                                        .column( 7, { page: 'current'} )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-                                          
-                                                    // Total over this page
-                                                    pageTotal1 = api
-                                                        .column( 7, { page: 'current'} )
-                                                        .data()
-                                                        .reduce( function (a, b) {
-                                                            return intVal(a) + intVal(b);
-                                                        }, 0 );
-
-                                                                                              // Update footer
-                                                        $( api.column( 7 ).footer() ).html( 
-                                                            'Total: <br>₱' + number_format(pageTotal,2)
-                                                        );
-                                                                 
-                                                  
-                                                },
-                                                dom: 'Blfrtip',
-                                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                                                bDestroy: true,
-                                                buttons: [
-                                                    {
-                                                        extend: 'print',
-                                                        exportOptions: {
-                                                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
-                                                        },
-                                                        title: $('#view_dtr_name').val(),
-                                                        customize: function ( win ) {
-                                                            $(win.document.body)
-                                                                .css( 'font-size', '10pt' );
-                                         
-                                                            $(win.document.body).find( 'table' )
-                                                                .addClass( 'compact' )
-                                                                .css( 'font-size', 'inherit' );
-
-                                                            $(win.document.body).find('h1').css('font-size', '20pt');
-                                                        },
-                                                        footer: true
-                                                    },
-                                                    { 
-                                                        extend: 'pdfHtml5', 
-                                                        title: $('#view_dtr_name').val(),
-                                                        footer: true,
-                                                        exportOptions: { 
-                                                            columns: [ 0, 1, 2, 3, 4, 5, 6 ]
-                                                        },
-                                                        customize: function(doc) {
-                                                            doc.styles.tableHeader.fontSize = 8;  
-                                                            doc.styles.tableFooter.fontSize = 8;   
-                                                            doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10 
-                                                            doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                                        }  
-                                                    }
-                                                ],
-                                                columnDefs: [
-                                            {
-                                                "targets": "_all", // your case first column
-                                                "className": "text-center",
-
-                                            }
-                                            ],
-                                                data: data.data,
-                                                columns:[
-                                                    {data: 'overtime', name: 'overtime'},
-                                                    {data: 'num_hours', name: 'num_hours'},
-                                                    {data: 'created_at', name: 'created_at',
-                                                type: "date",
-                                                    render:function (value) {
-                                                        var ts = new Date(value);
-
-                                                        return ts.toDateString()+" "+ts.toLocaleTimeString()}
-                                                    },
-                                                    {data: 'bonus', name: 'bonus'},
-                                                    {data: 'dtr_balance', name: 'dtr_balance'},
-                                                    {data: 'p_payment', name: 'p_payment'},
-                                                    {data: 'r_balance', name: 'r_balance'},
-                                                    {data: 'salary', name: 'salary'},
-                                                    {data: 'status', name: 'status'},
-                                                    {data: 'released_by', name: 'released_by'},
-                                                    {data: "action", orderable:false,searchable:false}
-                                                ]
-                                            });
-                                            dtr.ajax.reload();
-                                        }
-                                    });
-                                refresh_dtr_table();
-                            if(ObjData != "deleted"){
-                                     
-                                   $('#curCashOnHand').html(ObjData.cashOnHand.toFixed(2));
-                                swal("Data Deleted !", "Cash On Hand: ₱"+ObjData.cashOnHand.toFixed(2)+" | Transaction ID: "+ObjData.cashHistory, "success")
-                                }else{
-                                  swal("Data Deleted !", "success")
-                                }
-                               
-                        }
-                    })
-                   
-                }
-            })
-            });
-
- $(document).on('click', '.delete_ca', function(event){
-                var ObjData;
-                event.preventDefault();
-                var id = $(this).attr('id');
-                swal({
-                    title: "Are you sure?",
-                    text: "Delete this record?",
-                    icon: "warning",
-                    buttons: true,
-                }).then((willDelete) => {
-                if (willDelete) {
-
-                     $.ajax({
-                        url:"{{ route('delete_ca_employee') }}",
-                        method: "get",
-                        data:{id:id},
-                        success:function(data){
-
-                         var data2=JSON.parse(data);
-                         if(data2=="No"){
-                            swal("Denied! Can't Delete CA", "Amount is greater than Balance", "error");
-                         }else if(data2.cashOnHand!=undefined){    
-                         swal("Data Deleted! Employee Balance : ₱"+data2.balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
-                        $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                      } else if(data2=="deleted")
-                       {
-                          swal("Data Deleted", " Cash Advance", "success");
                       }
-                          $.ajax({
-                    url: "{{ route('employee_view_ca') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                   
+                    ],
+                    columnDefs: [
+                      {
+                        targets: "_all", // your case first column
+                        className: "text-center"
+                      }
+                    ],
+                    data: data.data,
+                    columns: [
+                      { data: "overtime", name: "overtime" },
+                      { data: "num_hours", name: "num_hours" },
+                      {
+                        data: "created_at",
+                        name: "created_at",
+                        type: "date",
+                        render: function(value) {
+                          var ts = new Date(value);
 
-                     
-                       // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+                          return (
+                            ts.toDateString() + " " + ts.toLocaleTimeString()
+                          );
+                        }
+                      },
+                      { data: "bonus", name: "bonus" },
+                      { data: "dtr_balance", name: "dtr_balance" },
+                      { data: "p_payment", name: "p_payment" },
+                      { data: "r_balance", name: "r_balance" },
+                      { data: "salary", name: "salary" },
+                      { data: "status", name: "status" },
+                      { data: "released_by", name: "released_by" },
+                      { data: "action", orderable: false, searchable: false }
+                    ]
+                  });
 
-                cash_advance_release =  $('#view_employee_ca_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 1 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 1, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Update footer
-                                $( api.column( 1 ).footer() ).html(
-                                    'Total: <br>₱' + number_format(pageTotal,2)
-                                );
-                            },
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    title: $('#view_dtr_name').val(),
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4 ]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    title: $('#view_dtr_name').val(),
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4 ]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            order: [[ 2, "desc" ]],
-                            bDestroy: true,
-                            data: data.data,
-                            columns:[
-                                {data: 'reason', name: 'reason'},
-                                {data: 'amount', name: 'amount'},
-                                 {data: 'created_at', name: 'created_at'},
-                                {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
-                            ]
-                        }); 
-                        
-                    }
-                });
-                      
-                          
-                                        }
-
-                                    });                 
+                  dtr.ajax.reload();
                 }
-            })
-            });
+              });
+              button.disabled = true;
+              swal(
+                "Cash Released!",
+                "Remaining Balance: ₱" +
+                  data.cashOnHand.toFixed(2) +
+                  " | Transaction ID: " +
+                  data.cashHistory,
+                "success"
+              );
+              $("#curCashOnHand").html(data.cashOnHand.toFixed(2));
+            }
+          });
+        }
+      }
+    });
+  });
 
-            $(document).on('click', '.receive_payment', function(event){
-                var ObjData;
-                event.preventDefault();
-                var id = $(this).attr('id');
-                swal({
-                    title: "Accept this payment?",
-                    text: "",
-                    icon: "warning",
-                    buttons: true,
-                }).then((willDelete) => {
-                if (willDelete) {
-                            $.ajax({
-                            url:"{{ route('receive_payment') }}",
-                            method: "POST",
-                            headers: {
-                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            data:{id:id},
-                            dataType: 'text',
-                            success:function(data){
-                                 console.log(data);
-                                var data2=JSON.parse(data);
-                               
-                                swal("Payment Received : ₱"+data2.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
-                            $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                         
-                            $.ajax({
-                    url: "{{ route('employee_view_payment') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                    
-                 payment_table =  $('#payment_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 1 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 1, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // // Update footer
-                                // $( api.column( 1 ).footer() ).html(
-                                //     'Total: <br>₱' + number_format(pageTotal,2)
-                                // );
-                            },
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4 , 5]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4 ,5]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            order: [[ 2, "desc" ]],
-                            bDestroy: true,
-                            data: data.data,
-                            columns:[
-                                {data: 'paymentmethod', name: 'paymentmethod'},
-                                {data: 'paymentamount', name: 'paymentamount'},
-                                 {data: 'created_at', name: 'created_at'},
-                                {data: 'checknumber', name: 'checknumber'},
-                                {data: 'remarks', name: 'remarks'},
-                                {data: 'r_balance', name: 'r_balance'},
-                                {data: 'received_by', name: 'received_by'},
-                                {data: "action", orderable:false,searchable:false}
-                               
-                            ]
-                        }); 
-                        
+  mainMouseDownOne();
+  function mainMouseDownOne() {
+    $("#add_dtr").one("click", function(event) {
+      var input = $(this);
+      var button = this;
+      button.disabled = true;
+      input.html("SAVING...");
+      event.preventDefault();
+      if (
+        parseInt($("#p_payment").val()) <= parseInt($("#emp_balance").val()) &&
+        parseInt($("#salary").val()) >= 0
+      ) {
+        $.ajax({
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+          },
+          url: "{{ route('add_dtr') }}",
+          method: "POST",
+          dataType: "text",
+          data: $("#dtr_form").serialize(),
+          success: function(data) {
+            var data2 = JSON.parse(data);
+            $("#dtr_modal").modal("hide");
+            $.ajax({
+              url: "{{ route('refresh_view_dtr') }}",
+              method: "get",
+              data: { id: person_id },
+              dataType: "json",
+              success: function(data) {
+                dtr_info = $("#view_dtr_table").DataTable({
+                  footerCallback: function(row, data, start, end, display) {
+                    var api = this.api(),
+                      data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                      return typeof i == "string"
+                        ? i.replace(/[\₱,]/g, "") * 1
+                        : typeof i == "number"
+                        ? i
+                        : 0;
+                    };
+
+                    // Total over all pages
+                    total = api
+                      .column(7)
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+
+                    // Total over this page
+                    pageTotal = api
+                      .column(7, { page: "current" })
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+
+                    // Total over this page
+                    pageTotal1 = api
+                      .column(7, { page: "current" })
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+                    $(api.column(7).footer()).html(
+                      "Total: <br>₱" + number_format(pageTotal, 2)
+                    );
+                  },
+                  dom: "Blfrtip",
+                  lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                  ],
+                  bDestroy: true,
+                  buttons: [
+                    {
+                      extend: "print",
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      title: $("#view_dtr_name").val(),
+                      customize: function(win) {
+                        $(win.document.body).css("font-size", "10pt");
+
+                        $(win.document.body)
+                          .find("table")
+                          .addClass("compact")
+                          .css("font-size", "inherit");
+
+                        $(win.document.body)
+                          .find("h1")
+                          .css("font-size", "15pt");
+                      },
+                      footer: true
+                    },
+                    {
+                      extend: "pdfHtml5",
+                      title: $("#view_dtr_name").val(),
+                      footer: true,
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;
+                        doc.styles.tableFooter.fontSize = 8;
+                        doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10
+                        doc.content[1].table.widths = Array(
+                          doc.content[1].table.body[0].length + 1
+                        )
+                          .join("*")
+                          .split("");
+                      }
                     }
+                  ],
+                  columnDefs: [
+                    {
+                      targets: "_all", // your case first column
+                      className: "text-center"
+                    }
+                  ],
+                  data: data.data,
+                  columns: [
+                    { data: "overtime", name: "overtime" },
+                    { data: "num_hours", name: "num_hours" },
+                    {
+                      data: "created_at",
+                      name: "created_at",
+                      type: "date",
+                      render: function(value) {
+                        var ts = new Date(value);
+
+                        return (
+                          ts.toDateString() + " " + ts.toLocaleTimeString()
+                        );
+                      }
+                    },
+                    { data: "bonus", name: "bonus" },
+                    { data: "dtr_balance", name: "dtr_balance" },
+                    { data: "p_payment", name: "p_payment" },
+                    { data: "r_balance", name: "r_balance" },
+                    { data: "salary", name: "salary" },
+                    { data: "status", name: "status" },
+                    { data: "released_by", name: "released_by" },
+                    { data: "action", orderable: false, searchable: false }
+                  ]
                 });
 
-                }
-            })
-                }
-                })
+                dtr.ajax.reload();
+              }
             });
+            if (data2.cashHistory && data2.user == 1) {
+              swal(
+                "Success!",
+                "Cash on Hand: ₱" +
+                  data2.cashOnHand.toFixed(2) +
+                  " | Transaction ID: " +
+                  data2.cashHistory,
+                "success"
+              );
+              $("#curCashOnHand").html(data2.cashOnHand.toFixed(2));
+            } else if (data2.cashHistory && data2.user != 1) {
+              swal("Success!", "Partial Payment Received by Admin.", "success");
+            } else {
+              swal("Success!", "Record has been added to database", "success");
+            }
+            mainMouseDownOne();
+            button.disabled = false;
+            input.html("SAVE CHANGES");
+            refresh_dtr_table();
+          },
+          error: function(data) {
+            mainMouseDownOne();
+            swal("Oh no!", "Something went wrong, try again.", "error");
+            button.disabled = false;
+            input.html("SAVE CHANGES");
+          }
+        });
+      } else {
+        mainMouseDownOne();
+        swal(
+          "Denied! Can't Partial Payment",
+          "Payment is greater than Balance or greater than Salary",
+          "error"
+        );
+        button.disabled = false;
+        input.html("SAVE CHANGES");
+      }
+    });
+  }
 
-            $(document).on('click', '.delete_payment', function(event){
-                var ObjData;
-                event.preventDefault();
-                var id = $(this).attr('id');
-                swal({
-                    title: "Delete this Payment?",
-                    text: "",
-                    icon: "warning",
-                    buttons: true,
-                }).then((willDelete) => {
-                if (willDelete) {
-                            $.ajax({
-                            url:"{{ route('delete_payment') }}",
-                            method: "POST",
-                            headers: {
-                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            data:{id:id},
-                            dataType: 'text',
-                            success:function(data){
-                                 console.log(data);
-                                 if(data=="deleted"){
-                                    swal("Payment Deleted!", "Successfully deleted a payment.", "success");
-                                 }else{
-                                    console.log("ayay");
-                                    var data2=JSON.parse(data);                                   
-                                    swal("Amount Reverted : ₱"+data2.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","), "Remaining Money: ₱"+data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" | Transaction ID: "+data2.cashHistory, "success")
-                                    $('#curCashOnHand').html(data2.cashOnHand.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                                    
-                                 }
-                               
-                            $.ajax({
-                    url: "{{ route('employee_view_payment') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                    
-                 payment_table =  $('#payment_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 1 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 1, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // // Update footer
-                                // $( api.column( 1 ).footer() ).html(
-                                //     'Total: <br>₱' + number_format(pageTotal,2)
-                                // );
-                            },
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4 , 5]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4 ,5]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            order: [[ 2, "desc" ]],
-                            bDestroy: true,
-                            data: data.data,
-                            columns:[
-                                {data: 'paymentmethod', name: 'paymentmethod'},
-                                {data: 'paymentamount', name: 'paymentamount'},
-                                 {data: 'created_at', name: 'created_at'},
-                                {data: 'checknumber', name: 'checknumber'},
-                                {data: 'remarks', name: 'remarks'},
-                                {data: 'r_balance', name: 'r_balance'},
-                                {data: 'received_by', name: 'received_by'},
-                                {data: "action", orderable:false,searchable:false}
-                               
-                            ]
-                        }); 
-                        
+  $("#dtr_modal").on("hidden.bs.modal", function() {
+    $(".dtr_modal_title").text("Add DTR");
+  });
+
+  $(document).on("click", ".update_dtr", function(event) {
+    $("#dtr_view_modal").modal("hide");
+    event.preventDefault();
+    var id = $(this).attr("id");
+    $.ajax({
+      url: "{{ route('update_dtr') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        trig_update = 1;
+        $("#button_action").val("update");
+        $("#last_payment").val(data.p_payment);
+        $("#add_id").val(id);
+        $("#employee_id").select2("enable", false);
+        $("#employee_id")
+          .val(data.employee_id)
+          .trigger("change");
+        $("#employee_ni").val(data.employee_id);
+        $("#role").val(data.role);
+        $("#overtime").val(data.overtime);
+        $("#rate").val(data.rate);
+        $("#num_hours").val(data.num_hours);
+        $("#p_payment").val(data.p_payment);
+        $("#emp_balance").val("");
+        $("#emp_rbalance").val("");
+        $("#emp_balance").val(data.dtr_balance);
+        $("#emp_rbalance").val(data.r_balance);
+        $("#bonus").val(data.bonus);
+        $("#salary").val(data.salary);
+        $("#dtr_modal").modal("show");
+        $(".dtr_modal_title").text("Update DTR");
+        //refresh_expense_table();
+      }
+    });
+    trig_update = 0;
+  });
+
+  $(document).on("click", ".delete_dtr", function(event) {
+    var ObjData;
+    event.preventDefault();
+    var id = $(this).attr("id");
+    swal({
+      title: "Are you sure?",
+      text: "Delete this record?",
+      icon: "warning",
+      buttons: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('delete_dtr') }}",
+          method: "get",
+          data: { id: id },
+          success: function(data) {
+            ObjData = JSON.parse(data);
+
+            $.ajax({
+              url: "{{ route('refresh_view_dtr') }}",
+              method: "get",
+              data: { id: person_id },
+              dataType: "json",
+              success: function(data) {
+                dtr_info = $("#view_dtr_table").DataTable({
+                  footerCallback: function(row, data, start, end, display) {
+                    var api = this.api(),
+                      data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                      return typeof i == "string"
+                        ? i.replace(/[\₱,]/g, "") * 1
+                        : typeof i == "number"
+                        ? i
+                        : 0;
+                    };
+
+                    // Total over all pages
+                    total = api
+                      .column(7)
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+
+                    // Total over this page
+                    pageTotal = api
+                      .column(7, { page: "current" })
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+
+                    // Total over this page
+                    pageTotal1 = api
+                      .column(7, { page: "current" })
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+
+                    // Update footer
+                    $(api.column(7).footer()).html(
+                      "Total: <br>₱" + number_format(pageTotal, 2)
+                    );
+                  },
+                  dom: "Blfrtip",
+                  lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                  ],
+                  bDestroy: true,
+                  buttons: [
+                    {
+                      extend: "print",
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      title: $("#view_dtr_name").val(),
+                      customize: function(win) {
+                        $(win.document.body).css("font-size", "10pt");
+
+                        $(win.document.body)
+                          .find("table")
+                          .addClass("compact")
+                          .css("font-size", "inherit");
+
+                        $(win.document.body)
+                          .find("h1")
+                          .css("font-size", "20pt");
+                      },
+                      footer: true
+                    },
+                    {
+                      extend: "pdfHtml5",
+                      title: $("#view_dtr_name").val(),
+                      footer: true,
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;
+                        doc.styles.tableFooter.fontSize = 8;
+                        doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10
+                        doc.content[1].table.widths = Array(
+                          doc.content[1].table.body[0].length + 1
+                        )
+                          .join("*")
+                          .split("");
+                      }
                     }
-                });
-
-                }
-            })
-                }
-                })
-            });
-
-
-            // PRINT DTR
-
-            $("#print_dtr").click(function(event) {
-                event.preventDefault();
-                $("#add_dtr").trigger("click");
-                $("#print_form").trigger("click");
-            });
-
-            $("#print_form").click(function(event) {
-                $("#employee_id_clone").val($("#employee_id option:selected").text());
-                $("#role_clone").val($("#role").val());
-                $("#overtime_clone").val($("#overtime").val());
-                $("#rate_clone").val($("#rate").val());
-                $("#num_hours_clone").val($("#num_hours").val());
-                $("#salary_clone").val($("#salary").val());
-                $("#bonus_clone").val($("#bonus").val());
-                $("#balance_clone").val($("#emp_balance").val());
-                $("#partial_payment_clone").val($("#p_payment").val());
-                $("#remaining_balance_clone").val($("#emp_rbalance").val());
-            });
-
-            // END PRINT DTR
-
-            // PRINT CA 
-
-            $("#print_ca").click(function(event) {
-                event.preventDefault();
-                $("#add_cash_advance").trigger("click");
-                $("#print_form1").trigger("click");
-            });
-
-            $("#print_form1").click(function(event) {
-                $("#customer_id_clone").val($("#employee_ca option:selected").text());
-                $("#reason_clone").val($("#reason").val());
-                $("#amount_clone").val($("#amount").val());
-                $("#balance1_clone").val($("#balance").val());
-                $("#received_clone").val($("#received").val());
-                $("#month_clone").val($("#month").val());
-            });
-
-            // END PRINT CA
-
-            // PRINT PAYMENT 
-
-            $("#print_balance_payment").click(function(event) {
-                event.preventDefault();
-                $("#add_payment").trigger("click");
-                $("#print_balance_form").trigger("click");
-            });
-
-            $("#print_balance_form").click(function(event) {
-                $("#customer_id1_clone").val($("#employee_payment_id option:selected").text());
-                $("#paymentmethod_clone").val($("#paymentmethod option:selected").text());
-                $("#checknumber_clone").val($("#checknumber").val());
-                $("#amount2_clone").val($("#amount_payment").val());
-                $("#balance2_clone").val($("#balancepayment").val());
-                $("#remarks_clone").val($("#remarks").val());
-            });
-
-            // END PRINT PAYMENT
-
-			function addCommas(nStr) {
-    		nStr += '';
-		    x = nStr.split('.');
-		    x1 = x[0];
-		    x2 = x.length > 1 ? '.' + x[1] : '';
-		    var rgx = /(\d+)(\d{3})/;
-    		while (rgx.test(x1)) {
-        	x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    		}
-		    return x1 + x2;
-			}
-
-
-            $(document).on('click', '.view_dtr', function(event){
-                event.preventDefault(); 
-                var id = $(this).attr("id");
-				idmain = id;
-                person_id=id;
-
-				$.ajax({
-					url: "/refresh_view_total",
-					method: 'get',
-					data:{id:id},
-					dataType: 'json',
-					success:function(data){
-					    total =	addCommas(data);
-					}
-				});
-                $.ajax({
-					url: "/check_employee",
-					method: 'get',
-					data:{id:id},
-					dataType: 'json',
-					success:function(data){
-					    
-                        if(data.balance==0||data.balance==null){
-                          $('#balance_view').html('Balance: ₱ 0.00'); 
-                       }else{
-                        $('#balance_view').html('Balance: ₱'+data.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
-                       }
-					}
-				});
-                $.ajax({
-                    url: "{{ route('refresh_view_dtr') }}",
-                    method: 'get',
-                    data:{id:id},
-                    dataType: 'json',
-                    success:function(data){
-						fname = data.data[0].fname;
-						mname = data.data[0].mname;
-						lname = data.data[0].lname;
-						role =  data.data[0].role;
-                        $('.modal_title_dtr').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname + " ("+ data.data[0].role + ")  Pending Salary: ₱"+total);
-                       
-                        $('#view_dtr_name').val(fname + " " + mname + " " +lname + " ("+ role + ")  Pending Salary: ₱"+total);
-                       
-                        
-                    dtr_info= $('#view_dtr_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 7 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 7, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                
-
-                                // Total over this page
-                                pageTotal1 = api
-                                .column( 7, { page: 'current'} )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-                    
-                                             // Update footer
-                                $( api.column( 7 ).footer() ).html( 
-                                    'Total: <br>₱' + number_format(pageTotal,2)
-                                );
-                            },
-                            dom: 'Blfrtip',
-                            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            bDestroy: true,
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4, 5, 6,7,8 ]
-                                    },
-                                    title: $('#view_dtr_name').val(),
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-
-                                        $(win.document.body).find('h1').css('font-size', '15pt');
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    title: $('#view_dtr_name').val(),
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4, 5, 6,7,8 ]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10 
-                                        doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-							columnDefs: [
-						   {
-							   "targets": "_all", // your case first column
-							   "className": "text-center",
-
-						   }
-						   ],
-                            data: data.data,
-                            columns:[
-                                {data: 'overtime', name: 'overtime'},
-                                {data: 'num_hours', name: 'num_hours'},
-								{data: 'created_at', name: 'created_at',
-							   type: "date",
-								 render:function (value) {
-									   var ts = new Date(value);
-
-									  return ts.toDateString()+" "+ts.toLocaleTimeString()}
-								},
-                                {data: 'bonus', name: 'bonus'},
-                                {data: 'dtr_balance', name: 'dtr_balance'},
-                                {data: 'p_payment', name: 'p_payment'},
-                                {data: 'r_balance', name: 'r_balance'},
-                                {data: 'salary', name: 'salary'},
-                                {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
-                            ]
-                        });
-                        $('#dtr_view_modal').modal('show');
+                  ],
+                  columnDefs: [
+                    {
+                      targets: "_all", // your case first column
+                      className: "text-center"
                     }
+                  ],
+                  data: data.data,
+                  columns: [
+                    { data: "overtime", name: "overtime" },
+                    { data: "num_hours", name: "num_hours" },
+                    {
+                      data: "created_at",
+                      name: "created_at",
+                      type: "date",
+                      render: function(value) {
+                        var ts = new Date(value);
+
+                        return (
+                          ts.toDateString() + " " + ts.toLocaleTimeString()
+                        );
+                      }
+                    },
+                    { data: "bonus", name: "bonus" },
+                    { data: "dtr_balance", name: "dtr_balance" },
+                    { data: "p_payment", name: "p_payment" },
+                    { data: "r_balance", name: "r_balance" },
+                    { data: "salary", name: "salary" },
+                    { data: "status", name: "status" },
+                    { data: "released_by", name: "released_by" },
+                    { data: "action", orderable: false, searchable: false }
+                  ]
                 });
+                dtr.ajax.reload();
+              }
             });
+            refresh_dtr_table();
+            if (ObjData != "deleted") {
+              $("#curCashOnHand").html(ObjData.cashOnHand.toFixed(2));
+              swal(
+                "Data Deleted !",
+                "Cash On Hand: ₱" +
+                  ObjData.cashOnHand.toFixed(2) +
+                  " | Transaction ID: " +
+                  ObjData.cashHistory,
+                "success"
+              );
+            } else {
+              swal("Data Deleted !", "success");
+            }
+          }
+        });
+      }
+    });
+  });
 
-            $('#employee_ca_modal').on('hidden.bs.modal', function (e) {
- 
-                $(this)
-                .find("input,textarea,select")
-                    .val('')
-                    .end();
+  $(document).on("click", ".delete_ca", function(event) {
+    var ObjData;
+    event.preventDefault();
+    var id = $(this).attr("id");
+    swal({
+      title: "Are you sure?",
+      text: "Delete this record?",
+      icon: "warning",
+      buttons: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('delete_ca_employee') }}",
+          method: "get",
+          data: { id: id },
+          success: function(data) {
+            var data2 = JSON.parse(data);
+            if (data2 == "No") {
+              swal(
+                "Denied! Can't Delete CA",
+                "Amount is greater than Balance",
+                "error"
+              );
+            } else if (data2.cashOnHand != undefined) {
+              swal(
+                "Data Deleted! Employee Balance : ₱" +
+                  data2.balance
+                    .toFixed(2)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                "Remaining Money: ₱" +
+                  data2.cashOnHand
+                    .toFixed(2)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                  " | Transaction ID: " +
+                  data2.cashHistory,
+                "success"
+              );
+              $("#curCashOnHand").html(
+                data2.cashOnHand
+                  .toFixed(2)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              );
+            } else if (data2 == "deleted") {
+              swal("Data Deleted", " Cash Advance", "success");
+            }
+            $.ajax({
+              url: "{{ route('employee_view_ca') }}",
+              method: "get",
+              data: { id: person_id },
+              dataType: "json",
+              success: function(data) {
+                // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
 
-            })
+                cash_advance_release = $("#view_employee_ca_table").DataTable({
+                  footerCallback: function(row, data, start, end, display) {
+                    var api = this.api(),
+                      data;
 
-            $('#dtr_modal').on('hidden.bs.modal', function (e) {
-                $(this)
-                .find("input,textarea,select")
-                    .val('')
-                    .end();
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                      return typeof i == "string"
+                        ? i.replace(/[\₱,]/g, "") * 1
+                        : typeof i == "number"
+                        ? i
+                        : 0;
+                    };
 
-                  $('#employee_id').select2('enable');
-                  trig_update=0;
+                    // Total over all pages
+                    total = api
+                      .column(1)
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
 
+                    // Total over this page
+                    pageTotal = api
+                      .column(1, { page: "current" })
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
 
-            })
+                    // Update footer
+                    $(api.column(1).footer()).html(
+                      "Total: <br>₱" + number_format(pageTotal, 2)
+                    );
+                  },
+                  dom: "Blfrtip",
+                  lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                  ],
+                  buttons: [
+                    {
+                      extend: "print",
+                      title: $("#view_dtr_name").val(),
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      customize: function(win) {
+                        $(win.document.body).css("font-size", "10pt");
 
-            //CASH ADVANCE datatable ends here
+                        $(win.document.body)
+                          .find("table")
+                          .addClass("compact")
+                          .css("font-size", "inherit");
+                      },
+                      footer: true
+                    },
+                    {
+                      extend: "pdfHtml5",
+                      title: $("#view_dtr_name").val(),
+                      footer: true,
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;
+                        doc.styles.tableFooter.fontSize = 8;
+                        doc.defaultStyle.fontSize = 8;
+                        doc.content[1].table.widths = Array(
+                          doc.content[1].table.body[0].length + 1
+                        )
+                          .join("*")
+                          .split("");
+                      }
+                    }
+                  ],
+                  order: [[2, "desc"]],
+                  bDestroy: true,
+                  data: data.data,
+                  columns: [
+                    { data: "reason", name: "reason" },
+                    { data: "amount", name: "amount" },
+                    { data: "created_at", name: "created_at" },
+                    { data: "status", name: "status" },
+                    { data: "released_by", name: "released_by" },
+                    { data: "action", orderable: false, searchable: false }
+                  ]
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  });
 
+  $(document).on("click", ".receive_payment", function(event) {
+    var ObjData;
+    event.preventDefault();
+    var id = $(this).attr("id");
+    swal({
+      title: "Accept this payment?",
+      text: "",
+      icon: "warning",
+      buttons: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('receive_payment') }}",
+          method: "POST",
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+          },
+          data: { id: id },
+          dataType: "text",
+          success: function(data) {
+            console.log(data);
+            var data2 = JSON.parse(data);
+
+            swal(
+              "Payment Received : ₱" +
+                data2.amount
+                  .toFixed(2)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+              "Remaining Money: ₱" +
+                data2.cashOnHand
+                  .toFixed(2)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                " | Transaction ID: " +
+                data2.cashHistory,
+              "success"
+            );
+            $("#curCashOnHand").html(
+              data2.cashOnHand
+                .toFixed(2)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            );
+
+            $.ajax({
+              url: "{{ route('employee_view_payment') }}",
+              method: "get",
+              data: { id: person_id },
+              dataType: "json",
+              success: function(data) {
+                payment_table = $("#payment_table").DataTable({
+                  footerCallback: function(row, data, start, end, display) {
+                    var api = this.api(),
+                      data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                      return typeof i == "string"
+                        ? i.replace(/[\₱,]/g, "") * 1
+                        : typeof i == "number"
+                        ? i
+                        : 0;
+                    };
+
+                    // Total over all pages
+                    total = api
+                      .column(1)
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+
+                    // Total over this page
+                    pageTotal = api
+                      .column(1, { page: "current" })
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
+
+                    // // Update footer
+                    // $( api.column( 1 ).footer() ).html(
+                    //     'Total: <br>₱' + number_format(pageTotal,2)
+                    // );
+                  },
+                  dom: "Blfrtip",
+                  lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                  ],
+                  buttons: [
+                    {
+                      extend: "print",
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      customize: function(win) {
+                        $(win.document.body).css("font-size", "10pt");
+
+                        $(win.document.body)
+                          .find("table")
+                          .addClass("compact")
+                          .css("font-size", "inherit");
+                      },
+                      footer: true
+                    },
+                    {
+                      extend: "pdfHtml5",
+                      footer: true,
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5],
+                        modifier: {
+                          page: "current"
+                        }
+                      },
+                      customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;
+                        doc.styles.tableFooter.fontSize = 8;
+                        doc.defaultStyle.fontSize = 8;
+                        doc.content[1].table.widths = Array(
+                          doc.content[1].table.body[0].length + 1
+                        )
+                          .join("*")
+                          .split("");
+                      }
+                    }
+                  ],
+                  order: [[2, "desc"]],
+                  bDestroy: true,
+                  data: data.data,
+                  columns: [
+                    { data: "paymentmethod", name: "paymentmethod" },
+                    { data: "paymentamount", name: "paymentamount" },
+                    { data: "created_at", name: "created_at" },
+                    { data: "checknumber", name: "checknumber" },
+                    { data: "remarks", name: "remarks" },
+                    { data: "r_balance", name: "r_balance" },
+                    { data: "received_by", name: "received_by" },
+                    { data: "action", orderable: false, searchable: false }
+                  ]
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  });
+
+  $(document).on("click", ".delete_payment", function(event) {
+    var ObjData;
+    event.preventDefault();
+    var id = $(this).attr("id");
+    swal({
+      title: "Delete this Payment?",
+      text: "",
+      icon: "warning",
+      buttons: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('delete_payment') }}",
+          method: "POST",
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+          },
+          data: { id: id },
+          dataType: "text",
+          success: function(data) {
+            console.log(data);
+            if (data == "deleted") {
+              swal(
+                "Payment Deleted!",
+                "Successfully deleted a payment.",
+                "success"
+              );
+            } else {
+              console.log("ayay");
+              var data2 = JSON.parse(data);
+              swal(
+                "Amount Reverted : ₱" +
+                  data2.amount
+                    .toFixed(2)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                "Remaining Money: ₱" +
+                  data2.cashOnHand
+                    .toFixed(2)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                  " | Transaction ID: " +
+                  data2.cashHistory,
+                "success"
+              );
+              $("#curCashOnHand").html(
+                data2.cashOnHand
+                  .toFixed(2)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              );
+            }
+
+            $.ajax({
+              url: "{{ route('employee_view_payment') }}",
+              method: "get",
+              data: { id: person_id },
+              dataType: "json",
+              success: function(data) {
+                payment_table = $("#payment_table").DataTable({
+                  footerCallback: function(row, data, start, end, display) {
+                    var api = this.api(),
+                      data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                      return typeof i == "string"
+                        ? i.replace(/[\₱,]/g, "") * 1
+                        : typeof i == "number"
+                        ? i
+                        : 0;
+                    };
+
+                    // Total over all pages
+                    total = api
+                      .column(1)
+                      .data()
+                      .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                      }, 0);
 
             $(document).on('click', '.release_ca', function(event){
                 event.preventDefault();
@@ -2710,158 +2682,518 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    data:{id:id},
-                    dataType:'json',
-                    success:function(data){
-                        if(data == 0){
-                            swal("Insufficient Balance!", "Contact Boss", "warning")
-                            return;
+                    {
+                      extend: "pdfHtml5",
+                      footer: true,
+                      exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5],
+                        modifier: {
+                          page: "current"
                         }
-                        else{
-                            $.ajax({
-                                url:"{{ route('release_ca_employee') }}",
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data:{id:id},
-                                dataType:'json',
-                                success:function(data){
-                                              $.ajax({
-                    url: "{{ route('employee_view_ca') }}",
-                    method: 'get',
-                    data:{id:person_id},
-                    dataType: 'json',
-                    success:function(data){
-                    
-                       // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
-
-                cash_advance_release =  $('#view_employee_ca_table').DataTable({
-                            "footerCallback": function ( row, data, start, end, display ) {
-                                var api = this.api(), data;
-                     
-                                // Remove the formatting to get integer data for summation
-                                var intVal = function ( i ) {
-                                    return typeof i == 'string' ?
-                                        i.replace(/[\₱,]/g, '')*1 :
-                                        typeof i == 'number' ?
-                                            i : 0;
-                                };
-                     
-                                // Total over all pages
-                                total = api
-                                    .column( 1 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Total over this page
-                                pageTotal = api
-                                    .column( 1, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
-                     
-                                // Update footer
-                                $( api.column( 1 ).footer() ).html(
-                                    'Total: <br>₱' + number_format(pageTotal,2)
-                                );
-                            },
-                            dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    title: $('#view_dtr_name').val(),
-                                    exportOptions: {
-                                        columns: [ 0, 1, 2, 3, 4 ]
-                                    },
-                                    customize: function ( win ) {
-                                        $(win.document.body)
-                                            .css( 'font-size', '10pt' );
-                     
-                                        $(win.document.body).find( 'table' )
-                                            .addClass( 'compact' )
-                                            .css( 'font-size', 'inherit' );
-                                    },
-                                    footer: true
-                                },
-                                { 
-                                    extend: 'pdfHtml5', 
-                                    title: $('#view_dtr_name').val(),
-                                    footer: true,
-                                    exportOptions: { 
-                                        columns: [ 0, 1, 2, 3, 4 ]
-                                    },
-                                    customize: function(doc) {
-                                        doc.styles.tableHeader.fontSize = 8;  
-                                        doc.styles.tableFooter.fontSize = 8;   
-                                        doc.defaultStyle.fontSize = 8; doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                                    }  
-                                }
-                            ],
-                            order: [[ 2, "desc" ]],
-                            bDestroy: true,
-                            data: data.data,
-                            columns:[
-                                {data: 'reason', name: 'reason'},
-                                {data: 'amount', name: 'amount'},
-                                 {data: 'created_at', name: 'created_at'},
-                                {data: 'status', name: 'status'},
-                                {data: 'released_by', name: 'released_by'},
-                                {data: "action", orderable:false,searchable:false}
-                            ]
-                        }); 
-                        
+                      },
+                      customize: function(doc) {
+                        doc.styles.tableHeader.fontSize = 8;
+                        doc.styles.tableFooter.fontSize = 8;
+                        doc.defaultStyle.fontSize = 8;
+                        doc.content[1].table.widths = Array(
+                          doc.content[1].table.body[0].length + 1
+                        )
+                          .join("*")
+                          .split("");
+                      }
                     }
+                  ],
+                  order: [[2, "desc"]],
+                  bDestroy: true,
+                  data: data.data,
+                  columns: [
+                    { data: "paymentmethod", name: "paymentmethod" },
+                    { data: "paymentamount", name: "paymentamount" },
+                    { data: "created_at", name: "created_at" },
+                    { data: "checknumber", name: "checknumber" },
+                    { data: "remarks", name: "remarks" },
+                    { data: "r_balance", name: "r_balance" },
+                    { data: "received_by", name: "received_by" },
+                    { data: "action", orderable: false, searchable: false }
+                  ]
                 });
- swal("Cash Released!", "Remaining Balance: ₱"+data.cashOnHand.toFixed(2)+" | Transaction ID: "+data.cashHistory, "success")
-                                    $('#curCashOnHand').html(data.cashOnHand.toFixed(2));
-                          
-                                        }
-
-                                    });
-                                   
-                        }
-                    }
-                })
-                
+              }
             });
-
-
-            $('#employee_id').select2({
-               dropdownParent: $('#dtr_modal'),
-               placeholder: 'Select an employee'
-            });
-            $('#employee_ca').select2({
-               dropdownParent: $('#employee_ca_modal'),
-               placeholder: 'Select an employee'
-            });
-
-            $("#month").datepicker( {
-                changeMonth: true,
-                changeYear: true,
-                showButtonPanel: true,
-                dateFormat: 'MM, yy',
-                beforeShow: function(){
-                    $(".ui-datepicker").css('font-size', 18);
-                },
-                onClose: function(dateText, inst) { 
-                    $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                }
-            });
-
-            $('#employee_payment_id').select2({
-                dropdownParent: $('#payment_modal'),
-                placeholder: 'Select an employee'
-            });
-            $('#paymentmethod').select2({
-                dropdownParent: $('#payment_modal'),
-                placeholder: 'Select a type of payment'
-            });
-
-    
+          }
         });
-    </script>
+      }
+    });
+  });
+
+  // PRINT DTR
+
+  $("#print_dtr").click(function(event) {
+    event.preventDefault();
+    $("#add_dtr").trigger("click");
+    $("#print_form").trigger("click");
+  });
+
+  $("#print_form").click(function(event) {
+    $("#employee_id_clone").val($("#employee_id option:selected").text());
+    $("#role_clone").val($("#role").val());
+    $("#overtime_clone").val($("#overtime").val());
+    $("#rate_clone").val($("#rate").val());
+    $("#num_hours_clone").val($("#num_hours").val());
+    $("#salary_clone").val($("#salary").val());
+    $("#bonus_clone").val($("#bonus").val());
+    $("#balance_clone").val($("#emp_balance").val());
+    $("#partial_payment_clone").val($("#p_payment").val());
+    $("#remaining_balance_clone").val($("#emp_rbalance").val());
+  });
+
+  // END PRINT DTR
+
+  // PRINT CA
+
+  $("#print_ca").click(function(event) {
+    event.preventDefault();
+    $("#add_cash_advance").trigger("click");
+    $("#print_form1").trigger("click");
+  });
+
+  $("#print_form1").click(function(event) {
+    $("#customer_id_clone").val($("#employee_ca option:selected").text());
+    $("#reason_clone").val($("#reason").val());
+    $("#amount_clone").val($("#amount").val());
+    $("#balance1_clone").val($("#balance").val());
+    $("#received_clone").val($("#received").val());
+    $("#month_clone").val($("#month").val());
+  });
+
+  // END PRINT CA
+
+  // PRINT PAYMENT
+
+  $("#print_balance_payment").click(function(event) {
+    event.preventDefault();
+    $("#add_payment").trigger("click");
+    $("#print_balance_form").trigger("click");
+  });
+
+  $("#print_balance_form").click(function(event) {
+    $("#customer_id1_clone").val(
+      $("#employee_payment_id option:selected").text()
+    );
+    $("#paymentmethod_clone").val($("#paymentmethod option:selected").text());
+    $("#checknumber_clone").val($("#checknumber").val());
+    $("#amount2_clone").val($("#amount_payment").val());
+    $("#balance2_clone").val($("#balancepayment").val());
+    $("#remarks_clone").val($("#remarks").val());
+  });
+
+  // END PRINT PAYMENT
+
+  function addCommas(nStr) {
+    nStr += "";
+    x = nStr.split(".");
+    x1 = x[0];
+    x2 = x.length > 1 ? "." + x[1] : "";
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, "$1" + "," + "$2");
+    }
+    return x1 + x2;
+  }
+
+  $(document).on("click", ".view_dtr", function(event) {
+    event.preventDefault();
+    var id = $(this).attr("id");
+    idmain = id;
+    person_id = id;
+
+    $.ajax({
+      url: "/refresh_view_total",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        total = addCommas(data);
+      }
+    });
+    $.ajax({
+      url: "/check_employee",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        if (data.balance == 0 || data.balance == null) {
+          $("#balance_view").html("Balance: ₱ 0.00");
+        } else {
+          $("#balance_view").html(
+            "Balance: ₱" +
+              data.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          );
+        }
+      }
+    });
+    $.ajax({
+      url: "{{ route('refresh_view_dtr') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        fname = data.data[0].fname;
+        mname = data.data[0].mname;
+        lname = data.data[0].lname;
+        role = data.data[0].role;
+        $(".modal_title_dtr").text(
+          data.data[0].fname +
+            " " +
+            data.data[0].mname +
+            " " +
+            data.data[0].lname +
+            " (" +
+            data.data[0].role +
+            ")  Pending Salary: ₱" +
+            total
+        );
+
+        $("#view_dtr_name").val(
+          fname +
+            " " +
+            mname +
+            " " +
+            lname +
+            " (" +
+            role +
+            ")  Pending Salary: ₱" +
+            total
+        );
+
+        dtr_info = $("#view_dtr_table").DataTable({
+          footerCallback: function(row, data, start, end, display) {
+            var api = this.api(),
+              data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+              return typeof i == "string"
+                ? i.replace(/[\₱,]/g, "") * 1
+                : typeof i == "number"
+                ? i
+                : 0;
+            };
+
+            // Total over all pages
+            total = api
+              .column(7)
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal = api
+              .column(7, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal1 = api
+              .column(7, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(7).footer()).html(
+              "Total: <br>₱" + number_format(pageTotal, 2)
+            );
+          },
+          dom: "Blfrtip",
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          bDestroy: true,
+          buttons: [
+            {
+              extend: "print",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                modifier: {
+                  page: "current"
+                }
+              },
+              title: $("#view_dtr_name").val(),
+              customize: function(win) {
+                $(win.document.body).css("font-size", "10pt");
+
+                $(win.document.body)
+                  .find("table")
+                  .addClass("compact")
+                  .css("font-size", "inherit");
+
+                $(win.document.body)
+                  .find("h1")
+                  .css("font-size", "15pt");
+              },
+              footer: true
+            },
+            {
+              extend: "pdfHtml5",
+              title: $("#view_dtr_name").val(),
+              footer: true,
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                modifier: {
+                  page: "current"
+                }
+              },
+              customize: function(doc) {
+                doc.styles.tableHeader.fontSize = 8;
+                doc.styles.tableFooter.fontSize = 8;
+                doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10
+                doc.content[1].table.widths = Array(
+                  doc.content[1].table.body[0].length + 1
+                )
+                  .join("*")
+                  .split("");
+              }
+            }
+          ],
+          columnDefs: [
+            {
+              targets: "_all", // your case first column
+              className: "text-center"
+            }
+          ],
+          data: data.data,
+          columns: [
+            { data: "overtime", name: "overtime" },
+            { data: "num_hours", name: "num_hours" },
+            {
+              data: "created_at",
+              name: "created_at",
+              type: "date",
+              render: function(value) {
+                var ts = new Date(value);
+
+                return ts.toDateString() + " " + ts.toLocaleTimeString();
+              }
+            },
+            { data: "bonus", name: "bonus" },
+            { data: "dtr_balance", name: "dtr_balance" },
+            { data: "p_payment", name: "p_payment" },
+            { data: "r_balance", name: "r_balance" },
+            { data: "salary", name: "salary" },
+            { data: "status", name: "status" },
+            { data: "released_by", name: "released_by" },
+            { data: "action", orderable: false, searchable: false }
+          ]
+        });
+        $("#dtr_view_modal").modal("show");
+      }
+    });
+  });
+
+  $("#employee_ca_modal").on("hidden.bs.modal", function(e) {
+    $(this)
+      .find("input,textarea,select")
+      .val("")
+      .end();
+  });
+
+  $("#dtr_modal").on("hidden.bs.modal", function(e) {
+    $(this)
+      .find("input,textarea,select")
+      .val("")
+      .end();
+
+    $("#employee_id").select2("enable");
+    trig_update = 0;
+  });
+
+  //CASH ADVANCE datatable ends here
+
+  $(document).on("click", ".release_ca", function(event) {
+    event.preventDefault();
+    id = $(this).attr("id");
+    $.ajax({
+      url: "{{ route('check_balance_user') }}",
+      method: "POST",
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        if (data == 0) {
+          swal("Insufficient Balance!", "Contact Boss", "warning");
+          return;
+        } else {
+          $.ajax({
+            url: "{{ route('release_ca_employee') }}",
+            method: "POST",
+            headers: {
+              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            },
+            data: { id: id },
+            dataType: "json",
+            success: function(data) {
+              $.ajax({
+                url: "{{ route('employee_view_ca') }}",
+                method: "get",
+                data: { id: person_id },
+                dataType: "json",
+                success: function(data) {
+                  // $('.modal_title_ca').text(data.data[0].fname + " " + data.data[0].mname + " " + data.data[0].lname);
+
+                  cash_advance_release = $("#view_employee_ca_table").DataTable(
+                    {
+                      footerCallback: function(row, data, start, end, display) {
+                        var api = this.api(),
+                          data;
+
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function(i) {
+                          return typeof i == "string"
+                            ? i.replace(/[\₱,]/g, "") * 1
+                            : typeof i == "number"
+                            ? i
+                            : 0;
+                        };
+
+                        // Total over all pages
+                        total = api
+                          .column(1)
+                          .data()
+                          .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                          }, 0);
+
+                        // Total over this page
+                        pageTotal = api
+                          .column(1, { page: "current" })
+                          .data()
+                          .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                          }, 0);
+
+                        // Update footer
+                        $(api.column(1).footer()).html(
+                          "Total: <br>₱" + number_format(pageTotal, 2)
+                        );
+                      },
+                      dom: "Blfrtip",
+                      lengthMenu: [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "All"]
+                      ],
+                      buttons: [
+                        {
+                          extend: "print",
+                          title: $("#view_dtr_name").val(),
+                          exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                            modifier: {
+                              page: "current"
+                            }
+                          },
+                          customize: function(win) {
+                            $(win.document.body).css("font-size", "10pt");
+
+                            $(win.document.body)
+                              .find("table")
+                              .addClass("compact")
+                              .css("font-size", "inherit");
+                          },
+                          footer: true
+                        },
+                        {
+                          extend: "pdfHtml5",
+                          title: $("#view_dtr_name").val(),
+                          footer: true,
+                          exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                            modifier: {
+                              page: "current"
+                            }
+                          },
+                          customize: function(doc) {
+                            doc.styles.tableHeader.fontSize = 8;
+                            doc.styles.tableFooter.fontSize = 8;
+                            doc.defaultStyle.fontSize = 8;
+                            doc.content[1].table.widths = Array(
+                              doc.content[1].table.body[0].length + 1
+                            )
+                              .join("*")
+                              .split("");
+                          }
+                        }
+                      ],
+                      order: [[2, "desc"]],
+                      bDestroy: true,
+                      data: data.data,
+                      columns: [
+                        { data: "reason", name: "reason" },
+                        { data: "amount", name: "amount" },
+                        { data: "created_at", name: "created_at" },
+                        { data: "status", name: "status" },
+                        { data: "released_by", name: "released_by" },
+                        { data: "action", orderable: false, searchable: false }
+                      ]
+                    }
+                  );
+                }
+              });
+              swal(
+                "Cash Released!",
+                "Remaining Balance: ₱" +
+                  data.cashOnHand.toFixed(2) +
+                  " | Transaction ID: " +
+                  data.cashHistory,
+                "success"
+              );
+              $("#curCashOnHand").html(data.cashOnHand.toFixed(2));
+            }
+          });
+        }
+      }
+    });
+  });
+
+  $("#employee_id").select2({
+    dropdownParent: $("#dtr_modal"),
+    placeholder: "Select an employee"
+  });
+  $("#employee_ca").select2({
+    dropdownParent: $("#employee_ca_modal"),
+    placeholder: "Select an employee"
+  });
+
+  $("#month").datepicker({
+    changeMonth: true,
+    changeYear: true,
+    showButtonPanel: true,
+    dateFormat: "MM, yy",
+    beforeShow: function() {
+      $(".ui-datepicker").css("font-size", 18);
+    },
+    onClose: function(dateText, inst) {
+      $(this).datepicker(
+        "setDate",
+        new Date(inst.selectedYear, inst.selectedMonth, 1)
+      );
+    }
+  });
+
+  $("#employee_payment_id").select2({
+    dropdownParent: $("#payment_modal"),
+    placeholder: "Select an employee"
+  });
+  $("#paymentmethod").select2({
+    dropdownParent: $("#payment_modal"),
+    placeholder: "Select a type of payment"
+  });
+});
+</script>
 @endsection

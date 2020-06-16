@@ -249,899 +249,998 @@
 @endsection
 
 @section('script')
-    <script>
-    	var deliveriestable;
-    	var od_date_from;
-    	var od_date_to;
-        $(document).on("click","#link",function(){
-            $("#bod").toggleClass('overlay-open');
-        });
+<script>
+var deliveriestable;
+var od_date_from;
+var od_date_to;
+$(document).on("click", "#link", function() {
+  $("#bod").toggleClass("overlay-open");
+});
 
-        $(document).ready(function() {
+$(document).ready(function() {
+  document.title = "M-Agri - Outbound Deliveries";
 
-		document.title = "M-Agri - Outbound Deliveries";
+  $($.fn.dataTable.tables(true)).css("width", "100%");
+  $($.fn.dataTable.tables(true))
+    .DataTable()
+    .columns.adjust()
+    .draw();
 
-		$($.fn.dataTable.tables( true ) ).css('width', '100%');
-        $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
+  $.extend($.fn.dataTable.defaults, {
+    language: {
+      processing: "Loading.. Please wait"
+    }
+  });
 
-            $.extend( $.fn.dataTable.defaults, {
-                "language": {
-                    processing: 'Loading.. Please wait'
+  //OUTBOUND DELIVERIES datatable starts here
+  $("#od_modal").on("hidden.bs.modal", function(e) {
+    $(this)
+      .find("input,textarea,select")
+      .val("")
+      .end()
+      .find("input[type=checkbox], input[type=radio]")
+      .prop("checked", "")
+      .end();
+  });
+
+  function number_format(number, decimals, dec_point, thousands_sep) {
+    // Strip all characters but numerical ones.
+    number = (number + "").replace(/[^0-9+\-Ee.]/g, "");
+    var n = !isFinite(+number) ? 0 : +number,
+      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+      sep = typeof thousands_sep == "undefined" ? "," : thousands_sep,
+      dec = typeof dec_point == "undefined" ? "." : dec_point,
+      s = "",
+      toFixedFix = function(n, prec) {
+        var k = Math.pow(10, prec);
+        return "" + Math.round(n * k) / k;
+      };
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec) : "" + Math.round(n)).split(".");
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || "").length < prec) {
+      s[1] = s[1] || "";
+      s[1] += new Array(prec - s[1].length + 1).join("0");
+    }
+    return s.join(dec);
+  }
+
+  deliveriestable = $("#deliverytable").DataTable({
+    footerCallback: function(row, data, start, end, display) {
+      var api = this.api(),
+        data;
+
+      // Remove the formatting to get integer data for summation
+      var intVal = function(i) {
+        return typeof i == "string"
+          ? i.replace(/[\₱,]/g, "") * 1
+          : typeof i == "number"
+          ? i
+          : 0;
+      };
+
+      // Total over all pages
+      total = api
+        .column(8)
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Total over this page
+      pageTotal = api
+        .column(8, { page: "current" })
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Update footer
+      $(api.column(8).footer()).html(
+        "Total: <br>₱" + number_format(pageTotal, 2)
+      );
+
+      // Total over this page
+      pageTotal1 = api
+        .column(7, { page: "current" })
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Update footer
+      $(api.column(7).footer()).html(
+        "Total: <br>" + number_format(pageTotal1, 2) + " kg"
+      );
+
+      // Total over this page
+      pageTotal1 = api
+        .column(6, { page: "current" })
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Update footer
+      $(api.column(6).footer()).html(
+        "Total: <br>" + number_format(pageTotal1, 2) + " L"
+      );
+    },
+    dom: "Blfrtip",
+    lengthMenu: [
+      [10, 25, 50, -1],
+      [10, 25, 50, "All"]
+    ],
+    buttons: [
+      {
+        extend: "print",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(win) {
+          $(win.document.body).css("font-size", "10pt");
+
+          $(win.document.body)
+            .find("table")
+            .addClass("compact")
+            .css("font-size", "inherit");
+        },
+        footer: true
+      },
+      {
+        extend: "pdfHtml5",
+        footer: true,
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(doc) {
+          doc.styles.tableHeader.fontSize = 8;
+          doc.styles.tableFooter.fontSize = 8;
+          doc.defaultStyle.fontSize = 8;
+        }
+      }
+    ],
+    paging: true,
+    pageLength: 10,
+    order: [],
+    ajax: {
+      url: "{{ route('refresh_deliveries') }}",
+      // dataType: 'text',
+      type: "post",
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      data: {
+        date_from: od_date_from,
+        date_to: od_date_to
+      }
+    },
+    processing: true,
+    columns: [
+      { data: "outboundTicket" },
+      { data: "commodity_name" },
+      { data: "destination" },
+      { data: "name" },
+      {
+        data: "fname",
+        render: function(data, type, full, meta) {
+          return full.fname + " " + full.mname + " " + full.lname;
+        }
+      },
+      { data: "plateno" },
+      { data: "fuel_liters" },
+      { data: "kilos" },
+      { data: "allowance" },
+      { data: "created_at" },
+      { data: "action", orderable: false, searchable: false }
+    ]
+  });
+  //START OF DATE RANGE FILTER
+  $("#od_datepicker_from")
+    .datepicker({
+      showOn: "button",
+      buttonImage: "assets/images/calendar2.png",
+      buttonImageOnly: false,
+      onSelect: function(date) {
+        minDateFilter = new Date(date).getTime();
+        var df = new Date(date);
+        od_date_from =
+          df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
+        $("#deliverytable")
+          .dataTable()
+          .fnDestroy();
+        deliveriestable = $("#deliverytable").DataTable({
+          footerCallback: function(row, data, start, end, display) {
+            var api = this.api(),
+              data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+              return typeof i == "string"
+                ? i.replace(/[\₱,]/g, "") * 1
+                : typeof i == "number"
+                ? i
+                : 0;
+            };
+
+            // Total over all pages
+            total = api
+              .column(8)
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal = api
+              .column(8, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(8).footer()).html(
+              "Total: <br>₱" + number_format(pageTotal, 2)
+            );
+
+            // Total over this page
+            pageTotal1 = api
+              .column(7, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(7).footer()).html(
+              "Total: <br>" + number_format(pageTotal1, 2) + " kg"
+            );
+
+            // Total over this page
+            pageTotal1 = api
+              .column(6, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(6).footer()).html(
+              "Total: <br>" + number_format(pageTotal1, 2) + " L"
+            );
+          },
+          dom: "Blfrtip",
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          buttons: [
+            {
+              extend: "print",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                modifier: {
+                  page: "current"
                 }
-            });
+              },
+              customize: function(win) {
+                $(win.document.body).css("font-size", "10pt");
 
-			//OUTBOUND DELIVERIES datatable starts here
-			$('#od_modal').on('hidden.bs.modal', function (e) {
-				$(this)
-				.find("input,textarea,select")
-					.val('')
-					.end()
-				.find("input[type=checkbox], input[type=radio]")
-					.prop("checked", "")
-					.end();
-			})
-
-			function number_format(number, decimals, dec_point, thousands_sep) {
-                // Strip all characters but numerical ones.
-                number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
-                var n = !isFinite(+number) ? 0 : +number,
-                    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-                    sep = (typeof thousands_sep == 'undefined') ? ',' : thousands_sep,
-                    dec = (typeof dec_point == 'undefined') ? '.' : dec_point,
-                    s = '',
-                    toFixedFix = function (n, prec) {
-                        var k = Math.pow(10, prec);
-                        return '' + Math.round(n * k) / k;
-                    };
-                // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-                s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-                if (s[0].length > 3) {
-                    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+                $(win.document.body)
+                  .find("table")
+                  .addClass("compact")
+                  .css("font-size", "inherit");
+              },
+              footer: true
+            },
+            {
+              extend: "pdfHtml5",
+              footer: true,
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                modifier: {
+                  page: "current"
                 }
-                if ((s[1] || '').length < prec) {
-                    s[1] = s[1] || '';
-                    s[1] += new Array(prec - s[1].length + 1).join('0');
-                }
-                return s.join(dec);
+              },
+              customize: function(doc) {
+                doc.styles.tableHeader.fontSize = 8;
+                doc.styles.tableFooter.fontSize = 8;
+                doc.defaultStyle.fontSize = 8;
+              }
             }
-
-                    
-			deliveriestable = $('#deliverytable').DataTable({
-				"footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i == 'string' ?
-                            i.replace(/[\₱,]/g, '')*1 :
-                            typeof i == 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    total = api
-                        .column( 8 )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    pageTotal = api
-                        .column( 8, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-
-					// Total over this page
-                    pageTotal1 = api
-                        .column( 7, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 7 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
-                    );
-
-                    // Total over this page
-                    pageTotal1 = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
-                    );
-                },
-				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-				buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; 
-						}  
-					}
-                ],
-                paging: true,
-                pageLength: 10,
-                order:[],
-                ajax:{
-                   
-                        url: "{{ route('refresh_deliveries') }}",
-                        // dataType: 'text',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                          },
-                        data: {
-                            date_from: od_date_from,
-                            date_to: od_date_to,
-                        },
-                       
-                  
-                },
-                processing:true,
-				columns: [
-					{data: 'outboundTicket'},
-					{data: 'commodity_name'},
-					{data: 'destination'},
-					{data: 'name'},
-					{data:'fname',
-						render: function(data, type, full, meta){
-							return full.fname +" "+ full.mname+" "+full.lname;
-						}
-					},
-					{data: 'plateno'},
-					{data: 'fuel_liters'},
-					{data: 'kilos'},
-					{data: 'allowance'},
-					{data: 'created_at'},
-					{data: "action", orderable:false,searchable:false}
-				]
-			});
-			//START OF DATE RANGE FILTER
-			$("#od_datepicker_from").datepicker({
-                showOn: "button",
-                buttonImage: 'assets/images/calendar2.png',
-                buttonImageOnly: false,
-                "onSelect": function(date) {  
-				minDateFilter = new Date(date).getTime();
-				var df= new Date(date);
-				od_date_from= df.getFullYear() + "-" + (df.getMonth() + 1) + "-" + df.getDate();
-				$('#deliverytable').dataTable().fnDestroy();
-				deliveriestable = $('#deliverytable').DataTable({
-				"footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i == 'string' ?
-                            i.replace(/[\₱,]/g, '')*1 :
-                            typeof i == 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    total = api
-                        .column( 8 )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    pageTotal = api
-                        .column( 8, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-
-					// Total over this page
-					pageTotal1 = api
-						.column( 7, { page: 'current'} )
-						.data()
-						.reduce( function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0 );
-
-					// Update footer
-					$( api.column( 7 ).footer() ).html(
-						'Total: <br>' + number_format(pageTotal1,2) + ' kg'
-					);
-
-					 // Total over this page
-                    pageTotal1 = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
-                    );
-                },
-				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-				buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; 
-						}  
-                        }
-                ],
-                paging: true,
-                pageLength: 10,
-                order:[],
-                ajax:{
-                   
-                        url: "{{ route('refresh_deliveries') }}",
-                        // dataType: 'text',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                          },
-                        data: {
-                            date_from: od_date_from,
-                            date_to: od_date_to,
-                        },
-                       
-                  
-                },
-                processing:true,
-				columns: [
-					{data: 'outboundTicket'},
-					{data: 'commodity_name'},
-					{data: 'destination'},
-					{data: 'name'},
-					{data:'fname',
-						render: function(data, type, full, meta){
-							return full.fname +" "+ full.mname+" "+full.lname;
-						}
-					},
-					{data: 'plateno'},
-					{data: 'fuel_liters'},
-					{data: 'kilos'},
-					{data: 'allowance'},
-					{data: 'created_at'},
-					{data: "action", orderable:false,searchable:false}
-				]
-			});
-
-                }
-              }).keyup(function() {
-              	od_datepicker_from="";
-                $('#deliverytable').dataTable().fnDestroy();
-				deliveriestable = $('#deliverytable').DataTable({
-				"footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i == 'string' ?
-                            i.replace(/[\₱,]/g, '')*1 :
-                            typeof i == 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    total = api
-                        .column( 8 )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    pageTotal = api
-                        .column( 8, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-
-					// Total over this page
-					pageTotal1 = api
-						.column( 7, { page: 'current'} )
-						.data()
-						.reduce( function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0 );
-
-					// Update footer
-					$( api.column( 7 ).footer() ).html(
-						'Total: <br>' + number_format(pageTotal1,2) + ' kg'
-					);
-
-					 // Total over this page
-                    pageTotal1 = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
-                    );
-                },
-				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-				buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; 
-						}  
-					}
-                ],
-                paging: true,
-                pageLength: 10,
-                order:[],
-                ajax:{
-                   
-                        url: "{{ route('refresh_deliveries') }}",
-                        // dataType: 'text',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                          },
-                        data: {
-                            date_from: od_date_from,
-                            date_to: od_date_to,
-                        },
-                       
-                  
-                },
-                processing:true,
-       
-				columns: [
-					{data: 'outboundTicket'},
-					{data: 'commodity_name'},
-					{data: 'destination'},
-					{data: 'name'},
-					{data:'fname',
-						render: function(data, type, full, meta){
-							return full.fname +" "+ full.mname+" "+full.lname;
-						}
-					},
-					{data: 'plateno'},
-					{data: 'fuel_liters'},
-					{data: 'allowance'},
-					{data: 'kilos'},
-					{data: 'created_at'},
-					{data: "action", orderable:false,searchable:false}
-				]
-			});
-              });
-
-              $("#od_datepicker_to").datepicker({
-                showOn: "button",
-                buttonImage: 'assets/images/calendar2.png',
-                buttonImageOnly: false,
-                "onSelect": function(date) {
-				maxDateFilter = new Date(date).getTime();
-				//oTable.fnDraw();
-				var dt= new Date(date);
-				od_date_to =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-				$('#deliverytable').dataTable().fnDestroy();
-				deliveriestable = $('#deliverytable').DataTable({
-				"footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i == 'string' ?
-                            i.replace(/[\₱,]/g, '')*1 :
-                            typeof i == 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    total = api
-                        .column( 8 )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    pageTotal = api
-                        .column( 8, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-
-					// Total over this page
-                    pageTotal1 = api
-                        .column( 7, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 7 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
-                    );
-
-                     // Total over this page
-                    pageTotal1 = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
-                    );
-                },
-				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-				buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; 
-						}  
-					}
-                ],
-                paging: true,
-                pageLength: 10,
-                order:[],
-                ajax:{
-                   
-                        url: "{{ route('refresh_deliveries') }}",
-                        // dataType: 'text',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                          },
-                        data: {
-                            date_from: od_date_from,
-                            date_to: od_date_to,
-                        },
-                       
-                  
-                },
-                processing:true,
-				columns: [
-					{data: 'outboundTicket'},
-					{data: 'commodity_name'},
-					{data: 'destination'},
-					{data: 'name'},
-					{data:'fname',
-						render: function(data, type, full, meta){
-							return full.fname +" "+ full.mname+" "+full.lname;
-						}
-					},
-					{data: 'plateno', name: 'plateno'},
-					{data: 'fuel_liters', name: 'fuel_liters'},
-					{data: 'kilos', name:'kilos'},
-					{data: 'allowance', name: 'allowance'},
-					{data: 'created_at', name: 'created_at'},
-					{data: "action", orderable:false,searchable:false}
-				]
-			});
-                }
-              }).keyup(function() {
-              	od_date_to="";
-              	 
-                $('#deliverytable').dataTable().fnDestroy();
-				deliveriestable = $('#deliverytable').DataTable({
-				"footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i == 'string' ?
-                            i.replace(/[\₱,]/g, '')*1 :
-                            typeof i == 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    total = api
-                        .column( 8 )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    pageTotal = api
-                        .column( 8, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 8 ).footer() ).html(
-                        'Total: <br>₱' + number_format(pageTotal,2)
-                    );
-
-					// Total over this page
-                    pageTotal1 = api
-                        .column( 7, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 7 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' kg'
-                    );
-
-                     // Total over this page
-                    pageTotal1 = api
-                        .column( 6, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 6 ).footer() ).html(
-                        'Total: <br>' + number_format(pageTotal1,2) + ' L'
-                    );
-                },
-				dom: 'Blfrtip', "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-				buttons: [
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' );
-         
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css( 'font-size', 'inherit' );
-                        },
-                        footer: true
-                    },
-					{ 
-						extend: 'pdfHtml5', 
-						footer: true,
-						exportOptions: { 
-							columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-						},
-						customize: function(doc) {
-							doc.styles.tableHeader.fontSize = 8;  
-							doc.styles.tableFooter.fontSize = 8;   
-							doc.defaultStyle.fontSize = 8; 
-						}  
-					}
-                ],
-                paging: true,
-                pageLength: 10,
-                order:[],
-                ajax:{
-                   
-                        url: "{{ route('refresh_deliveries') }}",
-                        // dataType: 'text',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                          },
-                        data: {
-                            date_from: od_date_from,
-                            date_to: od_date_to,
-                        },
-                       
-                  
-                },
-                processing:true,
-				columns: [
-					{data: 'outboundTicket'},
-					{data: 'commodity_name'},
-					{data: 'destination'},
-					{data: 'name'},
-					{data:'fname',
-						render: function(data, type, full, meta){
-							return full.fname +" "+ full.mname+" "+full.lname;
-						}
-					},
-					{data: 'plateno'},
-					{data: 'fuel_liters'},
-					{data: 'kilos'},
-					{data: 'allowance'},
-					{data: 'created_at'},
-					{data: "action", orderable:false,searchable:false}
-				]
-			});
-              });
-			//END OF DATE RANGE FILTER
-			function refresh_delivery_table(){
-				deliveriestable.ajax.reload(); //reload datatable ajax
-			}
-
-			$(document).on('click','.open_od_modal', function(){
-				$('.modal_title').text('Add Delivery');
-				$('#button_action').val('add');
-				$.ajax({
-					url:"{{ route('refresh_id') }}",
-					method: 'get',
-					data: { temp: 'temp' },
-					dataType:'json',
-					success:function(data){
-						var t=0;
-						if(data[0].temp!=null){
-							t = data[0].temp;
-						}
-						$("#driver_id").val('').trigger('change');
-						$("#company").val('').trigger('change');
-						$("#commodity").val('').trigger('change');
-						$("#plateno").val('').trigger('change');
-						var a = parseInt(t);
-						var b = a + 1;
-						var c = new Date();
-						var twoDigitMonth = ((c.getMonth().length+1) == 1)? (c.getMonth()+1) : '0' + (c.getMonth()+1);
-						var currentDate = c.getFullYear()+ twoDigitMonth + c.getDate();
-						$('#ticket').val(currentDate+b);
-						$('#od_modal').modal('show');
-					}
-				})
-			});
-			mainMouseDownOne();
-    function mainMouseDownOne() {
-			$('#add_delivery').one('click',function(event){
-				var input = $(this);
-                var button =this;
-                button.disabled = true;
-                input.html('SAVING...');   
-				event.preventDefault();
-				$.ajax({
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					},
-					url:"{{ route('add_delivery') }}",
-					method: 'POST',
-					dataType:'text',
-					data: $('#od_form').serialize(),
-					success:function(data){
-						console.log(data);
-						dataparsed = $.parseJSON(data);
-						button.disabled = false;
-                        input.html('SAVE CHANGES');
-						mainMouseDownOne();
-						$("#driver_id").val('').trigger('change');
-						$("#company").val('').trigger('change');
-						$("#commodity").val('').trigger('change');
-						if(dataparsed!="Success"&&dataparsed!="Add"){
-                            swal("Cash Reverted!", "Cash On Hand: ₱"+dataparsed.cashOnHand.toFixed(2), "success")
-                            $('#curCashOnHand').html(dataparsed.cashOnHand.toFixed(2));
-                        }if(dataparsed=="Add"){
-                            swal("Success!", "Record has been added", "success")
-                        }if(dataparsed=="Success"){
-                            swal("Success!", "Record has been updated", "success")
-                        }
-						$('#od_modal').modal('hide');
-						refresh_delivery_table();
-					},
-					error: function(data){
-						mainMouseDownOne();
-						button.disabled = false;
-                        input.html('SAVE CHANGES');
-						swal("Oh no!", "Something went wrong, try again.", "error")
-					}
-				})
-			});
-	}
-
-			$("#print_od").click(function(event) {
-                event.preventDefault();
-                $("#add_delivery").trigger("click");
-                $("#print_form").trigger("click");
-            });
-
-            $("#print_form").click(function(event) {
-                $("#ticket_clone").val($("#ticket").val());
-                $("#commodity_clone").val($("#commodity option:selected").text());
-                $("#destination_clone").val($("#destination").val());
-                $("#driver_id_clone").val($("#driver_id option:selected").text());
-                $("#company_clone").val($("#company option:selected").text());
-                $("#plateno_clone").val($("#plateno option:selected").text());
-                $("#liter_clone").val($("#liter").val());
-                $("#kilos_clone").val($("#kilos").val());
-                $("#allowance_clone").val($("#allowance").val());
-            });
-
-
-			$(document).on('click', '.update_delivery', function(){
-				var id = $(this).attr("id");
-				$.ajax({
-					url:"{{ route('update_delivery') }}",
-					method: 'get',
-					data:{id:id},
-					dataType:'json',
-					success:function(data){
-						console.log("maoni",data);
-						$('#button_action').val('update');
-						$('#id').val(id);
-						$('#ticket').val(data.outboundTicket);
-						$('#destination').val(data.destination);
-						$("#driver_id").val(data.driver_id).trigger('change');
-						$("#company").val(data.company_id).trigger('change');
-						$("#commodity").val(data.commodity_id).trigger('change');
-						$("#plateno").val(data.plateno).trigger('change');
-						$('#liter').val(data.fuel_liters);
-						$('#kilos').val(data.kilos);
-						$('#allowance').val(data.allowance);
-						$('#od_modal').modal('show');
-						$('.modal_title').text('Update Delivery');
-						refresh_delivery_table();
-					}
-				})
-			});
-
-			$(document).on('click', '.delete_delivery', function(){
-				var id = $(this).attr('id');
-				swal({
-                    title: "Are you sure?",
-                    text: "Delete this record?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                }).then((willDelete) => {
-                if (willDelete) {
-					$.ajax({
-						url:"{{ route('delete_delivery') }}",
-						method: "get",
-						data:{id:id},
-						success:function(data){
-							dataparsed = $.parseJSON(data);
-                            console.log(dataparsed);
-                           if(dataparsed!="success"){
-                            swal("Cash Reverted!", "Cash On Hand: ₱"+dataparsed.cashOnHand.toFixed(2), "success")
-                            $('#curCashOnHand').html(dataparsed.cashOnHand.toFixed(2));
-                            }else{
-                                swal("Success!", "Record has been Deleted", "success")
-                            }
-							refresh_delivery_table();
-						}
-					})
-				}
-				})
-			});
-			//OUTBOUND DELIVERIES Datatable ends here
-
-			$('#plateno').select2({
-               dropdownParent: $('#od_modal'),
-               placeholder: 'Select a truck'
-            });
-
-            $('#driver_id').select2({
-                dropdownParent: $('#od_modal'),
-                 placeholder: 'Select a driver'
-            });
-            $('#commodity').select2({
-                dropdownParent: $('#od_modal'),
-                 placeholder: 'Select Commodity'
-            });
-            $('#company').select2({
-                dropdownParent: $('#od_modal'),
-                 placeholder: 'Select a company'
-            });
+          ],
+          paging: true,
+          pageLength: 10,
+          order: [],
+          ajax: {
+            url: "{{ route('refresh_deliveries') }}",
+            // dataType: 'text',
+            type: "post",
+            headers: {
+              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            },
+            data: {
+              date_from: od_date_from,
+              date_to: od_date_to
+            }
+          },
+          processing: true,
+          columns: [
+            { data: "outboundTicket" },
+            { data: "commodity_name" },
+            { data: "destination" },
+            { data: "name" },
+            {
+              data: "fname",
+              render: function(data, type, full, meta) {
+                return full.fname + " " + full.mname + " " + full.lname;
+              }
+            },
+            { data: "plateno" },
+            { data: "fuel_liters" },
+            { data: "kilos" },
+            { data: "allowance" },
+            { data: "created_at" },
+            { data: "action", orderable: false, searchable: false }
+          ]
         });
-    </script>
+      }
+    })
+    .keyup(function() {
+      od_datepicker_from = "";
+      $("#deliverytable")
+        .dataTable()
+        .fnDestroy();
+      deliveriestable = $("#deliverytable").DataTable({
+        footerCallback: function(row, data, start, end, display) {
+          var api = this.api(),
+            data;
+
+          // Remove the formatting to get integer data for summation
+          var intVal = function(i) {
+            return typeof i == "string"
+              ? i.replace(/[\₱,]/g, "") * 1
+              : typeof i == "number"
+              ? i
+              : 0;
+          };
+
+          // Total over all pages
+          total = api
+            .column(8)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Total over this page
+          pageTotal = api
+            .column(8, { page: "current" })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Update footer
+          $(api.column(8).footer()).html(
+            "Total: <br>₱" + number_format(pageTotal, 2)
+          );
+
+          // Total over this page
+          pageTotal1 = api
+            .column(7, { page: "current" })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Update footer
+          $(api.column(7).footer()).html(
+            "Total: <br>" + number_format(pageTotal1, 2) + " kg"
+          );
+
+          // Total over this page
+          pageTotal1 = api
+            .column(6, { page: "current" })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Update footer
+          $(api.column(6).footer()).html(
+            "Total: <br>" + number_format(pageTotal1, 2) + " L"
+          );
+        },
+        dom: "Blfrtip",
+        lengthMenu: [
+          [10, 25, 50, -1],
+          [10, 25, 50, "All"]
+        ],
+        buttons: [
+          {
+            extend: "print",
+            exportOptions: {
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              modifier: {
+                page: "current"
+              }
+            },
+            customize: function(win) {
+              $(win.document.body).css("font-size", "10pt");
+
+              $(win.document.body)
+                .find("table")
+                .addClass("compact")
+                .css("font-size", "inherit");
+            },
+            footer: true
+          },
+          {
+            extend: "pdfHtml5",
+            footer: true,
+            exportOptions: {
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              modifier: {
+                page: "current"
+              }
+            },
+            customize: function(doc) {
+              doc.styles.tableHeader.fontSize = 8;
+              doc.styles.tableFooter.fontSize = 8;
+              doc.defaultStyle.fontSize = 8;
+            }
+          }
+        ],
+        paging: true,
+        pageLength: 10,
+        order: [],
+        ajax: {
+          url: "{{ route('refresh_deliveries') }}",
+          // dataType: 'text',
+          type: "post",
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+          },
+          data: {
+            date_from: od_date_from,
+            date_to: od_date_to
+          }
+        },
+        processing: true,
+
+        columns: [
+          { data: "outboundTicket" },
+          { data: "commodity_name" },
+          { data: "destination" },
+          { data: "name" },
+          {
+            data: "fname",
+            render: function(data, type, full, meta) {
+              return full.fname + " " + full.mname + " " + full.lname;
+            }
+          },
+          { data: "plateno" },
+          { data: "fuel_liters" },
+          { data: "allowance" },
+          { data: "kilos" },
+          { data: "created_at" },
+          { data: "action", orderable: false, searchable: false }
+        ]
+      });
+    });
+
+  $("#od_datepicker_to")
+    .datepicker({
+      showOn: "button",
+      buttonImage: "assets/images/calendar2.png",
+      buttonImageOnly: false,
+      onSelect: function(date) {
+        maxDateFilter = new Date(date).getTime();
+        //oTable.fnDraw();
+        var dt = new Date(date);
+        od_date_to =
+          dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+        $("#deliverytable")
+          .dataTable()
+          .fnDestroy();
+        deliveriestable = $("#deliverytable").DataTable({
+          footerCallback: function(row, data, start, end, display) {
+            var api = this.api(),
+              data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+              return typeof i == "string"
+                ? i.replace(/[\₱,]/g, "") * 1
+                : typeof i == "number"
+                ? i
+                : 0;
+            };
+
+            // Total over all pages
+            total = api
+              .column(8)
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal = api
+              .column(8, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(8).footer()).html(
+              "Total: <br>₱" + number_format(pageTotal, 2)
+            );
+
+            // Total over this page
+            pageTotal1 = api
+              .column(7, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(7).footer()).html(
+              "Total: <br>" + number_format(pageTotal1, 2) + " kg"
+            );
+
+            // Total over this page
+            pageTotal1 = api
+              .column(6, { page: "current" })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(6).footer()).html(
+              "Total: <br>" + number_format(pageTotal1, 2) + " L"
+            );
+          },
+          dom: "Blfrtip",
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          buttons: [
+            {
+              extend: "print",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                modifier: {
+                  page: "current"
+                }
+              },
+              customize: function(win) {
+                $(win.document.body).css("font-size", "10pt");
+
+                $(win.document.body)
+                  .find("table")
+                  .addClass("compact")
+                  .css("font-size", "inherit");
+              },
+              footer: true
+            },
+            {
+              extend: "pdfHtml5",
+              footer: true,
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                modifier: {
+                  page: "current"
+                }
+              },
+              customize: function(doc) {
+                doc.styles.tableHeader.fontSize = 8;
+                doc.styles.tableFooter.fontSize = 8;
+                doc.defaultStyle.fontSize = 8;
+              }
+            }
+          ],
+          paging: true,
+          pageLength: 10,
+          order: [],
+          ajax: {
+            url: "{{ route('refresh_deliveries') }}",
+            // dataType: 'text',
+            type: "post",
+            headers: {
+              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            },
+            data: {
+              date_from: od_date_from,
+              date_to: od_date_to
+            }
+          },
+          processing: true,
+          columns: [
+            { data: "outboundTicket" },
+            { data: "commodity_name" },
+            { data: "destination" },
+            { data: "name" },
+            {
+              data: "fname",
+              render: function(data, type, full, meta) {
+                return full.fname + " " + full.mname + " " + full.lname;
+              }
+            },
+            { data: "plateno", name: "plateno" },
+            { data: "fuel_liters", name: "fuel_liters" },
+            { data: "kilos", name: "kilos" },
+            { data: "allowance", name: "allowance" },
+            { data: "created_at", name: "created_at" },
+            { data: "action", orderable: false, searchable: false }
+          ]
+        });
+      }
+    })
+    .keyup(function() {
+      od_date_to = "";
+
+      $("#deliverytable")
+        .dataTable()
+        .fnDestroy();
+      deliveriestable = $("#deliverytable").DataTable({
+        footerCallback: function(row, data, start, end, display) {
+          var api = this.api(),
+            data;
+
+          // Remove the formatting to get integer data for summation
+          var intVal = function(i) {
+            return typeof i == "string"
+              ? i.replace(/[\₱,]/g, "") * 1
+              : typeof i == "number"
+              ? i
+              : 0;
+          };
+
+          // Total over all pages
+          total = api
+            .column(8)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Total over this page
+          pageTotal = api
+            .column(8, { page: "current" })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Update footer
+          $(api.column(8).footer()).html(
+            "Total: <br>₱" + number_format(pageTotal, 2)
+          );
+
+          // Total over this page
+          pageTotal1 = api
+            .column(7, { page: "current" })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Update footer
+          $(api.column(7).footer()).html(
+            "Total: <br>" + number_format(pageTotal1, 2) + " kg"
+          );
+
+          // Total over this page
+          pageTotal1 = api
+            .column(6, { page: "current" })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Update footer
+          $(api.column(6).footer()).html(
+            "Total: <br>" + number_format(pageTotal1, 2) + " L"
+          );
+        },
+        dom: "Blfrtip",
+        lengthMenu: [
+          [10, 25, 50, -1],
+          [10, 25, 50, "All"]
+        ],
+        buttons: [
+          {
+            extend: "print",
+            exportOptions: {
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              modifier: {
+                page: "current"
+              }
+            },
+            customize: function(win) {
+              $(win.document.body).css("font-size", "10pt");
+
+              $(win.document.body)
+                .find("table")
+                .addClass("compact")
+                .css("font-size", "inherit");
+            },
+            footer: true
+          },
+          {
+            extend: "pdfHtml5",
+            footer: true,
+            exportOptions: {
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              modifier: {
+                page: "current"
+              }
+            },
+            customize: function(doc) {
+              doc.styles.tableHeader.fontSize = 8;
+              doc.styles.tableFooter.fontSize = 8;
+              doc.defaultStyle.fontSize = 8;
+            }
+          }
+        ],
+        paging: true,
+        pageLength: 10,
+        order: [],
+        ajax: {
+          url: "{{ route('refresh_deliveries') }}",
+          // dataType: 'text',
+          type: "post",
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+          },
+          data: {
+            date_from: od_date_from,
+            date_to: od_date_to
+          }
+        },
+        processing: true,
+        columns: [
+          { data: "outboundTicket" },
+          { data: "commodity_name" },
+          { data: "destination" },
+          { data: "name" },
+          {
+            data: "fname",
+            render: function(data, type, full, meta) {
+              return full.fname + " " + full.mname + " " + full.lname;
+            }
+          },
+          { data: "plateno" },
+          { data: "fuel_liters" },
+          { data: "kilos" },
+          { data: "allowance" },
+          { data: "created_at" },
+          { data: "action", orderable: false, searchable: false }
+        ]
+      });
+    });
+  //END OF DATE RANGE FILTER
+  function refresh_delivery_table() {
+    deliveriestable.ajax.reload(); //reload datatable ajax
+  }
+
+  $(document).on("click", ".open_od_modal", function() {
+    $(".modal_title").text("Add Delivery");
+    $("#button_action").val("add");
+    $.ajax({
+      url: "{{ route('refresh_id') }}",
+      method: "get",
+      data: { temp: "temp" },
+      dataType: "json",
+      success: function(data) {
+        var t = 0;
+        if (data[0].temp != null) {
+          t = data[0].temp;
+        }
+        $("#driver_id")
+          .val("")
+          .trigger("change");
+        $("#company")
+          .val("")
+          .trigger("change");
+        $("#commodity")
+          .val("")
+          .trigger("change");
+        $("#plateno")
+          .val("")
+          .trigger("change");
+        var a = parseInt(t);
+        var b = a + 1;
+        var c = new Date();
+        var twoDigitMonth =
+          c.getMonth().length + 1 == 1
+            ? c.getMonth() + 1
+            : "0" + (c.getMonth() + 1);
+        var currentDate = c.getFullYear() + twoDigitMonth + c.getDate();
+        $("#ticket").val(currentDate + b);
+        $("#od_modal").modal("show");
+      }
+    });
+  });
+  mainMouseDownOne();
+  function mainMouseDownOne() {
+    $("#add_delivery").one("click", function(event) {
+      var input = $(this);
+      var button = this;
+      button.disabled = true;
+      input.html("SAVING...");
+      event.preventDefault();
+      $.ajax({
+        headers: {
+          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        },
+        url: "{{ route('add_delivery') }}",
+        method: "POST",
+        dataType: "text",
+        data: $("#od_form").serialize(),
+        success: function(data) {
+          console.log(data);
+          dataparsed = $.parseJSON(data);
+          button.disabled = false;
+          input.html("SAVE CHANGES");
+          mainMouseDownOne();
+          $("#driver_id")
+            .val("")
+            .trigger("change");
+          $("#company")
+            .val("")
+            .trigger("change");
+          $("#commodity")
+            .val("")
+            .trigger("change");
+          if (dataparsed != "Success" && dataparsed != "Add") {
+            swal(
+              "Cash Reverted!",
+              "Cash On Hand: ₱" + dataparsed.cashOnHand.toFixed(2),
+              "success"
+            );
+            $("#curCashOnHand").html(dataparsed.cashOnHand.toFixed(2));
+          }
+          if (dataparsed == "Add") {
+            swal("Success!", "Record has been added", "success");
+          }
+          if (dataparsed == "Success") {
+            swal("Success!", "Record has been updated", "success");
+          }
+          $("#od_modal").modal("hide");
+          refresh_delivery_table();
+        },
+        error: function(data) {
+          mainMouseDownOne();
+          button.disabled = false;
+          input.html("SAVE CHANGES");
+          swal("Oh no!", "Something went wrong, try again.", "error");
+        }
+      });
+    });
+  }
+
+  $("#print_od").click(function(event) {
+    event.preventDefault();
+    $("#add_delivery").trigger("click");
+    $("#print_form").trigger("click");
+  });
+
+  $("#print_form").click(function(event) {
+    $("#ticket_clone").val($("#ticket").val());
+    $("#commodity_clone").val($("#commodity option:selected").text());
+    $("#destination_clone").val($("#destination").val());
+    $("#driver_id_clone").val($("#driver_id option:selected").text());
+    $("#company_clone").val($("#company option:selected").text());
+    $("#plateno_clone").val($("#plateno option:selected").text());
+    $("#liter_clone").val($("#liter").val());
+    $("#kilos_clone").val($("#kilos").val());
+    $("#allowance_clone").val($("#allowance").val());
+  });
+
+  $(document).on("click", ".update_delivery", function() {
+    var id = $(this).attr("id");
+    $.ajax({
+      url: "{{ route('update_delivery') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        console.log("maoni", data);
+        $("#button_action").val("update");
+        $("#id").val(id);
+        $("#ticket").val(data.outboundTicket);
+        $("#destination").val(data.destination);
+        $("#driver_id")
+          .val(data.driver_id)
+          .trigger("change");
+        $("#company")
+          .val(data.company_id)
+          .trigger("change");
+        $("#commodity")
+          .val(data.commodity_id)
+          .trigger("change");
+        $("#plateno")
+          .val(data.plateno)
+          .trigger("change");
+        $("#liter").val(data.fuel_liters);
+        $("#kilos").val(data.kilos);
+        $("#allowance").val(data.allowance);
+        $("#od_modal").modal("show");
+        $(".modal_title").text("Update Delivery");
+        refresh_delivery_table();
+      }
+    });
+  });
+
+  $(document).on("click", ".delete_delivery", function() {
+    var id = $(this).attr("id");
+    swal({
+      title: "Are you sure?",
+      text: "Delete this record?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('delete_delivery') }}",
+          method: "get",
+          data: { id: id },
+          success: function(data) {
+            dataparsed = $.parseJSON(data);
+            console.log(dataparsed);
+            if (dataparsed != "success") {
+              swal(
+                "Cash Reverted!",
+                "Cash On Hand: ₱" + dataparsed.cashOnHand.toFixed(2),
+                "success"
+              );
+              $("#curCashOnHand").html(dataparsed.cashOnHand.toFixed(2));
+            } else {
+              swal("Success!", "Record has been Deleted", "success");
+            }
+            refresh_delivery_table();
+          }
+        });
+      }
+    });
+  });
+  //OUTBOUND DELIVERIES Datatable ends here
+
+  $("#plateno").select2({
+    dropdownParent: $("#od_modal"),
+    placeholder: "Select a truck"
+  });
+
+  $("#driver_id").select2({
+    dropdownParent: $("#od_modal"),
+    placeholder: "Select a driver"
+  });
+  $("#commodity").select2({
+    dropdownParent: $("#od_modal"),
+    placeholder: "Select Commodity"
+  });
+  $("#company").select2({
+    dropdownParent: $("#od_modal"),
+    placeholder: "Select a company"
+  });
+});
+
+</script>
 @endsection
