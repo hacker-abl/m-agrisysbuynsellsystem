@@ -182,13 +182,13 @@
                                      @endforeach
                                 </select>
                             </div>
-                            <div style="margin-bottom: -68px; margin-left: 850px;z-index: 1000;">
+                            <!--<div style="margin-bottom: -68px; margin-left: 850px;z-index: 1000;">
                               <h5>Group By</h5>
                               <select size="3" style="width: 200px;" type="text" id="typeFilter" name="typeFilter" data-placeholder="Select Group" >
                                     <option value="All">All</option>
                                     <option value="Price">Price</option>
                                 </select>
-                            </div>
+                            </div>-->
                           
 							 <p id="date_filter">
                                 <h5>Date Range Filter</h5>
