@@ -2669,59 +2669,64 @@ $(document).ready(function() {
                       .reduce(function(a, b) {
                         return intVal(a) + intVal(b);
                       }, 0);
-
-            $(document).on('click', '.release_ca', function(event){
-                event.preventDefault();
-                id = $(this).attr("id");
-                 var input = $(this);
-                var button =this;
-                button.disabled = true; 
-                $.ajax({
-                    url:"{{ route('check_balance_user') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    {
-                      extend: "pdfHtml5",
-                      footer: true,
-                      exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5],
-                        modifier: {
-                          page: "current"
-                        }
-                      },
-                      customize: function(doc) {
-                        doc.styles.tableHeader.fontSize = 8;
-                        doc.styles.tableFooter.fontSize = 8;
-                        doc.defaultStyle.fontSize = 8;
-                        doc.content[1].table.widths = Array(
-                          doc.content[1].table.body[0].length + 1
-                        )
-                          .join("*")
-                          .split("");
-                      }
-                    }
-                  ],
-                  order: [[2, "desc"]],
-                  bDestroy: true,
-                  data: data.data,
-                  columns: [
-                    { data: "paymentmethod", name: "paymentmethod" },
-                    { data: "paymentamount", name: "paymentamount" },
-                    { data: "created_at", name: "created_at" },
-                    { data: "checknumber", name: "checknumber" },
-                    { data: "remarks", name: "remarks" },
-                    { data: "r_balance", name: "r_balance" },
-                    { data: "received_by", name: "received_by" },
-                    { data: "action", orderable: false, searchable: false }
-                  ]
+                  }
                 });
               }
             });
           }
         });
       }
+    });
+  });
+
+  $(document).on('click', '.release_ca', function(event){
+    event.preventDefault();
+    id = $(this).attr("id");
+    var input = $(this);
+    var button = this;
+    button.disabled = true; 
+    $.ajax({
+      url:"{{ route('check_balance_user') }}",
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      buttons: [
+        
+        {
+          extend: "pdfHtml5",
+          footer: true,
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5],
+            modifier: {
+              page: "current"
+            }
+          },
+          customize: function(doc) {
+            doc.styles.tableHeader.fontSize = 8;
+            doc.styles.tableFooter.fontSize = 8;
+            doc.defaultStyle.fontSize = 8;
+            doc.content[1].table.widths = Array(
+              doc.content[1].table.body[0].length + 1
+            )
+              .join("*")
+              .split("");
+          }
+        }
+      ],
+      order: [[2, "desc"]],
+      bDestroy: true,
+      data: data.data,
+      columns: [
+        { data: "paymentmethod", name: "paymentmethod" },
+        { data: "paymentamount", name: "paymentamount" },
+        { data: "created_at", name: "created_at" },
+        { data: "checknumber", name: "checknumber" },
+        { data: "remarks", name: "remarks" },
+        { data: "r_balance", name: "r_balance" },
+        { data: "received_by", name: "received_by" },
+        { data: "action", orderable: false, searchable: false }
+      ]
     });
   });
 
