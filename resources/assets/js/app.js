@@ -86,12 +86,13 @@ if(document.getElementById('request')) {
     });
     
     window.Echo.channel('commodity').listen('CommodityUpdated', e => {
-        CommodityUpdateAlert();
+        CommodityUpdateAlert(e.commodity);
     });
 
-    function CommodityUpdateAlert() {
+    function CommodityUpdateAlert(commodity) {
         swal({
-            text: 'The price of commodities has been updated by the admin.',
+            title: 'Price Updated',
+            text: 'COPRA ' + commodity.name,
             button: {
             text: "Ok",
             closeModal: false,
@@ -110,7 +111,7 @@ if(document.getElementById('request')) {
         })
         .catch(err => {
             if (err) {
-                swal("Oh no!", "The AJAX request failed!", "error");
+                swal("Oh no!", "Action not allowed", "error");
             } else {
                 swal.stopLoading();
                 swal.close();
