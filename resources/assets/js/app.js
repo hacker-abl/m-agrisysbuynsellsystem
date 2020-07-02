@@ -92,7 +92,7 @@ if(document.getElementById('request')) {
     function CommodityUpdateAlert(commodity) {
         swal({
             title: 'Price Updated',
-            text: 'COPRA ' + commodity.name,
+            text: 'COPRA ' + commodity.name + ' - ₱' + commodity.price,
             button: {
             text: "Ok",
             closeModal: false,
