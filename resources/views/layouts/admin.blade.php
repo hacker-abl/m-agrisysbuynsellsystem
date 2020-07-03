@@ -119,7 +119,7 @@ ul {
         <link href="{{ secure_asset('assets/css/style.css') }}" rel="stylesheet">
         @endif
     @endif
-    @if(Request::path() == 'purchases' || Request::path() == 'outbound' || Request::path() == 'sales' || Request::path() == 'expense' || Request::path() == 'trips' || Request::path() == 'summary')
+    @if(Request::path() == 'purchases' || Request::path() == 'outbound' || Request::path() == 'sales' || Request::path() == 'expense' || Request::path() == 'trips' || Request::path() == 'summary'||Request::path() == 'price')
     <style>
         #ui-datepicker-div .ui-datepicker-calendar {
             display: table !important;
@@ -318,6 +318,12 @@ ul {
                             <span>Roles</span>
                         </a>
                     </li>
+                    <li class="{{ (Request::path() == 'price') ? 'active' : '' }}">
+                        <a href="{{ route('price') }}">
+                            <i class="material-icons">timeline</i>
+                            <span>Prices</span>
+                        </a>
+                    </li>
                 @endif
                 </ul>
             </div>
@@ -434,6 +440,10 @@ ul {
         <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 
         @yield('script')
+
+         <!-- Charts.js -->
+         <script src="{{ asset('assets/plugins/chartjs/Chart.js') }}"></script>
+
 
         <!-- Bootstrap Core Js -->
         <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
