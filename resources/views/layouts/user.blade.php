@@ -283,6 +283,14 @@
                                     </a>
                                 </li>
                                 @endif
+                                @if($permissions[$key]->permission && $permissions[$key]->permission->middleware == "manage_prices" && $permission->permit == 1 || Auth::user()->access_id == 1)
+                                <li class="{{ (Request::path() == 'price') ? 'active' : '' }}">
+                                    <a href="{{ route('price') }}">
+                                        <i class="material-icons">timeline</i>
+                                        <span>Prices</span>
+                                    </a>
+                                </li>
+                                @endif
                             @endforeach
                         @endif
                     @else
@@ -387,6 +395,10 @@
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 
     @yield('script')
+
+      <!-- Charts.js -->
+      <script src="{{ asset('assets/plugins/chartjs/Chart.js') }}"></script>
+
 
     <!-- Bootstrap Core Js -->
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>

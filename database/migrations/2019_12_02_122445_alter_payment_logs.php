@@ -13,10 +13,10 @@ class AlterPaymentLogs extends Migration
      */
     public function up()
     {
-        Schema::table('payment_logs', function($table) {
-            $table->string('received_by')->nullable();
-            $table->string('status')->nullable();
-         });
+        // Schema::table('payment_logs', function($table) {
+        //     $table->string('received_by')->nullable();
+        //     $table->string('status')->nullable();
+        //  });
     }
 
     /**
@@ -26,9 +26,9 @@ class AlterPaymentLogs extends Migration
      */
     public function down()
     {
-        Schema::table('payment_logs', function($table) {
-            $table->dropColumn('received_by');
-            $table->dropColumn('status');
-        });
+        // Schema::table('payment_logs', function($table) {
+        //     $table->dropColumn('received_by');
+        //     $table->dropColumn('status');
+        // });
     }
 }
