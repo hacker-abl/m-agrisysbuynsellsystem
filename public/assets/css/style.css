@@ -8157,3 +8157,7 @@ PARA SA PRINT
 .print-only {
   float:left;
 }
+
+.swal-text {
+  font-size: 20px;
+}

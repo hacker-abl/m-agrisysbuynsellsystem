@@ -68,7 +68,7 @@ class commodityController extends Controller
             
             $commodityUpdate = CommodityUpdate::where('checked', '1')->get()->toArray();
 
-            event(new \App\Events\CommodityUpdated($commodityUpdate));
+            event(new \App\Events\CommodityUpdated($commodity->toArray()));
         }
 
         return response()->json('success');
