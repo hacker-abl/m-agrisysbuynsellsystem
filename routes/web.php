@@ -17,6 +17,7 @@ Route::group(['middleware'=>['auth', 'user:notification']], function() {
     //Notifications
     Route::get('/notification/get', 'NotificationController@get');
     Route::post('/notification/update/{option}', 'NotificationController@update');
+    Route::get('notifications', 'NotificationController@index');
 });
 
 //profile

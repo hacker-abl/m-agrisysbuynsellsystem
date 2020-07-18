@@ -19,6 +19,7 @@ window.Vue = require('vue');
 Vue.component('notification-counter', require('./components/NotificationCounter.vue'));
 Vue.component('notification-content', require('./components/NotificationContent.vue'));
 Vue.component('notification-list', require('./components/NotificationList.vue')); 
+Vue.component('notification-list-all', require('./components/NotificationListAll.vue')); 
 
 Vue.component('total-sales-today', require('./components/TotalSalesToday.vue'));
 Vue.component('total-purchases-today', require('./components/TotalPurchasesToday.vue'));
@@ -31,6 +32,13 @@ Vue.component('cash-on-hand', require('./components/CashOnHand.vue'));
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+
+if(document.getElementById('notification-list')) {
+    const notifications = new Vue({
+        el: '#notification-list'
+    });
+}
+
 if(document.getElementById('request')) {
     const request = new Vue({
         el: '#request',

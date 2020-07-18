@@ -11,6 +11,10 @@ class NotificationController extends Controller
         $this->middleware('auth');
     }
 
+    public function index() {
+        return view('notifications.index');
+    }
+
     public function update(Request $request, $option) {
         if($option == 'seen') {
             $validatedData = $request->validate([
@@ -39,18 +43,33 @@ class NotificationController extends Controller
         }
     }
 
-    public function get($page = null) {
+    public function get(Request $request, $page = null) {
         if($page) {
 
         } else {
-            $data = Notification::orderBy('id', 'DESC')
-                    ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee', 'od.odId.driver')
-                    ->get();
+            if(isset($request->id) && isset($request->per_page)){
+                $data = Notification::orderBy('id', 'DESC')
+                        ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee', 'od.odId.driver')
+                        ->where('id', '<', $request->id)
+                        ->limit($request->per_page)
+                        ->get();
+            } else {
+                $data = Notification::orderBy('id', 'DESC')
+                ->with('admin', 'cash_advance', 'expense', 'dtr.dtrId.employee', 'trip.tripId.employee', 'od.odId.driver')
+                ->limit(20)
+                ->get();
+            }
+
             $count = Notification::where('status', 'Pending')->count();
+            $next = 0;
             
             $notification = array();
 
-            foreach ($data as $datum) {
+            foreach ($data as $key => $datum) {
+                if($key + 1 === count($data)) {
+                    $next = Notification::where('id', '<', $datum->id)->count();
+                }
+
                 if(!empty($datum->cash_advance)) {
                     $notification['notification'][] = array(
                         'notifications' => $datum,
@@ -85,6 +104,7 @@ class NotificationController extends Controller
             }
             
             $notification['count'] = $count;
+            $notification['next'] = $next;
 
             if($notification) 
                 echo json_encode($notification);
