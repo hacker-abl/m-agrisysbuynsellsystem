@@ -1,14 +1,23 @@
 <template>
 	<li :data-notification-id="request.notifications.id" v-if="request.notifications.status === 'pending'" style="background-color: #ffe9e9;">
 	    <a href="javascript:void(0);" @click.prevent="seen(request.notifications.id)" class="waves-effect waves-block">
-            <div class="icon-circle bg-blue-grey" style="position: inherit;top: -8px;">
-                <i class="material-icons" v-if="request.notifications.notification_type === 'expense'">credit_card</i>
-                <i class="material-icons" v-if="request.notifications.notification_type === 'cash advance'">attach_money</i>
-                <i class="material-icons" v-if="request.notifications.notification_type === 'daily time record'">av_timer</i>
-                <i class="material-icons" v-if="request.notifications.notification_type === 'trips expense'">directions_bus</i>
+            <div class="icon-circle bg-light-blue" style="position: inherit;top: -8px;" v-if="request.notifications.notification_type === 'expense'">
+                <i class="material-icons">credit_card</i>
+            </div>
+            <div class="icon-circle bg-amber" style="position: inherit;top: -8px;" v-else-if="request.notifications.notification_type === 'cash advance'">
+                <i class="material-icons">attach_money</i>
+            </div>
+            <div class="icon-circle bg-green" style="position: inherit;top: -8px;" v-else-if="request.notifications.notification_type === 'daily time record'">
+                <i class="material-icons">av_timer</i>
+            </div>
+            <div class="icon-circle bg-blue-grey" style="position: inherit;top: -8px; background-color: #2e6da4 !important;" v-else-if="request.notifications.notification_type === 'trips expense'">
+                <i class="material-icons">directions_bus</i>
+            </div>
+            <div class="icon-circle bg-grey" style="position: inherit;top: -8px;" v-else>
+                <i class="material-icons">article</i>
             </div>
             <div class="menu-info">
-                <h4>{{ ((request.notifications.notification_type == "Expense")? request.customer.lname+' '+request.customer.fname : request.customer.lname+', '+request.customer.fname+' '+request.customer.mname) }}</h4>
+                <h4>{{ ((request.notifications.notification_type == "Expense")? (request.customer && request.customer.lname ? request.customer.lname+' ' : '')+request.customer.fname : (request.customer && request.customer.lname ? request.customer.lname+', ' : '')+request.customer.fname+' '+request.customer.mname) }}</h4>
                 <p>
 					{{ request.notifications.notification_type }}
                 </p>
@@ -20,14 +29,23 @@
 	</li>
     <li :data-notification-id="request.notifications.id" v-else>
 	    <a href="javascript:void(0);" @click.prevent="seen(request.notifications.id)" class="waves-effect waves-block">
-            <div class="icon-circle bg-blue-grey" style="position: inherit;top: -8px;">
-                <i class="material-icons" v-if="request.notifications.notification_type === 'expense'">credit_card</i>
-                <i class="material-icons" v-if="request.notifications.notification_type === 'cash advance'">attach_money</i>
-                <i class="material-icons" v-if="request.notifications.notification_type === 'daily time record'">av_timer</i>
-                <i class="material-icons" v-if="request.notifications.notification_type === 'trips expense'">directions_bus</i>
+            <div class="icon-circle bg-light-blue" style="position: inherit;top: -8px;" v-if="request.notifications.notification_type === 'expense'">
+                <i class="material-icons">credit_card</i>
+            </div>
+            <div class="icon-circle bg-amber" style="position: inherit;top: -8px;" v-else-if="request.notifications.notification_type === 'cash advance'">
+                <i class="material-icons">attach_money</i>
+            </div>
+            <div class="icon-circle bg-green" style="position: inherit;top: -8px;" v-else-if="request.notifications.notification_type === 'daily time record'">
+                <i class="material-icons">av_timer</i>
+            </div>
+            <div class="icon-circle bg-blue-grey" style="position: inherit;top: -8px; background-color: #2e6da4 !important;" v-else-if="request.notifications.notification_type === 'trips expense'">
+                <i class="material-icons">directions_bus</i>
+            </div>
+            <div class="icon-circle bg-grey" style="position: inherit;top: -8px;" v-else>
+                <i class="material-icons">article</i>
             </div>
             <div class="menu-info">
-                <h4>{{ ((request.notifications.notification_type == "Expense")? request.customer.lname+' '+request.customer.fname : request.customer.lname+', '+request.customer.fname+' '+request.customer.mname) }}</h4>
+                <h4>{{ ((request.notifications.notification_type == "Expense")? (request.customer && request.customer.lname ? request.customer.lname+' ' : '')+request.customer.fname : (request.customer && request.customer.lname ? request.customer.lname+', ' : '')+request.customer.fname+' '+request.customer.mname) }}</h4>
                 <p>
 					{{ request.notifications.notification_type }}
                 </p>
