@@ -79,6 +79,18 @@
                                             </div>
                                     </div>
                                 </div>
+                                <div class="row clearfix">
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="month">Time</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                <input class="date-picker form-control timepicker " name="time" id="time" required autocomplete="off" />
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
 
                         </form>
                         <div class="row clearfix">
@@ -185,50 +197,7 @@
         </div>
     </div>
     </div>
-    <div id="od_expense_tab" class="tab-pane fade">
-     <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>List of OD Expenses as of {{ date('Y-m-d ') }}</h2>
 
-                </div>
-                <div class="body">
-                    <div class="table-responsive">
-                         <p id="trip_expense_date_filter">
-                            <h5>Date Range Filter</h5>
-                            <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="od_expense_datepicker_from" />
-                            <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="od_expense_datepicker_to" />
-                        </p>
-                        <br>
-                        <table id="od_expensetable" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th  width="100" style="text-align:center;">Outbound ID</th>
-                                    <th  width="100" style="text-align:center;">Destination</th>
-                                    <th  width="100" style="text-align:center;">Type</th>
-                                    <th  width="100" style="text-align:center;">Amount</th>
-                                    <th  width="100" style="text-align:center;">Status</th>
-                                    <th  width="100" style="text-align:center;">Date</th>
-                                    <th  width="100" style="text-align:center;">Released By</th>
-                                    <th  width="100" style="text-align:center;">Action</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
 </div>
 </div>
@@ -318,8 +287,8 @@ var date_to_od;
 var trip_expensetable;
 var od_expensetable;
 var type;
-var commodity_id;
-var company_id;
+var commodity_id=null;
+var company_id=null;
 document.title = "M-Agri - Expenses";
 
 $(document).on("click", "#link", function() {
@@ -365,11 +334,14 @@ $(document).ready(function() {
                     }
                 }
                 }],
-                xAxes: [
-                  {
-                    type: "time"
-                  }
-                ]
+                xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'week',
+                    tooltipFormat: 'll h:mm a',
+                },
+                distribution: 'series'
+            }]
             }
         }
     });
@@ -409,11 +381,14 @@ $(document).ready(function() {
                     }
                 }
                 }],
-                xAxes: [
-                  {
-                    type: "time"
-                  }
-                ]
+                xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'week',
+                    tooltipFormat: 'll h:mm a',
+                },
+                distribution: 'series'
+            }]
             }
         }
     });
@@ -423,7 +398,50 @@ $(document).ready(function() {
    
   });
   
-
+  $('.nav-tabs a[href="#price_chart"]').on('shown.bs.tab', function(event){
+    myChart.destroy();
+    if(commodity_id!==null&&company_id!==null)
+    $.ajax({
+      url: "{{ route('getPriceList') }}",
+      method: "post",
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      data:{commodity_id:commodity_id,company_id:company_id},
+      dataType: "json",
+      success: function(data) {
+       console.log(data)
+       myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data['labels'],
+            datasets: data['dataset']
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                  ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                      return '₱ ' + value;
+                    }
+                }
+                }],
+                xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'week',
+                    tooltipFormat: 'll h:mm a',
+                },
+                distribution: 'series'
+            }]
+            }
+        }
+    });
+       
+      }
+    });
+});
 
 
  $("#month").datepicker({
@@ -431,7 +449,7 @@ $(document).ready(function() {
     changeYear: true,
     changeDay:true,
     showButtonPanel: true,
-    dateFormat: "dd-mm-yy",
+    dateFormat: "yy-mm-dd",
     beforeShow: function() {
       $(".ui-datepicker").css("font-size", 18);
     },
@@ -442,6 +460,19 @@ $(document).ready(function() {
       );
     }
   });
+
+  $('.timepicker').timepicker({
+    zindex: 9999999,
+    timeFormat: 'hh:mm:ss p',
+    interval: 1,
+    minTime: '1',
+    maxTime: '22',
+    // defaultTime: hourNow,
+    startTime: '01:00',
+    dynamic: true,
+    dropdown: true,
+    scrollbar: false
+});
   $(".nav-tabs a").click(function() {
     $(this).tab("show");
   });
@@ -2101,7 +2132,6 @@ $(document).ready(function() {
   mainMouseDownOne();
   function mainMouseDownOne() {
     $("#add_expense").one("click", function(event) {
-      console.log("tura");
       var input = $(this);
       var button = this;
       button.disabled = true;

@@ -46,7 +46,7 @@ class priceController extends Controller
 
     public function store(Request $request) 
     {
-         
+        
         if($request->get('button_action') == 'update'){
           $price= new price;
           $price= price::find($request->get('id'));
@@ -69,7 +69,7 @@ class priceController extends Controller
             $price->commodity_id = $request->commodity_id;
             $price->company_id = $request->company_id;
             $price->price = $request->price;
-            $price->date = $request->date;
+            $price->date = $request->date." ".rtrim($request->time, " APMapm");
             $price->save();
         }
 
@@ -105,7 +105,7 @@ class priceController extends Controller
         })
         ->editColumn('date', function ($data) {
            
-            return date('F d, Y g:i a', strtotime($data->created_at));
+            return date('F d, Y g:i a', strtotime($data->date));
     })
          ->make(true);
      }
@@ -118,11 +118,12 @@ class priceController extends Controller
         foreach ($request->company_id as $key => $value) {
         $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
         $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
-        $items = price::where([['commodity_id',$request->commodity_id],['company_id',$value]])->get();
+        $items = price::orderBy('date')->where([['commodity_id',$request->commodity_id],['company_id',$value]])->get();
         $dataset=[];
         if(count($items)>0){
             $pricepluck=$items->pluck('price');
-            $datepluck=$items->pluck('datetime');
+            $datepluck=$items->pluck('date');
+            // var_dump($datepluck);
             $datedata=[];
             foreach ($pricepluck as $key => $value) {
                 array_push($datedata,(object) ['x' => $datepluck[$key],'y'=>$value]);
@@ -131,7 +132,7 @@ class priceController extends Controller
             'borderColor'=>$color,
             'lineTension'=>0.1];
             array_push($dataset, $object);
-            array_push($labels,$items->pluck('datetime'));
+            array_push($labels,$items->pluck('date'));
             array_unique($labels);
             foreach ($labels as $key => $val) {
                 array_push($lab, $val);
