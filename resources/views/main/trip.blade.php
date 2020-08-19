@@ -195,7 +195,9 @@
                     <h2>List of Pick Ups as of {{ date('Y-m-d ') }}</h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
+                                @if(isAdmin() || isPurchaser())
                                 <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_pickup_modal"><i class="material-icons">library_add</i></button>
+                                @emdof
                             </li>
                         </ul>
                 </div>
