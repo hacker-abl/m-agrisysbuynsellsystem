@@ -197,7 +197,7 @@
                             <li class="dropdown">
                                 @if(isAdmin() || isPurchaser())
                                 <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_pickup_modal"><i class="material-icons">library_add</i></button>
-                                @emdof
+                                @endif
                             </li>
                         </ul>
                 </div>
