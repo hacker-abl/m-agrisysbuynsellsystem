@@ -261,11 +261,25 @@ class odController extends Controller
         //$user = User::all();
        
         return \DataTables::of($ultimatesickquery)
-        ->addColumn('action', function(  $ultimatesickquery){
+        ->editColumn('outboundTicket', function($ultimatesickquery){
+            return 'mao ni';
+            /*$comm_id = $ultimatesickquery->id;
+            
+            if($comm_id == 1){
+                return '<a href="javascript:void(0)" id="'.$ultimatesickquery->id.'">'.$ultimatesickquery->outboundTicket.'</a>>';
+            }else{
+                return $ultimatesickquery->outboundTicket;
+            }*/
+        })
+        ->addColumn('status_expense', function($ultimatesickquery){
+            $od_expense = od_expense::where('od_id', $ultimatesickquery->id)->first();
+            return $od_expense->status;
+        })
+        ->addColumn('action', function($ultimatesickquery){
             $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();
             if($userid!=1){
-                $delete=$permit[0]->permit_delete;  
+                $delete=$permit[0]->permit_delete;
                 $edit = $permit[0]->permit_edit;
             }   
             

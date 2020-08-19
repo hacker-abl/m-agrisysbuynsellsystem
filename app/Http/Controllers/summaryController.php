@@ -145,8 +145,6 @@ class summaryController extends Controller
          ->where('status','=','Released')
          ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
          ->get();
-
-         info($ultimatesickquery);
         }
         // if($commodity==""&&$to!=null){
         //     $ultimatesickquery=  DB::table('purchases')
