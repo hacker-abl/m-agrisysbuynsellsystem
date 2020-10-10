@@ -145,11 +145,11 @@ Route::group(['middleware'=>['auth', 'user:manage_prices']], function() {
     //Prices
     Route::get('/price', 'priceController@index')->name('price');
     Route::post('/add_price', 'priceController@store')->name('add_price');
-    // Route::get('/update_price', 'priceController@updatedata')->name('update_price');
-    // Route::get('/delete_price', 'priceController@deletedata')->name('delete_price');
+    Route::get('/update_price', 'priceController@updateprice')->name('update_price');
+    Route::get('/delete_price', 'priceController@deleteprice')->name('delete_price');
     // Route::post('/print_price', 'pdfController@price')->name('print_price');
     Route::post('/getPriceList', 'priceController@getPriceList')->name('getPriceList');
-    Route::get('/getPrices', 'priceController@getPrice')->name('getPrices');
+    Route::post('/getPrices', 'priceController@getPrice')->name('getPrices');
 
 });
 

@@ -50,20 +50,12 @@ class priceController extends Controller
         if($request->get('button_action') == 'update'){
           $price= new price;
           $price= price::find($request->get('id'));
-          $price->trans_number = $request->trans_num;
-          $price->commodity_id = $request->commodity;
-          $price->company_id = $request->company;
-          $price->kilos = $request->kilos;
+          $price->commodity_id = $request->commodity_id;
+          $price->company_id = $request->company_id;
           $price->price = $request->price;
-          $price->amount = $request->amount;
-          $price->receiver_id = Auth::user()->id;
-            if( $request->checknumber!=""){
-                $price->check_number = $request->checknumber;
-            }
-            if( $request->checknumber==""){
-                $price->check_number = "Not Specified";
-            }
+          $price->date = $request->date." ".rtrim($request->time, " APMapm");
           $price->save();
+         
         }else{
             $price= new price;
             $price->commodity_id = $request->commodity_id;
@@ -77,37 +69,82 @@ class priceController extends Controller
         
         // event(new SalesUpdated($sales));
     }
+
+    function updateprice(Request $request){
+        $id = $request->input('id');
+        $price = price::find($id);
+        $output = array(
+            'commodity_id' => $price->commodity_id,
+            'company_id' => $price->company_id,
+            'price' => $price->price,
+            'date'=>$price->date,
+        );
+        echo json_encode($output);
+    }
+
+    function deleteprice(Request $request){
+        // dd($request);
+        $price = price::find($request->input('id'));
+        $price->delete();
+        echo json_encode($request);
+    }
+
      function getPrice(Request $request){
-        // $latest = price::select('commodity_id','company_id', 'price', 'date', DB::raw('MAX(created_at) as created_at'))
-        // ->groupBy('commodity_id', 'company_id');
-        // $salesLatest = DB::table('prices')
-        // ->joinSub($latest, 'latest_price', function ($join) {
-        //     $join->on('prices.commodity_id', '=', 'latest_price.commodity_id')
-        //          ->on('prices.company_id', '=', 'latest_price.company_id')
-        //          ->on('prices.price', '=', 'latest_price.price')
-        //          ->on('prices.date', '=', 'latest_price.date')
-        //           ->on('prices.created_at', '=', 'latest_posts. created_at');
-        // })->get();
 
-        $items = price::whereRaw('id IN (select MAX(id) FROM prices GROUP BY commodity_id,company_id)')->get();
+        
+        if($request->input('all_data')=="true"){
+            $items = price::all();
+            return \DataTables::of($items)
+            ->editColumn('price', function ($data) {
+               
+               return $data->price;
+           })
+           ->editColumn('commodity', function ($data) {
+               return $data->commodity;
+           })
+           ->editColumn('company', function ($data) {
+              
+                   return $data->company;
+           })
+           ->editColumn('date', function ($data) {
+              
+               return date('F d, Y g:i a', strtotime($data->date));
+            })
+            ->editColumn('action', function ($data) {
+              
+                return '<div class="btn-group" style="background-color:transparent;" ><button class="btn btn-xs btn-warning update_price  waves-effect" style="margin-right:5px;"  id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>
+                        <button class="btn btn-xs btn-danger delete_price  waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button></div>';
+            })
+            ->make(true);
+        }else{
+            $items = price::whereRaw('id IN (select MAX(id) FROM prices GROUP BY commodity_id,company_id)')->get();
+            return \DataTables::of($items)
+            ->editColumn('price', function ($data) {
+               
+               return $data->price;
+           })
+           ->editColumn('commodity', function ($data) {
+               return $data->commodity;
+           })
+           ->editColumn('company', function ($data) {
+              
+                   return $data->company;
+           })
+           ->editColumn('date', function ($data) {
+              
+               return date('F d, Y g:i a', strtotime($data->date));
+            })
+           ->editColumn('action', function ($data) {
+                    
+            return 'No Action';
+            })
+                
+            ->make(true);
+        }
 
-         return \DataTables::of($items)
-         ->editColumn('price', function ($data) {
-            
-            return $data->price;
-        })
-        ->editColumn('commodity', function ($data) {
-            return $data->commodity;
-        })
-        ->editColumn('company', function ($data) {
-           
-                return $data->company;
-        })
-        ->editColumn('date', function ($data) {
-           
-            return date('F d, Y g:i a', strtotime($data->date));
-    })
-         ->make(true);
+       
+
+       
      }
      function getPriceList(Request $request){
         

@@ -119,9 +119,19 @@
                 <div class="header">
                     <h2>Price Update as of {{ date('Y-m-d ') }}</h2>
                     <ul class="header-dropdown m-r--5">
+                    <li class="dropdown">
+                            @if(canAddExpense())
+                            <button type="button" style="display:''" class="btn bg-danger btn-xs waves-effect m-r-20 delete_item"  data-toggle="tooltip" data-placement="top" title="Update Data"><i class="material-icons">tune</i></button>
+                            @endif
+                        </li>
                         <li class="dropdown">
                             @if(canAddExpense())
-                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20" data-toggle="modal" data-target="#expense_modal"><i class="material-icons">library_add</i></button>
+                            <button type="button" style="display:none" class="btn bg-danger btn-xs waves-effect m-r-20 back_display" data-toggle="tooltip" data-placement="top" title="Back To Display"><i class="material-icons">navigate_before</i></button>
+                            @endif
+                        </li>
+                        <li class="dropdown">
+                            @if(canAddExpense())
+                            <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20" data-toggle="modal" data-target="#expense_modal" ><i class="material-icons">library_add</i></button>
                             @endif
                         </li>
                     </ul>
@@ -135,6 +145,7 @@
                                     <th  width="100" style="text-align:center;">Company</th>
                                     <th  width="100" style="text-align:center;">Price</th>
                                     <th  width="100" style="text-align:center;">Date</th>
+                                    <th  width="100" style="text-align:center;">Action</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -303,7 +314,238 @@ $(document).ready(function() {
   var ctx = document.getElementById('myChart');
   var myChart = new Chart(ctx);
   commodity_id=$("#commodityList").val();
+$(".delete_item").click(function () {
+    $(".delete_item").css("display","none");
+    $(".back_display").css("display","");
+    $("#expensetable")
+        .dataTable()
+        .fnDestroy(); 
+  expensetable = $("#expensetable").DataTable({
+    footerCallback: function(row, data, start, end, display) {
+      var api = this.api(),
+        data;
 
+      // Remove the formatting to get integer data for summation
+      var intVal = function(i) {
+        return typeof i == "string"
+          ? i.replace(/[\₱,]/g, "") * 1
+          : typeof i == "number"
+          ? i
+          : 0;
+      };
+
+      // Total over all pages
+      total = api
+        .column(2)
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Total over this page
+      pageTotal = api
+        .column(3, { page: "current" })
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Update footer
+      $(api.column(3).footer()).html(
+        "Total: <br>₱" + number_format(pageTotal, 2)
+      );
+    },
+    dom: "Blfrtip",
+    lengthMenu: [
+      [10, 25, 50, -1],
+      [10, 25, 50, "All"]
+    ],
+    buttons: [
+      {
+        extend: "print",
+        text: "PRINT",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5, 6],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(win) {
+          $(win.document.body).css("font-size", "10pt");
+
+          $(win.document.body)
+            .find("table")
+            .addClass("compact")
+            .css("font-size", "inherit");
+        },
+        footer: true
+      },
+      {
+        extend: "pdfHtml5",
+        footer: true,
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5, 6],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(doc) {
+          doc.styles.tableHeader.fontSize = 8;
+          doc.styles.tableFooter.fontSize = 8;
+          doc.defaultStyle.fontSize = 8;
+          doc.content[1].table.widths = Array(
+            doc.content[1].table.body[0].length + 1
+          )
+            .join("*")
+            .split("");
+        }
+      }
+    ],
+    paging: true,
+    pageLength: 10,
+    order: [],
+    columnDefs: [
+      {
+        targets: "_all", // your case first column
+        className: "text-center"
+      }
+    ],
+    ajax: {
+      url: "{{ route('getPrices') }}",
+      // dataType: 'text',
+      type: "post",
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      data: {
+            all_data: true,
+          }
+    },
+    processing: true,
+    columns: [
+      { data: "commodity" },
+      { data: "company" },
+      { data: "price" },
+      { data: "date" },
+      { data: "action", orderable: false, searchable: false } 
+    ]
+  });
+  });
+$(".back_display").click(function () {
+  $(".back_display").css("display","none");
+  $(".delete_item").css("display","");
+  $("#expensetable").dataTable().fnDestroy(); 
+  expensetable = $("#expensetable").DataTable({
+    footerCallback: function(row, data, start, end, display) {
+      var api = this.api(),
+        data;
+
+      // Remove the formatting to get integer data for summation
+      var intVal = function(i) {
+        return typeof i == "string"
+          ? i.replace(/[\₱,]/g, "") * 1
+          : typeof i == "number"
+          ? i
+          : 0;
+      };
+
+      // Total over all pages
+      total = api
+        .column(2)
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Total over this page
+      pageTotal = api
+        .column(3, { page: "current" })
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Update footer
+      $(api.column(3).footer()).html(
+        "Total: <br>₱" + number_format(pageTotal, 2)
+      );
+    },
+    dom: "Blfrtip",
+    lengthMenu: [
+      [10, 25, 50, -1],
+      [10, 25, 50, "All"]
+    ],
+    buttons: [
+      {
+        extend: "print",
+        text: "PRINT",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5, 6],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(win) {
+          $(win.document.body).css("font-size", "10pt");
+
+          $(win.document.body)
+            .find("table")
+            .addClass("compact")
+            .css("font-size", "inherit");
+        },
+        footer: true
+      },
+      {
+        extend: "pdfHtml5",
+        footer: true,
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5, 6],
+          modifier: {
+            page: "current"
+          }
+        },
+        customize: function(doc) {
+          doc.styles.tableHeader.fontSize = 8;
+          doc.styles.tableFooter.fontSize = 8;
+          doc.defaultStyle.fontSize = 8;
+          doc.content[1].table.widths = Array(
+            doc.content[1].table.body[0].length + 1
+          )
+            .join("*")
+            .split("");
+        }
+      }
+    ],
+    paging: true,
+    pageLength: 10,
+    order: [],
+    columnDefs: [
+      {
+        targets: "_all", // your case first column
+        className: "text-center"
+      }
+    ],
+    ajax: {
+      url: "{{ route('getPrices') }}",
+      // dataType: 'text',
+      type: "post",
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      data: {
+            all_data: "false",
+          }
+    },
+    processing: true,
+    columns: [
+      { data: "commodity" },
+      { data: "company" },
+      { data: "price" },
+      { data: "date" },
+      { data: "action", orderable: false, searchable: false } 
+    ]
+  });
+});
 
   $('#commodityList').on('change', function (e) {
     myChart.destroy();
@@ -317,7 +559,6 @@ $(document).ready(function() {
       data:{commodity_id:commodity_id,company_id:company_id},
       dataType: "json",
       success: function(data) {
-       console.log(data)
         myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -350,10 +591,64 @@ $(document).ready(function() {
     });
    
   });
+
+  function refresh_price_table() {
+    expensetable.ajax.reload(); //reload datatable ajax
+  }
+
+  $(document).on("click", ".update_price", function() {
+    var id = $(this).attr("id");
+    $.ajax({
+      url: "{{ route('update_price') }}",
+      method: "get",
+      data: { id: id },
+      dataType: "json",
+      success: function(data) {
+        let hours= data.date.split(" ");
+        $("#expense_modal").modal("show");
+        $("#button_action").val("update");
+        $("#id").val(id);
+        $("#company")
+          .val(data.company_id)
+          .trigger("change");
+        $("#commodity")
+          .val(data.commodity_id)
+          .trigger("change");
+        $("#price").val(data.price);
+        $("#month").val(hours[0]);
+        $("#time").val(hours[1]);
+         
+      }
+    });
+  });
+
+  
+  $(document).on("click", ".delete_price", function() {
+    var id = $(this).attr("id");
+    swal({
+      title: "Are you sure?",
+      text: "Delete this record?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "{{ route('delete_price') }}",
+          method: "get",
+          data: { id: id },
+          dataType: "json",
+          success: function(data) {
+            refresh_price_table();
+          }
+        });
+        swal("Deleted!", "The record has been deleted.", "success");
+      }
+    });
+  });
   
   $('#companyList').on('change', function (e) {
     myChart.destroy();
-    console.log($("#companyList").select2("val"));
     company_id=$("#companyList").select2("val");
     $.ajax({
       url: "{{ route('getPriceList') }}",
@@ -364,7 +659,6 @@ $(document).ready(function() {
       data:{commodity_id:commodity_id,company_id:company_id},
       dataType: "json",
       success: function(data) {
-       console.log(data)
        myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -410,7 +704,6 @@ $(document).ready(function() {
       data:{commodity_id:commodity_id,company_id:company_id},
       dataType: "json",
       success: function(data) {
-       console.log(data)
        myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -611,10 +904,14 @@ $(document).ready(function() {
     ajax: {
       url: "{{ route('getPrices') }}",
       // dataType: 'text',
-      type: "get",
+      type: "post",
       headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-      }
+      },
+      data: {
+            date_from: date_from_trip,
+            date_to: date_to_trip
+          }
     },
     processing: true,
     columns: [
@@ -622,7 +919,7 @@ $(document).ready(function() {
       { data: "company" },
       { data: "price" },
       { data: "date" },
-      
+      { data: "action", orderable: false, searchable: false } 
     ]
   });
   
@@ -2206,7 +2503,6 @@ $(document).ready(function() {
           data: { id: id },
           success: function(data) {
             var dataparsed = JSON.parse(data);
-            console.log(dataparsed);
             refresh_expense_table();
 
             if (typeof dataparsed.cashOnHand !== "undefined") {
