@@ -26,10 +26,16 @@ class balanceController extends Controller
 	public function refresh()
 	{
 		//$user = User::all();
+		$join = DB::table('payment_logs')
+            ->select(DB::raw('max(created_at) as maxdate'), 'logs_id','status')
+            ->groupBy('logs_id');
+        $sql = '(' . $join->toSql() . ') as ca2';
           $ultimatesickquery= DB::table('balance')
 			  ->join('customer', 'customer.id', '=', 'balance.customer_id')
-			//   ->leftjoin('payment_logs', 'payment_logs.logs_id', '=', 'balance.logs_id')
-			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname')
+			  ->join(DB::raw($sql), function($join){
+                $join->on('ca2.logs_id', '=', 'balance.customer_id');
+            	})
+			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname','ca2.maxdate as maxdate')
 			  ->whereExists(function ($query) {
 				$query->select("payment_logs.logs_id")
 					  ->from('payment_logs')
@@ -38,26 +44,77 @@ class balanceController extends Controller
 			//   ->where('balance.balance','!=','0')->get();
 		    return \DataTables::of($ultimatesickquery)
 		    ->addColumn('action', function($ultimatesickquery){
-			   return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+			return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
 		    })
 		    ->editColumn('balance', function ($data) {
-     		  return '₱'.number_format($data->balance, 2, '.', ',');
+     		  return number_format($data->balance, 2, '.', ',');
      	    })
 		     ->make(true);
 	}
 	public function hasbalance()
 	{
 		//$user = User::all();
+		$join = DB::table('payment_logs')
+            ->select(DB::raw('max(created_at) as maxdate'), 'logs_id','status')
+            ->groupBy('logs_id');
+        	$sql = '(' . $join->toSql() . ') as ca2';
           $ultimatesickquery= DB::table('balance')
 			  ->join('customer', 'customer.id', '=', 'balance.customer_id')
-			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname')
-			  ->where('balance.balance','!=','0')->get();
+			  ->join(DB::raw($sql), function($join){
+                $join->on('ca2.logs_id', '=', 'balance.customer_id');
+            	})
+			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname','ca2.maxdate as maxdate','ca2.status as status')
+			  ->where('balance.balance','!=','0')
+			  ->get();
 		    return \DataTables::of($ultimatesickquery)
 		    ->addColumn('action', function($ultimatesickquery){
-			   return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+				if($ultimatesickquery->status=="Not Received"){
+					return '<button class="btn btn-xs btn-warning waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility	
+				}else{
+					return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+				}
+			  
 		    })
 		    ->editColumn('balance', function ($data) {
-     		  return '₱'.number_format($data->balance, 2, '.', ',');
+     		  return number_format($data->balance, 2, '.', ',');
+     	    })
+		     ->make(true);
+	}
+
+	public function toReceive()
+	{
+		//$user = User::all();
+		$join = DB::table('payment_logs')
+            ->select(DB::raw('max(created_at) as maxdate'), 'logs_id')
+            ->groupBy('logs_id');
+			$sql = '(' . $join->toSql() . ') as ca2';
+			$join2 = DB::table('payment_logs')
+            ->select(DB::raw('max(created_at) as maxdate'), 'logs_id','status')
+            ->groupBy('logs_id','status');
+        	$sql2 = '(' . $join2->toSql() . ') as ca3';
+          $ultimatesickquery= DB::table('balance')
+			  ->join('customer', 'customer.id', '=', 'balance.customer_id')
+			  ->join(DB::raw($sql), function($join){
+                $join->on('ca2.logs_id', '=', 'balance.customer_id');
+				})
+			->join(DB::raw($sql2), function($join2){
+				$join2->on('ca3.logs_id', '=', 'balance.customer_id');
+			})
+			  ->select('balance.id','balance.customer_id','balance.balance','customer.fname','customer.mname','customer.lname','ca2.maxdate as maxdate','ca3.status')
+			  ->where('ca3.status','=','Not Received')
+			  ->where('balance.balance','!=','0')
+			  ->get();
+		    return \DataTables::of($ultimatesickquery)
+		    ->addColumn('action', function($ultimatesickquery){
+				if($ultimatesickquery->status=="Not Received"){
+					return '<button class="btn btn-xs btn-warning waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility	
+				}else{
+					return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+				}
+			  
+		    })
+		    ->editColumn('balance', function ($data) {
+     		  return number_format($data->balance, 2, '.', ',');
      	    })
 		     ->make(true);
 	}
