@@ -175,6 +175,7 @@ Route::group(['middleware'=>['auth', 'user:ca']], function() {
     Route::get('/check_balance', 'caController@check_balance')->name('check_balance');
     Route::get('/getCustomer', 'caController@getCustomer')->name('getCustomer');
     Route::get('/refresh_balancedt', 'balanceController@refresh')->name('refresh_balancedt');
+    Route::get('/toReceive', 'balanceController@toReceive')->name('toReceive');
     Route::get('/balancelogs', 'balanceController@balance')->name('balancelogs');
     Route::get('/hasbalance', 'balanceController@hasbalance')->name('hasbalance');
     Route::post('/add_payment', 'balanceController@add_payment')->name('add_payment');
