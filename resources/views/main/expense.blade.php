@@ -2526,7 +2526,6 @@ $(document).ready(function() {
   mainMouseDownOne();
   function mainMouseDownOne() {
     $("#add_expense").one("click", function(event) {
-      console.log("tura");
       var input = $(this);
       var button = this;
       button.disabled = true;
@@ -2601,7 +2600,6 @@ $(document).ready(function() {
           data: { id: id },
           success: function(data) {
             var dataparsed = JSON.parse(data);
-            console.log(dataparsed);
             refresh_expense_table();
 
             if (typeof dataparsed.cashOnHand !== "undefined") {

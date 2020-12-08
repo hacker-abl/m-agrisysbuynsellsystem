@@ -126,6 +126,8 @@ Route::group(['middleware'=>['auth', 'user:od']], function() {
     Route::post('/add_delivery', 'odController@store')->name('add_delivery');
     Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
     Route::get('/delete_delivery', 'odController@deletedata')->name('delete_delivery');
+    Route::get('/copra_delivery/{id}', 'odController@get_copra');
+    Route::post('/save_copra', 'odController@save_copra');
     Route::post('/print_od', 'pdfController@od')->name('print_od');
 });
 

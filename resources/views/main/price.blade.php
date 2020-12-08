@@ -348,7 +348,6 @@ $(document).ready(function() {
       data:{commodity_id:commodity_id,company_id:company_id},
       dataType: "json",
       success: function(data) {
-       console.log(data)
         myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -381,7 +380,6 @@ $(document).ready(function() {
   
   $('#companyList').on('change', function (e) {
     myChart.destroy();
-    console.log($("#companyList").select2("val"));
     company_id=$("#companyList").select2("val");
     $.ajax({
       url: "{{ route('getPriceList') }}",
@@ -392,7 +390,6 @@ $(document).ready(function() {
       data:{commodity_id:commodity_id,company_id:company_id},
       dataType: "json",
       success: function(data) {
-       console.log(data)
        myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -2101,7 +2098,6 @@ $(document).ready(function() {
   mainMouseDownOne();
   function mainMouseDownOne() {
     $("#add_expense").one("click", function(event) {
-      console.log("tura");
       var input = $(this);
       var button = this;
       button.disabled = true;
@@ -2176,7 +2172,6 @@ $(document).ready(function() {
           data: { id: id },
           success: function(data) {
             var dataparsed = JSON.parse(data);
-            console.log(dataparsed);
             refresh_expense_table();
 
             if (typeof dataparsed.cashOnHand !== "undefined") {

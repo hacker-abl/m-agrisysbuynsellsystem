@@ -894,7 +894,6 @@ $(document).ready(function() {
       method: "get",
       dataType: "json",
       success: function(data) {
-        console.log(data);
         employee_balace_view = $("#view_balance_table").DataTable({
           footerCallback: function(row, data, start, end, display) {
             var api = this.api(),
@@ -1087,7 +1086,6 @@ $(document).ready(function() {
       data: { id: person_id },
       dataType: "json",
       success: function(data) {
-        console.log("AYAY",data);
         $(".employee_name").text(
           data.data[0].fname +
             " " +
@@ -1596,7 +1594,6 @@ $(document).ready(function() {
       data: { id: id },
       dataType: "json",
       success: function(data) {
-        console.log(data);
         $("#role").val(data.role);
         $("#rate").val(data.rate);
         if (trig_update != 1) {
@@ -2456,7 +2453,6 @@ $(document).ready(function() {
           data: { id: id },
           dataType: "text",
           success: function(data) {
-            console.log(data);
             var data2 = JSON.parse(data);
 
             swal(
@@ -2609,7 +2605,6 @@ $(document).ready(function() {
           data: { id: id },
           dataType: "text",
           success: function(data) {
-            console.log(data);
             if (data == "deleted") {
               swal(
                 "Payment Deleted!",
@@ -2617,7 +2612,6 @@ $(document).ready(function() {
                 "success"
               );
             } else {
-              console.log("ayay");
               var data2 = JSON.parse(data);
               swal(
                 "Amount Reverted : ₱" +

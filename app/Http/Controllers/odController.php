@@ -11,6 +11,8 @@ use App\od_expense;
 use App\od;
 use App\Roles;
 use App\trucks;
+use App\copra_delivery;
+use App\copra_breakdown;
 use Auth;
 use App\User;
 use App\Events\ExpensesUpdated;
@@ -236,79 +238,52 @@ class odController extends Controller
         $from = $request->date_from;
         $to = $request->date_to;
 
-        if($to==""){
-         $ultimatesickquery= DB::table('deliveries')
-            ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
-            ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
-            ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
-            ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at','od_expense.status')
-            ->whereBetween('deliveries.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
-            ->latest();
-        }else{
-            $ultimatesickquery= DB::table('deliveries')
-            ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
-            ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
-            ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
-            ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at','od_expense.status')
-            ->where('deliveries.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
-            ->where('deliveries.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-            ->latest();
-        }
-        //$user = User::all();
+        $od = od::with('commodity', 'trucks', 'driver', 'company', 'od_expense')
+            ->when($to == '', function($query){
+                $query->whereBetween('created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')]);
+            })
+            ->when($to != '', function($query) use($from, $to){
+                $query->where('created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+                    ->where('created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59");
+            })->latest();
        
-        return \DataTables::of($ultimatesickquery)
-        ->editColumn('outboundTicket', function($ultimatesickquery){
-            return 'mao ni';
-            /*$comm_id = $ultimatesickquery->id;
-            
-            if($comm_id == 1){
-                return '<a href="javascript:void(0)" id="'.$ultimatesickquery->id.'">'.$ultimatesickquery->outboundTicket.'</a>>';
+        return \DataTables::of($od)
+        ->editColumn('outboundTicket', function($data){
+            if($data->id == 1){
+                return '<a href="javascript:void(0)" id="'.$data->id.'">'.$data->outboundTicket.'</a>>';
             }else{
-                return $ultimatesickquery->outboundTicket;
-            }*/
+                return $data->outboundTicket;
+            }
         })
-        ->addColumn('status_expense', function($ultimatesickquery){
-            $od_expense = od_expense::where('od_id', $ultimatesickquery->id)->first();
-            return $od_expense->status;
+        ->editColumn('employee', function($data){
+            return $data->driver->fname.' '.$data->driver->mname.' '.$data->driver->lname;
         })
-        ->addColumn('action', function($ultimatesickquery){
+        ->addColumn('action', function($data){
             $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;
                 $edit = $permit[0]->permit_edit;
-            }   
+            } 
+
+            $edit_html = '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp';
+            $copra_html = '<button class="btn btn-xs btn-info copra_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">bar_chart</i></button>&nbsp';
+            $delete_html = '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
             
             if($userid==1){
-                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }if($userid!=1 && $delete==1 && $edit==1 &&$ultimatesickquery->status=="On-Hand"){
-                     return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
-                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+                if ($data->commodity->name != 'COPRA') $copra_html = '';
+                return $edit_html.$copra_html.$delete_html;
             }
-            if($userid!=1 && $delete==1 && $edit==1 &&$ultimatesickquery->status=="Released"){
+            if($userid!=1 && $data->status=="On-Hand"){
+                $html = '';
+                $html .= ($edit==1) ? $edit_html : '';
+                $html .= ($delete==1) ? $delete_html : '';
+                return $html;
+            }
+            if($userid!=1 && $data->status=="Released"){
                 return 'Released';
-       }
-            if($userid!=1 && $delete==1 && $edit==0 &&$ultimatesickquery->status=="On-Hand"){
-            return '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
             }
-            if($userid!=1 && $delete==1 && $edit==0 &&$ultimatesickquery->status=="Released"){
-                return 'Released';
-                }
-            if($userid!=1 && $delete==0 && $edit==1 &&$ultimatesickquery->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
-            }
-            if($userid!=1 && $delete==0 && $edit==1 &&$ultimatesickquery->status=="Released"){
-                return 'Released';
-           }
-            if($userid!=1 && $delete==0 && $edit==0){
-                 return 'No Action Permitted';
-            }
-           
+            return 'No Action Permitted';
         })
         ->editColumn('allowance', function ($data) {
             return '₱'.number_format($data->allowance, 2, '.', ',');
@@ -323,6 +298,23 @@ class odController extends Controller
             return date('F d Y, h:i:s A',strtotime($data->created_at));
         })
         ->make(true);
+    }
+
+    function get_copra($id){
+        return od::find($id);
+    }
+
+    function save_copra(Request $request){
+        $id = $request->copra_id;
+        
+        $copra = new copra_delivery;
+        $copra->od_id = $request->id;
+        $copra->wr = $request->cop_wr;
+        $copra->net_weight = $request->cop_nw;
+        $copra->dust = $request->cop_dust;
+        $copra->cop_moist = $request->cop_cop_moist;
+        $copra->resicada = $request->cop_rw;
+        $copra->save();
     }
 
     function updatedata(Request $request){

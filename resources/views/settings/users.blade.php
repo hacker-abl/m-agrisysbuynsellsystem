@@ -303,10 +303,6 @@ var start = moment();
 var end = moment();
 var historytable;
 function cb(start, end) {
-  console.log(
-    "Start:" + start.format("MMMM D YYYY, h:mm:ss a"),
-    "End:" + end.format("MMMM D YYYY, h:mm:ss a")
-  );
   $("#reportrange span").html(
     start.format("MMMM D YYYY, h:mm:ss a") +
       " - " +

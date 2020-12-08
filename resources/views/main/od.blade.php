@@ -6,6 +6,8 @@
 			<h2>Outbound Deliveries Dashboard</h2>
 		</div>
 	</div>
+
+  <!-- OD MODAL -- START -->
 	<div class="modal fade" id="od_modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -13,24 +15,12 @@
 					<div class="header">
 						<h2 class="modal_title">Add Delivery</h2>
 						<ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <button id="print_od" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
-                            </li>
-                            <li class="dropdown">
-                                <!-- <form method="POST" id="printForm" name="printForm" target="_blank" action="{{ route('print_od') }}">
-									<input type="hidden" id="ticket_clone" name="ticket_clone">
-									<input type="hidden" id="commodity_clone" name="commodity_clone">
-									<input type="hidden" id="destination_clone" name="destination_clone">
-									<input type="hidden" id="driver_id_clone" name="driver_id_clone">
-									<input type="hidden" id="company_clone" name="company_clone">
-									<input type="hidden" id="plateno_clone" name="plateno_clone">
-									<input type="hidden" id="liter_clone" name="liter_clone">
-									<input type="hidden" id="kilos_clone" name="kilos_clone">
-									<input type="hidden" id="allowance_clone" name="allowance_clone">
-									<button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button> 
-                                </form> -->
-                            </li>
-                        </ul>
+                <li class="dropdown">
+                    <button id="print_od" type="button" class="btn btn-sm btn-icon print-icon" ><i class="glyphicon glyphicon-print"></i></button>
+                </li>
+                <li class="dropdown">
+                </li>
+            </ul>
 					</div>
 					<div class="body">
 						<form class="form-horizontal " id="od_form">
@@ -188,6 +178,110 @@
 			</div>
 		</div>
 	</div>
+  <!-- OD MODAL -- END -->
+
+  <!-- COPRA MODAL -- START -->
+  <div class="modal fade" id="copra_modal" tabIndex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2 class="modal_title">COPRA - <span class="ticket_title"></span></h2>
+          </div>
+          <form class="form-horizontal" id="copra_form">
+            <div class="body">
+              <input type="hidden" id="copra_id" name="copra_id">
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_wr">W.R. No.</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text" id="cop_wr" name="cop_wr" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_nw">Net Weight</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_nw" name="cop_nw" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_dust">Dust %</label>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_dust" name="cop_dust" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_dust_w" name="cop_dust_w" class="form-control" placeholder="dust (kg)" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_moist">Moisture %</label>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_moist" name="cop_moist" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_moist_w" name="cop_moist_w" class="form-control" placeholder="moist (kg)" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_rw">Resicada Weight</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_rw" name="cop_rw" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="add_copra" class="btn btn-link waves-effect">SAVE CHANGES</button>
+              <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- COPRA MODAL -- END -->
 
 	<div class="row clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -473,28 +567,23 @@ $(document).ready(function() {
       processing: true,
       columns: [
         { data: "outboundTicket" },
-        { data: "commodity_name" },
+        { data: "commodity.name" },
         { data: "destination" },
-        { data: "name" },
-        {
-          data: "fname",
-          render: function(data, type, full, meta) {
-            return full.fname + " " + full.mname + " " + full.lname;
-          }
-        },
-        { data: "plateno" },
+        { data: "company.name" },
+        { data: "employee" },
+        { data: "trucks.name" },
         { data: "fuel_liters" },
         { data: "kilos" },
         { data: "allowance" },
         { data: "created_at" },
-        { data: "status_expense" },
+        { data: "od_expense.status" },
         { data: "action", orderable: false, searchable: false }
       ]
     });
   }
 
   $(document).on("click", ".open_od_modal", function() {
-    $(".modal_title").text("Add Delivery");
+    $("#od_modal .modal_title").text("Add Delivery");
     $("#button_action").val("add");
     $.ajax({
       url: "{{ route('refresh_id') }}",
@@ -548,7 +637,6 @@ $(document).ready(function() {
         dataType: "text",
         data: $("#od_form").serialize(),
         success: function(data) {
-          console.log(data);
           dataparsed = $.parseJSON(data);
           button.disabled = false;
           input.html("SAVE CHANGES");
@@ -657,7 +745,6 @@ $(document).ready(function() {
           data: { id: id },
           success: function(data) {
             dataparsed = $.parseJSON(data);
-            console.log(dataparsed);
             if (dataparsed != "success") {
               swal(
                 "Cash Reverted!",
@@ -674,6 +761,64 @@ $(document).ready(function() {
       }
     });
   });
+
+  //COPRA DELIVERY -- START
+
+  $(document).on('click', '.copra_delivery', function(){
+    let id = $(this).attr('id');
+
+    $.ajax({
+      url: "/copra_delivery/"+id,
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        $('#copra_id').val(id);
+        $('#copra_modal .ticket_title').text(data.outboundTicket);
+        $("#copra_modal").modal("show");
+      }
+    });
+  })
+
+  $(document).on('submit', '#copra_form', function(e){
+    e.preventDefault();
+
+    $('#add_copra').attr('disabled', true).text('SAVING...');
+
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "/save_copra",
+      method: 'POST',
+      dataType: 'json',
+      data: $(this).serialize(),
+      success: function(data){
+        $('#add_copra').attr('disabled', false).text('SAVE CHANGES');
+      }
+    })
+  });
+
+  $(document).on('keyup', '#cop_nw, #cop_dust, #cop_moist', function(){
+    copra_compute();
+  })
+
+  function copra_compute(){
+    let net = ($('#cop_nw').val()) ? parseFloat($('#cop_nw').val()) : 0;
+    let dust = ($('#cop_dust').val()) ? parseFloat($('#cop_dust').val()) : 0;
+    let moist = ($('#cop_moist').val()) ? parseFloat($('#cop_moist').val()) : 0;
+    let dust_w = $('#cop_dust_w');
+    let moist_w = $('#cop_moist_w');
+    let cop_rw = $('#cop_rw');
+    
+    dust_w.val((net * (dust/100)).toFixed(2));
+    moist_w.val((net * (moist/100)).toFixed(2));
+    dust_w = parseFloat(dust_w.val());
+    moist_w = parseFloat(moist_w.val());
+
+    cop_rw.val((net - (dust_w + moist_w)).toFixed(2));
+  }
+
+  //COPRA DELIVERY -- END
 
   // Initiate datatable here
   $('#deliverytable').dataTable();
