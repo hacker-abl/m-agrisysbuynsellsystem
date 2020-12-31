@@ -126,9 +126,19 @@ Route::group(['middleware'=>['auth', 'user:od']], function() {
     Route::post('/add_delivery', 'odController@store')->name('add_delivery');
     Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
     Route::get('/delete_delivery', 'odController@deletedata')->name('delete_delivery');
-    Route::get('/copra_delivery/{id}', 'odController@get_copra');
-    Route::post('/save_copra', 'odController@save_copra');
     Route::post('/print_od', 'pdfController@od')->name('print_od');
+    
+    Route::post('/refresh_copra_delivery/{od_id}', 'odController@refresh_copra_delivery');
+    Route::post('/refresh_copra_breakdown', 'odController@refresh_copra_breakdown');
+    Route::get('/get_copra/{od_id}', 'odController@get_copra');
+    Route::get('/get_copra_delivery/{od_id}', 'odController@get_copra_delivery');
+    Route::get('/get_copra_delivery_add/{copra_delivery}', 'odController@get_copra_delivery_add');
+    Route::get('/get_copra_breakdown/{breakdown}', 'odController@get_copra_breakdown');
+    Route::post('/save_copra', 'odController@save_copra');
+    Route::post('/save_copra_breakdown', 'odController@save_copra_breakdown');
+    Route::get('/delete_breakdown/{breakdown}', 'odController@delete_breakdown')->name('delete_breakdown');
+    
+    Route::get('/get_od_payment_details', 'odController@get_od_payment_details');
 });
 
 Route::group(['middleware'=>['auth', 'user:sales']], function() {

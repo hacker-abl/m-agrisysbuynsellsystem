@@ -178,7 +178,7 @@ class purchasesController extends Controller
                 $getDate = Carbon::now();
 
                 if($cashLatest != null){
-                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
                 }
                 else{
                     $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -462,7 +462,7 @@ class purchasesController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -747,7 +747,7 @@ class purchasesController extends Controller
         //         $getDate = Carbon::now();
                 
         //         if($cashLatest != null){
-        //             $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        //             $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         //         }
         //         else{
         //             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -815,7 +815,7 @@ class purchasesController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';

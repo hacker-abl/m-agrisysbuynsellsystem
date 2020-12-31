@@ -20,7 +20,7 @@ class od extends Model
 	);
 
     public function commodity() {
-        return $this->hasOne('App\commodity', 'id', 'commodity_id')->withTrashed();;
+        return $this->hasOne('App\commodity', 'id', 'commodity_id')->withTrashed();
 	}
 
     public function trucks() {

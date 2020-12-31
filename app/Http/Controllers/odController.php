@@ -121,7 +121,7 @@ class odController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -190,7 +190,7 @@ class odController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -300,21 +300,97 @@ class odController extends Controller
         ->make(true);
     }
 
-    function get_copra($id){
-        return od::find($id);
+    public function refresh_copra_delivery($od_id){
+        $copra = copra_delivery::where('od_id', $od_id)->get();
+
+        return \DataTables::of($copra)->make(true);
+    }
+
+    public function refresh_copra_breakdown(Request $request){
+        $breakdown = copra_breakdown::where('copra_id', $request->copra_delivery_id)->get();
+        
+        return \DataTables::of($breakdown)
+            ->addColumn('action', function($data){
+                $html = '';
+
+                $html .= '<button class="btn btn-xs btn-warning update_breakdown waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp';
+                $html .= '<button class="btn btn-xs btn-danger delete_breakdown waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
+                
+                return $html;
+            })->make(true);
+    }
+
+    function get_copra($od_id){
+        $od = od::find($od_id);
+        $copra = copra_delivery::where('od_id', $od_id)->first();
+        
+        return [
+            'ticket' => $od->outboundTicket,
+            'copra_delivery_id' => ($copra) ? $copra->id : ''
+        ];
+    }
+
+    function get_copra_breakdown(copra_breakdown $breakdown){
+        $copra = copra_delivery::find($breakdown->copra_id);
+        $priced_weight = copra_breakdown::where('copra_id', $breakdown->copra_id)->sum('resicada');
+        $breakdown->unpriced = $copra->resicada - ($priced_weight - $breakdown->resicada);
+        $breakdown->wr = $copra->wr;
+        return $breakdown;
+    }
+
+    function get_copra_delivery($od_id){
+        return copra_delivery::where('od_id', $od_id)->first();
+    }
+
+    function get_copra_delivery_add(copra_delivery $copra_delivery){
+        $resicada = copra_breakdown::where('copra_id', $copra_delivery->id)->sum('resicada');
+
+        return [
+            'wr' => $copra_delivery->wr,
+            'unpriced' => $copra_delivery->resicada - $resicada
+        ];
+    }
+
+    function get_od_payment_details(Request $request){
+        $od_id = $request->od_id;
+        $copra_id = $request->copra_delivery_id;
+
+        $od = od::with('commodity:id,name')->select('outboundTicket', 'commodity_id')->find($od_id);
+
+        $od->payment_amount = copra_breakdown::where('copra_id', $copra_id)->sum('amount');
+        return $od;
     }
 
     function save_copra(Request $request){
-        $id = $request->copra_id;
-        
-        $copra = new copra_delivery;
-        $copra->od_id = $request->id;
+        $od_id = $request->copra_id;
+        $add_edit = $request->copra_add_edit;
+
+        $copra = ($add_edit == 'add') ? new copra_delivery : copra_delivery::where('od_id', $od_id)->first();
+        $copra->od_id = $request->copra_id;
         $copra->wr = $request->cop_wr;
         $copra->net_weight = $request->cop_nw;
         $copra->dust = $request->cop_dust;
-        $copra->cop_moist = $request->cop_cop_moist;
+        $copra->moist = $request->cop_moist;
         $copra->resicada = $request->cop_rw;
         $copra->save();
+
+        return $copra->id;
+    }
+
+    function save_copra_breakdown(Request $request){
+        $id = $request->copra_breakdown_id;
+        $add_edit = $request->copra_breakdown_add_edit;
+
+        $breakdown = ($add_edit == 'add') ? new copra_breakdown : copra_breakdown::find($id);
+        $breakdown->copra_id = $request->copra_delivery_id;
+        $breakdown->resicada = $request->cop_bd_rw;
+        $breakdown->price = $request->cop_bd_price;
+        $breakdown->amount = $request->cop_bd_amount;
+        $breakdown->save();
+    }
+
+    function delete_breakdown(copra_breakdown $breakdown){
+        $breakdown->delete();
     }
 
     function updatedata(Request $request){
@@ -353,7 +429,7 @@ class odController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';

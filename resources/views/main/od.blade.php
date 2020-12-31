@@ -180,17 +180,79 @@
 	</div>
   <!-- OD MODAL -- END -->
 
-  <!-- COPRA MODAL -- START -->
-  <div class="modal fade" id="copra_modal" tabIndex="-1" role="dialog">
+  <!-- COPRA MODALS -- START -->
+    <div class="modal fade" id="copra_modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="row">
+              <div class="card">
+                  <div class="header">
+                      <h2> Copra Delivery & Breakdown - <span class="ticket_title"></span></h2>
+                      <div class="header-dropdown m-r-5">
+                        <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 float-right copra_delivery_button add_copra_delivery"><i class="material-icons copra_icon">library_add</i></button>
+                      </div>
+                  </div>
+                  <div class="body">
+                    <button class="btn waves-effect payment_button">PENDING</button>
+
+                    <table id="view_copra_delivery" class="table table-bordered table-striped table-hover"
+                        style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>W.R. No.</th>
+                                <th>Net Weight</th>
+                                <th>Dust</th>
+                                <th>Moisture</th>
+                                <th>Resicada Weight</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                    <div>
+                      <span style="font-size: 24px;">Breakdown</span>
+                      <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 pull-right add_breakdown"><i class="material-icons">library_add</i></button>
+                    </div>
+
+                    <table id="view_copra_breakdown" class="table table-bordered table-striped table-hover"
+                        style="width: 100%;">
+                        <thead>
+                          <tr>
+                            <th>Resicada Weight</th>
+                            <th>Price</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </tfoot>
+                    </table>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="copra_add_edit_modal" tabIndex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="header">
-            <h2 class="modal_title">COPRA - <span class="ticket_title"></span></h2>
+            <h2 class="modal_title">COPRA DELIVERY - <span class="ticket_title"></span></h2>
           </div>
           <form class="form-horizontal" id="copra_form">
+            @csrf
+
             <div class="body">
               <input type="hidden" id="copra_id" name="copra_id">
+              <input type="hidden" id="copra_add_edit" name="copra_add_edit">
 
               <div class="row clearfix">
                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
@@ -225,14 +287,14 @@
                 <div class="col-lg-4 col-md-4 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="number" step=".01" id="cop_dust" name="cop_dust" class="form-control" required>
+                      <input type="number" step=".01" id="cop_dust" name="cop_dust" class="form-control">
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="number" step=".01" id="cop_dust_w" name="cop_dust_w" class="form-control" placeholder="dust (kg)" required readonly>
+                      <input type="number" step=".01" id="cop_dust_w" name="cop_dust_w" class="form-control" placeholder="dust (kg)" readonly>
                     </div>
                   </div>
                 </div>
@@ -245,14 +307,14 @@
                 <div class="col-lg-4 col-md-4 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="number" step=".01" id="cop_moist" name="cop_moist" class="form-control" required>
+                      <input type="number" step=".01" id="cop_moist" name="cop_moist" class="form-control">
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="number" step=".01" id="cop_moist_w" name="cop_moist_w" class="form-control" placeholder="moist (kg)" required readonly>
+                      <input type="number" step=".01" id="cop_moist_w" name="cop_moist_w" class="form-control" placeholder="moist (kg)" readonly>
                     </div>
                   </div>
                 </div>
@@ -281,7 +343,148 @@
       </div>
     </div>
   </div>
-  <!-- COPRA MODAL -- END -->
+
+  <div class="modal fade" id="copra_add_edit_breakdown_modal" tabIndex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2 class="modal_title">COPRA BREAKDOWN - <span class="wr_title"></span></h2>
+          </div>
+          <form class="form-horizontal" id="copra_breakdown_form">
+            @csrf
+
+            <div class="body">
+              <input type="hidden" id="copra_breakdown_id" name="copra_breakdown_id">
+              <input type="hidden" id="copra_delivery_id" name="copra_delivery_id">
+              <input type="hidden" id="copra_breakdown_add_edit" name="copra_breakdown_add_edit">
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_rw">Resicada Weight</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_bd_rw" name="cop_bd_rw" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_nw">Price</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_bd_price" name="cop_bd_price" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_nw">Amount</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_bd_amount" name="cop_bd_amount" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_rw">Unpriced Weight</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="hidden" step=".01" id="bd_unpriced_weight_hidden" class="form-control" required readonly>
+                      <input type="number" step=".01" id="bd_unpriced_weight" name="bd_unpriced_weight" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="add_copra_breakdown" class="btn btn-link waves-effect">SAVE CHANGES</button>
+              <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- COPRA MODALS -- END -->
+
+  <div class="modal fade" id="payment_modal" tabIndex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2 class="modal_title">PAYMENT - <span class="payment_title"></span></h2>
+          </div>
+          <form class="form-horizontal" id="payment_form">
+            @csrf
+
+            <div class="body">
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="payment_date">Date</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text" id="payment_date" name="payment_date" class="form-control datepicker" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="payment_amount">Amount</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="payment_amount" name="payment_amount" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="payment_bank">Bank</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text" id="payment_bank" name="payment_bank" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="confirm_payment" class="btn btn-link waves-effect">SAVE CHANGES</button>
+              <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 	<div class="row clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -349,6 +552,9 @@
 var deliveriestable;
 var od_date_from;
 var od_date_to;
+var od_id;
+var copra_delivery_id;
+
 $(document).on("click", "#link", function() {
   $("#bod").toggleClass("overlay-open");
 });
@@ -402,6 +608,8 @@ $(document).ready(function() {
     }
     return s.join(dec);
   }
+
+  $('#payment_date').datepicker();
 
   //START OF DATE RANGE FILTER
   $("#od_datepicker_from")
@@ -723,7 +931,7 @@ $(document).ready(function() {
         $("#kilos").val(data.kilos);
         $("#allowance").val(data.allowance);
         $("#od_modal").modal("show");
-        $(".modal_title").text("Update Delivery");
+        $("#od_modal .modal_title").text("Update Delivery");
         refresh_delivery_table();
       }
     });
@@ -764,20 +972,246 @@ $(document).ready(function() {
 
   //COPRA DELIVERY -- START
 
+  $(document).on('hidden.bs.modal', '#copra_modal', function(){
+    $('.copra_delivery_button').hide();
+    $('.add_breakdown').hide();
+    $('.payment_button').hide();
+    $("#view_copra_delivery, #view_copra_breakdown").DataTable().clear().draw();
+  })
+
+  $(document).on('hidden.bs.modal', '#copra_add_edit_modal, #copra_add_edit_breakdown_modal, #payment_modal', function(){
+    $(this).find('input').val('').end();
+    refresh_copra_table();
+    setTimeout(function(){ $("#copra_modal").modal("show"); }, 500);
+  });
+
   $(document).on('click', '.copra_delivery', function(){
-    let id = $(this).attr('id');
+    od_id = $(this).attr('id');
 
     $.ajax({
-      url: "/copra_delivery/"+id,
+      url: "/get_copra/"+od_id,
       method: "get",
       dataType: "json",
       success: function(data){
-        $('#copra_id').val(id);
-        $('#copra_modal .ticket_title').text(data.outboundTicket);
+        copra_delivery_id = data.copra_delivery_id;
+        $('.ticket_title').text(data.ticket);
+        refresh_copra_table();
         $("#copra_modal").modal("show");
       }
     });
   })
+
+  $(document).on('click', '.add_copra_delivery', function(){
+    $('#copra_id').val(od_id);
+    $('#copra_add_edit').val('add');
+    $("#copra_modal").modal("hide");
+    setTimeout(function(){ $("#copra_add_edit_modal").modal("show"); }, 500);
+  });
+
+  $(document).on('click', '.edit_copra_delivery', function(){
+    $.ajax({
+      url: "/get_copra_delivery/"+od_id,
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        $('#copra_id').val(od_id);
+        $('#copra_add_edit').val('edit');
+        $('#cop_wr').val(data.wr);
+        $('#cop_nw').val(data.net_weight);
+        $('#cop_dust').val(data.dust);
+        $('#cop_moist').val(data.moist);
+        copra_compute();
+        $("#copra_modal").modal("hide");
+        setTimeout(function(){ $("#copra_add_edit_modal").modal("show"); }, 500);
+      }
+    });
+  });
+
+  $(document).on('click', '.add_breakdown', function(){
+    $.ajax({
+      url: "/get_copra_delivery_add/"+copra_delivery_id,
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        $('.wr_title').text(data.wr);
+        $('#copra_delivery_id').val(copra_delivery_id);
+        $('#copra_breakdown_add_edit').val('add');
+        $('#bd_unpriced_weight, #bd_unpriced_weight_hidden').val(data.unpriced);
+        $("#copra_modal").modal("hide");
+        setTimeout(function(){ $("#copra_add_edit_breakdown_modal").modal("show"); }, 500);
+      }
+    });
+  })
+
+  $(document).on('click', '.update_breakdown', function(){
+    let id = $(this).attr('id');
+
+    $.ajax({
+      url: "/get_copra_breakdown/"+id,
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        $('#copra_breakdown_add_edit').val('edit');
+        $('.wr_title').text(data.wr);
+        $('#copra_breakdown_id').val(data.id);
+        $('#copra_delivery_id').val(data.copra_id);
+        $('#cop_bd_rw').val(data.resicada);
+        $('#cop_bd_price').val(data.price);
+        $('#cop_bd_amount').val(data.amount);
+        $('#bd_unpriced_weight, #bd_unpriced_weight_hidden').val(data.unpriced);
+        copra_breakdown_compute();
+        $("#copra_modal").modal("hide");
+        setTimeout(function(){ $("#copra_add_edit_breakdown_modal").modal("show"); }, 500);
+      }
+    })
+  })
+
+  $(document).on('click', '.delete_breakdown', function(){
+    let id = $(this).attr('id');
+    swal({
+      title: "Are you sure?",
+      text: "Delete this record?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        $.ajax({
+          url: "/delete_breakdown/"+id,
+          method: "get",
+          success: function(data) {
+            swal("Success!", "Record has been deleted", "success");
+            refresh_copra_table();
+          }
+        });
+      }
+    });
+  })
+
+  $(document).on('click', '.payment_button', function(){
+    $.ajax({
+      url: "/get_od_payment_details",
+      data: {
+        od_id: od_id,
+        copra_delivery_id: copra_delivery_id,
+      },
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        $('.payment_title').text(data.commodity.name+' ('+data.outboundTicket+')');
+        $('#payment_amount').val(data.payment_amount);
+      }
+    });
+    $("#copra_modal").modal("hide");
+    setTimeout(function(){ $("#payment_modal").modal("show"); }, 500);
+  })
+
+  function refresh_copra_table() {
+    $('.copra_delivery_button').hide();
+    $('.add_breakdown').hide();
+
+    $("#view_copra_delivery").dataTable().fnDestroy();
+    $("#view_copra_delivery").DataTable({
+      searching: false,
+      paging: false,
+      info: false,
+      ajax: {
+        url: "/refresh_copra_delivery/"+od_id,
+        type: "post",
+        headers: {
+          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        },
+      },
+      initComplete: function(settings, json){
+        if(json.data.length){
+          $('.copra_delivery_button').addClass('edit_copra_delivery').removeClass('add_copra_delivery');
+          $('.copra_icon').text('mode_edit');
+          $('.add_breakdown').show();
+        }
+        else{
+          $('.copra_delivery_button').addClass('add_copra_delivery').removeClass('edit_copra_delivery');
+          $('.copra_icon').text('library_add');
+        }
+        refresh_copra_breakdown_table();
+        $('.copra_delivery_button').show();
+      },
+      processing: true,
+      columns: [
+        { data: "wr" },
+        { data: "net_weight" },
+        { data: "dust" },
+        { data: "moist" },
+        { data: "resicada" }
+      ]
+    })
+  }
+
+  function refresh_copra_breakdown_table(){
+    $('.payment_button').hide();
+
+    $("#view_copra_breakdown").dataTable().fnDestroy();
+    $("#view_copra_breakdown").DataTable({
+      searching: false,
+      paging: false,
+      info: false,
+      ajax: {
+        url: "/refresh_copra_breakdown",
+        data: {
+          copra_delivery_id: copra_delivery_id,
+        },
+        type: "post",
+        headers: {
+          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        },
+      },
+      processing: true,
+      columns: [
+        { data: "resicada" },
+        { data: "price" },
+        { data: "amount" },
+        { data: "action", orderable: false, searchable: false }
+      ],
+      initComplete: function(settings, json){
+        let payment_button = $('.payment_button');
+
+        if(json.data.length){
+          payment_button.text('PENDING').prop('disabled', false);
+          payment_button.addClass('btn-success').removeClass('btn-danger');
+        }
+        else{
+          payment_button.text('PENDING').prop('disabled', true);
+          payment_button.addClass('btn-success').removeClass('btn-danger');
+        }
+
+        $('.payment_button').show();
+      },
+      footerCallback: function(row, data, start, end, display) {
+        var api = this.api(), data;
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function(i) {
+          return typeof i == "string"
+            ? i.replace(/[\₱,]/g, "") * 1
+            : typeof i == "number"
+            ? i
+            : 0;
+        };
+
+        for(let x = 0; x < 3; x++){
+          total = api
+          .column(x)
+          .data()
+          .reduce(function(a, b) {
+            return intVal(a) + intVal(b);
+          }, 0);
+          
+          $(api.column(x).footer()).html(
+            number_format(total, 2)
+          );
+        }
+      },
+    })
+  }
 
   $(document).on('submit', '#copra_form', function(e){
     e.preventDefault();
@@ -790,16 +1224,42 @@ $(document).ready(function() {
       },
       url: "/save_copra",
       method: 'POST',
-      dataType: 'json',
+      dataType: 'text',
       data: $(this).serialize(),
       success: function(data){
+        copra_delivery_id = data;
         $('#add_copra').attr('disabled', false).text('SAVE CHANGES');
+        $("#copra_add_edit_modal").modal("hide");
+      }
+    })
+  });
+
+  $(document).on('submit', '#copra_breakdown_form', function(e){
+    e.preventDefault();
+
+    $('#add_copra_breakdown').attr('disabled', true).text('SAVING...');
+
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "/save_copra_breakdown",
+      method: 'POST',
+      dataType: 'text',
+      data: $(this).serialize(),
+      success: function(data){
+        $('#add_copra_breakdown').attr('disabled', false).text('SAVE CHANGES');
+        $("#copra_add_edit_breakdown_modal").modal("hide");
       }
     })
   });
 
   $(document).on('keyup', '#cop_nw, #cop_dust, #cop_moist', function(){
     copra_compute();
+  })
+
+  $(document).on('keyup', '#cop_bd_rw, #cop_bd_price', function(){
+    copra_breakdown_compute();
   })
 
   function copra_compute(){
@@ -816,6 +1276,17 @@ $(document).ready(function() {
     moist_w = parseFloat(moist_w.val());
 
     cop_rw.val((net - (dust_w + moist_w)).toFixed(2));
+  }
+
+  function copra_breakdown_compute(){
+    let resicada = ($('#cop_bd_rw').val()) ? parseFloat($('#cop_bd_rw').val()) : 0;
+    let price = ($('#cop_bd_price').val()) ? parseFloat($('#cop_bd_price').val()) : 0;
+    let amount = $('#cop_bd_amount');
+    let unpriced_hidden = ($('#bd_unpriced_weight_hidden').val()) ? parseFloat($('#bd_unpriced_weight_hidden').val()) : 0;
+    let unpriced = $('#bd_unpriced_weight');
+
+    amount.val((resicada * price).toFixed(2));
+    unpriced.val(unpriced_hidden - resicada);
   }
 
   //COPRA DELIVERY -- END
