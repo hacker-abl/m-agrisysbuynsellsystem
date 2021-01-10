@@ -13,6 +13,8 @@ use App\Roles;
 use App\trucks;
 use App\copra_delivery;
 use App\copra_breakdown;
+use App\coconut_delivery;
+use App\nuts_reject;
 use Auth;
 use App\User;
 use App\Events\ExpensesUpdated;
@@ -21,6 +23,7 @@ use App\Notification;
 use App\Cash_History;
 use Carbon\Carbon;
 use App\UserPermission;
+
 class odController extends Controller
 {
       /**
@@ -266,13 +269,21 @@ class odController extends Controller
                 $edit = $permit[0]->permit_edit;
             } 
 
+            $copra_coconut_html = '';
+
+
             $edit_html = '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp';
-            $copra_html = '<button class="btn btn-xs btn-info copra_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">bar_chart</i></button>&nbsp';
+            
+            if($data->commodity->name == 'COPRA'){
+                $copra_coconut_html = '<button class="btn btn-xs btn-info copra_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">bar_chart</i></button>&nbsp';
+            }
+            else if($data->commodity->name == 'COCONUT'){
+                $copra_coconut_html = '<button class="btn btn-xs btn-info coconut_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">bar_chart</i></button>&nbsp';
+            }
             $delete_html = '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
             
             if($userid==1){
-                if ($data->commodity->name != 'COPRA') $copra_html = '';
-                return $edit_html.$copra_html.$delete_html;
+                return $edit_html.$copra_coconut_html.$delete_html;
             }
             if($userid!=1 && $data->status=="On-Hand"){
                 $html = '';
@@ -356,9 +367,18 @@ class odController extends Controller
         $copra_id = $request->copra_delivery_id;
 
         $od = od::with('commodity:id,name')->select('outboundTicket', 'commodity_id')->find($od_id);
-
         $od->payment_amount = copra_breakdown::where('copra_id', $copra_id)->sum('amount');
         return $od;
+    }
+
+    function get_coconut($od_id){
+        $od = od::find($od_id);
+        $coconut = coconut_delivery::where('od_id', $od_id)->first();
+        
+        return [
+            'ticket' => $od->outboundTicket,
+            'coconut_delivery_id' => ($coconut) ? $coconut->id : ''
+        ];
     }
 
     function save_copra(Request $request){

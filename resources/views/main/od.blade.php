@@ -424,6 +424,287 @@
   </div>
   <!-- COPRA MODALS -- END -->
 
+  <!-- COCONUT MODALS -- START -->
+  <div class="modal fade" id="coconut_modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="row">
+              <div class="card">
+                  <div class="header">
+                      <h2> Coconut Delivery & Nuts Reject - <span class="ticket_title"></span></h2>
+                      <div class="header-dropdown m-r-5">
+                        <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 float-right coconut_delivery_button add_coconut_delivery"><i class="material-icons coconut_icon">library_add</i></button>
+                      </div>
+                  </div>
+                  <div class="body">
+                    <button class="btn waves-effect payment_button">PENDING</button>
+
+                    <div class="container">
+                      <div class="col-md-6">
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            W.R. #:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Gross Weight:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Moisture:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Net Weight:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Price:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Total Amount:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Withholding Tax:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Unloading Fee:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                        <div class="row clearfix">
+                          <div class="col-md-4">
+                            Total Amount Due:
+                          </div>
+                          <div class="col-md-8">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span style="font-size: 24px;">Nuts Reject</span>
+                    </div>
+
+                    <div>
+                      <span>Nuts Reject (KG): <span></span></span>
+                      <br>
+                      <span>Copra (KG): <span></span></span>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="coconut_add_edit_modal" tabIndex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2 class="modal_title">COCONUT DELIVERY - <span class="ticket_title"></span></h2>
+          </div>
+          <form class="form-horizontal" id="coconut_form">
+            @csrf
+
+            <div class="body">
+              <input type="hidden" id="coconut_id" name="coconut_id">
+              <input type="hidden" id="coconut_add_edit" name="coconut_add_edit">
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_weight">Coconut Weight</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text" id="coco_weight" name="coco_weight" class="form-control" value="40000" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_wr">W.R. No.</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text" id="coco_wr" name="coco_wr" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_nw">Net Weight</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_nw" name="coco_nw" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_moist">Moisture %</label>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_moist" name="coco_moist" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_moist_w" name="coco_moist_w" class="form-control" placeholder="moist (kg)" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_price">Price</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_price" name="coco_price" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_amount">Total Amount</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_amount" name="coco_amount" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_tax">Withholding Tax</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_tax" name="coco_tax" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_tax">Unloading Fee</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_unloading" name="coco_unloading" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_total_amount">Total Amount Due</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_total_amount" name="coco_total_amount" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <br><br>
+
+              
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_nuts_reject">Nuts Reject</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_nuts_reject" name="coco_nuts_reject" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_copra">Copra</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_copra" name="coco_copra" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="add_coconut" class="btn btn-link waves-effect">SAVE CHANGES</button>
+              <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- COCONUT MODALS -- END -->
+
   <div class="modal fade" id="payment_modal" tabIndex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -554,6 +835,8 @@ var od_date_from;
 var od_date_to;
 var od_id;
 var copra_delivery_id;
+var coconut_delivery_id;
+var coconut_weight;
 
 $(document).on("click", "#link", function() {
   $("#bod").toggleClass("overlay-open");
@@ -977,7 +1260,7 @@ $(document).ready(function() {
     $('.add_breakdown').hide();
     $('.payment_button').hide();
     $("#view_copra_delivery, #view_copra_breakdown").DataTable().clear().draw();
-  })
+  });
 
   $(document).on('hidden.bs.modal', '#copra_add_edit_modal, #copra_add_edit_breakdown_modal, #payment_modal', function(){
     $(this).find('input').val('').end();
@@ -1290,6 +1573,91 @@ $(document).ready(function() {
   }
 
   //COPRA DELIVERY -- END
+
+  //COCONUT DELIVERY -- START
+
+  $(document).on('hidden.bs.modal', '#coconut_add_edit_modal', function(){
+    $(this).find('input').val('').end();
+    refresh_coconut();
+    setTimeout(function(){ $("#coconut_modal").modal("show"); }, 500);
+  });
+
+  $(document).on('click', '.coconut_delivery', function(){
+    od_id = $(this).attr('id');
+
+    refresh_coconut();
+  })
+
+  $(document).on('click', '.add_coconut_delivery', function(){
+    $('#coconut_id').val(od_id);
+    $('#coconut_add_edit').val('add');
+    $("#coconut_modal").modal("hide");
+    setTimeout(function(){ $("#coconut_add_edit_modal").modal("show"); }, 500);
+  });
+
+  $(document).on('submit', '#coconut_form', function(e){
+    e.preventDefault();
+
+    $('#add_coconut').attr('disabled', true).text('SAVING...');
+
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "/save_coconut",
+      method: 'POST',
+      dataType: 'text',
+      data: $(this).serialize(),
+      success: function(data){
+        $('#add_coconut').attr('disabled', false).text('SAVE CHANGES');
+        $("#coconut_add_edit_modal").modal("hide");
+      }
+    })
+  });
+
+  $(document).on('keyup', '#coco_nw, #coco_moist, #coco_price, #coco_tax, #coco_tax', function(){
+    coconut_compute();
+  });
+
+  function coconut_compute(){
+    let weight = parseFloat($('#coco_weight').val());
+    let net = ($('#coco_nw').val()) ? parseFloat($('#coco_nw').val()) : 0;
+    let moist = ($('#coco_moist').val()) ? parseFloat($('#coco_moist').val()) : 0;
+    let moist_w = $('#coco_moist_w');
+    let price = ($('#coco_price').val()) ? parseFloat($('#coco_price').val()) : 0;
+    let amount = $('#coco_amount');
+    let tax = ($('#coco_tax').val()) ? parseFloat($('#coco_tax').val()) : 0;
+    let unloading = ($('#coco_unloading').val()) ? parseFloat($('#coco_unloading').val()) : 0;
+    let total_amount = $('#coco_total_amount');
+
+    let reject = $('#coco_nuts_reject');
+    let copra = $('#coco_copra');
+
+    moist_w.val((net * (moist/100)).toFixed(2));
+    moist_w = parseFloat(moist_w.val());
+
+    amount.val(((net - moist_w) * price).toFixed(2));
+    amount = parseFloat(amount.val());
+    
+    total_amount.val((amount - (tax + unloading)).toFixed(2));
+
+    reject.val((weight - net).toFixed());
+    copra.val((reject.val() * 0.22).toFixed(2));
+  }
+
+  function refresh_coconut(){
+    $.ajax({
+      url: "/get_coconut/"+od_id,
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        coconut_delivery_id = data.coconut_delivery_id;
+        $("#coconut_modal").modal("show");
+      }
+    })
+  }
+
+  //COCONUT DELIVERY -- END
 
   // Initiate datatable here
   $('#deliverytable').dataTable();
