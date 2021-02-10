@@ -139,6 +139,7 @@ Route::group(['middleware'=>['auth', 'user:od']], function() {
     Route::get('/delete_breakdown/{breakdown}', 'odController@delete_breakdown')->name('delete_breakdown');
 
     Route::get('/get_coconut/{od_id}', 'odController@get_coconut');
+    Route::post('/save_coconut', 'odController@save_coconut');
     
     Route::get('/get_od_payment_details', 'odController@get_od_payment_details');
 });

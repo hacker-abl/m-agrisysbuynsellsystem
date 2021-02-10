@@ -409,6 +409,24 @@ class odController extends Controller
         $breakdown->save();
     }
 
+    public function save_coconut(Request $request){
+        $od_id = $request->coconut_id;
+        $add_edit = $request->coconut_add_edit;
+
+        $coconut = ($add_edit == 'add') ? new coconut_delivery : coconut_delivery::find($id);
+        $coconut->od_id = $request->coconut_id;
+        $coconut->gross_weight = $request->coco_gw;
+        $coconut->moisture = $request->coco_moist;
+        $coconut->net_weight = $request->coco_nw;
+        $coconut->price = $request->coco_price;
+        $coconut->amount = $request->coco_amount;
+        $coconut->tax = $request->coco_tax;
+        $coconut->total_amount = $request->coco_total_amount;
+        $coconut->save();
+
+        return $coconut->od_id;
+    }
+
     function delete_breakdown(copra_breakdown $breakdown){
         $breakdown->delete();
     }

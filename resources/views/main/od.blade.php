@@ -436,77 +436,23 @@
                       </div>
                   </div>
                   <div class="body">
-                    <button class="btn waves-effect payment_button">PENDING</button>
-
-                    <div class="container">
-                      <div class="col-md-6">
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            W.R. #:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Gross Weight:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Moisture:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Net Weight:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Price:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Total Amount:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Withholding Tax:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Unloading Fee:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                        <div class="row clearfix">
-                          <div class="col-md-4">
-                            Total Amount Due:
-                          </div>
-                          <div class="col-md-8">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <table id="view_coconut_delivery" class="table table-bordered table-striped table-hover"
+                        style="width: 100%;">
+                        <thead>
+                          <tr>
+                            <th>W.R. #</th>
+                            <th>Gross</th>
+                            <th>Moisture</th>
+                            <th>Net Weight</th>
+                            <th>Price</th>
+                            <th>Total Amount</th>
+                            <th>Withholding Tax</th>
+                            <th>Unloading Fee</th>
+                            <th>Total Amount Due</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                    </table>
 
                     <div>
                       <span style="font-size: 24px;">Nuts Reject</span>
@@ -568,12 +514,12 @@
               
               <div class="row clearfix">
                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                  <label for="coco_nw">Net Weight</label>
+                  <label for="coco_gw">Gross Weight</label>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="number" step=".01" id="coco_nw" name="coco_nw" class="form-control" required>
+                      <input type="number" step=".01" id="coco_gw" name="coco_gw" class="form-control" required>
                     </div>
                   </div>
                 </div>
@@ -594,6 +540,19 @@
                   <div class="form-group">
                     <div class="form-line">
                       <input type="number" step=".01" id="coco_moist_w" name="coco_moist_w" class="form-control" placeholder="moist (kg)" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="coco_nw">Net Weight</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="coco_nw" name="coco_nw" class="form-control" required readonly>
                     </div>
                   </div>
                 </div>
@@ -1595,6 +1554,22 @@ $(document).ready(function() {
     setTimeout(function(){ $("#coconut_add_edit_modal").modal("show"); }, 500);
   });
 
+  function refresh_coconut(){
+    $.ajax({
+      url: "/get_coconut/"+od_id,
+      data: {
+        od_id: od_id,
+        coconut_delivery_id: coconut_delivery_id,
+      },
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        $('.payment_title').text(data.commodity.name+' ('+data.outboundTicket+')');
+        $('#payment_amount').val(data.payment_amount);
+      }
+    });
+  }
+
   $(document).on('submit', '#coconut_form', function(e){
     e.preventDefault();
 
@@ -1615,15 +1590,16 @@ $(document).ready(function() {
     })
   });
 
-  $(document).on('keyup', '#coco_nw, #coco_moist, #coco_price, #coco_tax, #coco_tax', function(){
+  $(document).on('keyup', '#coco_gw, #coco_moist, #coco_price, #coco_nw, #coco_tax, #coco_tax, #coco_unloading', function(){
     coconut_compute();
   });
 
   function coconut_compute(){
     let weight = parseFloat($('#coco_weight').val());
-    let net = ($('#coco_nw').val()) ? parseFloat($('#coco_nw').val()) : 0;
+    let gross_weight = ($('#coco_gw').val()) ? parseFloat($('#coco_gw').val()) : 0;
     let moist = ($('#coco_moist').val()) ? parseFloat($('#coco_moist').val()) : 0;
     let moist_w = $('#coco_moist_w');
+    let net_weight = $('#coco_nw');
     let price = ($('#coco_price').val()) ? parseFloat($('#coco_price').val()) : 0;
     let amount = $('#coco_amount');
     let tax = ($('#coco_tax').val()) ? parseFloat($('#coco_tax').val()) : 0;
@@ -1633,15 +1609,18 @@ $(document).ready(function() {
     let reject = $('#coco_nuts_reject');
     let copra = $('#coco_copra');
 
-    moist_w.val((net * (moist/100)).toFixed(2));
+    moist_w.val((gross_weight * (moist/100)).toFixed(2));
     moist_w = parseFloat(moist_w.val());
 
-    amount.val(((net - moist_w) * price).toFixed(2));
+    net_weight.val(gross_weight - moist_w);
+    net_weight = parseFloat(net_weight.val());
+
+    amount.val((net_weight * price).toFixed(2));
     amount = parseFloat(amount.val());
     
     total_amount.val((amount - (tax + unloading)).toFixed(2));
 
-    reject.val((weight - net).toFixed());
+    reject.val((weight - net_weight).toFixed());
     copra.val((reject.val() * 0.22).toFixed(2));
   }
 
