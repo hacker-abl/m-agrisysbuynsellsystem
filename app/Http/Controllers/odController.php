@@ -11,6 +11,10 @@ use App\od_expense;
 use App\od;
 use App\Roles;
 use App\trucks;
+use App\copra_delivery;
+use App\copra_breakdown;
+use App\coconut_delivery;
+use App\nuts_reject;
 use Auth;
 use App\User;
 use App\Events\ExpensesUpdated;
@@ -119,7 +123,7 @@ class odController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -188,7 +192,7 @@ class odController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -236,32 +240,27 @@ class odController extends Controller
         $from = $request->date_from;
         $to = $request->date_to;
 
-        if($to==""){
-         $ultimatesickquery= DB::table('deliveries')
-            ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
-            ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
-            ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
-            ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at','od_expense.status')
-            ->whereBetween('deliveries.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
-            ->latest();
-        }else{
-            $ultimatesickquery= DB::table('deliveries')
-            ->join('commodity', 'commodity.id', '=', 'deliveries.commodity_id')
-            ->join('trucks', 'trucks.id', '=', 'deliveries.plateno')
-            ->join('employee', 'employee.id', '=', 'deliveries.driver_id')
-            ->join('company', 'company.id', '=', 'deliveries.company_id')
-            ->join('od_expense', 'od_expense.od_id', '=', 'deliveries.id')
-            ->select('deliveries.id','deliveries.outboundTicket','commodity.name AS commodity_name','trucks.plate_no AS plateno','deliveries.destination', 'employee.fname','employee.mname','employee.lname','company.name', 'deliveries.fuel_liters','deliveries.kilos','deliveries.allowance','deliveries.created_at','od_expense.status')
-            ->where('deliveries.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
-            ->where('deliveries.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
-            ->latest();
-        }
-        //$user = User::all();
+        $od = od::with('commodity', 'trucks', 'driver', 'company', 'od_expense')
+            ->when($to == '', function($query){
+                $query->whereBetween('created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')]);
+            })
+            ->when($to != '', function($query) use($from, $to){
+                $query->where('created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
+                    ->where('created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59");
+            })->latest();
        
-        return \DataTables::of($ultimatesickquery)
-        ->addColumn('action', function(  $ultimatesickquery){
+        return \DataTables::of($od)
+        ->editColumn('outboundTicket', function($data){
+            if($data->id == 1){
+                return '<a href="javascript:void(0)" id="'.$data->id.'">'.$data->outboundTicket.'</a>>';
+            }else{
+                return $data->outboundTicket;
+            }
+        })
+        ->editColumn('employee', function($data){
+            return $data->driver->fname.' '.$data->driver->mname.' '.$data->driver->lname;
+        })
+        ->addColumn('action', function($data){
             $userid= Auth::user()->id;
             $permit = UserPermission::where('user_id',$userid)->where('permit',1)->where('permission_id',4)->get();
             if($userid!=1){
@@ -270,25 +269,25 @@ class odController extends Controller
             }   
             
             if($userid==1){
-                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
-            }if($userid!=1 && $delete==1 && $edit==1 &&$ultimatesickquery->status=="On-Hand"){
-                     return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
-                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
+            }if($userid!=1 && $delete==1 && $edit==1 &&$data->status=="On-Hand"){
+                     return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
+                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
             }
-            if($userid!=1 && $delete==1 && $edit==1 &&$ultimatesickquery->status=="Released"){
+            if($userid!=1 && $delete==1 && $edit==1 &&$data->status=="Released"){
                 return 'Released';
        }
-            if($userid!=1 && $delete==1 && $edit==0 &&$ultimatesickquery->status=="On-Hand"){
-            return '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">delete</i></button>';
+            if($userid!=1 && $delete==1 && $edit==0 &&$data->status=="On-Hand"){
+            return '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
             }
-            if($userid!=1 && $delete==1 && $edit==0 &&$ultimatesickquery->status=="Released"){
+            if($userid!=1 && $delete==1 && $edit==0 &&$data->status=="Released"){
                 return 'Released';
                 }
-            if($userid!=1 && $delete==0 && $edit==1 &&$ultimatesickquery->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$ultimatesickquery->id.'"><i class="material-icons">mode_edit</i></button>';
+            if($userid!=1 && $delete==0 && $edit==1 &&$data->status=="On-Hand"){
+                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>';
             }
-            if($userid!=1 && $delete==0 && $edit==1 &&$ultimatesickquery->status=="Released"){
+            if($userid!=1 && $delete==0 && $edit==1 &&$data->status=="Released"){
                 return 'Released';
            }
             if($userid!=1 && $delete==0 && $edit==0){
@@ -347,7 +346,7 @@ class odController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';

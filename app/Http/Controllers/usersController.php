@@ -46,7 +46,7 @@ class usersController extends Controller
         $user = User::find($request->id);
         $cashLatest = Cash_History::orderBy('id', 'DESC')->first();
         $getDate = Carbon::now();
-        $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+        $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
 
         $output = array(
             'trans_no' => $dateTime,
@@ -73,7 +73,7 @@ class usersController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -146,7 +146,7 @@ class usersController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
