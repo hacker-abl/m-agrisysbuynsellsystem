@@ -196,8 +196,6 @@
                       </div>
                   </div>
                   <div class="body">
-                    <input type="hidden" id="copra_od_id" value="">
-
                     <table id="view_copra_delivery" class="table table-bordered table-striped table-hover"
                         style="width: 100%;">
                         <thead>
@@ -433,7 +431,7 @@
   <!-- COCONUT MODALS -- START -->
 
   <div class="modal fade" id="coconut_modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1300px;">
       <div class="row">
         <div class="card">
           <div class="header">
@@ -459,7 +457,6 @@
                     <th>Withholding Tax</th>
                     <th>Unloading Fee</th>
                     <th>Total Amount Due</th>
-                    <th>Action</th>
                   </tr>
                 </thead>
             </table>
@@ -469,9 +466,9 @@
             </div>
 
             <div>
-              <span>Nuts Reject (KG): <span></span></span>
+              <span>Nuts Reject (KG): <span id="nuts_reject"></span></span>
               <br>
-              <span>Copra (KG): <span></span></span>
+              <span>Copra (KG): <span id="nuts_copra"></span></span>
             </div>
           </div>
           <div class="modal-footer">
@@ -1192,20 +1189,18 @@ $(document).ready(function() {
 
   $(document).on('hidden.bs.modal', '#copra_add_edit_modal, #copra_add_edit_breakdown_modal', function(){
     $(this).find('input').val('').end();
-    refresh_copra_tables($('#copra_od_id').val());
+    copra_modal_data();
     setTimeout(function(){ $("#copra_modal").modal("show"); }, 500);
   });
 
   $(document).on('click', '.copra_delivery', function(){
-    let od_id = $(this).attr("id");
+    od_id = $(this).attr("id");
 
-    $('#copra_od_id').val(od_id);
-
-    copra_modal_data(od_id);
+    copra_modal_data();
     $("#copra_modal").modal("show");
   });
 
-  function copra_modal_data(od_id) {
+  function copra_modal_data() {
     $.ajax({
       url: "/copra_modal_data/"+od_id,
       method: "get",
@@ -1213,8 +1208,7 @@ $(document).ready(function() {
       success: function(data) {
         $('.ticket_title').text(data.ticket);
 
-        $('.add_copra_delivery, .edit_copra_delivery, .add_breakdown').attr('id', od_id);
-        $('#copra_od_id').val(od_id);
+        $('#copra_id').val(od_id);
 
         if (data.copra_id) {
           $(".edit_copra_delivery, .add_breakdown").show();
@@ -1225,12 +1219,12 @@ $(document).ready(function() {
           $(".edit_copra_delivery").hide();
         }
 
-        refresh_copra_tables(od_id);
+        refresh_copra_tables();
       }
     });
   }
 
-  function refresh_copra_tables(od_id) {
+  function refresh_copra_tables() {
     $("#view_copra_delivery").dataTable().fnDestroy();
     $("#view_copra_delivery").DataTable({
       searching: false,
@@ -1305,14 +1299,11 @@ $(document).ready(function() {
   });
   
   $(document).on('click', '.edit_copra_delivery', function(){
-    let od_id = $(this).attr('id');
-    
     $.ajax({
       url: "/get_copra_delivery/"+od_id,
       method: "get",
       dataType: "json",
       success: function(data){
-        $('#copra_id').val(od_id);
         $('#copra_add_edit').val('edit');
         $('#cop_wr').val(data.wr);
         $('#cop_nw').val(data.net_weight);
@@ -1337,7 +1328,7 @@ $(document).ready(function() {
       dataType: 'text',
       data: $(this).serialize(),
       success: function(data){
-        copra_modal_data(data);
+        copra_modal_data();
         $('#add_copra').attr('disabled', false).text('SAVE CHANGES');
         $("#copra_add_edit_modal").modal("hide");
       }
@@ -1346,8 +1337,6 @@ $(document).ready(function() {
 
   
   $(document).on('click', '.add_breakdown', function(){
-    let od_id = $(this).attr('id');
-
     $.ajax({
       url: "/get_copra_breakdown/"+od_id,
       data: { add_edit: 'add' },
@@ -1478,18 +1467,18 @@ $(document).ready(function() {
 
   $(document).on('hidden.bs.modal', '#coconut_add_edit_modal', function(){
     $(this).find('input').val('').end();
-    refresh_cooconut_tables(od_id);
+    coconut_modal_data();
     setTimeout(function(){ $("#coconut_modal").modal("show"); }, 500);
   });
 
   $(document).on('click', '.coconut_delivery', function(){
     od_id = $(this).attr("id");
 
-    coconut_modal_data(od_id);
+    coconut_modal_data();
     $("#coconut_modal").modal("show");
   });
 
-  function coconut_modal_data(od_id) {
+  function coconut_modal_data() {
     $.ajax({
       url: "/coconut_modal_data/"+od_id,
       method: "get",
@@ -1499,18 +1488,21 @@ $(document).ready(function() {
 
         $('.add_cococonut_delivery, .edit_cococonut_delivery');
 
+        $('#coconut_id').val(od_id);
+        $('#coco_weight').val(data.coco_weight);
+
         if (data.nuts_reject) {
-          $('#coco_nuts_reject').val(data.nuts_reject.reject);
-          $('#coco_copra').val(data.nuts_reject.copra);
+          $('#nuts_reject').text(data.nuts_reject.reject);
+          $('#nuts_copra').text(data.nuts_reject.copra);
         }
 
         if (data.coconut_id) {
-          $(".edit_cococonut_delivery, .add_breakdown").show();
-          $(".add_cococonut_delivery").hide();
+          $(".edit_coconut_delivery").show();
+          $(".add_coconut_delivery").hide();
         }
         else {
-          $(".add_cococonut_delivery").show();
-          $(".edit_cococonut_delivery").hide();
+          $(".add_coconut_delivery").show();
+          $(".edit_coconut_delivery").hide();
         }
 
         refresh_coconut_tables();
@@ -1550,6 +1542,31 @@ $(document).ready(function() {
     $('#coconut_add_edit').val('add');
     $("#coconut_modal").modal("hide");
     setTimeout(function(){ $("#coconut_add_edit_modal").modal("show"); }, 500);
+  });
+  
+  $(document).on('click', '.edit_coconut_delivery', function(){
+    $.ajax({
+      url: "/get_coconut_delivery/"+od_id,
+      method: "get",
+      dataType: "json",
+      success: function(data){
+        $('#coconut_add_edit').val('edit');
+        $('#coco_wr').val(data.wr);
+        $('#coco_gw').val(data.gross_weight);
+        $('#coco_moist').val(data.moisture);
+        $('#coco_nw').val(data.net_weight);
+        $('#coco_price').val(data.price);
+        $('#coco_amount').val(data.amount);
+        $('#coco_tax').val(data.tax);
+        $('#coco_unloading').val(data.unloading);
+        $('#coco_total_amount').val(data.total_amount);
+        $('#coco_nuts_reject').val(data.reject);
+        $('#coco_copra').val(data.copra);
+        coconut_compute();
+        $("#coconut_modal").modal("hide");
+        setTimeout(function(){ $("#coconut_add_edit_modal").modal("show"); }, 500);
+      }
+    });
   });
 
   $(document).on('submit', '#coconut_form', function(e){
@@ -1599,7 +1616,7 @@ $(document).ready(function() {
     amount = parseFloat(amount.val());
     
     total_amount.val((amount - (tax + unloading)).toFixed(2));
-    reject.val((weight - net_weight).toFixed());
+    reject.val((weight - gross_weight).toFixed());
     copra.val((reject.val() * 0.22).toFixed(2));
   }
 

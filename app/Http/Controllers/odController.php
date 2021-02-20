@@ -14,7 +14,6 @@ use App\trucks;
 use App\copra_delivery;
 use App\copra_breakdown;
 use App\coconut_delivery;
-use App\nuts_reject;
 use Auth;
 use App\User;
 use App\Events\ExpensesUpdated;
@@ -528,12 +527,48 @@ class odController extends Controller
 
     public function coconut_modal_data($od_id) {
         $od = od::find($od_id);
-        $coconut = coconut_delivery::with('nuts_reject')->where('od_id', $od_id)->first();
+        $coconut = coconut_delivery::where('od_id', $od_id)->first();
+        info($coconut);
 
         return [
+            'coco_weight' => $od->kilos,
             'ticket' => $od->outboundTicket,
-            'coconut_id' => ($coconut) ? $coconut->id : null
+            'coconut_id' => ($coconut) ? $coconut->id : null,
+            'nuts_reject' => [
+                'reject'=> ($coconut)? $coconut->reject : null,
+                'copra' => ($coconut) ? $coconut->copra : null,
+            ]
         ];
+    }
+
+    public function refresh_coconut_delivery($od_id){
+        $coconut = coconut_delivery::where('od_id', $od_id)->get();
+
+        return \DataTables::of($coconut)->make(true);
+    }
+
+    public function get_coconut_delivery($od_id){
+        return coconut_delivery::where('od_id', $od_id)->first();
+    }
+
+    public function save_coconut(Request $request){
+        $od_id = $request->coconut_id;
+        $add_edit = $request->coconut_add_edit;
+
+        $coconut = ($add_edit == 'add') ? new coconut_delivery : coconut_delivery::where('od_id', $od_id)->first();
+        $coconut->od_id = $od_id;
+        $coconut->wr = $request->coco_wr;
+        $coconut->gross_weight = $request->coco_gw;
+        $coconut->moisture = $request->coco_moist;
+        $coconut->net_weight = $request->coco_nw;
+        $coconut->price = $request->coco_price;
+        $coconut->amount = $request->coco_amount;
+        $coconut->tax = $request->coco_tax;
+        $coconut->unloading = $request->coco_unloading;
+        $coconut->total_amount = $request->coco_total_amount;
+        $coconut->reject = $request->coco_nuts_reject;
+        $coconut->copra = $request->coco_copra;
+        $coconut->save();
     }
     
 

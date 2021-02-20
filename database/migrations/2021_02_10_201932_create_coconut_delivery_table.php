@@ -26,15 +26,9 @@ class CreateCoconutDeliveryTable extends Migration
             $table->decimal('tax', 10, 2);
             $table->decimal('unloading', 10, 2);
             $table->decimal('total_amount', 10, 2);
-            $table->timestamps();
-        });
- 
-        Schema::create('nuts_reject', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('coconut_delivery_id');
-            $table->foreign('coconut_delivery_id')->references('id')->on('coconut_delivery')->onDelete('cascade');
             $table->decimal('reject', 10, 2);
             $table->decimal('copra', 10, 2);
+            $table->timestamps();
         });
     }
 

@@ -18,10 +18,6 @@ class coconut_delivery extends Model
         'unloading',
         'total_amount',
     );
- 
-    public function nuts_reject(){
-        return $this->hasOne('App\nuts_reject', 'id', 'coconut_delivery_id');
-    }
     
     public $timestamps = true;
 }

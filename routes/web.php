@@ -139,8 +139,10 @@ Route::group(['middleware'=>['auth', 'user:od']], function() {
     Route::get('/delete_breakdown/{id}', 'odController@delete_breakdown');
 
     //COCONUT DELIVERIES
+    Route::get('/get_coconut_delivery/{od_id}', 'odController@get_coconut_delivery');
     Route::get('/coconut_modal_data/{od_id}', 'odController@coconut_modal_data');
     Route::post('/refresh_coconut_delivery/{od_id}', 'odController@refresh_coconut_delivery');
+    Route::post('/save_coconut', 'odController@save_coconut');
 });
 
 Route::group(['middleware'=>['auth', 'user:sales']], function() {
