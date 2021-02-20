@@ -803,7 +803,6 @@ $("#kilo").blur(function() {
 });
 $("#cash").blur(function() {
   var mois = $("#moist").val();
-  console.log(mois);
 
   $("#moist").val("0");
   computeAll();
@@ -812,7 +811,6 @@ $("#cash").blur(function() {
 });
 $("#partial").blur(function() {
   var mois = $("#moist").val();
-  console.log(mois);
 
   $("#moist").val("0");
   computeAll();
@@ -840,7 +838,6 @@ $("#tare2").blur(function() {
 });
 $("#moist2").blur(function() {
   var mois = $("#moist2").val();
-  console.log(mois);
 
   $("#moist2").val("0");
   moist3();
@@ -849,7 +846,6 @@ $("#moist2").blur(function() {
 });
 $("#bal").blur(function() {
   var mois = $("#moist2").val();
-  console.log(mois);
 
   $("#moist2").val("0");
   compute();
@@ -858,7 +854,6 @@ $("#bal").blur(function() {
 });
 $("#partialpayment").blur(function() {
   var mois = $("#partialpayment").val();
-  console.log(mois);
 
   $("#partialpayment").val("0");
   compute();
@@ -896,10 +891,7 @@ function computeAll(value) {
   if ($("#net").val() != "") {
     net = parseFloat($("#net").val());
   }
-  console.log("net:", net);
-  console.log("moist:", moist);
   percentage = (moist / 100) * net;
-  console.log("percentage:", percentage);
   net = kilo - tare - percentage;
   total = net * price;
   let ca_to_partial = 0;
@@ -983,7 +975,6 @@ function compute(value) {
     if ($("#partialpayment").val() != "") {
       x = parseFloat($("#partialpayment").val());
     }
-    console.log(amount);
     t = t - x;
     $("#balanceWALKIN").val(parseFloat(t).toFixed(2));
     $("#amountpay1").val(parseFloat(amount - x).toFixed(2));
@@ -1131,7 +1122,6 @@ function moist3(value) {
   //     $('#net2').val(x5);
   // }
   if ($("#tare2").val() != "") {
-    console.log("dri");
     var partialpayment = parseFloat($("#partialpayment").val());
     var bal = parseFloat($("#balanceWALKIN").val());
     var total = parseFloat($("#total1").val());
@@ -1194,7 +1184,6 @@ $(document).ready(function() {
           method: "get",
           data: { id: id },
           success: function(data) {
-            console.log(data);
             swal(data.title, data.description, data.type);
             if (data.cash != null) {
               $("#curCashOnHand").html(data.cash);
@@ -1291,9 +1280,6 @@ $(document).ready(function() {
   });
   $("#commodityfilter").on("change", function(e) {
     commodityselected = this.value;
-    console.log(commodityselected);
-    console.log(purchase_date_from);
-    console.log(purchase_date_to);
     $("#purchasetable")
       .dataTable()
       .fnDestroy();
@@ -1548,7 +1534,6 @@ $(document).ready(function() {
 
   purchasestable = $("#purchasetable").DataTable({
     footerCallback: function(row, data, start, end, display) {
-      console.log(data);
       var api = this.api(),
         data;
 

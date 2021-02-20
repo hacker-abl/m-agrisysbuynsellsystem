@@ -239,7 +239,6 @@ $(document).on("click", "#link", function() {
 $(document).ready(function() {
   document.title = "M-Agri - Summary Date " + new Date(today).toDateString();
   $("#date_today").html(new Date(today).toDateString());
-  // console.log(today);
   $.extend($.fn.dataTable.defaults, {
     language: {
       processing: "Loading.. Please wait"
@@ -955,8 +954,6 @@ $(document).ready(function() {
   var x;
   $("#commodityfilter").on("change", function(e) {
     commodityselected = $("#commodityfilter").select2("val");
-    console.log(commodityselected);
-    //    console.log(this.value)
 
     $("#salestable")
       .dataTable()
@@ -1086,7 +1083,6 @@ $(document).ready(function() {
 
   $("#typeFilter").on("change", function(e) {
     typeselected = this.value;
-    console.log(typeselected);
     $("#salestable")
       .dataTable()
       .fnDestroy();

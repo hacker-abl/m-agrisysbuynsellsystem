@@ -17,6 +17,7 @@ class CreateCoconutDeliveryTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('od_id');
             $table->foreign('od_id')->references('id')->on('deliveries')->onDelete('cascade');
+            $table->string('wr');
             $table->decimal('gross_weight', 10, 2);
             $table->decimal('moisture', 10, 2);
             $table->decimal('net_weight', 10, 2);

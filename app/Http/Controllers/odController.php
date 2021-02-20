@@ -266,34 +266,34 @@ class odController extends Controller
             if($userid!=1){
                 $delete=$permit[0]->permit_delete;  
                 $edit = $permit[0]->permit_edit;
-            }   
+            }
+
+            $copra_coconut_html = '';
+
+
+            $edit_html = '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp';
+            
+            if($data->commodity->name == 'COPRA'){
+                $copra_coconut_html = '<button class="btn btn-xs btn-info copra_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">bar_chart</i></button>&nbsp';
+            }
+            else if($data->commodity->name == 'COCONUT'){
+                $copra_coconut_html = '<button class="btn btn-xs btn-info coconut_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">bar_chart</i></button>&nbsp';
+            }
+            $delete_html = '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
             
             if($userid==1){
-                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
-            <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
-            }if($userid!=1 && $delete==1 && $edit==1 &&$data->status=="On-Hand"){
-                     return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp;
-                <button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
+                return $edit_html.$copra_coconut_html.$delete_html;
             }
-            if($userid!=1 && $delete==1 && $edit==1 &&$data->status=="Released"){
+            if($userid!=1 && $data->status=="On-Hand"){
+                $html = '';
+                $html .= ($edit==1) ? $edit_html : '';
+                $html .= ($delete==1) ? $delete_html : '';
+                return $html;
+            }
+            if($userid!=1 && $data->status=="Released"){
                 return 'Released';
-       }
-            if($userid!=1 && $delete==1 && $edit==0 &&$data->status=="On-Hand"){
-            return '<button class="btn btn-xs btn-danger delete_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
             }
-            if($userid!=1 && $delete==1 && $edit==0 &&$data->status=="Released"){
-                return 'Released';
-                }
-            if($userid!=1 && $delete==0 && $edit==1 &&$data->status=="On-Hand"){
-                 return '<button class="btn btn-xs btn-warning update_delivery waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>';
-            }
-            if($userid!=1 && $delete==0 && $edit==1 &&$data->status=="Released"){
-                return 'Released';
-           }
-            if($userid!=1 && $delete==0 && $edit==0){
-                 return 'No Action Permitted';
-            }
-           
+            return 'No Action Permitted';
         })
         ->editColumn('allowance', function ($data) {
             return '₱'.number_format($data->allowance, 2, '.', ',');
@@ -418,6 +418,130 @@ class odController extends Controller
         })
         ->make(true);
     }
+
+
+
+
+    // COPRA DELIVERIES -- START
+    
+    public function copra_modal_data($od_id) {
+        $od = od::find($od_id);
+        $copra = copra_delivery::where('od_id', $od_id)->first();
+
+        return [
+            'ticket' => $od->outboundTicket,
+            'copra_id' => ($copra) ? $copra->id : null
+        ];
+    }
+
+    public function refresh_copra_delivery($od_id){
+        $copra = copra_delivery::where('od_id', $od_id)->get();
+
+        return \DataTables::of($copra)->make(true);
+    }
+
+    public function refresh_copra_breakdown($od_id){
+        $copra_delivery = copra_delivery::where('od_id', $od_id)->first();
+        $breakdown = collect();
+
+        if($copra_delivery){
+            $breakdown = copra_breakdown::where('copra_id', $copra_delivery->id)->get();
+        }
+        
+        return \DataTables::of($breakdown)
+            ->addColumn('action', function($data){
+                $html = '';
+
+                $html .= '<button class="btn btn-xs btn-warning update_breakdown waves-effect" id="'.$data->id.'"><i class="material-icons">mode_edit</i></button>&nbsp';
+                $html .= '<button class="btn btn-xs btn-danger delete_breakdown waves-effect" id="'.$data->id.'"><i class="material-icons">delete</i></button>';
+                
+                return $html;
+            })->make(true);
+    }
+
+    public function get_copra_delivery($od_id){
+        return copra_delivery::where('od_id', $od_id)->first();
+    }
+
+    public function save_copra(Request $request){
+        $od_id = $request->copra_id;
+        $add_edit = $request->copra_add_edit;
+
+        $copra = ($add_edit == 'add') ? new copra_delivery : copra_delivery::where('od_id', $od_id)->first();
+        $copra->od_id = $request->copra_id;
+        $copra->wr = $request->cop_wr;
+        $copra->net_weight = $request->cop_nw;
+        $copra->dust = $request->cop_dust;
+        $copra->moist = $request->cop_moist;
+        $copra->resicada = $request->cop_rw;
+        $copra->save();
+
+        return $copra->od_id;
+    }
+
+    function get_copra_breakdown(Request $request, $id){
+        $add_edit = $request->add_edit;
+
+        if($add_edit == 'add'){ // id is od_id
+            $copra_delivery = copra_delivery::where('od_id', $id)->first();
+            $resicada = copra_breakdown::where('copra_id', $copra_delivery->id)->sum('resicada');
+    
+            return [
+                'wr' => $copra_delivery->wr,
+                'unpriced' => $copra_delivery->resicada - $resicada,
+                'copra_delivery_id' => $copra_delivery->id
+            ];
+        }
+
+        if($add_edit == 'update'){ //id is id of breakdown
+            $breakdown = copra_breakdown::find($id);
+            $copra = copra_delivery::find($breakdown->copra_id);
+            $priced_weight = copra_breakdown::where('copra_id', $breakdown->copra_id)->sum('resicada');
+            $breakdown->unpriced = $copra->resicada - ($priced_weight - $breakdown->resicada);
+            $breakdown->wr = $copra->wr;
+            return $breakdown;
+        }
+    }
+
+    function save_copra_breakdown(Request $request){
+        $id = $request->copra_breakdown_id;
+        $add_edit = $request->copra_breakdown_add_edit;
+
+        $breakdown = ($add_edit == 'add') ? new copra_breakdown : copra_breakdown::find($id);
+        $breakdown->copra_id = $request->copra_delivery_id;
+        $breakdown->resicada = $request->cop_bd_rw;
+        $breakdown->price = $request->cop_bd_price;
+        $breakdown->amount = $request->cop_bd_amount;
+        $breakdown->save();
+    }
+
+    function delete_breakdown($id){
+        $breakdown = copra_breakdown::find($id);
+        $breakdown->delete();
+    }
+
+    // COPRA DELIVERIES -- END
+
+
+
+    // COCONUT DELIVERIES -- START
+
+    public function coconut_modal_data($od_id) {
+        $od = od::find($od_id);
+        $coconut = coconut_delivery::with('nuts_reject')->where('od_id', $od_id)->first();
+
+        return [
+            'ticket' => $od->outboundTicket,
+            'coconut_id' => ($coconut) ? $coconut->id : null
+        ];
+    }
+    
+
+    // COCONUT DELIVERIES -- END
+
+
+
+
 
 
 }

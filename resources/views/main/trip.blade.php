@@ -1101,8 +1101,6 @@ $(document).ready(function() {
             : "0" + (c.getMonth() + 1);
         var currentDate = c.getFullYear() + twoDigitMonth + c.getDate();
         if (data != null) {
-          console.log(data.id);
-          console.log(currentDate);
           $("input[id=ticket" + item + "]").val(currentDate + data.id);
           if (item >= 1) {
             div = $(".dynamic-element form")
@@ -1212,7 +1210,6 @@ $(document).ready(function() {
           data: { id: id },
           success: function(data) {
             dataparsed = $.parseJSON(data);
-            console.log(dataparsed);
             refresh_pickup();
             if (dataparsed != "success") {
               swal(
@@ -1250,7 +1247,6 @@ $(document).ready(function() {
           data: valuesToSend,
           success: function(data) {
             mainMouseDownOne();
-            console.log(data);
             dataparsed = $.parseJSON(data);
             $("#id").val(dataparsed.driver_id);
             button.disabled = false;
@@ -1299,7 +1295,6 @@ $(document).ready(function() {
 
   function print_loop() {
     var count_length = $(".trip_form").length;
-    console.log(count_length);
     setTimeout(function() {
       $("#ticket_clone").val($("#ticket" + trip_counter).val());
       $("#expense_clone").val($("#expense" + trip_counter).val());

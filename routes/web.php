@@ -127,6 +127,20 @@ Route::group(['middleware'=>['auth', 'user:od']], function() {
     Route::get('/update_delivery', 'odController@updatedata')->name('update_delivery');
     Route::get('/delete_delivery', 'odController@deletedata')->name('delete_delivery');
     Route::post('/print_od', 'pdfController@od')->name('print_od');
+
+    //COPRA DELIVERIES
+    Route::post('/refresh_copra_delivery/{od_id}', 'odController@refresh_copra_delivery');
+    Route::post('/refresh_copra_breakdown/{od_id}', 'odController@refresh_copra_breakdown');
+    Route::get('/copra_modal_data/{od_id}', 'odController@copra_modal_data');
+    Route::get('/get_copra_delivery/{od_id}', 'odController@get_copra_delivery');
+    Route::get('/get_copra_breakdown/{id}', 'odController@get_copra_breakdown');
+    Route::post('/save_copra', 'odController@save_copra');
+    Route::post('/save_copra_breakdown', 'odController@save_copra_breakdown');
+    Route::get('/delete_breakdown/{id}', 'odController@delete_breakdown');
+
+    //COCONUT DELIVERIES
+    Route::get('/coconut_modal_data/{od_id}', 'odController@coconut_modal_data');
+    Route::post('/refresh_coconut_delivery/{od_id}', 'odController@refresh_coconut_delivery');
 });
 
 Route::group(['middleware'=>['auth', 'user:sales']], function() {

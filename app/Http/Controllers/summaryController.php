@@ -102,7 +102,7 @@ class summaryController extends Controller
 
         }else{
         $getDate = Carbon::now();
-        $dateTime = $getDate->year.$getDate->month.$getDate->day.$salesLatest->id+1;
+        $dateTime = $getDate->year.$getDate->month.$getDate->day.($salesLatest->id+1);
          $output = array(
             'trans_no' => $dateTime
             
@@ -146,7 +146,6 @@ class summaryController extends Controller
          ->whereBetween('purchases.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
          ->get();
 
-         info($ultimatesickquery);
         }
         // if($commodity==""&&$to!=null){
         //     $ultimatesickquery=  DB::table('purchases')
