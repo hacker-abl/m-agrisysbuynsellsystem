@@ -694,18 +694,18 @@
 					<h2>Daily Time Records as of {{ date('Y-m-d ') }}</h2>
 						<ul class="header-dropdown m-r--5">
 							<li class="dropdown">
-                                @if(isAdmin() || isPurchaser())
-							<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_dtr_modal" title="Add DTR"><i class="material-icons">library_add</i></button>
-              <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 add_ca" title="Add Cash Advance"><i class="material-icons">attach_money</i></button>
-              <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 add_payment" title="Add Payment"><i class="material-icons">playlist_add</i></button>
-              <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_list" title="Employee CA List"><i class="material-icons">subject</i></button>
-                                @endif
+                @if(isAdmin() || isPurchaser())
+                  <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_dtr_modal" title="Add DTR"><i class="material-icons">library_add</i></button>
+                  <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 add_ca" title="Add Cash Advance"><i class="material-icons">attach_money</i></button>
+                  <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 add_payment" title="Add Payment"><i class="material-icons">playlist_add</i></button>
+                  <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_ca_list" title="Employee CA List"><i class="material-icons">subject</i></button>
+                @endif
               </li>
 						</ul>
 					</div>
 					<div class="body">
 						<div class="table-responsive">
-                        <br>
+              <br>
 							<table id="dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
 								<thead>
 									<tr>
@@ -717,26 +717,34 @@
 										<th width="100" style="text-align:center;">No. of Hours</th>
                     <th width="100" style="text-align:center;">Date/Time</th>
                     <th width="100" style="text-align:center;">Bonus</th>
+                    <th width="100" style="text-align:center;">Balance</th>
+                    <th width="100" style="text-align:center;">Partial Payment</th>
+                    <th width="100" style="text-align:center;">Remaining Balance</th>
                     <th width="100" style="text-align:center;">Salary</th>
                     <th width="100" style="text-align:center;">Status</th>
+                    <th width="100" style="text-align:center;">Signature</th>
 										<th width="100" style="text-align:center;">Action</th>
 									</tr>
 								</thead>
-                                <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
+                <tfoot>
+                  <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                </tfoot>
 							</table>
 						</div>
 					</div>
@@ -1439,7 +1447,7 @@ $(document).ready(function() {
         }, 0);
 
       // Update footer
-      $(api.column(8).footer()).html(
+      $(api.column(11).footer()).html(
         "Total: <br>₱" + number_format(pageTotal, 2)
       );
     },
@@ -1451,8 +1459,9 @@ $(document).ready(function() {
     buttons: [
       {
         extend: "print",
+        orientation: 'landscape',
         exportOptions: {
-          columns: [0, 3, 4, 5, 6, 7, 8, 9],
+          columns: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           modifier: {
             page: "current"
           }
@@ -1469,9 +1478,10 @@ $(document).ready(function() {
       },
       {
         extend: "pdfHtml5",
+        orientation: 'landscape',
         footer: true,
         exportOptions: {
-          columns: [0, 3, 4, 5, 6, 7, 8, 9],
+          columns: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           modifier: {
             page: "current"
           }
@@ -1515,8 +1525,12 @@ $(document).ready(function() {
         }
       },
       { data: "bonus", name: "bonus" },
+      { data: "dtr_balance", name: "dtr_balance", visible: false },
+      { data: "p_payment", name: "p_payment", visible: false },
+      { data: "r_balance", name: "r_balance", visible: false },
       { data: "salary", name: "salary" },
       { data: "status", name: "status" },
+      { data: "status", name: "signature", render: () => { return "" }, visible: false },
       { data: "action", orderable: false, searchable: false }
     ]
   });
