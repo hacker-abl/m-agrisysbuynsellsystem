@@ -592,7 +592,7 @@
                             <h2> Daily Time Records History - <span class="modal_title_dtr"></span></h2>
                         </div>
                         <div class="body">
-                        <div id="reportrange" class="btn btn-lg" style="">
+                        <div id="reportrange" class="reportrange btn btn-lg" style="">
 
                             <span></span> <b class="caret"></b>
                           </div>
@@ -704,6 +704,9 @@
 						</ul>
 					</div>
 					<div class="body">
+            <div id="dtr-daterange" class="reportrange btn btn-lg" style="">
+              <span></span> <b class="caret"></b>
+            </div>
 						<div class="table-responsive">
               <br>
 							<table id="dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -794,21 +797,24 @@ var trig_update;
 var payment_table;
 var cash_advance_release;
 var emp_balance;
-var start = moment();
-var end = moment();
+var start = moment().startOf('year');;
+var end = moment().endOf('year');;
 $(document).ready(function() {
   function cb(start, end) {
-    $("#reportrange span").html(
+    $('.reportrange span').html(
       start.format("MMMM D YYYY, h:mm:ss a") +
         " - " +
         end.format("MMMM D YYYY, h:mm:ss a")
     );
   }
 
-  $("#reportrange").daterangepicker(
+  $(".reportrange").daterangepicker(
     {
       startDate: start,
       endDate: end,
+      locale: {
+        format: 'MMMM D YYYY, h:mm:ss a'
+      },
       ranges: {
         Today: [moment(), moment()],
         Yesterday: [moment().subtract(1, "days"), moment().subtract(1, "days")],
@@ -828,6 +834,11 @@ $(document).ready(function() {
     cb
   );
 
+  $('.reportrange').val(
+    start.format("MMMM D YYYY, h:mm:ss a") +
+    " to " +
+    end.format("MMMM D YYYY, h:mm:ss a")
+  );
   cb(start, end);
 
   $(document).on("click", ".add_ca", function() {
@@ -902,7 +913,6 @@ $(document).ready(function() {
       method: "get",
       dataType: "json",
       success: function(data) {
-        console.log(data);
         employee_balace_view = $("#view_balance_table").DataTable({
           footerCallback: function(row, data, start, end, display) {
             var api = this.api(),
@@ -1095,7 +1105,6 @@ $(document).ready(function() {
       data: { id: person_id },
       dataType: "json",
       success: function(data) {
-        console.log("AYAY",data);
         $(".employee_name").text(
           data.data[0].fname +
             " " +
@@ -1534,25 +1543,61 @@ $(document).ready(function() {
       { data: "action", orderable: false, searchable: false }
     ]
   });
-  $("#reportrange").on("apply.daterangepicker", function(ev, picker) {
+  $(".reportrange").on("apply.daterangepicker", function(ev, picker) {
     $(this).val(
       picker.startDate.format("MMMM D YYYY, h:mm:ss a") +
-        " to " +
-        picker.endDate.format("MMMM D YYYY, h:mm:ss a")
+      " to " +
+      picker.endDate.format("MMMM D YYYY, h:mm:ss a")
     );
-    dtr_info.draw();
+
+    if (picker.element[0].id == 'reportrange'){
+      dtr_info.draw();
+    } else {
+      dtr.draw();
+      if (dtr_info) dtr_info.draw();
+    }
   });
-  $("#reportrange").on("cancel.daterangepicker", function(ev, picker) {
-    $(this).val("");
-    dtr_info.draw();
+  $(".reportrange").on("cancel.daterangepicker", function(ev, picker) {
+    $(this).val(
+      start.format("MMMM D YYYY, h:mm:ss a") +
+      " to " +
+      end.format("MMMM D YYYY, h:mm:ss a")
+    );
+    cb(start, end);
+
+    if (picker.element[0].id == 'reportrange'){
+      dtr_info.draw();
+    } else {
+      dtr.draw();
+      if (dtr_info) dtr_info.draw();
+    }
   });
+
+  $('#dtr_view_modal').on('show.bs.modal', function (e) {
+    cb($('#reportrange').data('daterangepicker').startDate, $('#reportrange').data('daterangepicker').endDate);
+  })
+
+  $('#dtr_view_modal').on('hide.bs.modal', function (e) {
+    cb($('#dtr-daterange').data('daterangepicker').startDate, $('#dtr-daterange').data('daterangepicker').endDate);
+  })
+
   $.fn.dataTableExt.afnFiltering.push(function(oSettings, aData, iDataIndex) {
-    var grab_daterange = $("#reportrange").val();
+    var grab_daterange = null
+    var iStartDateCol = 2;
+    var iEndDateCol = 2;
+    if (oSettings.sTableId == 'dtr_table'){
+      grab_daterange= $("#dtr-daterange").val();
+      iStartDateCol = 6;
+      iEndDateCol = 6;
+    } else {
+      grab_daterange = $("#reportrange").val();
+      iStartDateCol = 2;
+      iEndDateCol = 2;
+    }
+
     var give_results_daterange = grab_daterange.split(" to ");
     var filterstart = give_results_daterange[0];
     var filterend = give_results_daterange[1];
-    var iStartDateCol = 2; //using column 2 in this instance
-    var iEndDateCol = 2;
     var tabledatestart = aData[iStartDateCol];
     var tabledateend = aData[iEndDateCol];
 
