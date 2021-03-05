@@ -1441,7 +1441,7 @@ $(document).ready(function() {
 
       // Total over all pages
       total = api
-        .column(8)
+        .column(11)
         .data()
         .reduce(function(a, b) {
           return intVal(a) + intVal(b);
@@ -1449,7 +1449,7 @@ $(document).ready(function() {
 
       // Total over this page
       pageTotal = api
-        .column(8, { page: "current" })
+        .column(11, { page: "current" })
         .data()
         .reduce(function(a, b) {
           return intVal(a) + intVal(b);
