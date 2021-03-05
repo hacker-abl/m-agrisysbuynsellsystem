@@ -1470,7 +1470,7 @@ $(document).ready(function() {
         extend: "print",
         orientation: 'landscape',
         exportOptions: {
-          columns: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13],
           modifier: {
             page: "current"
           }
@@ -1490,7 +1490,7 @@ $(document).ready(function() {
         orientation: 'landscape',
         footer: true,
         exportOptions: {
-          columns: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13],
           modifier: {
             page: "current"
           }
