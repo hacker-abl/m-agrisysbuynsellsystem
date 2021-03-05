@@ -1655,7 +1655,6 @@ $(document).ready(function() {
       data: { id: id },
       dataType: "json",
       success: function(data) {
-        console.log(data);
         $("#role").val(data.role);
         $("#rate").val(data.rate);
         if (trig_update != 1) {
@@ -2515,7 +2514,6 @@ $(document).ready(function() {
           data: { id: id },
           dataType: "text",
           success: function(data) {
-            console.log(data);
             var data2 = JSON.parse(data);
 
             swal(
@@ -2668,7 +2666,6 @@ $(document).ready(function() {
           data: { id: id },
           dataType: "text",
           success: function(data) {
-            console.log(data);
             if (data == "deleted") {
               swal(
                 "Payment Deleted!",
@@ -2676,7 +2673,6 @@ $(document).ready(function() {
                 "success"
               );
             } else {
-              console.log("ayay");
               var data2 = JSON.parse(data);
               swal(
                 "Amount Reverted : ₱" +
