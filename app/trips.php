@@ -16,6 +16,8 @@ class trips extends Model
 		'driver_id',
 		'destination',
 		'num_liters',
+    'laborers',
+    'remarks'
     );
     public $timestamps = true;
 

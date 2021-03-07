@@ -44,10 +44,15 @@ class tripController extends Controller
             ->select('employee.*','employee.id AS emp_id',  'roles.id','roles.role')
             ->where('roles.role','LIKE','%driver%')
             ->get();
+        $laborer= DB::table('employee')
+            ->join('roles', 'roles.id', '=', 'employee.role_id')
+            ->select('employee.*','employee.id AS emp_id',  'roles.id','roles.role')
+            ->where('roles.role','LIKE','%labor%')
+            ->get();
 
         $commodity = Commodity::all();
         $trucks = Trucks::all();
-        return view('main.trip')->with(compact('driver','commodity','trucks'));
+        return view('main.trip')->with(compact('driver','commodity','trucks','laborer'));
     }
 
 
@@ -60,6 +65,8 @@ class tripController extends Controller
         $trip->driver_id = $request->driver_id;
         $trip->truck_id = $request->plateno;
         $trip->num_liters = $request->num_liters;
+        $trip->laborers = $request->laborer; 
+        $trip->remarks = $request->remark;
         $trip->save();
         $lastInsertedId = $trip->id;
         $trip_expenses = new trip_expense;
@@ -146,7 +153,8 @@ class tripController extends Controller
         $trip->driver_id = $request->driver_id;
         $trip->truck_id = $request->plateno;
         $trip->num_liters = $request->num_liters;
-        
+        $trip->laborers = $request->laborer;
+        $trip->remarks = $request->remark;
         $trip->save();
         $trip_expenses->description = $request->destination;
         $trip_expenses->amount = $request->expense;
@@ -220,7 +228,7 @@ class tripController extends Controller
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
             ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
-            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at','trip_expense.status')
+            ->select('trips.id','trips.trip_ticket','trips.laborers','trips.remarks','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at','trip_expense.status')
             ->whereBetween('trips.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->get();
         }else{
@@ -230,7 +238,7 @@ class tripController extends Controller
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
             ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
-            ->select('trips.id','trips.trip_ticket','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at','trip_expense.status')
+            ->select('trips.id','trips.trip_ticket','trips.laborers','trips.remarks','commodity.name AS commodity_name','trucks.plate_no AS plateno','trips.destination', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters','trucks.name AS name','trips.expense AS expense' ,'trips.created_at AS created_at','trip_expense.status')
              ->where('trips.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
              ->where('trips.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
             ->get();
@@ -288,7 +296,7 @@ class tripController extends Controller
             ->join('commodity', 'commodity.id', '=', 'trips.commodity_id')
             ->join('trucks', 'trucks.id', '=', 'trips.truck_id')
             ->join('employee', 'employee.id', '=', 'trips.driver_id')
-            ->select('trips.id','trips.trip_ticket','commodity.id AS commodity_id','trucks.plate_no AS plateno', 'trips.destination', 'employee.id as driver_id', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters', 'trucks.id as truck_id', 'trucks.name AS name','trips.expense')
+            ->select('trips.id','trips.trip_ticket','trips.laborers','trips.remarks','commodity.id AS commodity_id','trucks.plate_no AS plateno', 'trips.destination', 'employee.id as driver_id', 'employee.fname','employee.mname','employee.lname', 'trips.num_liters', 'trucks.id as truck_id', 'trucks.name AS name','trips.expense')
             ->where('trips.id',$id)
             ->get();
         echo json_encode($output);
@@ -341,14 +349,14 @@ class tripController extends Controller
        if($to==""&&$from==""){
           $trip_expense = DB::table('trips')
             ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
-            ->select('trip_expense.id','trips.trip_ticket AS trip_id','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
+            ->select('trip_expense.id','trips.trip_ticket AS trip_id','trips.laborers','trips.remarks','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
             ->whereBetween('trips.created_at', [Carbon::now()->setTime(0,0)->format('Y-m-d H:i:s'), Carbon::now()->setTime(23,59,59)->format('Y-m-d H:i:s')])
             ->get()->sortByDesc('created_at');
         }else{
            
              $trip_expense = DB::table('trips')
             ->join('trip_expense', 'trip_expense.trip_id', '=', 'trips.id')
-            ->select('trip_expense.id','trips.trip_ticket AS trip_id','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
+            ->select('trip_expense.id','trips.trip_ticket AS trip_id','trips.laborers','trips.remarks','trip_expense.description AS description','trip_expense.type AS type','trip_expense.amount AS amount','trip_expense.status AS status','trip_expense.released_by as released_by','trip_expense.created_at as created_at')
                 ->where('trip_expense.created_at', '>=', date('Y-m-d', strtotime($from))." 00:00:00")
                 ->where('trip_expense.created_at','<=',date('Y-m-d', strtotime($to)) ." 23:59:59")
                       ->get()->sortByDesc('created_at');
