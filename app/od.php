@@ -38,4 +38,8 @@ class od extends Model
     public function od_expense() {
         return $this->hasOne('App\od_expense', 'od_id', 'id');
     }
+
+    public function od_payment() {
+        return $this->hasMany('App\od_payment', 'od_id', 'id');
+    }
 }

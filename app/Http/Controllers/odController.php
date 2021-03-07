@@ -422,6 +422,27 @@ class odController extends Controller
 
 
     // COPRA DELIVERIES -- START
+
+    public function refresh_copra() {
+        $copra = copra_delivery::with('od.od_payment', 'breakdown')->get();
+
+        return \DataTables::of($copra)
+        ->addColumn('amount', function($data) {
+            return $data->breakdown->sum('amount');
+        })
+        ->addColumn('paid', function($data) {
+            return 'paid placeholder';
+        })
+        ->addColumn('balance', function($data) {
+            return 'balance placeholder';
+        })
+        ->addColumn('action', function($data) {
+            return '<button class="btn btn-xs btn-success od_add_payment waves-effect" id="'.$data->od_id.'"><i class="material-icons">payment</i></button>';
+            
+            //return 'action placeholder';
+        })
+        ->make(true);
+    }
     
     public function copra_modal_data($od_id) {
         $od = od::find($od_id);
@@ -528,7 +549,6 @@ class odController extends Controller
     public function coconut_modal_data($od_id) {
         $od = od::find($od_id);
         $coconut = coconut_delivery::where('od_id', $od_id)->first();
-        info($coconut);
 
         return [
             'coco_weight' => $od->kilos,

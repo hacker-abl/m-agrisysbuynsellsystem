@@ -16,6 +16,14 @@ class copra_delivery extends Model
         'moist',
         'resicada'
     );
+
+    public function od() {
+        return $this->hasOne('App\od', 'id', 'od_id');
+    }
+
+	public function breakdown() {
+	    return $this->hasMany('App\copra_breakdown','copra_id','id');
+	}
     
     public $timestamps = true;
 }

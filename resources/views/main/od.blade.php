@@ -1,12 +1,6 @@
 @extends(isAdmin() ? 'layouts.admin' : 'layouts.user')
 
 @section('content')
-	<div class="container-fluid">
-		<div class="block-header">
-			<h2>Outbound Deliveries Dashboard</h2>
-		</div>
-	</div>
-
   <!-- OD MODAL -- START --> 
 	<div class="modal fade" id="od_modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -179,10 +173,6 @@
 	</div>
   <!-- OD MODAL -- END --> 
 
-
-
-
-
   <!-- COPRA MODALS -- START -->
   <div class="modal fade" id="copra_modal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
@@ -196,7 +186,7 @@
                       </div>
                   </div>
                   <div class="body">
-                    <table id="view_copra_delivery" class="table table-bordered table-striped table-hover"
+                    <table id="view_copra_modal_delivery" class="table table-bordered table-striped table-hover"
                         style="width: 100%;">
                         <thead>
                             <tr>
@@ -426,10 +416,7 @@
   </div>
   <!-- COPRA MODALS -- END -->
 
-
-
   <!-- COCONUT MODALS -- START -->
-
   <div class="modal fade" id="coconut_modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document" style="width: 1300px;">
       <div class="row">
@@ -444,7 +431,7 @@
           <div class="body">
             <input type="hidden" id="coconut_od_id" value="">
 
-            <table id="view_coconut_delivery" class="table table-bordered table-striped table-hover"
+            <table id="view_coconut_modal_delivery" class="table table-bordered table-striped table-hover"
                 style="width: 100%;">
                 <thead>
                   <tr>
@@ -667,89 +654,274 @@
       </div>
     </div>
   </div>
-
-
   <!-- COCONUT MODALS -- END -->
 
+  <!-- PAYMENT MODALS -- START -->
 
+  <div class="modal fade" id="payment_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1300px;">
+      <div class="row">
+        <div class="card">
+          <div class="header">
+            <h2> Payment - <span class="ticket_title"></span></h2>
+            <div class="header-dropdown m-r-5">
+              <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 float-right add_coconut_delivery"><i class="material-icons">library_add</i></button>
+              <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 float-right edit_coconut_delivery"><i class="material-icons">mode_edit</i></button>
+            </div>
+          </div>
+          <div class="body">
+            <input type="hidden" id="coconut_od_id" value="">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<div class="row clearfix">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="card">
-				<div class="header">
-					<h2>List of Outbound Deliveries as of {{ date('Y-m-d ') }}</h2>
-						<ul class="header-dropdown m-r--5">
-							<li class="dropdown">
-                @if(isAdmin() || isPurchaser())
-								<button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_od_modal"><i class="material-icons">library_add</i></button>
-                @endif
-              </li>
-						</ul>
-					</div>
-					<div class="body">
-						<div class="table-responsive">
-							<p id="date_filter">
-                <h5>Date Range Filter</h5>
-                <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="od_datepicker_from" />
-                <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="od_datepicker_to" />
-              </p>
-						<br>
-							<table id="deliverytable" class="table table-bordered table-striped table-hover  ">
-								<thead>
-									<tr>
-										<th width="20" style="text-align:center;">Ticket No</th>
-										<th width="100" style="text-align:center;">Commodity</th>
-										<th width="100" style="text-align:center;">Destination</th>
-										<th width="100" style="text-align:center;">Company</th>
-										<th width="100" style="text-align:center;">Driver</th>
-										<th width="100" style="text-align:center;">Plate No.</th>
-										<th width="100" style="text-align:center;">Liters</th>
-										<th width="100" style="text-align:center;">Kilos</th>
-										<th width="100" style="text-align:center;">Allowance</th>
-										<th width="100" style="text-align:center;">Date</th>
-										<th width="100" style="text-align:center;">Release Status</th>
-										<th width="100" style="text-align:center;">Action</th>
-									</tr>
-								</thead>
-								<tfoot>
+            <table id="view_coconut_modal_delivery" class="table table-bordered table-striped table-hover"
+                style="width: 100%;">
+                <thead>
                   <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>	
+                    <th>W.R. #</th>
+                    <th>Gross</th>
+                    <th>Moisture</th>
+                    <th>Net Weight</th>
+                    <th>Price</th>
+                    <th>Total Amount</th>
+                    <th>Withholding Tax</th>
+                    <th>Unloading Fee</th>
+                    <th>Total Amount Due</th>
                   </tr>
-                </tfoot>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                </thead>
+            </table>
+
+            <div>
+              <span style="font-size: 24px;">Nuts Reject</span>
+            </div>
+
+            <div>
+              <span>Nuts Reject (KG): <span id="nuts_reject"></span></span>
+              <br>
+              <span>Copra (KG): <span id="nuts_copra"></span></span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="add_edit_payment_modal" tabIndex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2 class="modal_title">PAYMENT - <span class="ticket_title"></span></h2>
+          </div>
+          <form class="form-horizontal" id="copra_form">
+            @csrf
+
+            <div class="body">
+              <input type="hidden" id="copra_id" name="copra_id">
+              <input type="hidden" id="copra_add_edit" name="copra_add_edit">
+
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_wr">W.R. No.</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text" id="cop_wr" name="cop_wr" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_nw">Date</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="date" id="cop_nw" name="cop_nw" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                  <label for="cop_rw">Amount</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="number" step=".01" id="cop_rw" name="cop_rw" class="form-control" required readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="add_copra" class="btn btn-link waves-effect">SAVE CHANGES</button>
+              <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT MODALS -- END -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="container-fluid">
+     <ul class="nav nav-tabs">
+        <li ><a href="#outbound_tab" data-toggle="tab"><div class="block-header">
+            <h2>Outbound Dashboard</h2>
+        </div></a></li>
+        <li class="active"><a href="#copra_tab" data-toggle="tab" id="render"><div class="block-header">
+            <h2>Copra Deliveries</h2>
+        </div></a></li>
+        <li><a href="#coconut_tab" data-toggle="tab" id="render"><div class="block-header">
+            <h2>Coconut Deliveries</h2>
+        </div></a></li>
+      </ul>
+  </div> 
+
+  <div class="tab-content">
+    <div class="tab-pane fade" id="outbound_tab">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header">
+              <h2>List of Outbound Deliveries as of {{ date('Y-m-d ') }}</h2>
+              <ul class="header-dropdown m-r--5">
+                <li class="dropdown">
+                  @if(isAdmin() || isPurchaser())
+                  <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_od_modal"><i class="material-icons">library_add</i></button>
+                  @endif
+                </li>
+              </ul>
+            </div>
+            <div class="body">
+              <div class="table-responsive">
+                <p id="date_filter">
+                  <h5>Date Range Filter</h5>
+                  <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="od_datepicker_from" />
+                  <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="od_datepicker_to" />
+                </p>
+                
+                <br>
+
+                <table id="deliverytable" class="table table-bordered table-striped table-hover  ">
+                  <thead>
+                    <tr>
+                      <th width="20" style="text-align:center;">Ticket No</th>
+                      <th width="100" style="text-align:center;">Commodity</th>
+                      <th width="100" style="text-align:center;">Destination</th>
+                      <th width="100" style="text-align:center;">Company</th>
+                      <th width="100" style="text-align:center;">Driver</th>
+                      <th width="100" style="text-align:center;">Plate No.</th>
+                      <th width="100" style="text-align:center;">Liters</th>
+                      <th width="100" style="text-align:center;">Kilos</th>
+                      <th width="100" style="text-align:center;">Allowance</th>
+                      <th width="100" style="text-align:center;">Date</th>
+                      <th width="100" style="text-align:center;">Release Status</th>
+                      <th width="100" style="text-align:center;">Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>	
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade in active" id="copra_tab">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header">
+              <h2>List of Copra Deliveries as of {{ date('Y-m-d ') }}</h2>
+              <ul class="header-dropdown m-r--5">
+                <li class="dropdown">
+                  @if(isAdmin() || isPurchaser())
+                  <button type="button" class="btn bg-grey btn-xs waves-effect m-r-20 open_od_modal"><i class="material-icons">library_add</i></button>
+                  @endif
+                </li>
+              </ul>
+            </div>
+            <div class="body">
+              <div class="table-responsive">
+                <!--<p id="date_filter">
+                  <h5>Date Range Filter</h5>
+                  <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="od_datepicker_from" />
+                  <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="od_datepicker_to" />
+                </p>-->
+                
+                <br>
+
+                <table id="copratable" class="table table-bordered table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th width="20" style="text-align:center;">Ticket No</th>
+                      <th width="100" style="text-align:center;">WR</th>
+                      <th width="100" style="text-align:center;">Net Weight</th>
+                      <th width="100" style="text-align:center;">Amount</th>
+                      <th width="100" style="text-align:center;">Paid</th>
+                      <th width="100" style="text-align:center;">Balance</th>
+                      <th width="100" style="text-align:center;">Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>	
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('script')
@@ -764,6 +936,11 @@ $(document).on("click", "#link", function() {
 });
 
 $(document).ready(function() {
+  
+  $(".nav-tabs a").click(function() {
+    $(this).tab("show");
+  });
+
   document.title = "M-Agri - Outbound Deliveries";
 
   $($.fn.dataTable.tables(true)).css("width", "100%");
@@ -1186,6 +1363,35 @@ $(document).ready(function() {
 
   // Initialize
   $(".add_copra_delivery, .edit_copra_delivery, .add_breakdown").hide();
+  $('#copratable').dataTable();
+  refresh_copra_table();
+
+  //Table
+  function refresh_copra_table() {
+    $("#copratable").dataTable().fnDestroy();
+    $("#copratable").DataTable({
+      autoWidth: false,
+      paging: true,
+      pageLength: 10,
+      ajax: {
+        url: "/refresh_copra",
+        type: "post",
+        headers: {
+          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        },
+      },
+      processing: true,
+      columns: [
+        { data: "od.outboundTicket" },
+        { data: "wr" },
+        { data: "net_weight" },
+        { data: "amount" },
+        { data: "paid" },
+        { data: "balance" },
+        { data: "action", orderable: false, searchable: false }
+      ]
+    });
+  }
 
   $(document).on('hidden.bs.modal', '#copra_add_edit_modal, #copra_add_edit_breakdown_modal', function(){
     $(this).find('input').val('').end();
@@ -1219,14 +1425,14 @@ $(document).ready(function() {
           $(".edit_copra_delivery").hide();
         }
 
-        refresh_copra_tables();
+        refresh_copra_modal_tables();
       }
     });
   }
 
-  function refresh_copra_tables() {
-    $("#view_copra_delivery").dataTable().fnDestroy();
-    $("#view_copra_delivery").DataTable({
+  function refresh_copra_modal_tables() {
+    $("#view_copra_modal_delivery").dataTable().fnDestroy();
+    $("#view_copra_modal_delivery").DataTable({
       searching: false,
       paging: false,
       info: false,
@@ -1411,20 +1617,13 @@ $(document).ready(function() {
           method: "get",
           success: function(data) {
             swal("Success!", "Record has been deleted", "success");
-            refresh_copra_tables($('#copra_od_id').val());
+            refresh_copra_modal_tables();
           }
         });
       }
     });
   })
 
-
-  
-
-
-
-
-  
   $(document).on('keyup', '#cop_nw, #cop_dust, #cop_moist', function(){
     copra_compute();
   })
@@ -1459,6 +1658,36 @@ $(document).ready(function() {
   }
 
   // COPRA DELIVERY -- END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // COCONUT DELIVERY -- START
   
@@ -1511,8 +1740,8 @@ $(document).ready(function() {
   }
 
   function refresh_coconut_tables() {
-    $("#view_coconut_delivery").dataTable().fnDestroy();
-    $("#view_coconut_delivery").DataTable({
+    $("#view_coconut_modal_delivery").dataTable().fnDestroy();
+    $("#view_coconut_modal_delivery").DataTable({
       searching: false,
       paging: false,
       info: false,
@@ -1675,6 +1904,10 @@ $(document).ready(function() {
     dropdownParent: $("#od_modal"),
     placeholder: "Select a company"
   });
+  
+  if (window.location.hash) {
+    $('.nav-tabs li a[href="' + window.location.hash + '"]').tab("show");
+  }
 });
 
 </script>

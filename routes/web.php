@@ -129,6 +129,7 @@ Route::group(['middleware'=>['auth', 'user:od']], function() {
     Route::post('/print_od', 'pdfController@od')->name('print_od');
 
     //COPRA DELIVERIES
+    Route::post('/refresh_copra', 'odController@refresh_copra');
     Route::post('/refresh_copra_delivery/{od_id}', 'odController@refresh_copra_delivery');
     Route::post('/refresh_copra_breakdown/{od_id}', 'odController@refresh_copra_breakdown');
     Route::get('/copra_modal_data/{od_id}', 'odController@copra_modal_data');
