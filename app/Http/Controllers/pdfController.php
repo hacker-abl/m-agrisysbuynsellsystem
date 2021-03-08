@@ -154,11 +154,11 @@ class pdfController extends Controller
 				</tr>
 				<tr>
 				<td><span>Laborers: </span></td>
-				<td align='right'><span>".$request->laborers."</span></td>
+				<td align='right'><span>".$request->laborers_id_clone."</span></td>
 				</tr>
 				<tr>
 				<td><span>Remarks: </span></td>
-				<td align='right'><span>".$request->remark."</span></td>
+				<td align='right'><span>".$request->remark_clone."</span></td>
 				</tr>
 				</table>
 				<br>
