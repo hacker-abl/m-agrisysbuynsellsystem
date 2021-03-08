@@ -1420,7 +1420,7 @@ $(document).ready(function() {
   function print_loop() {
     var count_length = $(".trip_form").length;
     var selected=[];
-    $('#laborers_id' + item +' :selected').each(function(){
+    $('#laborers_id' + trip_counter +' :selected').each(function(){
     selected.push($(this).val())
     });
     setTimeout(function() {
