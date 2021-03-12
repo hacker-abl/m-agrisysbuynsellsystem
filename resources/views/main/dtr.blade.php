@@ -723,7 +723,8 @@
                     <th width="100" style="text-align:center;">Balance</th>
                     <th width="100" style="text-align:center;">Partial Payment</th>
                     <th width="100" style="text-align:center;">Remaining Balance</th>
-                    <th width="100" style="text-align:center;">Salary</th>
+                    <th width="100" style="text-align:center;">Gross Salary</th>
+                    <th width="100" style="text-align:center;">Net Salary</th>
                     <th width="100" style="text-align:center;">Status</th>
                     <th width="100" style="text-align:center;">Signature</th>
 										<th width="100" style="text-align:center;">Action</th>
@@ -731,6 +732,7 @@
 								</thead>
                 <tfoot>
                   <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -1441,7 +1443,7 @@ $(document).ready(function() {
 
       // Total over all pages
       total = api
-        .column(11)
+        .column(12)
         .data()
         .reduce(function(a, b) {
           return intVal(a) + intVal(b);
@@ -1450,7 +1452,7 @@ $(document).ready(function() {
 
       // Total over this page
       pageTotal = api
-        .column(11, { page: "current" })
+        .column(12, { page: "current" })
         .data()
         .reduce(function(a, b) {
           return intVal(a) + intVal(b);
@@ -1468,12 +1470,12 @@ $(document).ready(function() {
       totalBeforeDeduction = pageTotal + totalBalancePayment;
 
       // Update footer
-      $(api.column(11).footer()).html(
+      $(api.column(12).footer()).html(
         "Total: <br>₱" + number_format(pageTotal, 2)
       );
 
-      $(api.column(10).footer()).html(
-        "Gross Total: <br>₱" + number_format(totalBeforeDeduction, 2)
+      $(api.column(11).footer()).html(
+        "Total: <br>₱" + number_format(totalBeforeDeduction, 2)
       );
     },
     dom: "Blfrtip",
@@ -1486,7 +1488,7 @@ $(document).ready(function() {
         extend: "print",
         orientation: 'landscape',
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14],
           modifier: {
             page: "current"
           }
@@ -1506,7 +1508,7 @@ $(document).ready(function() {
         orientation: 'landscape',
         footer: true,
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14],
           modifier: {
             page: "current"
           }
@@ -1554,6 +1556,7 @@ $(document).ready(function() {
       { data: "p_payment", name: "p_payment", visible: false },
       { data: "r_balance", name: "r_balance", visible: false },
       { data: "salary", name: "salary" },
+      { data: "gross_salary", name: "gross_salary" },
       { data: "status", name: "status" },
       { data: "status", name: "signature", render: () => { return "" }, visible: false },
       { data: "action", orderable: false, searchable: false }

@@ -676,6 +676,9 @@ class dtrController extends Controller
         ->editColumn('salary', function ($data) {
             return '₱ '.number_format($data->salary, 2, '.', ',');
         })
+        ->addColumn('gross_salary', function ($data){
+            return '₱ '.number_format(($data->salary + $data->p_payment), 2, '.', ',');
+        })
         ->make(true);
     }
 
