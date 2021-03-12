@@ -1447,6 +1447,7 @@ $(document).ready(function() {
           return intVal(a) + intVal(b);
         }, 0);
 
+
       // Total over this page
       pageTotal = api
         .column(11, { page: "current" })
@@ -1455,9 +1456,24 @@ $(document).ready(function() {
           return intVal(a) + intVal(b);
         }, 0);
 
+      // Total balance payment over this page
+      totalBalancePayment = api
+        .column(9, { page: "current" })
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Calculate total over this page before deduction
+      totalBeforeDeduction = pageTotal + totalBalancePayment;
+
       // Update footer
       $(api.column(11).footer()).html(
         "Total: <br>₱" + number_format(pageTotal, 2)
+      );
+
+      $(api.column(10).footer()).html(
+        "Gross Total: <br>₱" + number_format(totalBeforeDeduction, 2)
       );
     },
     dom: "Blfrtip",
