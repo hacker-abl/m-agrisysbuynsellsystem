@@ -715,17 +715,17 @@
 										<th width="100" style="text-align:center;">Name</th>
                     <th width="100" style="text-align:center;">mname</th>
                     <th width="100" style="text-align:center;">lname</th>
-										<th width="100" style="text-align:center;">Role</th>
-										<th width="100" style="text-align:center;">Overtime</th>
-										<th width="100" style="text-align:center;">No. of Hours</th>
+										<th width="40" style="text-align:center;">Role</th>
+										<th width="40" style="text-align:center;">Overtime</th>
+										<th width="40" style="text-align:center;">No. of Hours</th>
                     <th width="100" style="text-align:center;">Date/Time</th>
-                    <th width="100" style="text-align:center;">Bonus</th>
+                    <th width="70" style="text-align:center;">Bonus</th>
                     <th width="100" style="text-align:center;">Balance</th>
                     <th width="100" style="text-align:center;">Partial Payment</th>
                     <th width="100" style="text-align:center;">Remaining Balance</th>
-                    <th width="100" style="text-align:center;">Gross Salary</th>
-                    <th width="100" style="text-align:center;">Net Salary</th>
-                    <th width="100" style="text-align:center;">Status</th>
+                    <th width="80" style="text-align:center;">Gross Salary</th>
+                    <th width="80" style="text-align:center;">Net Salary</th>
+                    <th width="60" style="text-align:center;">Status</th>
                     <th width="100" style="text-align:center;">Signature</th>
 										<th width="100" style="text-align:center;">Action</th>
 									</tr>
