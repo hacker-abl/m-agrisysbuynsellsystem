@@ -152,6 +152,14 @@ class pdfController extends Controller
 				<td><span>No. of Liters: </span></td>
 				<td align='right'><span>".$request->num_liters_clone."</span></td>
 				</tr>
+				<tr>
+				<td><span>Laborers: </span></td>
+				<td align='right'><span>".$request->laborers_id_clone."</span></td>
+				</tr>
+				<tr>
+				<td><span>Remarks: </span></td>
+				<td align='right'><span>".$request->remark_clone."</span></td>
+				</tr>
 				</table>
 				<br>
 				<br>

@@ -28,6 +28,8 @@
                                     <input type="hidden" id="plateno_clone" name="plateno_clone">
                                     <input type="hidden" id="destination_clone" name="destination_clone">
                                     <input type="hidden" id="num_liters_clone" name="num_liters_clone">
+                                    <input type="hidden" id="laborers_id_clone" name="laborers_id_clone">
+                                    <input type="hidden" id="remark_clone" name="remark_clone">
                                     <!-- <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button> -->
                                 </form>
                             </li>
@@ -173,6 +175,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="name">Laborers</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                        <select multiple type="text" id="laborers" name="laborers" class="form-control" value=""placeholder="Select Laborer" required style="width:100%;">
+                                            @foreach($laborer as $a)
+                                            <option value="{{ $a->fname }} {{ $a->mname }} {{ $a->lname }}">{{ $a->fname }} {{ $a->mname }} {{ $a->lname }}</option>
+                                            @endforeach 
+                                           
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="name">Remarks</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <textarea type="text" id="remark" name="remark" class="form-control" ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </form>
                             <div class="row clearfix">
@@ -214,10 +245,12 @@
                                 <tr>
                                     <th  style="text-align:center;">Ticket</th>
                                     <th  style="text-align:center;">Commodity</th>
-                                    <th  style="text-align:center;">Expense</th>
+                                    <th  style="text-align:center;" width="100">Expense</th>
                                     <th  style="text-align:center;">Destination</th>
                                     <th  style="text-align:center;">Truck</th>
                                     <th  style="text-align:center;">Driver</th>
+                                    <th  style="text-align:center;" width="200">Laborers</th>
+                                    <th  style="text-align:center;">Remarks</th>
                                     <th  style="text-align:center;">Plate No.</th>
                                     <th  style="text-align:center;">Liters</th>
                                     <th  style="text-align:center;">Date</th>
@@ -226,6 +259,8 @@
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th></th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -326,7 +361,7 @@ $(document).ready(function() {
       {
         extend: "print",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
           modifier: {
             page: "current"
           }
@@ -345,7 +380,7 @@ $(document).ready(function() {
         extend: "pdfHtml5",
         footer: true,
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
           modifier: {
             page: "current"
           }
@@ -390,6 +425,13 @@ $(document).ready(function() {
           return full.fname + " " + full.mname + " " + full.lname;
         }
       },
+      {
+        data: "laborers",
+        render: function(data, type, full, meta) {
+          return full.laborers!==null?full.laborers.split(',').join(', '):''
+        }
+      },
+      { data: "remarks" },
       { data: "plateno" },
       { data: "num_liters" },
       { data: "created_at" },
@@ -465,7 +507,7 @@ $(document).ready(function() {
             {
               extend: "print",
               exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
                 modifier: {
                   page: "current"
                 }
@@ -484,7 +526,7 @@ $(document).ready(function() {
               extend: "pdfHtml5",
               footer: true,
               exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
                 modifier: {
                   page: "current"
                 }
@@ -523,6 +565,13 @@ $(document).ready(function() {
                 return full.fname + " " + full.mname + " " + full.lname;
               }
             },
+            {
+              data: "laborers",
+              render: function(data, type, full, meta) {
+                return full.laborers!==null?full.laborers.split(',').join(', '):''
+              }
+            },
+            { data: "remarks" },
             { data: "plateno" },
             { data: "num_liters" },
             { data: "created_at" },
@@ -589,7 +638,7 @@ $(document).ready(function() {
           {
             extend: "print",
             exportOptions: {
-              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
               modifier: {
                 page: "current"
               }
@@ -608,7 +657,7 @@ $(document).ready(function() {
             extend: "pdfHtml5",
             footer: true,
             exportOptions: {
-              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
               modifier: {
                 page: "current"
               }
@@ -647,6 +696,13 @@ $(document).ready(function() {
               return full.fname + " " + full.mname + " " + full.lname;
             }
           },
+          {
+              data: "laborers",
+              render: function(data, type, full, meta) {
+                return full.laborers!==null?full.laborers.split(',').join(', '):''
+              }
+            },
+            { data: "remarks" },
           { data: "plateno" },
           { data: "num_liters" },
           { data: "created_at" },
@@ -722,7 +778,7 @@ $(document).ready(function() {
             {
               extend: "print",
               exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
                 modifier: {
                   page: "current"
                 }
@@ -741,7 +797,7 @@ $(document).ready(function() {
               extend: "pdfHtml5",
               footer: true,
               exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
                 modifier: {
                   page: "current"
                 }
@@ -780,6 +836,13 @@ $(document).ready(function() {
                 return full.fname + " " + full.mname + " " + full.lname;
               }
             },
+            {
+              data: "laborers",
+              render: function(data, type, full, meta) {
+                return full.laborers!==null?full.laborers.split(',').join(', '):''
+              }
+            },
+            { data: "remarks" },
             { data: "plateno" },
             { data: "num_liters" },
             { data: "created_at" },
@@ -847,7 +910,7 @@ $(document).ready(function() {
           {
             extend: "print",
             exportOptions: {
-              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
               modifier: {
                 page: "current"
               }
@@ -866,7 +929,7 @@ $(document).ready(function() {
             extend: "pdfHtml5",
             footer: true,
             exportOptions: {
-              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+              columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10],
               modifier: {
                 page: "current"
               }
@@ -905,6 +968,13 @@ $(document).ready(function() {
               return full.fname + " " + full.mname + " " + full.lname;
             }
           },
+          {
+              data: "laborers",
+              render: function(data, type, full, meta) {
+                return full.laborers!==null?full.laborers.split(',').join(', '):''
+              }
+            },
+            { data: "remarks" },
           { data: "plateno" },
           { data: "num_liters" },
           { data: "created_at" },
@@ -1060,6 +1130,36 @@ $(document).ready(function() {
         "</div>" +
         "</div>" +
         "</div>" +
+        '<div class="row clearfix">' +
+        '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">' +
+        '<label for="type">Laborers</label>' +
+        "</div>" +
+        '<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">' +
+        '<div class="form-group">' +
+        '<select class="selectpicker laborers" multiple type="text" id="laborers_id' +
+        item +
+        '" name="laborers_id" class="form-control" placeholder=" Select Laborers" required style="width:100%;" >' +
+        "@foreach($laborer as $a)" +
+        '<option value="{{ $a->fname }} {{ $a->mname }} {{ $a->lname }}">{{ $a->lname }}, {{ $a->fname }} {{ $a->mname }}</option>' +
+        "@endforeach" +
+        "</select>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        '<div class="row clearfix">' +
+        '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">' +
+        '<label for="name">Remarks</label>' +
+        "</div>" +
+        '<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">' +
+        '<div class="form-group">' +
+        '<div class="form-line">' +
+        '<textarea type="text" id="remark' +
+        item +
+        '" name="remark"  value="" class="form-control" required></textarea>' +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
         '<hr noshade width="100%" >' +
         "</form>"
     );
@@ -1072,6 +1172,10 @@ $(document).ready(function() {
     $("#driver_id" + item + "").select2({
       dropdownParent: $("#trip_form" + item),
       placeholder: "Select Driver"
+    });
+    $("#laborers_id" + item + "").select2({
+      dropdownParent: $("#trip_form" + item),
+      placeholder: " Select Laborers"
     });
 
     $("#commodity" + item + "").select2({
@@ -1101,8 +1205,6 @@ $(document).ready(function() {
             : "0" + (c.getMonth() + 1);
         var currentDate = c.getFullYear() + twoDigitMonth + c.getDate();
         if (data != null) {
-          console.log(data.id);
-          console.log(currentDate);
           $("input[id=ticket" + item + "]").val(currentDate + data.id);
           if (item >= 1) {
             div = $(".dynamic-element form")
@@ -1150,6 +1252,11 @@ $(document).ready(function() {
           .trigger("change");
         $("#destination").val(data[0].destination);
         $("#num_liters").val(data[0].num_liters);
+        $.each(data[0].laborers!==null?data[0].laborers.split(","):null, function(i,e){
+            $("#laborers option[value='" + e + "']").prop("selected", true).trigger("change");;
+        });
+        // $("#laborers").val(data[0].laborers!==null?data[0].laborers.split(',').join(', '):'');
+        $("#remark").val(data[0].remarks);
         $("#pickup_modal_update").modal("show");
       }
     });
@@ -1162,6 +1269,12 @@ $(document).ready(function() {
     var button = this;
     button.disabled = true;
     input.html("SAVING...");
+      valuesToSend = $("#trip_form_update").serializeArray();
+        var selected=[];
+        $('#laborers :selected').each(function(){
+        selected.push($(this).val())
+        });
+        valuesToSend.push({'name':'laborer', value:selected});
     $.ajax({
       headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
@@ -1169,10 +1282,10 @@ $(document).ready(function() {
       url: "{{ route('update_trip')}}",
       method: "POST",
       dataType: "text",
-      data: $("#trip_form_update").serialize(),
+      data: valuesToSend,
       success: function(data) {
         dataparsed = $.parseJSON(data);
-
+        
         button.disabled = false;
         input.html("SAVE CHANGES");
         if (dataparsed != "Success") {
@@ -1212,7 +1325,6 @@ $(document).ready(function() {
           data: { id: id },
           success: function(data) {
             dataparsed = $.parseJSON(data);
-            console.log(dataparsed);
             refresh_pickup();
             if (dataparsed != "success") {
               swal(
@@ -1237,9 +1349,16 @@ $(document).ready(function() {
       button.disabled = true;
       input.html("SAVING...");
       var datasend = "";
+      var index = 1
       var count_length = $(".trip_form").length;
       $(".trip_form").each(function() {
-        valuesToSend = $(this).serialize();
+        valuesToSend = $(this).serializeArray();
+        var selected=[];
+        
+        $('#laborers_id' + index +' :selected').each(function(){
+        selected.push($(this).val())
+        });
+        valuesToSend.push({'name':'laborer', value:selected});
         $.ajax({
           headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
@@ -1250,7 +1369,6 @@ $(document).ready(function() {
           data: valuesToSend,
           success: function(data) {
             mainMouseDownOne();
-            console.log(data);
             dataparsed = $.parseJSON(data);
             $("#id").val(dataparsed.driver_id);
             button.disabled = false;
@@ -1259,6 +1377,7 @@ $(document).ready(function() {
             $("#pickup_modal").modal("hide");
             refresh_pickup();
             $(".delete").toggle(false);
+            location.reload();
           },
           error: function(data) {
             mainMouseDownOne();
@@ -1267,6 +1386,7 @@ $(document).ready(function() {
             input.html("SAVE CHANGES");
           }
         });
+        index++;
       });
     });
   }
@@ -1299,7 +1419,10 @@ $(document).ready(function() {
 
   function print_loop() {
     var count_length = $(".trip_form").length;
-    console.log(count_length);
+    var selected=[];
+    $('#laborers_id' + trip_counter +' :selected').each(function(){
+    selected.push($(this).val())
+    });
     setTimeout(function() {
       $("#ticket_clone").val($("#ticket" + trip_counter).val());
       $("#expense_clone").val($("#expense" + trip_counter).val());
@@ -1314,6 +1437,8 @@ $(document).ready(function() {
       );
       $("#destination_clone").val($("#destination" + trip_counter).val());
       $("#num_liters_clone").val($("#num_liters" + trip_counter).val());
+      $("#laborers_id_clone").val(selected);
+      $("#remark_clone").val($("#remark" + trip_counter).val());
 
       $("#printForm").submit();
 
@@ -1327,13 +1452,18 @@ $(document).ready(function() {
   }
 
   function print_loop1() {
+    var selected=[];
+    $('#laborers_id' + trip_counter +' :selected').each(function(){
+    selected.push($(this).val())
+    });
     $("#ticket_clone").val($("#ticket").val());
     $("#expense_clone").val($("#expense").val());
     $("#commodity_clone").val($("#commodity option:selected").text());
     $("#driver_id_clone").val($("#driver_id option:selected").text());
     $("#plateno_clone").val($("#plateno option:selected").text());
     $("#destination_clone").val($("#destination").val());
-    $("#num_liters_clone").val($("#num_liters").val());
+    $("#laborers_id_clone").val(selected);
+    $("#remark_clone").val($("#remark").val());
 
     $("#printForm").submit();
   }
@@ -1370,6 +1500,10 @@ $(document).ready(function() {
   $("#driver_id").select2({
     dropdownParent: $("#pickup_modal_update"),
     placeholder: "Select Driver"
+  });
+  $("#laborers").select2({
+    dropdownParent: $("#pickup_modal_update"),
+    placeholder: "Select Laborer"
   });
 
   $("#commodity").select2({
