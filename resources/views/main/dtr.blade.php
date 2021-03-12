@@ -1402,6 +1402,37 @@ $(document).ready(function() {
       .prop("checked", "")
       .end();
   });
+  
+  function calculateTotal(api, column, isOverall = false) {
+    // Remove the formatting to get integer data for summation
+    var intVal = function(i) {
+        return typeof i == "string"
+          ? i.replace(/[\₱,]/g, "") * 1
+          : typeof i == "number"
+          ? i
+          : 0;
+      };
+    
+    let config = {};
+    if (isOverall) {
+      config = {};
+    } else {
+      config = { page: "current" }
+    }
+
+    return api
+        .column(column, config)
+        .data()
+        .reduce(function(a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+  }
+
+  function appendTotalToFooter(api, column, total, prepend = "₱") {
+    $(api.column(column).footer()).html(
+      prepend + number_format(total, 2)
+    );
+  }
 
   function number_format(number, decimals, dec_point, thousands_sep) {
     // Strip all characters but numerical ones.
@@ -1441,42 +1472,26 @@ $(document).ready(function() {
           : 0;
       };
 
-      // Total over all pages
-      total = api
-        .column(12)
-        .data()
-        .reduce(function(a, b) {
-          return intVal(a) + intVal(b);
-        }, 0);
+      total = calculateTotal(api, 12, true); // Total over all pages
+      pageTotal = calculateTotal(api, 12); // Total over this page
+      totalBalancePayment = calculateTotal(api, 9); // Total balance payment over this page
+      totalBeforeDeduction = pageTotal + totalBalancePayment; // Calculate total over this page before deduction
+      overtimeTotal = calculateTotal(api, 4); // Total overtime over this page
+      hoursTotal = calculateTotal(api, 5); // Total hours over this page
+      bonusTotal = calculateTotal(api, 7); // Total bonus over this page
+      balanceTotal = calculateTotal(api, 8); // Total balance over this page
+      partialPaymentTotal = calculateTotal(api, 9); // Total partial payment over this page
+      remainingBalanceTotal = calculateTotal(api, 10); // Total remaining balance over this page
 
-
-      // Total over this page
-      pageTotal = api
-        .column(12, { page: "current" })
-        .data()
-        .reduce(function(a, b) {
-          return intVal(a) + intVal(b);
-        }, 0);
-
-      // Total balance payment over this page
-      totalBalancePayment = api
-        .column(9, { page: "current" })
-        .data()
-        .reduce(function(a, b) {
-          return intVal(a) + intVal(b);
-        }, 0);
-
-      // Calculate total over this page before deduction
-      totalBeforeDeduction = pageTotal + totalBalancePayment;
-
-      // Update footer
-      $(api.column(12).footer()).html(
-        "Total: <br>₱" + number_format(pageTotal, 2)
-      );
-
-      $(api.column(11).footer()).html(
-        "Total: <br>₱" + number_format(totalBeforeDeduction, 2)
-      );
+      // Append totals to footer
+      appendTotalToFooter(api, 12, pageTotal);
+      appendTotalToFooter(api, 11, totalBeforeDeduction);
+      appendTotalToFooter(api, 10, remainingBalanceTotal);
+      appendTotalToFooter(api, 9, partialPaymentTotal);
+      appendTotalToFooter(api, 8, balanceTotal);
+      appendTotalToFooter(api, 7, bonusTotal);
+      appendTotalToFooter(api, 5, hoursTotal, "");
+      appendTotalToFooter(api, 4, overtimeTotal, "");
     },
     dom: "Blfrtip",
     lengthMenu: [
