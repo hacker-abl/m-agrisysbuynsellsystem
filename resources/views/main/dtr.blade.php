@@ -1570,8 +1570,8 @@ $(document).ready(function() {
       { data: "dtr_balance", name: "dtr_balance", visible: false },
       { data: "p_payment", name: "p_payment", visible: false },
       { data: "r_balance", name: "r_balance", visible: false },
-      { data: "salary", name: "salary" },
       { data: "gross_salary", name: "gross_salary" },
+      { data: "salary", name: "salary" },
       { data: "status", name: "status" },
       { data: "status", name: "signature", render: () => { return "" }, visible: false },
       { data: "action", orderable: false, searchable: false }
