@@ -674,7 +674,7 @@ class dtrController extends Controller
         return \DataTables::of($dtr)
         ->addColumn('action', function($dtr) use ($pending_cash_advances, $pending_payments) {
             $pending_ca = $pending_cash_advances->where('employee_id', $dtr->employee_id)->count();
-            $pending_payment = $pending_payments->where('employee_id', $dtr->employee_id)->count();
+            $pending_payment = $pending_payments->where('logs_id', $dtr->employee_id)->count();
 
             return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>&nbsp<button class="btn btn-xs btn-warning view_ca waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">ballot</i></button>' . (($pending_ca || $pending_payment) ? '<span class="badge-notify-parent"><span class="badge badge-notify">!</span></span>' : '');//info/visibility
         })
