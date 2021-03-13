@@ -1616,7 +1616,7 @@ $(document).ready(function() {
   })
 
   $.fn.dataTableExt.afnFiltering.push(function(oSettings, aData, iDataIndex) {
-    var grab_daterange = null
+    var grab_daterange = ""
     var iStartDateCol = 2;
     var iEndDateCol = 2;
     if (oSettings.sTableId == 'dtr_table'){
