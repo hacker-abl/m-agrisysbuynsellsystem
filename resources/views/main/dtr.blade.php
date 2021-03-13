@@ -799,8 +799,8 @@ var trig_update;
 var payment_table;
 var cash_advance_release;
 var emp_balance;
-var start = moment().startOf('year');;
-var end = moment().endOf('year');;
+var start = moment().subtract(1, 'year');
+var end = moment();
 $(document).ready(function() {
   function cb(start, end) {
     $('.reportrange span').html(
@@ -1623,7 +1623,7 @@ $(document).ready(function() {
       grab_daterange= $("#dtr-daterange").val();
       iStartDateCol = 6;
       iEndDateCol = 6;
-    } else {
+    } else if (oSettings.sTableId == 'view_dtr_table') {
       grab_daterange = $("#reportrange").val();
       iStartDateCol = 2;
       iEndDateCol = 2;
