@@ -104,7 +104,7 @@ class dtrController extends Controller
                 $getDate = Carbon::now();
                 
                 if($cashLatest != null){
-                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
                 }
                 else{
                     $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -260,7 +260,7 @@ class dtrController extends Controller
                     $getDate = Carbon::now();
                     
                     if($cashLatest != null){
-                        $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                        $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
                     }
                     else{
                         $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -282,7 +282,7 @@ class dtrController extends Controller
                 $getDate = Carbon::now();
                 
                 if($cashLatest != null){
-                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
                 }
                 else{
                     $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -394,7 +394,7 @@ class dtrController extends Controller
                 $getDate = Carbon::now();
                 
                 if($cashLatest != null){
-                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
                 }
                 else{
                     $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -464,7 +464,7 @@ class dtrController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -526,7 +526,7 @@ class dtrController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -598,7 +598,7 @@ class dtrController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -679,7 +679,7 @@ class dtrController extends Controller
             return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>&nbsp<button class="btn btn-xs btn-warning view_ca waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">ballot</i></button>' . (($pending_ca || $pending_payment) ? '<span class="badge-notify-parent"><span class="badge badge-notify">!</span></span>' : '');//info/visibility
         })
         ->addColumn('wholename', function ($data){
-            return $data->lname.", ".$data->fname." ".$data->mname;
+            return $data->lname.", ".$data->fname." ".substr($data->mname, 0, 1);
         })
         ->editColumn('bonus', function ($data) {
             return '₱ '.number_format($data->bonus, 2, '.', ',');
@@ -938,7 +938,7 @@ class dtrController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
