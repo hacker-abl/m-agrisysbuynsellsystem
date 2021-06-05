@@ -8372,4 +8372,5 @@ PARA SA PRINT
 
 td {
   white-space: pre;
+  word-break: break-word;
 }
