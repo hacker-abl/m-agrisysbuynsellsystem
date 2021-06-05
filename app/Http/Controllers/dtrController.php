@@ -61,6 +61,7 @@ class dtrController extends Controller
             $dtr->r_balance = $request->emp_rbalance;
             $dtr->p_payment = $request->p_payment;
             $dtr->salary = $request->salary;
+            $dtr->deductions = $request->deductions;
             $dtr->status = "On-Hand";
             $dtr->save();
             $dtr_id = dtr::where('employee_id', '=', $request->employee_id)->latest()->first();
@@ -87,6 +88,7 @@ class dtrController extends Controller
             $dtr->r_balance = $request->emp_rbalance;
             $dtr->p_payment = $request->p_payment;
             $dtr->salary = $request->salary; 
+            $dtr->deductions = $request->deductions;
             $checkpayment = emp_payment::all();
             if($checkpayment!==null){                      
                 $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->add_id)->count();
@@ -510,6 +512,7 @@ class dtrController extends Controller
             'dtr_balance' => $dtr_view[0]->dtr_balance,
             'num_hours' => $dtr_view[0]->num_hours,
             'salary' => $dtr_view[0]->salary,
+            'deductions' => $dtr_view[0]->deductions,
         );
         echo json_encode($output);
     }
@@ -691,7 +694,10 @@ class dtrController extends Controller
             return '₱ '.number_format($data->salary, 2, '.', ',');
         })
         ->addColumn('gross_salary', function ($data){
-            return '₱ '.number_format(($data->salary + $data->p_payment), 2, '.', ',');
+            return '₱ '.number_format(($data->salary + $data->p_payment + $data->deductions), 2, '.', ',');
+        })
+        ->addColumn('deductions', function ($data){
+            return '₱ '.number_format(($data->deductions), 2, '.', ',');
         })
         ->make(true);
     }

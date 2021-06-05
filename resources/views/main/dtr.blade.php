@@ -539,7 +539,20 @@
                 </div>
                </div>
 
-                <div class="row clearfix">
+               <div class="row clearfix">
+								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+									<label for="name">Deductions</label>
+								</div>
+								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="deductions" min="0" value="0" name="deductions" class="form-control">
+										</div>
+									</div>
+								</div>
+							</div>
+
+               <div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 									<label for="name">Salary</label>
 								</div>
@@ -724,6 +737,7 @@
                     <th width="80" style="text-align:center;">Partial Payment</th>
                     <th width="80" style="text-align:center;">Remaining Balance</th>
                     <th width="80" style="text-align:center;">Gross Salary</th>
+                    <th width="80" style="text-align:center;">Deductions</th>
                     <th width="80" style="text-align:center;">Net Salary</th>
                     <th width="60" style="text-align:center;">Status</th>
                     <th width="100" style="text-align:center;">Signature</th>
@@ -732,6 +746,7 @@
 								</thead>
                 <tfoot>
                   <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -1474,8 +1489,8 @@ $(document).ready(function() {
           : 0;
       };
 
-      total = calculateTotal(api, 12, true); // Total over all pages
-      pageTotal = calculateTotal(api, 12); // Total over this page
+      total = calculateTotal(api, 13, true); // Total over all pages
+      pageTotal = calculateTotal(api, 13); // Total over this page
       totalBalancePayment = calculateTotal(api, 9); // Total balance payment over this page
       totalBeforeDeduction = pageTotal + totalBalancePayment; // Calculate total over this page before deduction
       overtimeTotal = calculateTotal(api, 4); // Total overtime over this page
@@ -1484,9 +1499,11 @@ $(document).ready(function() {
       balanceTotal = calculateTotal(api, 8); // Total balance over this page
       partialPaymentTotal = calculateTotal(api, 9); // Total partial payment over this page
       remainingBalanceTotal = calculateTotal(api, 10); // Total remaining balance over this page
+      deductionsTotal = calculateTotal(api, 12); // Total remaining balance over this page
 
       // Append totals to footer
-      appendTotalToFooter(api, 12, pageTotal);
+      appendTotalToFooter(api, 12, deductionsTotal);
+      appendTotalToFooter(api, 13, pageTotal);
       appendTotalToFooter(api, 11, totalBeforeDeduction);
       appendTotalToFooter(api, 10, remainingBalanceTotal);
       appendTotalToFooter(api, 9, partialPaymentTotal);
@@ -1505,10 +1522,11 @@ $(document).ready(function() {
         extend: "print",
         orientation: 'landscape',
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15],
           modifier: {
             page: "current"
-          }
+          },
+          stripHtml: false
         },
         customize: function(win) {
           $(win.document.body).css("font-size", "10pt");
@@ -1525,10 +1543,11 @@ $(document).ready(function() {
         orientation: 'landscape',
         footer: true,
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15],
           modifier: {
             page: "current"
-          }
+          },
+          stripNewlines: false
         },
         customize: function(doc) {
           doc.styles.tableHeader.fontSize = 8;
@@ -1560,7 +1579,7 @@ $(document).ready(function() {
         render: function(value) {
           var ts = new Date(value);
 
-          return ts.toLocaleDateString("en-US", dateOptions) + " " + ts.toLocaleTimeString('en-US', timeOptions);
+          return ts.toLocaleDateString("en-US", dateOptions) + " \n" + ts.toLocaleTimeString('en-US', timeOptions);
         }
       },
       { data: "bonus", name: "bonus" },
@@ -1568,6 +1587,7 @@ $(document).ready(function() {
       { data: "p_payment", name: "p_payment", visible: false },
       { data: "r_balance", name: "r_balance", visible: false },
       { data: "gross_salary", name: "gross_salary" },
+      { data: "deductions", name: "deductions" },
       { data: "salary", name: "salary" },
       { data: "status", name: "status" },
       { name: "signature", render: () => { return "" }, visible: false },
@@ -1702,41 +1722,36 @@ $(document).ready(function() {
     });
   });
   var p_payment;
-  $("#overtime").change(function() {
+
+  function setSalaryValue(){
     salary = parseFloat($("#rate").val());
     overtime =
       parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
     p_payment = $("#p_payment").val();
     bonus = parseFloat($("#bonus").val());
-    $("#salary").val(overtime * salary + bonus - p_payment);
+    deductions = parseFloat($("#deductions").val());
+    $("#salary").val((((overtime * salary) + bonus) - p_payment) - deductions);
+  }
+  $("#deductions").change(function() {
+    setSalaryValue();
+  });
+  $("#overtime").change(function() {
+    setSalaryValue();
   });
   $("#p_payment").change(function() {
-    salary = parseFloat($("#rate").val());
-    overtime =
-      parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
     p_payment = $("#p_payment").val();
     emp_balance = $("#emp_balance").val();
-    bonus = parseFloat($("#bonus").val());
     $("#emp_rbalance").val(emp_balance - p_payment);
-    $("#salary").val(overtime * salary + bonus - p_payment);
+
+    setSalaryValue();
   });
 
   $("#num_hours").change(function() {
-    salary = parseFloat($("#rate").val());
-    overtime =
-      parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
-    bonus = parseFloat($("#bonus").val());
-    p_payment = $("#p_payment").val();
-    $("#salary").val(overtime * salary + bonus - p_payment);
+    setSalaryValue();
   });
 
   $("#bonus").change(function() {
-    overtime =
-      parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
-    salary = parseFloat($("#rate").val());
-    p_payment = $("#p_payment").val();
-    bonus = parseFloat($("#bonus").val());
-    $("#salary").val(overtime * salary + bonus - p_payment);
+    setSalaryValue();
   });
 
   $(document).on("click", ".release_expense_dtr", function(event) {
@@ -2181,6 +2196,7 @@ $(document).ready(function() {
         $("#emp_rbalance").val(data.r_balance);
         $("#bonus").val(data.bonus);
         $("#salary").val(data.salary);
+        $("#deductions").val(data.deductions);
         $("#dtr_modal").modal("show");
         $(".dtr_modal_title").text("Update DTR");
         //refresh_expense_table();

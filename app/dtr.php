@@ -13,6 +13,7 @@ class dtr extends Model
       'employee_id',
       'rate',
       'salary',
+      'deductions'
     );
     public $timestamps = true;
 

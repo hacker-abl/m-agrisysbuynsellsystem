@@ -8369,3 +8369,7 @@ PARA SA PRINT
   width: 0px !important;
   height: 0px !important;
 }
+
+td {
+  white-space: pre;
+}
