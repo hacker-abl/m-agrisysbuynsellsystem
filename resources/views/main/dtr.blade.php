@@ -11,21 +11,35 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="row">            
               <div class="card">
-                   <div class="header">
-                   <div class="container-fluid">
-                   <div class="container-fluid">
-                   <h4>Employee: <span class="employee_name"></span></h4>
-                   </div>
-                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#ca_tab" data-toggle="tab"><div class="block-header">
-                             <h2> Cash Advance Logs <span class="modal_title_ca"></span></h2>
-                        </div></a></li>
-                        <li><a href="#payment_tab" data-toggle="tab" id="render"><div class="block-header">
-                            <h2>Payment Logs</h2>
-                        </div></a></li>
-                      
-                      </ul>
-                </div> 
+                  <div class="header">
+                  <div class="container-fluid">
+                    <div class="container-fluid">
+                      <h4>Employee: <span class="employee_name"></span></h4>
+                    </div>
+                    <br/>
+                    <ul class="nav nav-tabs">
+                      <li class="active">
+                        <a href="#ca_tab" data-toggle="tab">
+                          <div class="block-header">
+                            <h2> Cash Advance Logs 
+                              <span id="ca_tab_badge" class="badge-notify-parent" style="display:none;"><span class="badge badge-notify">!</span></span>
+                              <span class="modal_title_ca"></span>
+                            </h2>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#payment_tab" data-toggle="tab" id="render">
+                          <div class="block-header">
+                            <h2>Payment Logs 
+                              <span id="payment_tab_badge" class="badge-notify-parent" style="display:none;"><span class="badge badge-notify">!</span></span>
+                              <span class="modal_title_ca"></span>
+                            </h2>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div> 
                       
                    </div>
                    <div class="body">
@@ -1121,13 +1135,25 @@ $(document).ready(function() {
       data: { id: person_id },
       dataType: "json",
       success: function(data) {
-        $(".employee_name").text(
+        $("#ca_tab_badge").css("display", "none");
+        data.data.forEach((item) => {
+          if(item.status != "Released") {
+            $("#ca_tab_badge").css("display", "revert");
+          }
+        })
+
+        if (data.data[0]){
+          $(".employee_name").text(
           data.data[0].fname +
             " " +
             data.data[0].mname +
             " " +
             data.data[0].lname
-        );
+          );
+        } else {
+          $(".employee_name").text("");
+        }
+
         cash_advance_release = $("#view_employee_ca_table").DataTable({
           footerCallback: function(row, data, start, end, display) {
             var api = this.api(),
@@ -1231,6 +1257,13 @@ $(document).ready(function() {
       data: { id: person_id },
       dataType: "json",
       success: function(data) {
+        $("#payment_tab_badge").css("display", "none");
+        data.data.forEach((item) => {
+          if(item.status != "Received" && item.paymentmethod != "From ADD DTR Form") {
+            $("#payment_tab_badge").css("display", "revert");
+          }
+        });
+
         payment_table = $("#payment_table").DataTable({
           footerCallback: function(row, data, start, end, display) {
             var api = this.api(),

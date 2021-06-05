@@ -666,7 +666,7 @@ class dtrController extends Controller
 
         // check for pending ca
         $pending_cash_advances = DB::table('employee_cas')
-            ->where('status', 'On-Hand')
+            ->where('status', '!=', 'Released')
             ->get();
         // check for pending payments
         $pending_payments = DB::table('emp_payments')
