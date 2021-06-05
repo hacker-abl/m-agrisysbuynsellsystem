@@ -679,7 +679,7 @@ class dtrController extends Controller
             return '<button class="btn btn-xs btn-info view_dtr waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>&nbsp<button class="btn btn-xs btn-warning view_ca waves-effect" id="'.$dtr->employee_id.'"><i class="material-icons" style="width: 25px;">ballot</i></button>' . (($pending_ca || $pending_payment) ? '<span class="badge-notify-parent"><span class="badge badge-notify">!</span></span>' : '');//info/visibility
         })
         ->addColumn('wholename', function ($data){
-            return $data->fname." ".$data->mname." ".$data->lname;
+            return $data->lname.", ".$data->fname." ".$data->mname;
         })
         ->editColumn('bonus', function ($data) {
             return '₱ '.number_format($data->bonus, 2, '.', ',');
