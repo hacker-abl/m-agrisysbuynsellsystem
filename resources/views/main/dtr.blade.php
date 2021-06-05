@@ -720,9 +720,9 @@
 										<th width="40" style="text-align:center;">No. of Hours</th>
                     <th width="100" style="text-align:center;">Date/Time</th>
                     <th width="70" style="text-align:center;">Bonus</th>
-                    <th width="100" style="text-align:center;">Balance</th>
-                    <th width="100" style="text-align:center;">Partial Payment</th>
-                    <th width="100" style="text-align:center;">Remaining Balance</th>
+                    <th width="80" style="text-align:center;">Balance</th>
+                    <th width="80" style="text-align:center;">Partial Payment</th>
+                    <th width="80" style="text-align:center;">Remaining Balance</th>
                     <th width="80" style="text-align:center;">Gross Salary</th>
                     <th width="80" style="text-align:center;">Net Salary</th>
                     <th width="60" style="text-align:center;">Status</th>
@@ -1534,11 +1534,6 @@ $(document).ready(function() {
           doc.styles.tableHeader.fontSize = 8;
           doc.styles.tableFooter.fontSize = 8;
           doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10
-          doc.content[1].table.widths = Array(
-            doc.content[1].table.body[0].length + 1
-          )
-            .join("*")
-            .split("");
         }
       }
     ],
