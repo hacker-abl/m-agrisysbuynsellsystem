@@ -801,6 +801,8 @@ var cash_advance_release;
 var emp_balance;
 var start = moment().subtract(1, 'year');
 var end = moment();
+var dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+var timeOptions = { hour: '2-digit', minute: '2-digit' };
 $(document).ready(function() {
   function cb(start, end) {
     $('.reportrange span').html(
@@ -1563,7 +1565,7 @@ $(document).ready(function() {
         render: function(value) {
           var ts = new Date(value);
 
-          return ts.toDateString() + " " + ts.toLocaleTimeString();
+          return ts.toLocaleDateString("en-US", dateOptions) + " " + ts.toLocaleTimeString('en-US', timeOptions);
         }
       },
       { data: "bonus", name: "bonus" },
@@ -1920,9 +1922,7 @@ $(document).ready(function() {
                         render: function(value) {
                           var ts = new Date(value);
 
-                          return (
-                            ts.toDateString() + " " + ts.toLocaleTimeString()
-                          );
+                          return ts.toLocaleDateString("en-US", dateOptions) + " " + ts.toLocaleTimeString('en-US', timeOptions);
                         }
                       },
                       { data: "bonus", name: "bonus" },
@@ -2095,9 +2095,7 @@ $(document).ready(function() {
                       render: function(value) {
                         var ts = new Date(value);
 
-                        return (
-                          ts.toDateString() + " " + ts.toLocaleTimeString()
-                        );
+                        return ts.toLocaleDateString("en-US", dateOptions) + " " + ts.toLocaleTimeString('en-US', timeOptions);
                       }
                     },
                     { data: "bonus", name: "bonus" },
@@ -2332,9 +2330,7 @@ $(document).ready(function() {
                       render: function(value) {
                         var ts = new Date(value);
 
-                        return (
-                          ts.toDateString() + " " + ts.toLocaleTimeString()
-                        );
+                        return ts.toLocaleDateString("en-US", dateOptions) + " " + ts.toLocaleTimeString('en-US', timeOptions);
                       }
                     },
                     { data: "bonus", name: "bonus" },
@@ -3071,7 +3067,7 @@ $(document).ready(function() {
               render: function(value) {
                 var ts = new Date(value);
 
-                return ts.toDateString() + " " + ts.toLocaleTimeString();
+                return ts.toLocaleDateString("en-US", dateOptions) + " " + ts.toLocaleTimeString('en-US', timeOptions);
               }
             },
             { data: "bonus", name: "bonus" },
