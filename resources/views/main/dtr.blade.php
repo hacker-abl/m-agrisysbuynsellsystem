@@ -58,40 +58,37 @@
                        </div>
                       
                    </div>
-                   <div id="payment_tab" class="tab-pane fade">
-                   <div class="row clearfix">
-                              <div class="body">
-                                  <div class="table-responsive">
-                                      <table id="payment_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
-                                          <thead>
-                                              <tr>
-                                                  <th  width="100" style="text-align:center;">Payment Method</th>
-                                                  <th  width="100" style="text-align:center;">Amount</th>
-                                                  <th  width="100" style="text-align:center;">Date</th>
-                                                  <th  width="100" style="text-align:center;">Check Number</th>
-                                                  <th  width="100" style="text-align:center;">Remarks</th>
-                                                  <th  width="100" style="text-align:center;">Remaining Balance</th>
-                                                  <th  width="100" style="text-align:center;">Received by</th>
-                                                  <th  width="100" style="text-align:center;">Receiving</th>
-                                              </tr>
-                                          </thead>
-                                          <tfoot>
-                                              <tr>
-                                                  <th></th>
-                                                  <th></th>
-                                                  <th></th>
-                                                  <th></th>
-                                                  <th></th>
-                                                  <th></th>
-                                                  <th></th>
-                                                  <th></th>
-                                              </tr>
-                                          </tfoot>
-                                      </table>
-                          </div>
+                    <div id="payment_tab" class="tab-pane fade">
+                      <div class="table-responsive">
+                      <br>
+                        <table id="payment_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th  width="100" style="text-align:center;">Payment Method</th>
+                                    <th  width="100" style="text-align:center;">Amount</th>
+                                    <th  width="100" style="text-align:center;">Date</th>
+                                    <th  width="100" style="text-align:center;">Check Number</th>
+                                    <th  width="100" style="text-align:center;">Remarks</th>
+                                    <th  width="100" style="text-align:center;">Remaining Balance</th>
+                                    <th  width="100" style="text-align:center;">Received by</th>
+                                    <th  width="100" style="text-align:center;">Receiving</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
                       </div>
-                  </div>
-                </div>
+                    </div>
                  <div class="modal-footer">
                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                        </div>
