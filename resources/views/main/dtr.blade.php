@@ -1550,6 +1550,7 @@ $(document).ready(function() {
           doc.styles.tableHeader.fontSize = 8;
           doc.styles.tableFooter.fontSize = 8;
           doc.defaultStyle.fontSize = 8; //<-- set fontsize to 16 instead of 10
+          doc.content[1].table.widths = [ '7%','12%','7%','5%','5%','7%','8%','7%','8%','8%','7%','8%','5%','*'];
         }
       }
     ],
