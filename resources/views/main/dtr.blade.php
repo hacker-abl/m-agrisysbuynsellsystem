@@ -1157,7 +1157,7 @@ $(document).ready(function() {
           buttons: [
             {
               extend: "print",
-              title: $("#view_dtr_name").val(),
+              // title: $("#view_dtr_name").val(),
               exportOptions: {
                 columns: [0, 1, 2, 3, 4],
                 modifier: {
@@ -1176,7 +1176,7 @@ $(document).ready(function() {
             },
             {
               extend: "pdfHtml5",
-              title: $("#view_dtr_name").val(),
+              // title: $("#view_dtr_name").val(),
               footer: true,
               exportOptions: {
                 columns: [0, 1, 2, 3, 4],
@@ -2469,7 +2469,7 @@ $(document).ready(function() {
                   buttons: [
                     {
                       extend: "print",
-                      title: $("#view_dtr_name").val(),
+                      // title: $("#view_dtr_name").val(),
                       exportOptions: {
                         columns: [0, 1, 2, 3, 4],
                         modifier: {
@@ -2488,7 +2488,7 @@ $(document).ready(function() {
                     },
                     {
                       extend: "pdfHtml5",
-                      title: $("#view_dtr_name").val(),
+                      // title: $("#view_dtr_name").val(),
                       footer: true,
                       exportOptions: {
                         columns: [0, 1, 2, 3, 4],
@@ -3185,7 +3185,7 @@ $(document).ready(function() {
                       buttons: [
                         {
                           extend: "print",
-                          title: $("#view_dtr_name").val(),
+                          // title: $("#view_dtr_name").val(),
                           exportOptions: {
                             columns: [0, 1, 2, 3, 4],
                             modifier: {
@@ -3204,7 +3204,7 @@ $(document).ready(function() {
                         },
                         {
                           extend: "pdfHtml5",
-                          title: $("#view_dtr_name").val(),
+                          // title: $("#view_dtr_name").val(),
                           footer: true,
                           exportOptions: {
                             columns: [0, 1, 2, 3, 4],
