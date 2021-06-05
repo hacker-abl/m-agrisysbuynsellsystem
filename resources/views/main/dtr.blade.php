@@ -1573,7 +1573,7 @@ $(document).ready(function() {
       { data: "gross_salary", name: "gross_salary" },
       { data: "salary", name: "salary" },
       { data: "status", name: "status" },
-      { data: "status", name: "signature", render: () => { return "" }, visible: false },
+      { name: "signature", render: () => { return "" }, visible: false },
       { data: "action", orderable: false, searchable: false }
     ]
   });
