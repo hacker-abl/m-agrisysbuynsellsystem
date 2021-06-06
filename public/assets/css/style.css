@@ -8370,7 +8370,7 @@ PARA SA PRINT
   height: 0px !important;
 }
 
-td, th {
+td, .dtr-table th {
   white-space: pre;
   word-break: break-word;
 }
