@@ -184,7 +184,7 @@ class caController extends Controller
                 $getDate = Carbon::now();
                 
                 if($cashLatest != null){
-                    $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                    $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
                 }
                 else{
                     $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -241,7 +241,7 @@ class caController extends Controller
         $getDate = Carbon::now();
         
         if($cashLatest != null){
-            $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+            $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
         }
         else{
             $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -321,7 +321,7 @@ class caController extends Controller
             $getDate = Carbon::now();
             
             if($cashLatest != null){
-                $dateTime = $getDate->year.$getDate->month.$getDate->day.$cashLatest->id+1;
+                $dateTime = $getDate->year.$getDate->month.$getDate->day.($cashLatest->id+1);
             }
             else{
                 $dateTime = $getDate->year.$getDate->month.$getDate->day.'1';
@@ -357,12 +357,20 @@ class caController extends Controller
              ->join('balance', 'balance.customer_id', '=', 'ca1.customer_id')
             ->orderBy('ca1.created_at', 'desc')
             ->get();
+
+        // check for pending ca
+        $pending_cash_advances = DB::table('cash_advance')
+            ->where('status', '!=', 'Released')
+            ->get();
+
         return \DataTables::of($cash_advance)
-        ->addColumn('action', function($cash_advance){
-            return '<button class="btn btn-xs btn-info waves-effect view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
+        ->addColumn('action', function($cash_advance) use ($pending_cash_advances) {
+            $pending_ca = $pending_cash_advances->where('customer_id', $cash_advance->customer_id)->count();
+
+            return '<button class="btn btn-xs btn-info waves-effect view_cash_advance" id="'.$cash_advance->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>'. (($pending_ca) ? '<span class="badge-notify-parent"><span class="badge badge-notify">!</span></span>' : '');//info/visibility
         })
         ->addColumn('wholename', function ($data){
-            return $data->fname." ".$data->mname." ".$data->lname;
+            return $data->lname.", ".$data->fname." ".substr($data->mname, 0, 1);
         })
         ->editColumn('balance', function ($data) {
             return '₱'.number_format($data->balance, 2, '.', ',');

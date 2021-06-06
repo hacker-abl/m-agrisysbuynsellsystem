@@ -1009,7 +1009,7 @@ $(document).ready(function() {
           {
             data: "fname",
             render: function(data, type, full, meta) {
-              return full.fname + " " + full.mname + " " + full.lname;
+              return full.lname + ", " + full.fname + " " + full.lname.charAt(0);
             }
           },
           {
@@ -1131,7 +1131,7 @@ $(document).ready(function() {
       {
         data: "fname",
         render: function(data, type, full, meta) {
-          return full.fname + " " + full.mname + " " + full.lname;
+          return full.lname + ", " + full.fname + " " + full.lname.charAt(0);
         }
       },
       {
@@ -2046,7 +2046,7 @@ $(document).ready(function() {
                 {
                   data: "fname",
                   render: function(data, type, full, meta) {
-                    return full.fname + " " + full.mname + " " + full.lname;
+                    return full.lname + ", " + full.fname + " " + full.lname.charAt(0);
                   }
                 },
                 {
