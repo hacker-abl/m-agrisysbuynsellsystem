@@ -551,13 +551,57 @@
                </div>
 
                <div class="row clearfix">
+								<div class="col-md-2 form-control-label">
+									<label for="name">SSS</label>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="sss-deductions" min="0" value="0" name="sss_deductions" class="form-control deductions">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2 form-control-label">
+									<label for="name">PHIC</label>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="phic-deductions" min="0" value="0" name="phic_deductions" class="form-control deductions">
+										</div>
+									</div>
+								</div>
+							</div>
+               <div class="row clearfix">
+								<div class="col-md-2 form-control-label">
+									<label for="name">HDMF</label>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="hdmf-deductions" min="0" value="0" name="hdmf_deductions" class="form-control deductions">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2 form-control-label">
+									<label for="name">Lodging</label>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<div class="form-line">
+											<input type="number" id="lodging-deductions" min="0" value="0" name="lodging_deductions" class="form-control deductions">
+										</div>
+									</div>
+								</div>
+							</div>
+               <div class="row clearfix">
 								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-									<label for="name">Deductions</label>
+									<label for="name">Other Deductions</label>
 								</div>
 								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 									<div class="form-group">
 										<div class="form-line">
-											<input type="number" id="deductions" min="0" value="0" name="deductions" class="form-control">
+											<input type="number" id="other-deductions" min="0" value="0" name="other_deductions" class="form-control deductions">
 										</div>
 									</div>
 								</div>
@@ -748,7 +792,12 @@
                     <th width="80" style="text-align:center;">Partial Payment</th>
                     <th width="80" style="text-align:center;">Remaining Balance</th>
                     <th width="80" style="text-align:center;">Gross Salary</th>
-                    <th width="80" style="text-align:center;">Deductions</th>
+                    <th width="80" style="text-align:center;">SSS</th>
+                    <th width="80" style="text-align:center;">PHIC</th>
+                    <th width="80" style="text-align:center;">HDMF</th>
+                    <th width="80" style="text-align:center;">Lodging</th>
+                    <th width="80" style="text-align:center;">Others</th>
+                    <th width="80" style="text-align:center;">Total Deductions</th>
                     <th width="80" style="text-align:center;">Net Salary</th>
                     <th width="60" style="text-align:center;">Status</th>
                     <th width="100" style="text-align:center;">Signature</th>
@@ -829,6 +878,17 @@ var start = moment().subtract(1, 'year');
 var end = moment();
 var dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
 var timeOptions = { hour: '2-digit', minute: '2-digit' };
+
+// Hack to enable multiple modals by making sure the .modal-open class
+// is set to the <body> when there is at least one modal open left
+// https://stackoverflow.com/questions/28077066/bootstrap-modal-issue-scrolling-gets-disabled
+$('body').on('hidden.bs.modal', function () {
+  if($('.modal.in').length > 0)
+  {
+    $('body').addClass('modal-open');
+  }
+});
+
 $(document).ready(function() {
   function cb(start, end) {
     $('.reportrange span').html(
@@ -1519,8 +1579,8 @@ $(document).ready(function() {
           : 0;
       };
 
-      total = calculateTotal(api, 13, true); // Total over all pages
-      pageTotal = calculateTotal(api, 13); // Total over this page
+      total = calculateTotal(api, 18, true); // Total over all pages
+      pageTotal = calculateTotal(api, 18); // Total over this page
       totalBalancePayment = calculateTotal(api, 9); // Total balance payment over this page
       totalBeforeDeduction = pageTotal + totalBalancePayment; // Calculate total over this page before deduction
       overtimeTotal = calculateTotal(api, 4); // Total overtime over this page
@@ -1529,11 +1589,11 @@ $(document).ready(function() {
       balanceTotal = calculateTotal(api, 8); // Total balance over this page
       partialPaymentTotal = calculateTotal(api, 9); // Total partial payment over this page
       remainingBalanceTotal = calculateTotal(api, 10); // Total remaining balance over this page
-      deductionsTotal = calculateTotal(api, 12); // Total remaining balance over this page
+      deductionsTotal = calculateTotal(api, 17); // Total remaining balance over this page
 
       // Append totals to footer
-      appendTotalToFooter(api, 12, deductionsTotal);
-      appendTotalToFooter(api, 13, pageTotal);
+      appendTotalToFooter(api, 17, deductionsTotal);
+      appendTotalToFooter(api, 18, pageTotal);
       appendTotalToFooter(api, 11, totalBeforeDeduction);
       appendTotalToFooter(api, 10, remainingBalanceTotal);
       appendTotalToFooter(api, 9, partialPaymentTotal);
@@ -1552,7 +1612,7 @@ $(document).ready(function() {
         extend: "print",
         orientation: 'landscape',
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 17, 18, 19, 20],
           modifier: {
             page: "current"
           },
@@ -1573,7 +1633,7 @@ $(document).ready(function() {
         orientation: 'landscape',
         footer: true,
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 17, 18, 19, 20],
           modifier: {
             page: "current"
           },
@@ -1618,6 +1678,11 @@ $(document).ready(function() {
       { data: "p_payment", name: "p_payment", visible: false },
       { data: "r_balance", name: "r_balance", visible: false },
       { data: "gross_salary", name: "gross_salary" },
+      { data: "sss_deductions", name: "sss_deductions" },
+      { data: "phic_deductions", name: "phic_deductions" },
+      { data: "hdmf_deductions", name: "hdmf_deductions" },
+      { data: "lodging_deductions", name: "lodging_deductions" },
+      { data: "other_deductions", name: "other_deductions" },
       { data: "deductions", name: "deductions" },
       { data: "salary", name: "salary" },
       { data: "status", name: "status" },
@@ -1760,10 +1825,11 @@ $(document).ready(function() {
       parseFloat($("#overtime").val()) + parseFloat($("#num_hours").val());
     p_payment = $("#p_payment").val();
     bonus = parseFloat($("#bonus").val());
-    deductions = parseFloat($("#deductions").val());
+    deductions = parseFloat($("#sss-deductions").val()) + parseFloat($("#phic-deductions").val()) +
+      parseFloat($("#hdmf-deductions").val()) + parseFloat($("#lodging-deductions").val()) + parseFloat($("#other-deductions").val());
     $("#salary").val((((overtime * salary) + bonus) - p_payment) - deductions);
   }
-  $("#deductions").change(function() {
+  $(".deductions").change(function() {
     setSalaryValue();
   });
   $("#overtime").change(function() {
@@ -2198,7 +2264,6 @@ $(document).ready(function() {
   });
 
   $(document).on("click", ".update_dtr", function(event) {
-    $("#dtr_view_modal").modal("hide");
     event.preventDefault();
     var id = $(this).attr("id");
     $.ajax({
@@ -2227,9 +2292,14 @@ $(document).ready(function() {
         $("#emp_rbalance").val(data.r_balance);
         $("#bonus").val(data.bonus);
         $("#salary").val(data.salary);
-        $("#deductions").val(data.deductions);
-        $("#dtr_modal").modal("show");
+        $("#sss-deductions").val(data.deductions_object.sss_deductions);
+        $("#phic-deductions").val(data.deductions_object.phic_deductions);
+        $("#hdmf-deductions").val(data.deductions_object.hdmf_deductions);
+        $("#lodging-deductions").val(data.deductions_object.lodging_deductions);
+        $("#other-deductions").val(data.deductions_object.other_deductions);
         $(".dtr_modal_title").text("Update DTR");
+        $("#dtr_modal").modal("show");
+        $("#dtr_view_modal").modal("hide");
         //refresh_expense_table();
       }
     });

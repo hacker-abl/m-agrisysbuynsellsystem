@@ -61,7 +61,18 @@ class dtrController extends Controller
             $dtr->r_balance = $request->emp_rbalance;
             $dtr->p_payment = $request->p_payment;
             $dtr->salary = $request->salary;
-            $dtr->deductions = $request->deductions;
+            $dtr->deductions_object = [
+                "sss_deductions" => number_format($request->sss_deductions ?? 0, 2),
+                "phic_deductions" => number_format($request->phic_deductions ?? 0, 2),
+                "hdmf_deductions" => number_format($request->hdmf_deductions ?? 0, 2),
+                "lodging_deductions" => number_format($request->lodging_deductions ?? 0, 2),
+                "other_deductions" => number_format($request->other_deductions ?? 0, 2),
+            ];
+            $total_deductions = 0;
+            foreach($dtr->deductions_object as $key => $value) {
+                $total_deductions += $value;
+            }
+            $dtr->deductions = $total_deductions;
             $dtr->status = "On-Hand";
             $dtr->save();
             $dtr_id = dtr::where('employee_id', '=', $request->employee_id)->latest()->first();
@@ -88,7 +99,18 @@ class dtrController extends Controller
             $dtr->r_balance = $request->emp_rbalance;
             $dtr->p_payment = $request->p_payment;
             $dtr->salary = $request->salary; 
-            $dtr->deductions = $request->deductions;
+            $dtr->deductions_object = [
+                "sss_deductions" => $request->sss_deductions ?? 0,
+                "phic_deductions" => $request->phic_deductions ?? 0,
+                "hdmf_deductions" => $request->hdmf_deductions ?? 0,
+                "lodging_deductions" => $request->lodging_deductions ?? 0,
+                "other_deductions" => $request->other_deductions ?? 0,
+            ];
+            $total_deductions = 0;
+            foreach($dtr->deductions_object as $key => $value) {
+                $total_deductions += $value;
+            }
+            $dtr->deductions = $total_deductions;
             $checkpayment = emp_payment::all();
             if($checkpayment!==null){                      
                 $paymentlogs = emp_payment::firstOrFail()->where('dtr_id',$request->add_id)->count();
@@ -500,7 +522,7 @@ class dtrController extends Controller
             ->select('dtr.*', 'employee.fname', 'employee.mname', 'employee.lname')
             ->where('dtr.id', $id)
             ->get();
-            
+
         $output = array(
             'employee_id' => $dtr_view[0]->employee_id,
             'role' => $dtr_view[0]->role,
@@ -512,7 +534,13 @@ class dtrController extends Controller
             'dtr_balance' => $dtr_view[0]->dtr_balance,
             'num_hours' => $dtr_view[0]->num_hours,
             'salary' => $dtr_view[0]->salary,
-            'deductions' => $dtr_view[0]->deductions,
+            'deductions_object' => json_decode($dtr_view[0]->deductions_object) ?? [
+                "sss_deductions" => number_format(0, 2),
+                "phic_deductions" => number_format(0, 2),
+                "hdmf_deductions" => number_format(0, 2),
+                "lodging_deductions" => number_format(0, 2),
+                "other_deductions" => number_format(0, 2),
+            ],
         );
         echo json_encode($output);
     }
@@ -696,8 +724,48 @@ class dtrController extends Controller
         ->addColumn('gross_salary', function ($data){
             return '₱ '.number_format(($data->salary + $data->p_payment + $data->deductions), 2, '.', ',');
         })
-        ->addColumn('deductions', function ($data){
+        ->editColumn('deductions', function ($data){
             return '₱ '.number_format(($data->deductions), 2, '.', ',');
+        })
+        ->addColumn('sss_deductions', function ($data){
+            if($data->deductions_object){
+                $deductions_object = json_decode($data->deductions_object);
+                return '₱ '.number_format(($deductions_object->sss_deductions ?? 0), 2, '.', ',');;
+            } else {
+                return '₱ 0.00';
+            }
+        })
+        ->addColumn('phic_deductions', function ($data){
+            if($data->deductions_object){
+                $deductions_object = json_decode($data->deductions_object);
+                return '₱ '.number_format(($deductions_object->phic_deductions ?? 0), 2, '.', ',');;
+            } else {
+                return '₱ 0.00';
+            }
+        })
+        ->addColumn('hdmf_deductions', function ($data){
+            if($data->deductions_object){
+                $deductions_object = json_decode($data->deductions_object);
+                return '₱ '.number_format(($deductions_object->hdmf_deductions ?? 0), 2, '.', ',');;
+            } else {
+                return '₱ 0.00';
+            }
+        })
+        ->addColumn('lodging_deductions', function ($data){
+            if($data->deductions_object){
+                $deductions_object = json_decode($data->deductions_object);
+                return '₱ '.number_format(($deductions_object->lodging_deductions ?? 0), 2, '.', ',');;
+            } else {
+                return '₱ 0.00';
+            }
+        })
+        ->addColumn('other_deductions', function ($data){
+            if($data->deductions_object){
+                $deductions_object = json_decode($data->deductions_object);
+                return '₱ '.number_format(($deductions_object->other_deductions ?? 0), 2, '.', ',');;
+            } else {
+                return '₱ 0.00';
+            }
         })
         ->make(true);
     }
