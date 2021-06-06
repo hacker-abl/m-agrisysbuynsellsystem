@@ -69,7 +69,7 @@ class balanceController extends Controller
 		    return \DataTables::of($ultimatesickquery)
 		    ->addColumn('action', function($ultimatesickquery){
 				if($ultimatesickquery->status=="Not Received"){
-					return '<button class="btn btn-xs btn-warning waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility	
+					return '<button class="btn btn-xs btn-warning waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button><span class="badge-notify-parent"><span class="badge badge-notify">!</span></span>';//info/visibility	
 				}else{
 					return '<button class="btn btn-xs btn-info waves-effect view_balance" id="'.$ultimatesickquery->customer_id.'"><i class="material-icons" style="width: 25px;">visibility</i></button>';//info/visibility
 				}
