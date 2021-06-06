@@ -780,32 +780,47 @@
 							<table id="dtr_table" class="table table-bordered table-striped table-hover" style="width: 100%;">
 								<thead>
 									<tr>
-										<th width="100" style="text-align:center;">Name</th>
-                    <th width="100" style="text-align:center;">mname</th>
-                    <th width="100" style="text-align:center;">lname</th>
-										<th width="40" style="text-align:center;">Role</th>
-										<th width="40" style="text-align:center;">Overtime</th>
-										<th width="40" style="text-align:center;">No. of Hours</th>
-                    <th width="100" style="text-align:center;">Date/Time</th>
-                    <th width="70" style="text-align:center;">Bonus</th>
-                    <th width="80" style="text-align:center;">Balance</th>
-                    <th width="80" style="text-align:center;">Partial Payment</th>
-                    <th width="80" style="text-align:center;">Remaining Balance</th>
-                    <th width="80" style="text-align:center;">Gross Salary</th>
+										<th rowspan="2" width="100" style="text-align:center;">Name</th>
+                    <th rowspan="2" width="100" style="text-align:center;">mname</th>
+                    <th rowspan="2" width="100" style="text-align:center;">lname</th>
+										<th rowspan="2" width="40" style="text-align:center;">Role</th>
+										<th rowspan="2" width="40" style="text-align:center;">Overtime</th>
+										<th rowspan="2" width="40" style="text-align:center;">No. of Hours</th>
+                    <th rowspan="2" width="100" style="text-align:center;">Date/Time</th>
+                    <th rowspan="2" width="70" style="text-align:center;">Bonus</th>
+                    <th rowspan="2" width="80" style="text-align:center;">Balance</th>
+                    <th rowspan="2" width="80" style="text-align:center;">Partial Payment</th>
+                    <th rowspan="2" width="80" style="text-align:center;">Remaining Balance</th>
+                    <th rowspan="2" width="80" style="text-align:center;">Gross Salary</th>
+                    <th colspan="5" style="text-align:center;">DEDUCTIONS</th>
+                    <th rowspan="2" width="80" style="text-align:center;">Total Deductions</th>
+                    <th rowspan="2" width="80" style="text-align:center;">SSS/ 
+                      PHIC/ 
+                      HDMF/ 
+                      LODGING/ 
+                      OTHERS
+                    </th>
+                    <th rowspan="2" width="80" style="text-align:center;">Net Salary</th>
+                    <th rowspan="2" width="60" style="text-align:center;">Status</th>
+                    <th rowspan="2" width="100" style="text-align:center;">Signature</th>
+										<th rowspan="2" width="100" style="text-align:center;">Action</th>
+									</tr>
+									<tr>
                     <th width="80" style="text-align:center;">SSS</th>
                     <th width="80" style="text-align:center;">PHIC</th>
                     <th width="80" style="text-align:center;">HDMF</th>
                     <th width="80" style="text-align:center;">Lodging</th>
                     <th width="80" style="text-align:center;">Others</th>
-                    <th width="80" style="text-align:center;">Total Deductions</th>
-                    <th width="80" style="text-align:center;">Net Salary</th>
-                    <th width="60" style="text-align:center;">Status</th>
-                    <th width="100" style="text-align:center;">Signature</th>
-										<th width="100" style="text-align:center;">Action</th>
 									</tr>
 								</thead>
                 <tfoot>
                   <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -1579,8 +1594,8 @@ $(document).ready(function() {
           : 0;
       };
 
-      total = calculateTotal(api, 18, true); // Total over all pages
-      pageTotal = calculateTotal(api, 18); // Total over this page
+      total = calculateTotal(api, 19, true); // Total over all pages
+      pageTotal = calculateTotal(api, 19); // Total over this page
       totalBalancePayment = calculateTotal(api, 9); // Total balance payment over this page
       totalBeforeDeduction = pageTotal + totalBalancePayment; // Calculate total over this page before deduction
       overtimeTotal = calculateTotal(api, 4); // Total overtime over this page
@@ -1589,11 +1604,11 @@ $(document).ready(function() {
       balanceTotal = calculateTotal(api, 8); // Total balance over this page
       partialPaymentTotal = calculateTotal(api, 9); // Total partial payment over this page
       remainingBalanceTotal = calculateTotal(api, 10); // Total remaining balance over this page
-      deductionsTotal = calculateTotal(api, 17); // Total remaining balance over this page
+      deductionsTotal = calculateTotal(api, 18); // Total remaining balance over this page
 
       // Append totals to footer
-      appendTotalToFooter(api, 17, deductionsTotal);
-      appendTotalToFooter(api, 18, pageTotal);
+      appendTotalToFooter(api, 18, deductionsTotal);
+      appendTotalToFooter(api, 19, pageTotal);
       appendTotalToFooter(api, 11, totalBeforeDeduction);
       appendTotalToFooter(api, 10, remainingBalanceTotal);
       appendTotalToFooter(api, 9, partialPaymentTotal);
@@ -1612,7 +1627,7 @@ $(document).ready(function() {
         extend: "print",
         orientation: 'landscape',
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 17, 18, 19, 20],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 18, 19, 20, 21],
           modifier: {
             page: "current"
           },
@@ -1633,7 +1648,7 @@ $(document).ready(function() {
         orientation: 'landscape',
         footer: true,
         exportOptions: {
-          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 17, 18, 19, 20],
+          columns: [6, 0, 3, 4, 5, 7, 8, 9, 10, 11, 18, 19, 20, 21],
           modifier: {
             page: "current"
           },
@@ -1684,6 +1699,15 @@ $(document).ready(function() {
       { data: "lodging_deductions", name: "lodging_deductions" },
       { data: "other_deductions", name: "other_deductions" },
       { data: "deductions", name: "deductions" },
+      { data: "deductions", name: "total_deductions", visible: false, 
+        render: function(data, type, row, meta) {
+          
+          return row.sss_deductions + ' /\n' +
+            row.phic_deductions + ' /\n' +
+            row.hdmf_deductions + ' /\n' +
+            row.lodging_deductions + ' /\n' +
+            row.other_deductions;
+        } },
       { data: "salary", name: "salary" },
       { data: "status", name: "status" },
       { name: "signature", render: () => { return "" }, visible: false },
