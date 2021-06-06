@@ -635,6 +635,11 @@
                                         <input type="hidden" id="bonus_clone" name="bonus_clone">
                                         <input type="hidden" id="balance_clone" name="balance_clone">
                                         <input type="hidden" id="partial_payment_clone" name="partial_payment_clone">
+                                        <input type="hidden" id="sss_deductions_clone" name="sss_deductions_clone">
+                                        <input type="hidden" id="phic_deductions_clone" name="phic_deductions_clone">
+                                        <input type="hidden" id="hdmf_deductions_clone" name="hdmf_deductions_clone">
+                                        <input type="hidden" id="lodging_deductions_clone" name="lodging_deductions_clone">
+                                        <input type="hidden" id="other_deductions_clone" name="other_deductions_clone">
                                         <input type="hidden" id="remaining_balance_clone" name="remaining_balance_clone">
                                         <button class="btn btn-sm btn-icon print-icon print-only" type="submit" name="print_form" id="print_form" title="PRINT ONLY">PRINT ONLY</button>
                                     </form>
@@ -2969,6 +2974,11 @@ $(document).ready(function() {
     $("#bonus_clone").val($("#bonus").val());
     $("#balance_clone").val($("#emp_balance").val());
     $("#partial_payment_clone").val($("#p_payment").val());
+    $("#sss_deductions_clone").val($("#sss-deductions").val());
+    $("#phic_deductions_clone").val($("#phic-deductions").val());
+    $("#hdmf_deductions_clone").val($("#hdmf-deductions").val());
+    $("#lodging_deductions_clone").val($("#lodging-deductions").val());
+    $("#other_deductions_clone").val($("#other-deductions").val());
     $("#remaining_balance_clone").val($("#emp_rbalance").val());
   });
 

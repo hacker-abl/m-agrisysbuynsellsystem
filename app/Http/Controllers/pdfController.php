@@ -71,7 +71,7 @@ class pdfController extends Controller
 			$dompdf->set_paper($customPaper);
 		}else if($name == "dtr"){
 			// (Optional) Setup the paper size and orientation
-			$customPaper = array(0,0,200,350);
+			$customPaper = array(0,0,200,410);
 			$dompdf->set_paper($customPaper);
 		}else if($name == "sales"){
 			// (Optional) Setup the paper size and orientation
@@ -270,6 +270,26 @@ class pdfController extends Controller
 				<tr>
 				<td><span>Remaining balance: </span></td>
 				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->remaining_balance_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>SSS: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->sss_deductions_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>PHIC: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->phic_deductions_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>HDMF: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->hdmf_deductions_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>Lodging: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->lodging_deductions_clone, 2, '.', ',')."</span></td>
+				</tr>
+				<tr>
+				<td><span>Other deductions: </span></td>
+				<td align='right'><span><span style='font-family:DejaVu Sans;'>₱</span> ".number_format($request->other_deductions_clone, 2, '.', ',')."</span></td>
 				</tr>
 				<tr>
 				<td><span>Salary: </span></td>
