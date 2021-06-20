@@ -77,5 +77,5 @@ function userpermission() {
 }
 
 function canAddExpense(){
-    return (Auth::user()->username != 'MAYETH') ? true : false;
+    return (Auth::user()->username != 'MAYETH' && auth()->user()->id != 10) ? true : false;
 }
